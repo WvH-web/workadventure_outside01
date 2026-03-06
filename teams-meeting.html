@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Teams Meeting</title>
+
+<style>
+body{
+    font-family: Arial, sans-serif;
+    text-align:center;
+    padding-top:40px;
+}
+
+button{
+    background:#6264A7;
+    color:white;
+    border:none;
+    padding:15px 30px;
+    font-size:18px;
+    border-radius:8px;
+    cursor:pointer;
+}
+</style>
+
+<script>
+
+const meetingUrl = new URLSearchParams(window.location.search).get("url");
+
+function openTeams(){
+
+    if(!meetingUrl){
+        alert("Meeting URL missing");
+        return;
+    }
+
+    const deepLink = "msteams://" + meetingUrl.replace("https://","");
+
+    // Versuch Teams-App zu öffnen
+    window.location = deepLink;
+
+    // Fallback nach 1.5 Sekunden → Browser
+    setTimeout(function(){
+        window.location = meetingUrl;
+    },1500);
+}
+
+window.onload = openTeams;
+
+</script>
+
+</head>
+
+<body>
+
+<h2>Microsoft Teams Meeting</h2>
+
+<p>Das Meeting wird gestartet…</p>
+
+<button onclick="openTeams()">
+Meeting öffnen
+</button>
+
+</body>
+</html>
