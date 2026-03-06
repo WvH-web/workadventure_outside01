@@ -2078,7 +2078,7 @@
                                          "value":"onaction"
                                         }],
                                  "rotation":0,
-                                 "type":"",
+                                 "type":"area",
                                  "visible":true,
                                  "width":202,
                                  "x":1117,
