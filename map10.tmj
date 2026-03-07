@@ -2126,7 +2126,7 @@
                                 {
                                  "name":"openWebsite",
                                  "type":"string",
-                                 "value":"https:\/\/bloob.io\/8ballpool?room=wvh-pool"
+                                 "value":"https:\/\/8-ball-pool-html-5.vercel.app\/"
                                 }, 
                                 {
                                  "name":"openWebsiteLabel",
