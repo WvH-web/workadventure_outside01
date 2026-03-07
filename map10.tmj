@@ -2129,8 +2129,89 @@
                                  "type":"area",
                                  "visible":true,
                                  "width":202,
-                                 "x":1117,
-                                 "y":1752
+                                 "x":1111,
+                                 "y":1754
+                                }, 
+                                {
+                                 "height":136,
+                                 "id":17,
+                                 "name":"Sofaecke02",
+                                 "properties":[
+                                        {
+                                         "name":"openWebsite",
+                                         "type":"string",
+                                         "value":"https:\/\/deutsche-online-schule.com\/workadventure\/teams-meeting.html?url=https:\/\/teams.microsoft.com\/l\/meetup-join\/19%3ameeting_MGUyMzJlNzgtYTMyNS00MDk0LWJiY2UtZjBlYTU4OGJmZGE5%40thread.v2\/0?context=%7b%22Tid%22%3a%221b496b7d-e89e-4142-88ad-b71cb9140f95%22%2c%22Oid%22%3a%2211da9990-cfe0-4209-a412-b2398d870e24%22%7d"
+                                        }, 
+                                        {
+                                         "name":"openWebsiteLabel",
+                                         "type":"string",
+                                         "value":"Teams Meeting starten"
+                                        }, 
+                                        {
+                                         "name":"openWebsiteTrigger",
+                                         "type":"string",
+                                         "value":"onaction"
+                                        }],
+                                 "rotation":0,
+                                 "type":"area",
+                                 "visible":true,
+                                 "width":202,
+                                 "x":1372,
+                                 "y":1776
+                                }, 
+                                {
+                                 "height":136,
+                                 "id":18,
+                                 "name":"Sofaecke03",
+                                 "properties":[
+                                        {
+                                         "name":"openWebsite",
+                                         "type":"string",
+                                         "value":"https:\/\/deutsche-online-schule.com\/workadventure\/teams-meeting.html?url=https:\/\/teams.microsoft.com\/l\/meetup-join\/19%3ameeting_YTE1ZTIyMmQtY2NmNy00ZmZlLWI5ZjgtOTkxYzYyZTE4YjRm%40thread.v2\/0?context=%7b%22Tid%22%3a%221b496b7d-e89e-4142-88ad-b71cb9140f95%22%2c%22Oid%22%3a%2211da9990-cfe0-4209-a412-b2398d870e24%22%7d"
+                                        }, 
+                                        {
+                                         "name":"openWebsiteLabel",
+                                         "type":"string",
+                                         "value":"Teams Meeting starten"
+                                        }, 
+                                        {
+                                         "name":"openWebsiteTrigger",
+                                         "type":"string",
+                                         "value":"onaction"
+                                        }],
+                                 "rotation":0,
+                                 "type":"area",
+                                 "visible":true,
+                                 "width":202,
+                                 "x":1125,
+                                 "y":1926
+                                }, 
+                                {
+                                 "height":136,
+                                 "id":19,
+                                 "name":"Sofaecke04",
+                                 "properties":[
+                                        {
+                                         "name":"openWebsite",
+                                         "type":"string",
+                                         "value":"https:\/\/deutsche-online-schule.com\/workadventure\/teams-meeting.html?url=https:\/\/teams.microsoft.com\/l\/meetup-join\/19%3ameeting_YjFiYjAwZDUtNDk4Mi00OGQzLThmYmItZjhlOWY1YmU1YmQ2%40thread.v2\/0?context=%7b%22Tid%22%3a%221b496b7d-e89e-4142-88ad-b71cb9140f95%22%2c%22Oid%22%3a%2211da9990-cfe0-4209-a412-b2398d870e24%22%7d"
+                                        }, 
+                                        {
+                                         "name":"openWebsiteLabel",
+                                         "type":"string",
+                                         "value":"Teams Meeting starten"
+                                        }, 
+                                        {
+                                         "name":"openWebsiteTrigger",
+                                         "type":"string",
+                                         "value":"onaction"
+                                        }],
+                                 "rotation":0,
+                                 "type":"area",
+                                 "visible":true,
+                                 "width":202,
+                                 "x":1372,
+                                 "y":1926
                                 }],
                          "opacity":1,
                          "type":"objectgroup",
@@ -3389,7 +3470,7 @@
          "y":0
         }],
  "nextlayerid":124,
- "nextobjectid":16,
+ "nextobjectid":20,
  "orientation":"orthogonal",
  "properties":[
         {
