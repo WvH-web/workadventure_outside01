@@ -2296,18 +2296,18 @@
                         {
                          "height":45.166,
                          "id":28,
-                         "name":"Rocket Goal",
+                         "name":"Darts",
                          "opacity":1,
                          "properties":[
                                 {
                                  "name":"openWebsite",
                                  "type":"string",
-                                 "value":"https:\/\/www.crazygames.com\/game\/rocketgoal-io?instantJoin=true"
+                                 "value":"https:\/\/www.bradgames.com\/games\/multiplayer\/darts-pro-multiplayer"
                                 }, 
                                 {
                                  "name":"openWebsiteLabel",
                                  "type":"string",
-                                 "value":"\ud83c\udfae RocketGoal \u00f6ffnen"
+                                 "value":"\ud83c\udfae Darts \u00f6ffnen"
                                 }, 
                                 {
                                  "name":"openWebsiteTrigger",
@@ -2492,18 +2492,18 @@
                         {
                          "height":45.166,
                          "id":35,
-                         "name":"Mensch \u00e4rger dich nicht",
+                         "name":"fun race",
                          "opacity":1,
                          "properties":[
                                 {
                                  "name":"openWebsite",
                                  "type":"string",
-                                 "value":"https:\/\/www.crazygames.com\/game\/worldguessr?instantJoin=true"
+                                 "value":"https:\/\/www.bradgames.com\/games\/hypercasual\/fun-run-race-2-:-multiplayer"
                                 }, 
                                 {
                                  "name":"openWebsiteLabel",
                                  "type":"string",
-                                 "value":"\ud83c\udfae GeoGuesser \u00f6ffnen"
+                                 "value":"\ud83c\udfae Fun race \u00f6ffnen"
                                 }, 
                                 {
                                  "name":"openWebsiteTrigger",
