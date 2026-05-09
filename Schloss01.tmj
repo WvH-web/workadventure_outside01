@@ -2060,7 +2060,7 @@
                  "name":"Kino1",
                  "objects":[
                         {
-                         "height":365.333333333333,
+                         "height":182.833333333333,
                          "id":15,
                          "name":"Kinosaal",
                          "opacity":1,
@@ -2544,6 +2544,34 @@
                          "width":212.333666666667,
                          "x":109.833166666667,
                          "y":1164.08366666667
+                        }, 
+                        {
+                         "height":182.833,
+                         "id":38,
+                         "name":"Kinosaal",
+                         "opacity":1,
+                         "properties":[
+                                {
+                                 "name":"openWebsite",
+                                 "type":"string",
+                                 "value":"https:\/\/deutsche-online-schule.com\/kino\/public\/kino.php"
+                                }, 
+                                {
+                                 "name":"openWebsiteLabel",
+                                 "type":"string",
+                                 "value":"\ud83c\udfac Kino \u00f6ffnen"
+                                }, 
+                                {
+                                 "name":"openWebsiteTrigger",
+                                 "type":"string",
+                                 "value":"onaction"
+                                }],
+                         "rotation":0,
+                         "type":"area",
+                         "visible":true,
+                         "width":286,
+                         "x":64.5,
+                         "y":2762.5835
                         }],
                  "opacity":1,
                  "type":"objectgroup",
@@ -3347,7 +3375,47 @@
          "draworder":"topdown",
          "id":2,
          "name":"floorLayer",
-         "objects":[],
+         "objects":[
+                {
+                 "height":19,
+                 "id":41,
+                 "name":"",
+                 "opacity":1,
+                 "rotation":0,
+                 "text":
+                    {
+                     "halign":"center",
+                     "pixelsize":8,
+                     "text":"Hinten ist Reden m\u00f6glich",
+                     "valign":"center",
+                     "wrap":true
+                    },
+                 "type":"",
+                 "visible":true,
+                 "width":83,
+                 "x":151,
+                 "y":2811
+                }, 
+                {
+                 "height":19,
+                 "id":42,
+                 "name":"",
+                 "opacity":1,
+                 "rotation":0,
+                 "text":
+                    {
+                     "halign":"center",
+                     "pixelsize":10,
+                     "text":"Hier nur chatten",
+                     "valign":"center",
+                     "wrap":true
+                    },
+                 "type":"",
+                 "visible":true,
+                 "width":83,
+                 "x":155,
+                 "y":2714.5
+                }],
          "opacity":1,
          "type":"objectgroup",
          "visible":true,
@@ -3986,7 +4054,7 @@
          "y":0
         }],
  "nextlayerid":124,
- "nextobjectid":38,
+ "nextobjectid":43,
  "orientation":"orthogonal",
  "properties":[
         {
