@@ -4,6 +4,7 @@ import { Popup } from "@workadventure/iframe-api-typings";
 import "./roofs";
 import "./meeting/doors"
 import "./funnel"
+import "./waterSlide"
 
 import { bootstrapExtra } from "@workadventure/scripting-api-extra";
 
