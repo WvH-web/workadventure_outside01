@@ -5,7 +5,15 @@ const TILE_CENTER = TILE_SIZE / 2;
 const START_AREA_NAME = "water_slide_start";
 const SLIDE_SPEED = 340;
 const SLIDE_STEP_PAUSE_MS = 15;
-const CHEER_MESSAGE = "Juhuuu!";
+const CHEER_EVERY_STEPS = 18;
+const CHEER_MESSAGES = [
+    "Juhuuu! \\o/",
+    "Woooosh! :D",
+    "Huiiii! ^_^",
+    "Festhalten! (>_<)",
+    "Wasserrutschen-Modus! B-)",
+    "Yeeeeah! \\o/",
+];
 
 type Tile = readonly [number, number];
 
@@ -64,6 +72,15 @@ const expandRoute = (waypoints: Tile[]) => {
 const wait = (milliseconds: number) =>
     new Promise(resolve => window.setTimeout(resolve, milliseconds));
 
+const randomCheerMessage = () =>
+    CHEER_MESSAGES[Math.floor(Math.random() * CHEER_MESSAGES.length)];
+
+const sendLocalCheer = () => {
+    WA.chat.sendChatMessage(randomCheerMessage(), {
+        scope: "bubble",
+    });
+};
+
 const routeTiles = expandRoute(routeWaypoints);
 
 WA.onInit().then(() => {
@@ -83,16 +100,17 @@ WA.onInit().then(() => {
 
         WA.controls.disablePlayerControls();
         WA.ui.displayBubble();
-        WA.chat.sendChatMessage(CHEER_MESSAGE, {
-            scope: "local",
-            author: "Wasserrutsche",
-        });
+        sendLocalCheer();
 
         try {
             // Start with the second waypoint because entering the first tile starts the slide.
-            for (const waypoint of routeTiles.slice(1).map(tileToPixelCenter)) {
+            const slideWaypoints = routeTiles.slice(1).map(tileToPixelCenter);
+            for (const [index, waypoint] of slideWaypoints.entries()) {
                 const result = await WA.player.moveTo(waypoint.x, waypoint.y, SLIDE_SPEED);
                 if (result.cancelled) break;
+                if ((index + 1) % CHEER_EVERY_STEPS === 0 && index < slideWaypoints.length - 1) {
+                    sendLocalCheer();
+                }
                 await wait(SLIDE_STEP_PAUSE_MS);
             }
         } catch (error) {
