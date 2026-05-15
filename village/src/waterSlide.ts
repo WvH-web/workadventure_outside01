@@ -6,6 +6,7 @@ const START_AREA_NAME = "water_slide_start";
 const SLIDE_SPEED = 340;
 const SLIDE_STEP_PAUSE_MS = 15;
 const CHEER_EVERY_STEPS = 18;
+const CHEER_HIDE_DELAY_MS = 900;
 const CHEER_MESSAGES = [
     "Juhuuu! \\o/",
     "Woooosh! :D",
@@ -34,6 +35,7 @@ const routeWaypoints: Tile[] = [
 ];
 
 let isSliding = false;
+let cheerWebsite: Awaited<ReturnType<typeof WA.ui.website.open>> | undefined;
 
 const tileToPixelCenter = ([tileX, tileY]: Tile) => ({
     x: tileX * TILE_SIZE + TILE_CENTER,
@@ -75,10 +77,40 @@ const wait = (milliseconds: number) =>
 const randomCheerMessage = () =>
     CHEER_MESSAGES[Math.floor(Math.random() * CHEER_MESSAGES.length)];
 
-const sendLocalCheer = () => {
-    WA.chat.sendChatMessage(randomCheerMessage(), {
-        scope: "bubble",
+const cheerPageUrl = new URL("../water-slide-cheer.html", import.meta.url).toString();
+
+const cheerUrl = (message: string) =>
+    `${cheerPageUrl}?text=${encodeURIComponent(message)}`;
+
+const showCheer = async () => {
+    const message = randomCheerMessage();
+
+    if (cheerWebsite) {
+        cheerWebsite.url = cheerUrl(message);
+        cheerWebsite.visible = true;
+        return;
+    }
+
+    cheerWebsite = await WA.ui.website.open({
+        url: cheerUrl(message),
+        visible: true,
+        position: {
+            vertical: "top",
+            horizontal: "middle",
+        },
+        size: {
+            width: "280px",
+            height: "88px",
+        },
+        margin: {
+            top: "88px",
+        },
     });
+};
+
+const hideCheer = async () => {
+    if (!cheerWebsite) return;
+    cheerWebsite.visible = false;
 };
 
 const routeTiles = expandRoute(routeWaypoints);
@@ -99,8 +131,7 @@ WA.onInit().then(() => {
         isSliding = true;
 
         WA.controls.disablePlayerControls();
-        WA.ui.displayBubble();
-        sendLocalCheer();
+        await showCheer();
 
         try {
             // Start with the second waypoint because entering the first tile starts the slide.
@@ -109,14 +140,15 @@ WA.onInit().then(() => {
                 const result = await WA.player.moveTo(waypoint.x, waypoint.y, SLIDE_SPEED);
                 if (result.cancelled) break;
                 if ((index + 1) % CHEER_EVERY_STEPS === 0 && index < slideWaypoints.length - 1) {
-                    sendLocalCheer();
+                    await showCheer();
                 }
                 await wait(SLIDE_STEP_PAUSE_MS);
             }
         } catch (error) {
             console.error("Water slide failed", error);
         } finally {
-            WA.ui.removeBubble();
+            await wait(CHEER_HIDE_DELAY_MS);
+            await hideCheer();
             WA.controls.restorePlayerControls();
             await wait(750);
             isSliding = false;
