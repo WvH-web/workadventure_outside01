@@ -7,6 +7,7 @@ const SLIDE_SPEED = 340;
 const SLIDE_STEP_PAUSE_MS = 15;
 const CHEER_EVERY_STEPS = 18;
 const CHEER_HIDE_DELAY_MS = 900;
+const CHEER_VARIABLE = "waterSlideCheer";
 const CHEER_MESSAGES = [
     "Juhuuu! \\o/",
     "Woooosh! :D",
@@ -17,6 +18,11 @@ const CHEER_MESSAGES = [
 ];
 
 type Tile = readonly [number, number];
+type CheerPayload = {
+    message: string;
+    playerName: string;
+    nonce: string;
+};
 
 const routeWaypoints: Tile[] = [
     [156, 54],
@@ -79,20 +85,20 @@ const randomCheerMessage = () =>
 
 const cheerPageUrl = new URL("../water-slide-cheer.html", import.meta.url).toString();
 
-const cheerUrl = (message: string) =>
-    `${cheerPageUrl}?text=${encodeURIComponent(message)}`;
+const cheerUrl = (message: string, playerName = "") =>
+    `${cheerPageUrl}?text=${encodeURIComponent(message)}&name=${encodeURIComponent(playerName)}`;
 
-const showCheer = async () => {
-    const message = randomCheerMessage();
+const showCheer = async (message = randomCheerMessage(), playerName = "") => {
+    const url = cheerUrl(message, playerName);
 
     if (cheerWebsite) {
-        cheerWebsite.url = cheerUrl(message);
+        cheerWebsite.url = url;
         cheerWebsite.visible = true;
         return;
     }
 
     cheerWebsite = await WA.ui.website.open({
-        url: cheerUrl(message),
+        url,
         visible: true,
         position: {
             vertical: "top",
@@ -113,6 +119,35 @@ const hideCheer = async () => {
     cheerWebsite.visible = false;
 };
 
+const isCheerPayload = (value: unknown): value is CheerPayload =>
+    Boolean(
+        value &&
+        typeof value === "object" &&
+        "message" in value &&
+        typeof value.message === "string"
+    );
+
+const publishCheer = async (message: string) => {
+    const payload: CheerPayload = {
+        message,
+        playerName: WA.player.name,
+        nonce: `${Date.now()}-${Math.random()}`,
+    };
+
+    await WA.player.state.saveVariable(CHEER_VARIABLE, payload, {
+        public: true,
+        persist: false,
+        ttl: 5,
+        scope: "room",
+    });
+};
+
+const cheer = async () => {
+    const message = randomCheerMessage();
+    await showCheer(message);
+    await publishCheer(message).catch(error => console.error("Water slide cheer publish failed", error));
+};
+
 const routeTiles = expandRoute(routeWaypoints);
 
 WA.onInit().then(() => {
@@ -126,12 +161,22 @@ WA.onInit().then(() => {
         height: TILE_SIZE,
     });
 
+    WA.players.configureTracking({
+        players: true,
+        movement: false,
+    }).then(() => {
+        WA.players.onVariableChange(CHEER_VARIABLE).subscribe(({ player, value }) => {
+            if (!isCheerPayload(value)) return;
+            void showCheer(value.message, value.playerName || player.name);
+        });
+    }).catch(error => console.error("Water slide cheer tracking failed", error));
+
     WA.room.area.onEnter(START_AREA_NAME).subscribe(async () => {
         if (isSliding) return;
         isSliding = true;
 
         WA.controls.disablePlayerControls();
-        await showCheer();
+        await cheer();
 
         try {
             // Start with the second waypoint because entering the first tile starts the slide.
@@ -140,7 +185,7 @@ WA.onInit().then(() => {
                 const result = await WA.player.moveTo(waypoint.x, waypoint.y, SLIDE_SPEED);
                 if (result.cancelled) break;
                 if ((index + 1) % CHEER_EVERY_STEPS === 0 && index < slideWaypoints.length - 1) {
-                    await showCheer();
+                    await cheer();
                 }
                 await wait(SLIDE_STEP_PAUSE_MS);
             }
