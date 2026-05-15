@@ -1,4 +1,4 @@
-﻿{ "compressionlevel":-1,
+{ "compressionlevel":-1,
  "height":120,
  "infinite":false,
  "layers":[
@@ -5401,7 +5401,7 @@
         {
          "name":"script",
          "type":"string",
-         "value":"assets\/main-31214281.js"
+         "value":"assets\/main-032b0fea.js"
         }],
  "renderorder":"right-down",
  "tiledversion":"1.11.2",

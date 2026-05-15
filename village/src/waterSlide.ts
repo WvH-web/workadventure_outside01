@@ -5,6 +5,7 @@ const TILE_CENTER = TILE_SIZE / 2;
 const START_AREA_NAME = "water_slide_start";
 const SLIDE_SPEED = 340;
 const SLIDE_STEP_PAUSE_MS = 15;
+const CHEER_MESSAGE = "Juhuuu!";
 
 type Tile = readonly [number, number];
 
@@ -81,6 +82,11 @@ WA.onInit().then(() => {
         isSliding = true;
 
         WA.controls.disablePlayerControls();
+        WA.ui.displayBubble();
+        WA.chat.sendChatMessage(CHEER_MESSAGE, {
+            scope: "local",
+            author: "Wasserrutsche",
+        });
 
         try {
             // Start with the second waypoint because entering the first tile starts the slide.
@@ -92,6 +98,7 @@ WA.onInit().then(() => {
         } catch (error) {
             console.error("Water slide failed", error);
         } finally {
+            WA.ui.removeBubble();
             WA.controls.restorePlayerControls();
             await wait(750);
             isSliding = false;
