@@ -5401,7 +5401,7 @@
         {
          "name":"script",
          "type":"string",
-         "value":"src\/main.ts"
+         "value":"assets\/main-0c55d1ea.js"
         }],
  "renderorder":"right-down",
  "tiledversion":"1.11.2",
