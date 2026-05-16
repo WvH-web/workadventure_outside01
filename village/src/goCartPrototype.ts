@@ -9,9 +9,9 @@ const CART_START_TILE = [160, 57] as const;
 const CART_WIDTH = 68;
 const CART_HEIGHT = 56;
 const CART_INTERACTION_RADIUS = TILE_SIZE * 2;
-const CART_SPEED = 1050;
-const BOOST_DISTANCE = 220;
-const BOOST_COOLDOWN_MS = 80;
+const CART_SPEED = 1400;
+const BOOST_DISTANCE = 180;
+const BOOST_COOLDOWN_MS = 45;
 const CART_Y_OFFSET = 6;
 const TEMPORARY_WOKA_TEXTURE_ID = "wvh-go-cart-avatar-v3";
 const TEMPORARY_WOKA_URL = "https://together.deine-schule.com/resources/wvh/go-cart-avatar.png?v=3";
@@ -167,7 +167,7 @@ const enterCart = async () => {
 
     actionMessage?.remove();
     actionMessage = WA.ui.displayActionMessage({
-        message: "Go-Cart aktiv: Laufe in eine Richtung fuer Boost. Leertaste = aussteigen.",
+        message: "Go-Cart aktiv: Lenken zum Fahren. Shift bleibt als Turbo nutzbar. Leertaste = aussteigen.",
         callback: () => {
             void exitCart();
         },
@@ -209,11 +209,13 @@ const boost = async (direction: Direction, x: number, y: number) => {
     const targetY = y + vector.y * BOOST_DISTANCE;
 
     try {
+        WA.controls.disablePlayerControls();
         await WA.player.moveTo(targetX, targetY, CART_SPEED);
         await moveWebsiteToPlayer();
     } catch (error) {
         console.error("Go-Cart boost failed", error);
     } finally {
+        WA.controls.restorePlayerControls();
         boostRunning = false;
     }
 };
