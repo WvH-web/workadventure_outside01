@@ -1,0 +1,115 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <style>
+    html,
+    body {
+      width: 100%;
+      height: 100%;
+      margin: 0;
+      overflow: hidden;
+      background: transparent;
+    }
+
+    .cart {
+      position: absolute;
+      left: 8px;
+      top: 12px;
+      width: 60px;
+      height: 36px;
+      filter: drop-shadow(0 6px 3px rgba(0, 0, 0, 0.42));
+      transform-origin: center;
+      animation: bob 0.42s infinite alternate ease-in-out;
+    }
+
+    .body {
+      position: absolute;
+      left: 8px;
+      top: 8px;
+      width: 44px;
+      height: 24px;
+      border-radius: 11px 13px 9px 9px;
+      background: linear-gradient(135deg, #d92828 0%, #ff6d1f 58%, #ffd24d 100%);
+      border: 3px solid #2b1616;
+      box-sizing: border-box;
+    }
+
+    .seat {
+      position: absolute;
+      left: 25px;
+      top: 2px;
+      width: 18px;
+      height: 20px;
+      border-radius: 8px 8px 3px 3px;
+      background: #263447;
+      border: 3px solid #171717;
+      transform: rotate(8deg);
+    }
+
+    .nose {
+      position: absolute;
+      left: 2px;
+      top: 14px;
+      width: 16px;
+      height: 13px;
+      border-radius: 50% 20% 20% 50%;
+      background: #fdc935;
+      border: 3px solid #2b1616;
+      box-sizing: border-box;
+    }
+
+    .wheel {
+      position: absolute;
+      bottom: 0;
+      width: 15px;
+      height: 15px;
+      border-radius: 50%;
+      background: radial-gradient(circle at 50% 50%, #596170 0 24%, #16191f 27% 100%);
+      border: 2px solid #0d0d0d;
+      box-sizing: border-box;
+    }
+
+    .wheel.front {
+      left: 9px;
+    }
+
+    .wheel.back {
+      right: 7px;
+    }
+
+    .spark {
+      position: absolute;
+      right: 0;
+      top: 16px;
+      width: 10px;
+      height: 6px;
+      border-radius: 50%;
+      background: rgba(255, 225, 90, 0.9);
+      transform: rotate(-12deg);
+      animation: spark 0.22s infinite alternate;
+    }
+
+    @keyframes bob {
+      from { transform: translateY(0) rotate(-1deg); }
+      to { transform: translateY(-2px) rotate(1deg); }
+    }
+
+    @keyframes spark {
+      from { opacity: 0.35; transform: translateX(0) scaleX(0.7); }
+      to { opacity: 0.9; transform: translateX(3px) scaleX(1.1); }
+    }
+  </style>
+</head>
+<body>
+  <div class="cart" aria-hidden="true">
+    <div class="spark"></div>
+    <div class="seat"></div>
+    <div class="nose"></div>
+    <div class="body"></div>
+    <div class="wheel front"></div>
+    <div class="wheel back"></div>
+  </div>
+</body>
+</html>

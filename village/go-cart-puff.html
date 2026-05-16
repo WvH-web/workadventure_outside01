@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <style>
+    html,
+    body {
+      width: 100%;
+      height: 100%;
+      margin: 0;
+      overflow: hidden;
+      background: transparent;
+    }
+
+    .puff {
+      position: absolute;
+      inset: 0;
+      filter: blur(0.2px);
+      animation: fade 0.82s ease-out forwards;
+    }
+
+    .cloud {
+      position: absolute;
+      border-radius: 50%;
+      background: rgba(216, 216, 216, 0.86);
+      box-shadow: 0 0 2px rgba(255, 255, 255, 0.65);
+    }
+
+    .cloud:nth-child(1) {
+      left: 5px;
+      top: 14px;
+      width: 14px;
+      height: 12px;
+    }
+
+    .cloud:nth-child(2) {
+      left: 16px;
+      top: 8px;
+      width: 19px;
+      height: 17px;
+      background: rgba(188, 188, 188, 0.82);
+    }
+
+    .cloud:nth-child(3) {
+      left: 29px;
+      top: 15px;
+      width: 12px;
+      height: 11px;
+      background: rgba(226, 226, 226, 0.72);
+    }
+
+    @keyframes fade {
+      from {
+        opacity: 0.95;
+        transform: translateY(0) scale(0.75);
+      }
+      to {
+        opacity: 0;
+        transform: translateY(-8px) scale(1.45);
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="puff" aria-hidden="true">
+    <span class="cloud"></span>
+    <span class="cloud"></span>
+    <span class="cloud"></span>
+  </div>
+</body>
+</html>
