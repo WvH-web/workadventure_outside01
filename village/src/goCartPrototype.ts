@@ -9,12 +9,12 @@ const CART_START_TILE = [160, 57] as const;
 const CART_WIDTH = 68;
 const CART_HEIGHT = 56;
 const CART_INTERACTION_RADIUS = TILE_SIZE * 2;
-const CART_SPEED = 620;
-const BOOST_DISTANCE = 150;
-const BOOST_COOLDOWN_MS = 100;
+const CART_SPEED = 1050;
+const BOOST_DISTANCE = 220;
+const BOOST_COOLDOWN_MS = 80;
 const CART_Y_OFFSET = 6;
-const TEMPORARY_WOKA_TEXTURE_ID = "wvh-go-cart-avatar-v2";
-const TEMPORARY_WOKA_URL = "https://together.deine-schule.com/resources/wvh/go-cart-avatar.png?v=2";
+const TEMPORARY_WOKA_TEXTURE_ID = "wvh-go-cart-avatar-v3";
+const TEMPORARY_WOKA_URL = "https://together.deine-schule.com/resources/wvh/go-cart-avatar.png?v=3";
 const TEMPORARY_WOKA_FRAME_WIDTH = 96;
 const TEMPORARY_WOKA_FRAME_HEIGHT = 80;
 const TEMPORARY_WOKA_SCALE = 0.62;
@@ -165,7 +165,6 @@ const enterCart = async () => {
         startCartFollow();
     }
 
-    WA.ui.displayBubble();
     actionMessage?.remove();
     actionMessage = WA.ui.displayActionMessage({
         message: "Go-Cart aktiv: Laufe in eine Richtung fuer Boost. Leertaste = aussteigen.",
@@ -180,7 +179,6 @@ const exitCart = async () => {
     cartMode = false;
     boostRunning = false;
     stopCartFollow();
-    WA.ui.removeBubble();
     actionMessage?.remove();
     actionMessage = undefined;
 
