@@ -26,6 +26,7 @@ let boostRunning = false;
 let lastBoostAt = 0;
 let lastPuffAt = 0;
 let puffCount = 0;
+let cartAnimationFrame: number | undefined;
 
 const cartUrl = new URL("../go-cart-prototype.html", import.meta.url).toString();
 const puffUrl = new URL("../go-cart-puff.html", import.meta.url).toString();
@@ -57,6 +58,45 @@ const moveWebsiteToPlayer = async () => {
     driverCart.x = position.x - CART_WIDTH / 2;
     driverCart.y = position.y - CART_HEIGHT / 2 + 12;
 };
+
+const moveDriverCartTo = (x: number, y: number) => {
+    if (!driverCart) return;
+    driverCart.x = x - CART_WIDTH / 2;
+    driverCart.y = y - CART_HEIGHT / 2 + 12;
+};
+
+const stopCartAnimation = () => {
+    if (cartAnimationFrame === undefined) return;
+    window.cancelAnimationFrame(cartAnimationFrame);
+    cartAnimationFrame = undefined;
+};
+
+const animateDriverCart = (fromX: number, fromY: number, toX: number, toY: number, speed: number) =>
+    new Promise<void>(resolve => {
+        stopCartAnimation();
+
+        const distance = Math.hypot(toX - fromX, toY - fromY);
+        const duration = Math.max(80, (distance / speed) * 1000);
+        const startedAt = performance.now();
+
+        const tick = (now: number) => {
+            const progress = Math.min(1, (now - startedAt) / duration);
+            moveDriverCartTo(
+                fromX + (toX - fromX) * progress,
+                fromY + (toY - fromY) * progress,
+            );
+
+            if (progress < 1) {
+                cartAnimationFrame = window.requestAnimationFrame(tick);
+                return;
+            }
+
+            cartAnimationFrame = undefined;
+            resolve();
+        };
+
+        cartAnimationFrame = window.requestAnimationFrame(tick);
+    });
 
 const createPuff = async (x: number, y: number) => {
     const now = Date.now();
@@ -140,6 +180,7 @@ const exitCart = async () => {
     if (!cartMode) return;
     cartMode = false;
     boostRunning = false;
+    stopCartAnimation();
     WA.ui.removeBubble();
     actionMessage?.remove();
     actionMessage = undefined;
@@ -167,10 +208,10 @@ const boost = async (direction: Direction, x: number, y: number) => {
     void createPuff(x - vector.x * 26, y - vector.y * 26);
 
     try {
-        const result = await WA.player.moveTo(targetX, targetY, CART_SPEED);
-        if (!result.cancelled) {
-            await moveWebsiteToPlayer();
-        }
+        const cartAnimation = animateDriverCart(x, y, targetX, targetY, CART_SPEED);
+        await WA.player.moveTo(targetX, targetY, CART_SPEED);
+        await cartAnimation;
+        await moveWebsiteToPlayer();
     } catch (error) {
         console.error("Go-Cart boost failed", error);
     } finally {
@@ -210,9 +251,8 @@ WA.onInit().then(() => {
     WA.player.onPlayerMove(event => {
         if (!cartMode) return;
 
-        if (driverCart) {
-            driverCart.x = event.x - CART_WIDTH / 2;
-            driverCart.y = event.y - CART_HEIGHT / 2 + 12;
+        if (!boostRunning) {
+            moveDriverCartTo(event.x, event.y);
         }
 
         if (event.moving) {
