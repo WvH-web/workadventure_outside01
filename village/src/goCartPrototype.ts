@@ -9,14 +9,12 @@ const CART_START_TILE = [160, 57] as const;
 const CART_WIDTH = 68;
 const CART_HEIGHT = 56;
 const CART_INTERACTION_RADIUS = TILE_SIZE * 2;
-const CART_SPEED = 260;
-const BOOST_DISTANCE = 92;
-const BOOST_COOLDOWN_MS = 180;
-const PUFF_COOLDOWN_MS = 320;
-const PUFF_LIFETIME_MS = 850;
+const CART_SPEED = 620;
+const BOOST_DISTANCE = 150;
+const BOOST_COOLDOWN_MS = 100;
 const CART_Y_OFFSET = 6;
-const TEMPORARY_WOKA_TEXTURE_ID = "wvh-go-cart-avatar";
-const TEMPORARY_WOKA_URL = "https://together.deine-schule.com/resources/wvh/go-cart-avatar.png";
+const TEMPORARY_WOKA_TEXTURE_ID = "wvh-go-cart-avatar-v2";
+const TEMPORARY_WOKA_URL = "https://together.deine-schule.com/resources/wvh/go-cart-avatar.png?v=2";
 const TEMPORARY_WOKA_FRAME_WIDTH = 96;
 const TEMPORARY_WOKA_FRAME_HEIGHT = 80;
 const TEMPORARY_WOKA_SCALE = 0.62;
@@ -41,17 +39,11 @@ let cartMode = false;
 let nativeCartAvatarActive = false;
 let boostRunning = false;
 let lastBoostAt = 0;
-let lastPuffAt = 0;
-let puffCount = 0;
 let cartFollowTimer: number | undefined;
 let cartFollowInFlight = false;
 
 const parkedCartUrl = new URL("../go-cart-parked.html", import.meta.url).toString();
 const driverCartUrl = new URL("../go-cart-driver.html", import.meta.url).toString();
-const puffUrl = new URL("../go-cart-puff.html", import.meta.url).toString();
-
-const wait = (milliseconds: number) =>
-    new Promise(resolve => window.setTimeout(resolve, milliseconds));
 
 const tileToPixelCenter = ([tileX, tileY]: readonly [number, number]) => ({
     x: tileX * TILE_SIZE + TILE_CENTER,
@@ -105,29 +97,6 @@ const stopCartFollow = () => {
     window.clearInterval(cartFollowTimer);
     cartFollowTimer = undefined;
     cartFollowInFlight = false;
-};
-
-const createPuff = async (x: number, y: number) => {
-    const now = Date.now();
-    if (now - lastPuffAt < PUFF_COOLDOWN_MS) return;
-    lastPuffAt = now;
-
-    const puffName = `go-cart-puff-${Date.now()}-${puffCount++}`;
-    WA.room.website.create({
-        name: puffName,
-        url: puffUrl,
-        position: {
-            x: x - 22,
-            y: y - 18,
-            width: 44,
-            height: 36,
-        },
-        visible: true,
-        origin: "map",
-    });
-
-    await wait(PUFF_LIFETIME_MS);
-    await WA.room.website.delete(puffName).catch(() => undefined);
 };
 
 const parkCartAt = (x: number, y: number) => {
@@ -240,8 +209,6 @@ const boost = async (direction: Direction, x: number, y: number) => {
     const vector = directionVector(direction);
     const targetX = x + vector.x * BOOST_DISTANCE;
     const targetY = y + vector.y * BOOST_DISTANCE;
-
-    void createPuff(x - vector.x * 26, y - vector.y * 26);
 
     try {
         await WA.player.moveTo(targetX, targetY, CART_SPEED);

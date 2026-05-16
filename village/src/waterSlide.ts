@@ -105,11 +105,11 @@ const showCheer = async (message = randomCheerMessage(), playerName = "") => {
             horizontal: "middle",
         },
         size: {
-            width: "280px",
-            height: "88px",
+            width: "230px",
+            height: "74px",
         },
         margin: {
-            top: "88px",
+            top: "94px",
         },
     });
 };
