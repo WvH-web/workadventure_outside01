@@ -1200,6 +1200,7 @@
                  "height":896.468461067788,
                  "id":935,
                  "name":"fire5",
+                 "opacity":1,
                  "properties":[
                         {
                          "name":"audioLoop",
@@ -1227,6 +1228,7 @@
                  "height":739.659011890606,
                  "id":938,
                  "name":"fountain3",
+                 "opacity":1,
                  "properties":[
                         {
                          "name":"audioLoop",
@@ -1254,6 +1256,7 @@
                  "height":704.360313131313,
                  "id":944,
                  "name":"focus1",
+                 "opacity":1,
                  "properties":[
                         {
                          "name":"focusable",
@@ -1271,6 +1274,7 @@
                  "height":192.688091000968,
                  "id":947,
                  "name":"fire5",
+                 "opacity":1,
                  "properties":[
                         {
                          "name":"audioLoop",
@@ -1298,6 +1302,7 @@
                  "height":287.803173214896,
                  "id":954,
                  "name":"fire1",
+                 "opacity":1,
                  "properties":[
                         {
                          "name":"audioLoop",
@@ -1325,6 +1330,7 @@
                  "height":391.229,
                  "id":955,
                  "name":"fountian1",
+                 "opacity":1,
                  "properties":[
                         {
                          "name":"audioLoop",
@@ -1352,6 +1358,7 @@
                  "height":347.269,
                  "id":956,
                  "name":"fountain2",
+                 "opacity":1,
                  "properties":[
                         {
                          "name":"audioLoop",
@@ -1379,6 +1386,7 @@
                  "height":64.2694,
                  "id":959,
                  "name":"100Rslide",
+                 "opacity":1,
                  "properties":[
                         {
                          "name":"openWebsite",
@@ -1401,6 +1409,7 @@
                  "height":41.25,
                  "id":960,
                  "name":"100rportal",
+                 "opacity":1,
                  "properties":[
                         {
                          "name":"exitUrl",
@@ -1418,6 +1427,7 @@
                  "height":248.60385912992,
                  "id":961,
                  "name":"focus4",
+                 "opacity":1,
                  "properties":[
                         {
                          "name":"focusable",
@@ -1440,6 +1450,7 @@
                  "height":248.604,
                  "id":963,
                  "name":"focus2",
+                 "opacity":1,
                  "properties":[
                         {
                          "name":"focusable",
@@ -1462,6 +1473,7 @@
                  "height":248.604,
                  "id":964,
                  "name":"focus2",
+                 "opacity":1,
                  "properties":[
                         {
                          "name":"focusable",
@@ -1484,6 +1496,7 @@
                  "height":248.604,
                  "id":965,
                  "name":"focus5",
+                 "opacity":1,
                  "properties":[
                         {
                          "name":"focusable",
@@ -1506,6 +1519,7 @@
                  "height":788.902264827063,
                  "id":966,
                  "name":"focusAuditorium",
+                 "opacity":1,
                  "properties":[
                         {
                          "name":"chatName",
@@ -1533,6 +1547,7 @@
                  "height":61.666666666667,
                  "id":973,
                  "name":"game",
+                 "opacity":1,
                  "properties":[
                         {
                          "name":"openWebsite",
@@ -1555,6 +1570,7 @@
                  "height":60,
                  "id":996,
                  "name":"show1",
+                 "opacity":1,
                  "properties":[
                         {
                          "name":"openWebsite",
@@ -1577,6 +1593,7 @@
                  "height":59.6666666666665,
                  "id":999,
                  "name":"show2",
+                 "opacity":1,
                  "properties":[
                         {
                          "name":"openWebsite",
@@ -1599,6 +1616,7 @@
                  "height":59.6666666666665,
                  "id":1000,
                  "name":"show3",
+                 "opacity":1,
                  "properties":[
                         {
                          "name":"openWebsite",
@@ -1621,6 +1639,7 @@
                  "height":52,
                  "id":1001,
                  "name":"show4",
+                 "opacity":1,
                  "properties":[
                         {
                          "name":"openWebsite",
@@ -1643,6 +1662,7 @@
                  "height":67.6666666666665,
                  "id":1002,
                  "name":"show5",
+                 "opacity":1,
                  "properties":[
                         {
                          "name":"openWebsite",
@@ -1665,6 +1685,7 @@
                  "height":68,
                  "id":1003,
                  "name":"show7",
+                 "opacity":1,
                  "properties":[
                         {
                          "name":"openWebsite",
@@ -1687,6 +1708,7 @@
                  "height":68.3333333333335,
                  "id":1004,
                  "name":"show6",
+                 "opacity":1,
                  "properties":[
                         {
                          "name":"openWebsite",
@@ -1709,6 +1731,7 @@
                  "height":67.3333333333333,
                  "id":1005,
                  "name":"show8",
+                 "opacity":1,
                  "properties":[
                         {
                          "name":"openWebsite",
@@ -1731,6 +1754,7 @@
                  "height":69,
                  "id":1006,
                  "name":"show9",
+                 "opacity":1,
                  "properties":[
                         {
                          "name":"openWebsite",
@@ -1753,6 +1777,7 @@
                  "height":48.1414141414139,
                  "id":1007,
                  "name":"show10",
+                 "opacity":1,
                  "properties":[
                         {
                          "name":"openWebsite",
@@ -1775,6 +1800,7 @@
                  "height":68,
                  "id":1008,
                  "name":"show11",
+                 "opacity":1,
                  "properties":[
                         {
                          "name":"openWebsite",
@@ -1797,6 +1823,7 @@
                  "height":69,
                  "id":1009,
                  "name":"show12",
+                 "opacity":1,
                  "properties":[
                         {
                          "name":"openWebsite",
@@ -1819,6 +1846,7 @@
                  "height":69.3333333333333,
                  "id":1010,
                  "name":"show13",
+                 "opacity":1,
                  "properties":[
                         {
                          "name":"openWebsite",
@@ -1841,6 +1869,7 @@
                  "height":166.130666666666,
                  "id":1013,
                  "name":"silentOffice",
+                 "opacity":1,
                  "properties":[
                         {
                          "name":"silent",
@@ -1858,6 +1887,7 @@
                  "height":0,
                  "id":1016,
                  "name":"doorOffice",
+                 "opacity":1,
                  "point":true,
                  "properties":[
                         {
@@ -1896,6 +1926,7 @@
                  "height":0,
                  "id":1018,
                  "name":"doorOffice2",
+                 "opacity":1,
                  "point":true,
                  "properties":[
                         {
@@ -1934,6 +1965,7 @@
                  "height":0,
                  "id":1021,
                  "name":"doorMeeting3",
+                 "opacity":1,
                  "point":true,
                  "properties":[
                         {
@@ -1972,6 +2004,7 @@
                  "height":0,
                  "id":1022,
                  "name":"doorMeeting4",
+                 "opacity":1,
                  "point":true,
                  "properties":[
                         {
@@ -2007,20 +2040,10 @@
                  "y":1684
                 }, 
                 {
-                 "height":132,
-                 "id":1031,
-                 "name":"popupPrivateOffice",
-                 "rotation":0,
-                 "type":"",
-                 "visible":true,
-                 "width":301,
-                 "x":3617.33333333333,
-                 "y":1128
-                }, 
-                {
                  "height":166.131,
                  "id":1042,
                  "name":"silentOffice_area",
+                 "opacity":1,
                  "rotation":0,
                  "type":"area",
                  "visible":true,
@@ -2032,6 +2055,7 @@
                  "height":1754.00978787879,
                  "id":1043,
                  "name":"roof_conference_area",
+                 "opacity":1,
                  "rotation":0,
                  "type":"area",
                  "visible":true,
@@ -2043,6 +2067,7 @@
                  "height":1148.67666666667,
                  "id":1044,
                  "name":"roof_coworking_area",
+                 "opacity":1,
                  "rotation":0,
                  "type":"area",
                  "visible":true,
@@ -2054,6 +2079,7 @@
                  "height":1227.32818181818,
                  "id":1045,
                  "name":"roof_office_area",
+                 "opacity":1,
                  "rotation":0,
                  "type":"area",
                  "visible":true,
@@ -2065,6 +2091,7 @@
                  "height":1230.01,
                  "id":1046,
                  "name":"roof_meeting_area",
+                 "opacity":1,
                  "rotation":0,
                  "type":"area",
                  "visible":true,
@@ -2076,6 +2103,7 @@
                  "height":1272.43424242424,
                  "id":1047,
                  "name":"roof_show_area",
+                 "opacity":1,
                  "rotation":0,
                  "type":"area",
                  "visible":true,
@@ -2084,20 +2112,10 @@
                  "y":1484.995
                 }, 
                 {
-                 "height":245.157272727273,
-                 "id":1048,
-                 "name":"popupPrivateOffice_area",
-                 "rotation":0,
-                 "type":"area",
-                 "visible":true,
-                 "width":1123.66627272727,
-                 "x":3228.40928787879,
-                 "y":1120.39106060606
-                }, 
-                {
                  "height":176.757026858214,
                  "id":1050,
                  "name":"zone_office",
+                 "opacity":1,
                  "properties":[
                         {
                          "name":"autoClose",
@@ -2130,6 +2148,7 @@
                  "height":182.666666666667,
                  "id":1053,
                  "name":"zone_office2",
+                 "opacity":1,
                  "properties":[
                         {
                          "name":"autoClose",
@@ -2162,6 +2181,7 @@
                  "height":107.5,
                  "id":1054,
                  "name":"zone_office_meeting",
+                 "opacity":1,
                  "rotation":0,
                  "type":"area",
                  "visible":true,
@@ -2173,6 +2193,7 @@
                  "height":90,
                  "id":1055,
                  "name":"zone_meeting3",
+                 "opacity":1,
                  "properties":[
                         {
                          "name":"autoClose",
@@ -2205,6 +2226,7 @@
                  "height":98,
                  "id":1056,
                  "name":"zone_meeting4",
+                 "opacity":1,
                  "properties":[
                         {
                          "name":"autoClose",
@@ -2237,6 +2259,7 @@
                  "height":1191,
                  "id":1078,
                  "name":"showroom",
+                 "opacity":1,
                  "properties":[
                         {
                          "name":"ai-zone",
@@ -2259,6 +2282,7 @@
                  "height":551,
                  "id":1079,
                  "name":"work desks",
+                 "opacity":1,
                  "properties":[
                         {
                          "name":"ai-zone",
@@ -2281,6 +2305,7 @@
                  "height":186,
                  "id":1080,
                  "name":"lobby",
+                 "opacity":1,
                  "properties":[
                         {
                          "name":"ai-zone",
@@ -2303,6 +2328,7 @@
                  "height":32,
                  "id":1082,
                  "name":"conference",
+                 "opacity":1,
                  "properties":[
                         {
                          "name":"start",
@@ -2320,6 +2346,7 @@
                  "height":1120,
                  "id":1084,
                  "name":"coWorkingChat",
+                 "opacity":1,
                  "properties":[
                         {
                          "name":"chatName",
@@ -2348,6 +2375,7 @@
                  "height":0,
                  "id":974,
                  "name":"gameUrl",
+                 "opacity":1,
                  "point":true,
                  "properties":[
                         {
@@ -2376,6 +2404,7 @@
                  "height":0,
                  "id":982,
                  "name":"show1Url",
+                 "opacity":1,
                  "point":true,
                  "properties":[
                         {
@@ -2404,6 +2433,7 @@
                  "height":0,
                  "id":984,
                  "name":"show2Url",
+                 "opacity":1,
                  "point":true,
                  "properties":[
                         {
@@ -2432,6 +2462,7 @@
                  "height":0,
                  "id":985,
                  "name":"show3Url",
+                 "opacity":1,
                  "point":true,
                  "properties":[
                         {
@@ -2460,6 +2491,7 @@
                  "height":0,
                  "id":986,
                  "name":"show4Url",
+                 "opacity":1,
                  "point":true,
                  "properties":[
                         {
@@ -2488,6 +2520,7 @@
                  "height":0,
                  "id":987,
                  "name":"show5Url",
+                 "opacity":1,
                  "point":true,
                  "properties":[
                         {
@@ -2516,6 +2549,7 @@
                  "height":0,
                  "id":988,
                  "name":"show6Url",
+                 "opacity":1,
                  "point":true,
                  "properties":[
                         {
@@ -2544,6 +2578,7 @@
                  "height":0,
                  "id":989,
                  "name":"show7Url",
+                 "opacity":1,
                  "point":true,
                  "properties":[
                         {
@@ -2572,6 +2607,7 @@
                  "height":0,
                  "id":990,
                  "name":"show8Url",
+                 "opacity":1,
                  "point":true,
                  "properties":[
                         {
@@ -2600,6 +2636,7 @@
                  "height":0,
                  "id":991,
                  "name":"show9Url",
+                 "opacity":1,
                  "point":true,
                  "properties":[
                         {
@@ -2628,6 +2665,7 @@
                  "height":0,
                  "id":992,
                  "name":"show10Url",
+                 "opacity":1,
                  "point":true,
                  "properties":[
                         {
@@ -2656,6 +2694,7 @@
                  "height":0,
                  "id":993,
                  "name":"show11Url",
+                 "opacity":1,
                  "point":true,
                  "properties":[
                         {
@@ -2684,6 +2723,7 @@
                  "height":0,
                  "id":994,
                  "name":"show12Url",
+                 "opacity":1,
                  "point":true,
                  "properties":[
                         {
@@ -2712,6 +2752,7 @@
                  "height":0,
                  "id":995,
                  "name":"show13Url",
+                 "opacity":1,
                  "point":true,
                  "properties":[
                         {
@@ -2738,7 +2779,7 @@
                 }],
          "opacity":1,
          "properties":[
-                        {
+                {
                  "name":"tag",
                  "type":"string",
                  "value":"admin"
@@ -4981,7 +5022,7 @@
          "name":"roof2",
          "opacity":1,
          "type":"tilelayer",
-         "visible":true,
+         "visible":false,
          "width":200,
          "x":0,
          "y":0
@@ -5383,7 +5424,7 @@
  "nextobjectid":1086,
  "orientation":"orthogonal",
  "properties":[
-                        {
+        {
          "name":"mapCopyright",
          "type":"string",
          "value":"WA Village is the sole property of 100 Roads Inc. All rights are reserved by 100 Roads inc. All contents of the map may not be reproduced, distributed (for sale or otherwise), or create derivative works of the copyrighted work without the express written permission of 100 Roads Inc."
@@ -5404,7 +5445,7 @@
          "value":"assets\/main-5b3d1c4e.js"
         }],
  "renderorder":"right-down",
- "tiledversion":"1.11.2",
+ "tiledversion":"1.12.1",
  "tileheight":32,
  "tilesets":[
         {
@@ -31368,7 +31409,7 @@
          "tileheight":32,
          "tiles":[
                 {
-                 "id":6635,
+                 "id":11035,
                  "properties":[
                         {
                          "name":"collides",
