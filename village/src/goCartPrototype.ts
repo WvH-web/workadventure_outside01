@@ -15,14 +15,30 @@ const BOOST_COOLDOWN_MS = 180;
 const PUFF_COOLDOWN_MS = 320;
 const PUFF_LIFETIME_MS = 850;
 const CART_Y_OFFSET = 6;
+const TEMPORARY_WOKA_TEXTURE_ID = "wvh-go-cart-avatar";
+const TEMPORARY_WOKA_URL = "https://together.deine-schule.com/resources/wvh/go-cart-avatar.png";
+const TEMPORARY_WOKA_FRAME_WIDTH = 96;
+const TEMPORARY_WOKA_FRAME_HEIGHT = 80;
+const TEMPORARY_WOKA_SCALE = 0.62;
 
 type Direction = "left" | "right" | "up" | "down";
+type WvhPlayerApi = typeof WA.player & {
+    setTemporaryWoka?: (options: {
+        textureId: string;
+        url: string;
+        frameWidth: number;
+        frameHeight: number;
+        scale: number;
+    }) => Promise<void>;
+    restoreWoka?: () => Promise<void>;
+};
 
 let parkedCart: ReturnType<typeof WA.room.website.create> | undefined;
 let driverCart: ReturnType<typeof WA.room.website.create> | undefined;
 let cartArea: ReturnType<typeof WA.room.area.create> | undefined;
 let actionMessage: ActionMessage | undefined;
 let cartMode = false;
+let nativeCartAvatarActive = false;
 let boostRunning = false;
 let lastBoostAt = 0;
 let lastPuffAt = 0;
@@ -63,12 +79,13 @@ const moveWebsiteToPlayer = async () => {
 };
 
 const moveDriverCartTo = (x: number, y: number) => {
-    if (!driverCart) return;
+    if (nativeCartAvatarActive || !driverCart) return;
     driverCart.x = x - CART_WIDTH / 2;
     driverCart.y = y - CART_HEIGHT + CART_Y_OFFSET;
 };
 
 const startCartFollow = () => {
+    if (nativeCartAvatarActive) return;
     if (cartFollowTimer !== undefined) return;
 
     cartFollowTimer = window.setInterval(() => {
@@ -145,19 +162,39 @@ const enterCart = async () => {
     parkedCart && (parkedCart.visible = false);
 
     const position = await WA.player.getPosition();
-    driverCart = WA.room.website.create({
-        name: "go-cart-driver-prototype",
-        url: driverCartUrl,
-        position: {
-            x: position.x - CART_WIDTH / 2,
-            y: position.y - CART_HEIGHT + CART_Y_OFFSET,
-            width: CART_WIDTH,
-            height: CART_HEIGHT,
-        },
-        visible: true,
-        origin: "map",
-    });
-    startCartFollow();
+    const wvhPlayer = WA.player as WvhPlayerApi;
+
+    if (typeof wvhPlayer.setTemporaryWoka === "function") {
+        try {
+            await wvhPlayer.setTemporaryWoka({
+                textureId: TEMPORARY_WOKA_TEXTURE_ID,
+                url: TEMPORARY_WOKA_URL,
+                frameWidth: TEMPORARY_WOKA_FRAME_WIDTH,
+                frameHeight: TEMPORARY_WOKA_FRAME_HEIGHT,
+                scale: TEMPORARY_WOKA_SCALE,
+            });
+            nativeCartAvatarActive = true;
+        } catch (error) {
+            nativeCartAvatarActive = false;
+            console.warn("Native Go-Cart avatar unavailable, using overlay fallback", error);
+        }
+    }
+
+    if (!nativeCartAvatarActive) {
+        driverCart = WA.room.website.create({
+            name: "go-cart-driver-prototype",
+            url: driverCartUrl,
+            position: {
+                x: position.x - CART_WIDTH / 2,
+                y: position.y - CART_HEIGHT + CART_Y_OFFSET,
+                width: CART_WIDTH,
+                height: CART_HEIGHT,
+            },
+            visible: true,
+            origin: "map",
+        });
+        startCartFollow();
+    }
 
     WA.ui.displayBubble();
     actionMessage?.remove();
@@ -177,6 +214,12 @@ const exitCart = async () => {
     WA.ui.removeBubble();
     actionMessage?.remove();
     actionMessage = undefined;
+
+    if (nativeCartAvatarActive) {
+        const wvhPlayer = WA.player as WvhPlayerApi;
+        await wvhPlayer.restoreWoka?.().catch(error => console.error("Go-Cart avatar restore failed", error));
+        nativeCartAvatarActive = false;
+    }
 
     if (driverCart) {
         await WA.room.website.delete(driverCart.name).catch(() => undefined);
