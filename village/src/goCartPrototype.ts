@@ -8,6 +8,7 @@ const CART_AREA_NAME = "go_cart_prototype_area";
 const CART_START_TILE = [160, 57] as const;
 const CART_WIDTH = 76;
 const CART_HEIGHT = 58;
+const CART_INTERACTION_RADIUS = TILE_SIZE * 2;
 const CART_SPEED = 260;
 const BOOST_DISTANCE = 92;
 const BOOST_COOLDOWN_MS = 180;
@@ -73,6 +74,7 @@ const createPuff = async (x: number, y: number) => {
             height: 36,
         },
         visible: true,
+        origin: "map",
     });
 
     await wait(PUFF_LIFETIME_MS);
@@ -91,6 +93,7 @@ const parkCartAt = (x: number, y: number) => {
                 height: CART_HEIGHT,
             },
             visible: true,
+            origin: "map",
         });
     } else {
         parkedCart.x = x - CART_WIDTH / 2;
@@ -99,8 +102,8 @@ const parkCartAt = (x: number, y: number) => {
     }
 
     if (cartArea) {
-        cartArea.x = x - TILE_SIZE;
-        cartArea.y = y - TILE_SIZE;
+        cartArea.x = x - CART_INTERACTION_RADIUS;
+        cartArea.y = y - CART_INTERACTION_RADIUS;
     }
 };
 
@@ -120,6 +123,7 @@ const enterCart = async () => {
             height: CART_HEIGHT,
         },
         visible: true,
+        origin: "map",
     });
 
     WA.ui.displayBubble();
@@ -181,10 +185,10 @@ WA.onInit().then(() => {
 
     cartArea = WA.room.area.create({
         name: CART_AREA_NAME,
-        x: start.x - TILE_SIZE,
-        y: start.y - TILE_SIZE,
-        width: TILE_SIZE * 2,
-        height: TILE_SIZE * 2,
+        x: start.x - CART_INTERACTION_RADIUS,
+        y: start.y - CART_INTERACTION_RADIUS,
+        width: CART_INTERACTION_RADIUS * 2,
+        height: CART_INTERACTION_RADIUS * 2,
     });
 
     WA.room.area.onEnter(CART_AREA_NAME).subscribe(() => {
