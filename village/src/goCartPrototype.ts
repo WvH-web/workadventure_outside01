@@ -6,14 +6,15 @@ const TILE_SIZE = 32;
 const TILE_CENTER = TILE_SIZE / 2;
 const CART_AREA_NAME = "go_cart_prototype_area";
 const CART_START_TILE = [160, 57] as const;
-const CART_WIDTH = 76;
-const CART_HEIGHT = 58;
+const CART_WIDTH = 68;
+const CART_HEIGHT = 56;
 const CART_INTERACTION_RADIUS = TILE_SIZE * 2;
 const CART_SPEED = 260;
 const BOOST_DISTANCE = 92;
 const BOOST_COOLDOWN_MS = 180;
 const PUFF_COOLDOWN_MS = 320;
 const PUFF_LIFETIME_MS = 850;
+const CART_Y_OFFSET = 6;
 
 type Direction = "left" | "right" | "up" | "down";
 
@@ -26,9 +27,11 @@ let boostRunning = false;
 let lastBoostAt = 0;
 let lastPuffAt = 0;
 let puffCount = 0;
-let cartAnimationFrame: number | undefined;
+let cartFollowTimer: number | undefined;
+let cartFollowInFlight = false;
 
-const cartUrl = new URL("../go-cart-prototype.html", import.meta.url).toString();
+const parkedCartUrl = new URL("../go-cart-parked.html", import.meta.url).toString();
+const driverCartUrl = new URL("../go-cart-driver.html", import.meta.url).toString();
 const puffUrl = new URL("../go-cart-puff.html", import.meta.url).toString();
 
 const wait = (milliseconds: number) =>
@@ -56,47 +59,36 @@ const moveWebsiteToPlayer = async () => {
     if (!driverCart) return;
     const position = await WA.player.getPosition();
     driverCart.x = position.x - CART_WIDTH / 2;
-    driverCart.y = position.y - CART_HEIGHT / 2 + 12;
+    driverCart.y = position.y - CART_HEIGHT + CART_Y_OFFSET;
 };
 
 const moveDriverCartTo = (x: number, y: number) => {
     if (!driverCart) return;
     driverCart.x = x - CART_WIDTH / 2;
-    driverCart.y = y - CART_HEIGHT / 2 + 12;
+    driverCart.y = y - CART_HEIGHT + CART_Y_OFFSET;
 };
 
-const stopCartAnimation = () => {
-    if (cartAnimationFrame === undefined) return;
-    window.cancelAnimationFrame(cartAnimationFrame);
-    cartAnimationFrame = undefined;
+const startCartFollow = () => {
+    if (cartFollowTimer !== undefined) return;
+
+    cartFollowTimer = window.setInterval(() => {
+        if (!cartMode || !driverCart || cartFollowInFlight) return;
+
+        cartFollowInFlight = true;
+        moveWebsiteToPlayer()
+            .catch(error => console.error("Go-Cart follow failed", error))
+            .finally(() => {
+                cartFollowInFlight = false;
+            });
+    }, 45);
 };
 
-const animateDriverCart = (fromX: number, fromY: number, toX: number, toY: number, speed: number) =>
-    new Promise<void>(resolve => {
-        stopCartAnimation();
-
-        const distance = Math.hypot(toX - fromX, toY - fromY);
-        const duration = Math.max(80, (distance / speed) * 1000);
-        const startedAt = performance.now();
-
-        const tick = (now: number) => {
-            const progress = Math.min(1, (now - startedAt) / duration);
-            moveDriverCartTo(
-                fromX + (toX - fromX) * progress,
-                fromY + (toY - fromY) * progress,
-            );
-
-            if (progress < 1) {
-                cartAnimationFrame = window.requestAnimationFrame(tick);
-                return;
-            }
-
-            cartAnimationFrame = undefined;
-            resolve();
-        };
-
-        cartAnimationFrame = window.requestAnimationFrame(tick);
-    });
+const stopCartFollow = () => {
+    if (cartFollowTimer === undefined) return;
+    window.clearInterval(cartFollowTimer);
+    cartFollowTimer = undefined;
+    cartFollowInFlight = false;
+};
 
 const createPuff = async (x: number, y: number) => {
     const now = Date.now();
@@ -125,10 +117,10 @@ const parkCartAt = (x: number, y: number) => {
     if (!parkedCart) {
         parkedCart = WA.room.website.create({
             name: "go-cart-parked-prototype",
-            url: cartUrl,
+            url: parkedCartUrl,
             position: {
                 x: x - CART_WIDTH / 2,
-                y: y - CART_HEIGHT / 2 + 12,
+                y: y - CART_HEIGHT + CART_Y_OFFSET,
                 width: CART_WIDTH,
                 height: CART_HEIGHT,
             },
@@ -137,7 +129,7 @@ const parkCartAt = (x: number, y: number) => {
         });
     } else {
         parkedCart.x = x - CART_WIDTH / 2;
-        parkedCart.y = y - CART_HEIGHT / 2 + 12;
+        parkedCart.y = y - CART_HEIGHT + CART_Y_OFFSET;
         parkedCart.visible = true;
     }
 
@@ -155,16 +147,17 @@ const enterCart = async () => {
     const position = await WA.player.getPosition();
     driverCart = WA.room.website.create({
         name: "go-cart-driver-prototype",
-        url: cartUrl,
+        url: driverCartUrl,
         position: {
             x: position.x - CART_WIDTH / 2,
-            y: position.y - CART_HEIGHT / 2 + 12,
+            y: position.y - CART_HEIGHT + CART_Y_OFFSET,
             width: CART_WIDTH,
             height: CART_HEIGHT,
         },
         visible: true,
         origin: "map",
     });
+    startCartFollow();
 
     WA.ui.displayBubble();
     actionMessage?.remove();
@@ -180,7 +173,7 @@ const exitCart = async () => {
     if (!cartMode) return;
     cartMode = false;
     boostRunning = false;
-    stopCartAnimation();
+    stopCartFollow();
     WA.ui.removeBubble();
     actionMessage?.remove();
     actionMessage = undefined;
@@ -208,9 +201,7 @@ const boost = async (direction: Direction, x: number, y: number) => {
     void createPuff(x - vector.x * 26, y - vector.y * 26);
 
     try {
-        const cartAnimation = animateDriverCart(x, y, targetX, targetY, CART_SPEED);
         await WA.player.moveTo(targetX, targetY, CART_SPEED);
-        await cartAnimation;
         await moveWebsiteToPlayer();
     } catch (error) {
         console.error("Go-Cart boost failed", error);
@@ -251,9 +242,7 @@ WA.onInit().then(() => {
     WA.player.onPlayerMove(event => {
         if (!cartMode) return;
 
-        if (!boostRunning) {
-            moveDriverCartTo(event.x, event.y);
-        }
+        moveDriverCartTo(event.x, event.y);
 
         if (event.moving) {
             void boost(event.direction, event.x, event.y);
