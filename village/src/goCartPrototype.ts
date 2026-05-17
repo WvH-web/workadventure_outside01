@@ -6,7 +6,13 @@ const TILE_SIZE = 32;
 const TILE_CENTER = TILE_SIZE / 2;
 const CART_AREA_NAME = "go_cart_prototype_area";
 const PARKED_CART_LAYER = "goCartParked";
-const CART_START_TILE = [160, 57] as const;
+const CART_PARKING_TILES = [
+    [185, 43],
+    [188, 43],
+    [191, 43],
+    [194, 43],
+    [197, 43],
+] as const;
 const CART_WIDTH = 68;
 const CART_HEIGHT = 56;
 const CART_INTERACTION_RADIUS = TILE_SIZE * 2;
@@ -33,7 +39,6 @@ type WvhPlayerApi = typeof WA.player & {
 };
 
 let driverCart: ReturnType<typeof WA.room.website.create> | undefined;
-let cartArea: ReturnType<typeof WA.room.area.create> | undefined;
 let actionMessage: ActionMessage | undefined;
 let cartMode = false;
 let nativeCartAvatarActive = false;
@@ -98,13 +103,8 @@ const stopCartFollow = () => {
     cartFollowInFlight = false;
 };
 
-const parkCartAt = (x: number, y: number) => {
+const showParkedCarts = () => {
     WA.room.showLayer(PARKED_CART_LAYER);
-
-    if (cartArea) {
-        cartArea.x = x - CART_INTERACTION_RADIUS;
-        cartArea.y = y - CART_INTERACTION_RADIUS;
-    }
 };
 
 const enterCart = async () => {
@@ -175,8 +175,7 @@ const exitCart = async () => {
         driverCart = undefined;
     }
 
-    const start = tileToPixelCenter(CART_START_TILE);
-    parkCartAt(start.x, start.y);
+    showParkedCarts();
 };
 
 const boost = async (direction: Direction, x: number, y: number) => {
@@ -201,32 +200,35 @@ const boost = async (direction: Direction, x: number, y: number) => {
 };
 
 WA.onInit().then(() => {
-    const start = tileToPixelCenter(CART_START_TILE);
+    showParkedCarts();
 
-    parkCartAt(start.x, start.y);
+    CART_PARKING_TILES.forEach((tile, index) => {
+        const spot = tileToPixelCenter(tile);
+        const areaName = `${CART_AREA_NAME}_${index + 1}`;
 
-    cartArea = WA.room.area.create({
-        name: CART_AREA_NAME,
-        x: start.x - CART_INTERACTION_RADIUS,
-        y: start.y - CART_INTERACTION_RADIUS,
-        width: CART_INTERACTION_RADIUS * 2,
-        height: CART_INTERACTION_RADIUS * 2,
-    });
-
-    WA.room.area.onEnter(CART_AREA_NAME).subscribe(() => {
-        if (cartMode) return;
-        actionMessage = WA.ui.displayActionMessage({
-            message: "Go-Cart Prototyp testen: Leertaste zum Einsteigen.",
-            callback: () => {
-                void enterCart();
-            },
+        WA.room.area.create({
+            name: areaName,
+            x: spot.x - CART_INTERACTION_RADIUS,
+            y: spot.y - CART_INTERACTION_RADIUS,
+            width: CART_INTERACTION_RADIUS * 2,
+            height: CART_INTERACTION_RADIUS * 2,
         });
-    });
 
-    WA.room.area.onLeave(CART_AREA_NAME).subscribe(() => {
-        if (cartMode) return;
-        actionMessage?.remove();
-        actionMessage = undefined;
+        WA.room.area.onEnter(areaName).subscribe(() => {
+            if (cartMode) return;
+            actionMessage = WA.ui.displayActionMessage({
+                message: "Go-Cart testen: Leertaste zum Einsteigen.",
+                callback: () => {
+                    void enterCart();
+                },
+            });
+        });
+
+        WA.room.area.onLeave(areaName).subscribe(() => {
+            if (cartMode) return;
+            actionMessage?.remove();
+            actionMessage = undefined;
+        });
     });
 
     WA.player.onPlayerMove(event => {
