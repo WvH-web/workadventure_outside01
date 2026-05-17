@@ -20,13 +20,14 @@ const CART_SPEED = 1050;
 const BOOST_DISTANCE = 220;
 const BOOST_COOLDOWN_MS = 80;
 const CART_Y_OFFSET = 6;
-const TEMPORARY_WOKA_TEXTURE_ID = "wvh-go-cart-avatar-v3";
-const TEMPORARY_WOKA_URL = "https://together.deine-schule.com/resources/wvh/go-cart-avatar.png?v=3";
+const CART_COLORS = ["red", "blue", "green", "yellow", "violet"] as const;
+const CART_ASSET_VERSION = "4";
 const TEMPORARY_WOKA_FRAME_WIDTH = 96;
 const TEMPORARY_WOKA_FRAME_HEIGHT = 80;
 const TEMPORARY_WOKA_SCALE = 0.62;
 
 type Direction = "left" | "right" | "up" | "down";
+type CartColor = typeof CART_COLORS[number];
 type WvhPlayerApi = typeof WA.player & {
     setTemporaryWoka?: (options: {
         textureId: string;
@@ -48,6 +49,11 @@ let cartFollowTimer: number | undefined;
 let cartFollowInFlight = false;
 
 const driverCartUrl = new URL("../go-cart-driver.html", import.meta.url).toString();
+const cartAvatarUrl = (color: CartColor) =>
+    `https://wvh-web.github.io/workadventure_outside01/village/assets/go-cart-avatar-${color}.png?v=${CART_ASSET_VERSION}`;
+const cartTextureId = (color: CartColor) => `wvh-go-cart-avatar-${color}-v${CART_ASSET_VERSION}`;
+const driverCartUrlFor = (color: CartColor) =>
+    `${driverCartUrl}?color=${encodeURIComponent(color)}&v=${CART_ASSET_VERSION}`;
 
 const tileToPixelCenter = ([tileX, tileY]: readonly [number, number]) => ({
     x: tileX * TILE_SIZE + TILE_CENTER,
@@ -107,7 +113,7 @@ const showParkedCarts = () => {
     WA.room.showLayer(PARKED_CART_LAYER);
 };
 
-const enterCart = async () => {
+const enterCart = async (color: CartColor) => {
     if (cartMode) return;
     cartMode = true;
     WA.room.hideLayer(PARKED_CART_LAYER);
@@ -118,8 +124,8 @@ const enterCart = async () => {
     if (typeof wvhPlayer.setTemporaryWoka === "function") {
         try {
             await wvhPlayer.setTemporaryWoka({
-                textureId: TEMPORARY_WOKA_TEXTURE_ID,
-                url: TEMPORARY_WOKA_URL,
+                textureId: cartTextureId(color),
+                url: cartAvatarUrl(color),
                 frameWidth: TEMPORARY_WOKA_FRAME_WIDTH,
                 frameHeight: TEMPORARY_WOKA_FRAME_HEIGHT,
                 scale: TEMPORARY_WOKA_SCALE,
@@ -134,7 +140,7 @@ const enterCart = async () => {
     if (!nativeCartAvatarActive) {
         driverCart = WA.room.website.create({
             name: "go-cart-driver-prototype",
-            url: driverCartUrl,
+            url: driverCartUrlFor(color),
             position: {
                 x: position.x - CART_WIDTH / 2,
                 y: position.y - CART_HEIGHT + CART_Y_OFFSET,
@@ -205,6 +211,7 @@ WA.onInit().then(() => {
     CART_PARKING_TILES.forEach((tile, index) => {
         const spot = tileToPixelCenter(tile);
         const areaName = `${CART_AREA_NAME}_${index + 1}`;
+        const color = CART_COLORS[index] ?? "red";
 
         WA.room.area.create({
             name: areaName,
@@ -219,7 +226,7 @@ WA.onInit().then(() => {
             actionMessage = WA.ui.displayActionMessage({
                 message: "Go-Cart testen: Leertaste zum Einsteigen.",
                 callback: () => {
-                    void enterCart();
+                    void enterCart(color);
                 },
             });
         });
