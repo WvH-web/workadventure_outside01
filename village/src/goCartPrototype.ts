@@ -5,7 +5,6 @@ import type { ActionMessage } from "@workadventure/iframe-api-typings";
 const TILE_SIZE = 32;
 const TILE_CENTER = TILE_SIZE / 2;
 const CART_AREA_NAME = "go_cart_prototype_area";
-const CART_TILE_LAYER = "AboveWorld3";
 const CART_START_TILE = [160, 57] as const;
 const CART_WIDTH = 68;
 const CART_HEIGHT = 56;
@@ -19,18 +18,8 @@ const TEMPORARY_WOKA_URL = "https://together.deine-schule.com/resources/wvh/go-c
 const TEMPORARY_WOKA_FRAME_WIDTH = 96;
 const TEMPORARY_WOKA_FRAME_HEIGHT = 80;
 const TEMPORARY_WOKA_SCALE = 0.62;
-const PARKED_CART_TILESET_FILE = "go-cart-parked.tileset.json";
 
 type Direction = "left" | "right" | "up" | "down";
-type TileValue = number | string | null;
-type TilePoint = { x: number; y: number };
-type TiledLayer = {
-    name: string;
-    type: string;
-    data?: number[];
-    width?: number;
-    layers?: TiledLayer[];
-};
 type WvhPlayerApi = typeof WA.player & {
     setTemporaryWoka?: (options: {
         textureId: string;
@@ -42,6 +31,7 @@ type WvhPlayerApi = typeof WA.player & {
     restoreWoka?: () => Promise<void>;
 };
 
+let parkedCart: ReturnType<typeof WA.room.website.create> | undefined;
 let driverCart: ReturnType<typeof WA.room.website.create> | undefined;
 let cartArea: ReturnType<typeof WA.room.area.create> | undefined;
 let actionMessage: ActionMessage | undefined;
@@ -51,11 +41,8 @@ let boostRunning = false;
 let lastBoostAt = 0;
 let cartFollowTimer: number | undefined;
 let cartFollowInFlight = false;
-let parkedCartTileId: number | undefined;
-let parkedCartTile: TilePoint | undefined;
-let parkingLayerData: number[] | undefined;
-let parkingLayerWidth = 0;
 
+const parkedCartUrl = new URL("../go-cart-parked.html", import.meta.url).toString();
 const driverCartUrl = new URL("../go-cart-driver.html", import.meta.url).toString();
 
 const tileToPixelCenter = ([tileX, tileY]: readonly [number, number]) => ({
@@ -112,87 +99,36 @@ const stopCartFollow = () => {
     cartFollowInFlight = false;
 };
 
-const findLayer = (layers: TiledLayer[], name: string): TiledLayer | undefined => {
-    for (const layer of layers) {
-        if (layer.name === name) return layer;
-        if (layer.layers) {
-            const nestedLayer = findLayer(layer.layers, name);
-            if (nestedLayer) return nestedLayer;
-        }
-    }
-    return undefined;
-};
-
-const loadParkedCartTile = async () => {
-    const parkedCartTilesetUrl = new URL(PARKED_CART_TILESET_FILE, WA.room.mapURL).toString();
-    const [tileId, tiledMap] = await Promise.all([
-        WA.room.loadTileset(parkedCartTilesetUrl),
-        WA.room.getTiledMap() as Promise<{ layers: TiledLayer[] }>,
-    ]);
-    const parkingLayer = findLayer(tiledMap.layers, CART_TILE_LAYER);
-
-    parkedCartTileId = tileId;
-    parkingLayerData = parkingLayer?.data;
-    parkingLayerWidth = parkingLayer?.width ?? 0;
-};
-
-const pixelToParkingTile = (x: number, y: number): TilePoint => ({
-    // The parked sprite is three tiles wide. Anchor the tile on its left cell,
-    // so the visible cart stays centered where the player exits.
-    x: Math.max(0, Math.round(x / TILE_SIZE) - 1),
-    y: Math.max(0, Math.round(y / TILE_SIZE)),
-});
-
-const parkingTileToAreaCenter = (tile: TilePoint) => ({
-    x: (tile.x + 1.5) * TILE_SIZE,
-    y: (tile.y + 0.5) * TILE_SIZE,
-});
-
-const getOriginalParkingTile = (tile: TilePoint): TileValue => {
-    if (!parkingLayerData || parkingLayerWidth <= 0) return null;
-
-    const originalTile = parkingLayerData[tile.y * parkingLayerWidth + tile.x] ?? 0;
-    return originalTile === 0 ? null : originalTile;
-};
-
-const clearParkedCartTile = () => {
-    if (!parkedCartTile) return;
-
-    WA.room.setTiles([{
-        x: parkedCartTile.x,
-        y: parkedCartTile.y,
-        tile: getOriginalParkingTile(parkedCartTile),
-        layer: CART_TILE_LAYER,
-    }]);
-};
-
 const parkCartAt = (x: number, y: number) => {
-    if (parkedCartTileId === undefined) return;
-
-    const nextTile = pixelToParkingTile(x, y);
-    if (!parkedCartTile || parkedCartTile.x !== nextTile.x || parkedCartTile.y !== nextTile.y) {
-        clearParkedCartTile();
-        parkedCartTile = nextTile;
+    if (!parkedCart) {
+        parkedCart = WA.room.website.create({
+            name: "go-cart-parked-prototype",
+            url: parkedCartUrl,
+            position: {
+                x: x - CART_WIDTH / 2,
+                y: y - CART_HEIGHT + CART_Y_OFFSET,
+                width: CART_WIDTH,
+                height: CART_HEIGHT,
+            },
+            visible: true,
+            origin: "map",
+        });
+    } else {
+        parkedCart.x = x - CART_WIDTH / 2;
+        parkedCart.y = y - CART_HEIGHT + CART_Y_OFFSET;
+        parkedCart.visible = true;
     }
-
-    WA.room.setTiles([{
-        x: parkedCartTile.x,
-        y: parkedCartTile.y,
-        tile: parkedCartTileId,
-        layer: CART_TILE_LAYER,
-    }]);
 
     if (cartArea) {
-        const areaCenter = parkingTileToAreaCenter(parkedCartTile);
-        cartArea.x = areaCenter.x - CART_INTERACTION_RADIUS;
-        cartArea.y = areaCenter.y - CART_INTERACTION_RADIUS;
+        cartArea.x = x - CART_INTERACTION_RADIUS;
+        cartArea.y = y - CART_INTERACTION_RADIUS;
     }
 };
 
 const enterCart = async () => {
     if (cartMode) return;
     cartMode = true;
-    clearParkedCartTile();
+    parkedCart && (parkedCart.visible = false);
 
     const position = await WA.player.getPosition();
     const wvhPlayer = WA.player as WvhPlayerApi;
@@ -285,8 +221,6 @@ const boost = async (direction: Direction, x: number, y: number) => {
 WA.onInit().then(() => {
     const start = tileToPixelCenter(CART_START_TILE);
 
-    return loadParkedCartTile().then(() => start);
-}).then(start => {
     parkCartAt(start.x, start.y);
 
     cartArea = WA.room.area.create({
