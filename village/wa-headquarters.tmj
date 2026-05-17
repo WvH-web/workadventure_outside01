@@ -42179,14 +42179,14 @@
          "columns":1,
          "firstgid":172769,
          "image":"assets\/go-cart-parked.png",
-         "imageheight":80,
-         "imagewidth":96,
+         "imageheight":52,
+         "imagewidth":64,
          "margin":0,
          "name":"go-cart-parked",
          "spacing":0,
          "tilecount":1,
-         "tileheight":80,
-         "tilewidth":96
+         "tileheight":52,
+         "tilewidth":64
         }],
  "tilewidth":32,
  "type":"map",
