@@ -22,6 +22,7 @@ const BOOST_COOLDOWN_MS = 80;
 const CART_Y_OFFSET = 6;
 const CART_COLORS = ["red", "blue", "green", "yellow", "violet"] as const;
 const CART_ASSET_VERSION = "4";
+const USE_NATIVE_CART_AVATAR = false;
 const TEMPORARY_WOKA_FRAME_WIDTH = 96;
 const TEMPORARY_WOKA_FRAME_HEIGHT = 80;
 const TEMPORARY_WOKA_SCALE = 0.62;
@@ -121,7 +122,7 @@ const enterCart = async (color: CartColor) => {
     const position = await WA.player.getPosition();
     const wvhPlayer = WA.player as WvhPlayerApi;
 
-    if (typeof wvhPlayer.setTemporaryWoka === "function") {
+    if (USE_NATIVE_CART_AVATAR && typeof wvhPlayer.setTemporaryWoka === "function") {
         try {
             await wvhPlayer.setTemporaryWoka({
                 textureId: cartTextureId(color),
