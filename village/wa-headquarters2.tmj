@@ -1542,6 +1542,54 @@
                  "width":956.855858513189,
                  "x":192,
                  "y":746.666666666667
+                },
+                {
+                 "height":788.902264827063,
+                 "id":1085,
+                 "name":"mirotalkAuditorium",
+                 "opacity":1,
+                 "properties":[
+                        {
+                         "name":"openWebsite",
+                         "type":"string",
+                         "value":"https:\/\/p2p.mirotalk.com\/join\/WvHAuditorium"
+                        },
+                        {
+                         "name":"openWebsiteLabel",
+                         "type":"string",
+                         "value":"Auditorium-Meeting \u00f6ffnen"
+                        },
+                        {
+                         "name":"openWebsiteTrigger",
+                         "type":"string",
+                         "value":"onaction"
+                        },
+                        {
+                         "name":"openWebsiteTriggerMessage",
+                         "type":"string",
+                         "value":"Leertaste: Auditorium-Meeting \u00f6ffnen"
+                        },
+                        {
+                         "name":"openWebsiteWidth",
+                         "type":"int",
+                         "value":60
+                        },
+                        {
+                         "name":"openWebsiteClosable",
+                         "type":"bool",
+                         "value":true
+                        },
+                        {
+                         "name":"openWebsitePolicy",
+                         "type":"string",
+                         "value":"camera; microphone; display-capture; fullscreen; autoplay; clipboard-write; encrypted-media; picture-in-picture"
+                        }],
+                 "rotation":0,
+                 "type":"area",
+                 "visible":true,
+                 "width":956.855858513189,
+                 "x":192,
+                 "y":746.666666666667
                 }, 
                 {
                  "height":61.666666666667,
