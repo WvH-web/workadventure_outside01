@@ -5419,8 +5419,22 @@
          "width":200,
          "x":0,
          "y":0
+        },
+        {
+         "id":157,
+         "image":"assets\/go-cart-parked.png",
+         "name":"goCartParked",
+         "offsetx":0,
+         "offsety":0,
+         "opacity":1,
+         "repeatx":false,
+         "repeaty":false,
+         "type":"imagelayer",
+         "visible":true,
+         "x":5088,
+         "y":1766
         }],
- "nextlayerid":157,
+ "nextlayerid":158,
  "nextobjectid":1086,
  "orientation":"orthogonal",
  "properties":[
@@ -5442,7 +5456,7 @@
         {
          "name":"script",
          "type":"string",
-         "value":"assets\/main-safe-f254934.js"
+         "value":"assets\/main-a8c690dc.js"
         }],
  "renderorder":"right-down",
  "tiledversion":"1.12.1",

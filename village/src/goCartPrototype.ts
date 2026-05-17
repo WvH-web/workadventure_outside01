@@ -5,6 +5,7 @@ import type { ActionMessage } from "@workadventure/iframe-api-typings";
 const TILE_SIZE = 32;
 const TILE_CENTER = TILE_SIZE / 2;
 const CART_AREA_NAME = "go_cart_prototype_area";
+const PARKED_CART_LAYER = "goCartParked";
 const CART_START_TILE = [160, 57] as const;
 const CART_WIDTH = 68;
 const CART_HEIGHT = 56;
@@ -31,7 +32,6 @@ type WvhPlayerApi = typeof WA.player & {
     restoreWoka?: () => Promise<void>;
 };
 
-let parkedCart: ReturnType<typeof WA.room.website.create> | undefined;
 let driverCart: ReturnType<typeof WA.room.website.create> | undefined;
 let cartArea: ReturnType<typeof WA.room.area.create> | undefined;
 let actionMessage: ActionMessage | undefined;
@@ -42,7 +42,6 @@ let lastBoostAt = 0;
 let cartFollowTimer: number | undefined;
 let cartFollowInFlight = false;
 
-const parkedCartUrl = new URL("../go-cart-parked.html", import.meta.url).toString();
 const driverCartUrl = new URL("../go-cart-driver.html", import.meta.url).toString();
 
 const tileToPixelCenter = ([tileX, tileY]: readonly [number, number]) => ({
@@ -100,24 +99,7 @@ const stopCartFollow = () => {
 };
 
 const parkCartAt = (x: number, y: number) => {
-    if (!parkedCart) {
-        parkedCart = WA.room.website.create({
-            name: "go-cart-parked-prototype",
-            url: parkedCartUrl,
-            position: {
-                x: x - CART_WIDTH / 2,
-                y: y - CART_HEIGHT + CART_Y_OFFSET,
-                width: CART_WIDTH,
-                height: CART_HEIGHT,
-            },
-            visible: true,
-            origin: "map",
-        });
-    } else {
-        parkedCart.x = x - CART_WIDTH / 2;
-        parkedCart.y = y - CART_HEIGHT + CART_Y_OFFSET;
-        parkedCart.visible = true;
-    }
+    WA.room.showLayer(PARKED_CART_LAYER);
 
     if (cartArea) {
         cartArea.x = x - CART_INTERACTION_RADIUS;
@@ -128,7 +110,7 @@ const parkCartAt = (x: number, y: number) => {
 const enterCart = async () => {
     if (cartMode) return;
     cartMode = true;
-    parkedCart && (parkedCart.visible = false);
+    WA.room.hideLayer(PARKED_CART_LAYER);
 
     const position = await WA.player.getPosition();
     const wvhPlayer = WA.player as WvhPlayerApi;
@@ -193,8 +175,8 @@ const exitCart = async () => {
         driverCart = undefined;
     }
 
-    const position = await WA.player.getPosition();
-    parkCartAt(position.x, position.y);
+    const start = tileToPixelCenter(CART_START_TILE);
+    parkCartAt(start.x, start.y);
 };
 
 const boost = async (direction: Direction, x: number, y: number) => {
