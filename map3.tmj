@@ -2068,14 +2068,39 @@
                                  "name":"Sofaecke01",
                                  "properties":[
                                         {
-                                         "name":"jitsiRoom",
+                                         "name":"openWebsite",
                                          "type":"string",
-                                         "value":"sofa1"
+                                         "value":"https:\/\/p2p.mirotalk.com\/join\/WvHSofa1"
                                         }, 
                                         {
-                                         "name":"jitsiTrigger",
+                                         "name":"openWebsiteClosable",
+                                         "type":"bool",
+                                         "value":true
+                                        }, 
+                                        {
+                                         "name":"openWebsiteLabel",
+                                         "type":"string",
+                                         "value":"MiroTalk oeffnen"
+                                        }, 
+                                        {
+                                         "name":"openWebsitePolicy",
+                                         "type":"string",
+                                         "value":"camera; microphone; display-capture; fullscreen; autoplay; clipboard-write; encrypted-media; picture-in-picture"
+                                        }, 
+                                        {
+                                         "name":"openWebsiteTrigger",
                                          "type":"string",
                                          "value":"onaction"
+                                        }, 
+                                        {
+                                         "name":"openWebsiteTriggerMessage",
+                                         "type":"string",
+                                         "value":"Leertaste: MiroTalk oeffnen"
+                                        }, 
+                                        {
+                                         "name":"openWebsiteWidth",
+                                         "type":"int",
+                                         "value":60
                                         }],
                                  "rotation":0,
                                  "type":"area",
@@ -2090,7 +2115,7 @@
                          "x":0,
                          "y":0
                         }],
-                 "name":"Jitsi",
+                 "name":"MiroTalk",
                  "opacity":1,
                  "type":"group",
                  "visible":true,

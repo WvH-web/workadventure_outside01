@@ -336164,19 +336164,39 @@
      "id": 3,
      "properties": [
       {
-       "name": "jitsiRoom",
+       "name": "openWebsite",
        "type": "string",
-       "value": "white-5"
+       "value": "https://p2p.mirotalk.com/join/WvHPlayground-white-5"
       },
       {
-       "name": "jitsiTrigger",
+       "name": "openWebsiteClosable",
+       "type": "bool",
+       "value": true
+      },
+      {
+       "name": "openWebsiteLabel",
+       "type": "string",
+       "value": "MiroTalk oeffnen"
+      },
+      {
+       "name": "openWebsitePolicy",
+       "type": "string",
+       "value": "camera; microphone; display-capture; fullscreen; autoplay; clipboard-write; encrypted-media; picture-in-picture"
+      },
+      {
+       "name": "openWebsiteTrigger",
        "type": "string",
        "value": "onaction"
       },
       {
-       "name": "jitsiTriggerMessage",
+       "name": "openWebsiteTriggerMessage",
        "type": "string",
-       "value": "Press SPACE to open Jitsi"
+       "value": "Leertaste: MiroTalk oeffnen"
+      },
+      {
+       "name": "openWebsiteWidth",
+       "type": "int",
+       "value": 60
       }
      ]
     },
@@ -336184,19 +336204,39 @@
      "id": 3,
      "properties": [
       {
-       "name": "jitsiRoom",
+       "name": "openWebsite",
        "type": "string",
-       "value": "white-5"
+       "value": "https://p2p.mirotalk.com/join/WvHPlayground-white-5"
       },
       {
-       "name": "jitsiTrigger",
+       "name": "openWebsiteClosable",
+       "type": "bool",
+       "value": true
+      },
+      {
+       "name": "openWebsiteLabel",
+       "type": "string",
+       "value": "MiroTalk oeffnen"
+      },
+      {
+       "name": "openWebsitePolicy",
+       "type": "string",
+       "value": "camera; microphone; display-capture; fullscreen; autoplay; clipboard-write; encrypted-media; picture-in-picture"
+      },
+      {
+       "name": "openWebsiteTrigger",
        "type": "string",
        "value": "onaction"
       },
       {
-       "name": "jitsiTriggerMessage",
+       "name": "openWebsiteTriggerMessage",
        "type": "string",
-       "value": "Press SPACE to open Jitsi"
+       "value": "Leertaste: MiroTalk oeffnen"
+      },
+      {
+       "name": "openWebsiteWidth",
+       "type": "int",
+       "value": 60
       }
      ]
     },
@@ -336204,19 +336244,39 @@
      "id": 4,
      "properties": [
       {
-       "name": "jitsiRoom",
+       "name": "openWebsite",
        "type": "string",
-       "value": "white-4"
+       "value": "https://p2p.mirotalk.com/join/WvHPlayground-white-4"
       },
       {
-       "name": "jitsiTrigger",
+       "name": "openWebsiteClosable",
+       "type": "bool",
+       "value": true
+      },
+      {
+       "name": "openWebsiteLabel",
+       "type": "string",
+       "value": "MiroTalk oeffnen"
+      },
+      {
+       "name": "openWebsitePolicy",
+       "type": "string",
+       "value": "camera; microphone; display-capture; fullscreen; autoplay; clipboard-write; encrypted-media; picture-in-picture"
+      },
+      {
+       "name": "openWebsiteTrigger",
        "type": "string",
        "value": "onaction"
       },
       {
-       "name": "jitsiTriggerMessage",
+       "name": "openWebsiteTriggerMessage",
        "type": "string",
-       "value": "Press SPACE to open Jitsi"
+       "value": "Leertaste: MiroTalk oeffnen"
+      },
+      {
+       "name": "openWebsiteWidth",
+       "type": "int",
+       "value": 60
       }
      ]
     },
@@ -336224,19 +336284,39 @@
      "id": 4,
      "properties": [
       {
-       "name": "jitsiRoom",
+       "name": "openWebsite",
        "type": "string",
-       "value": "white-4"
+       "value": "https://p2p.mirotalk.com/join/WvHPlayground-white-4"
       },
       {
-       "name": "jitsiTrigger",
+       "name": "openWebsiteClosable",
+       "type": "bool",
+       "value": true
+      },
+      {
+       "name": "openWebsiteLabel",
+       "type": "string",
+       "value": "MiroTalk oeffnen"
+      },
+      {
+       "name": "openWebsitePolicy",
+       "type": "string",
+       "value": "camera; microphone; display-capture; fullscreen; autoplay; clipboard-write; encrypted-media; picture-in-picture"
+      },
+      {
+       "name": "openWebsiteTrigger",
        "type": "string",
        "value": "onaction"
       },
       {
-       "name": "jitsiTriggerMessage",
+       "name": "openWebsiteTriggerMessage",
        "type": "string",
-       "value": "Press SPACE to open Jitsi"
+       "value": "Leertaste: MiroTalk oeffnen"
+      },
+      {
+       "name": "openWebsiteWidth",
+       "type": "int",
+       "value": 60
       }
      ]
     },
@@ -336244,19 +336324,39 @@
      "id": 5,
      "properties": [
       {
-       "name": "jitsiRoom",
+       "name": "openWebsite",
        "type": "string",
-       "value": "white-1"
+       "value": "https://p2p.mirotalk.com/join/WvHPlayground-white-1"
       },
       {
-       "name": "jitsiTrigger",
+       "name": "openWebsiteClosable",
+       "type": "bool",
+       "value": true
+      },
+      {
+       "name": "openWebsiteLabel",
+       "type": "string",
+       "value": "MiroTalk oeffnen"
+      },
+      {
+       "name": "openWebsitePolicy",
+       "type": "string",
+       "value": "camera; microphone; display-capture; fullscreen; autoplay; clipboard-write; encrypted-media; picture-in-picture"
+      },
+      {
+       "name": "openWebsiteTrigger",
        "type": "string",
        "value": "onaction"
       },
       {
-       "name": "jitsiTriggerMessage",
+       "name": "openWebsiteTriggerMessage",
        "type": "string",
-       "value": "Press SPACE to open Jitsi"
+       "value": "Leertaste: MiroTalk oeffnen"
+      },
+      {
+       "name": "openWebsiteWidth",
+       "type": "int",
+       "value": 60
       }
      ]
     },
@@ -336264,19 +336364,39 @@
      "id": 5,
      "properties": [
       {
-       "name": "jitsiRoom",
+       "name": "openWebsite",
        "type": "string",
-       "value": "white-1"
+       "value": "https://p2p.mirotalk.com/join/WvHPlayground-white-1"
       },
       {
-       "name": "jitsiTrigger",
+       "name": "openWebsiteClosable",
+       "type": "bool",
+       "value": true
+      },
+      {
+       "name": "openWebsiteLabel",
+       "type": "string",
+       "value": "MiroTalk oeffnen"
+      },
+      {
+       "name": "openWebsitePolicy",
+       "type": "string",
+       "value": "camera; microphone; display-capture; fullscreen; autoplay; clipboard-write; encrypted-media; picture-in-picture"
+      },
+      {
+       "name": "openWebsiteTrigger",
        "type": "string",
        "value": "onaction"
       },
       {
-       "name": "jitsiTriggerMessage",
+       "name": "openWebsiteTriggerMessage",
        "type": "string",
-       "value": "Press SPACE to open Jitsi"
+       "value": "Leertaste: MiroTalk oeffnen"
+      },
+      {
+       "name": "openWebsiteWidth",
+       "type": "int",
+       "value": 60
       }
      ]
     },
@@ -336284,19 +336404,39 @@
      "id": 6,
      "properties": [
       {
-       "name": "jitsiRoom",
+       "name": "openWebsite",
        "type": "string",
-       "value": "white-3"
+       "value": "https://p2p.mirotalk.com/join/WvHPlayground-white-3"
       },
       {
-       "name": "jitsiTrigger",
+       "name": "openWebsiteClosable",
+       "type": "bool",
+       "value": true
+      },
+      {
+       "name": "openWebsiteLabel",
+       "type": "string",
+       "value": "MiroTalk oeffnen"
+      },
+      {
+       "name": "openWebsitePolicy",
+       "type": "string",
+       "value": "camera; microphone; display-capture; fullscreen; autoplay; clipboard-write; encrypted-media; picture-in-picture"
+      },
+      {
+       "name": "openWebsiteTrigger",
        "type": "string",
        "value": "onaction"
       },
       {
-       "name": "jitsiTriggerMessage",
+       "name": "openWebsiteTriggerMessage",
        "type": "string",
-       "value": "Press SPACE to open Jitsi"
+       "value": "Leertaste: MiroTalk oeffnen"
+      },
+      {
+       "name": "openWebsiteWidth",
+       "type": "int",
+       "value": 60
       }
      ]
     },
@@ -336304,19 +336444,39 @@
      "id": 6,
      "properties": [
       {
-       "name": "jitsiRoom",
+       "name": "openWebsite",
        "type": "string",
-       "value": "white-3"
+       "value": "https://p2p.mirotalk.com/join/WvHPlayground-white-3"
       },
       {
-       "name": "jitsiTrigger",
+       "name": "openWebsiteClosable",
+       "type": "bool",
+       "value": true
+      },
+      {
+       "name": "openWebsiteLabel",
+       "type": "string",
+       "value": "MiroTalk oeffnen"
+      },
+      {
+       "name": "openWebsitePolicy",
+       "type": "string",
+       "value": "camera; microphone; display-capture; fullscreen; autoplay; clipboard-write; encrypted-media; picture-in-picture"
+      },
+      {
+       "name": "openWebsiteTrigger",
        "type": "string",
        "value": "onaction"
       },
       {
-       "name": "jitsiTriggerMessage",
+       "name": "openWebsiteTriggerMessage",
        "type": "string",
-       "value": "Press SPACE to open Jitsi"
+       "value": "Leertaste: MiroTalk oeffnen"
+      },
+      {
+       "name": "openWebsiteWidth",
+       "type": "int",
+       "value": 60
       }
      ]
     },
@@ -336324,19 +336484,39 @@
      "id": 8,
      "properties": [
       {
-       "name": "jitsiRoom",
+       "name": "openWebsite",
        "type": "string",
-       "value": "white-6"
+       "value": "https://p2p.mirotalk.com/join/WvHPlayground-white-6"
       },
       {
-       "name": "jitsiTrigger",
+       "name": "openWebsiteClosable",
+       "type": "bool",
+       "value": true
+      },
+      {
+       "name": "openWebsiteLabel",
+       "type": "string",
+       "value": "MiroTalk oeffnen"
+      },
+      {
+       "name": "openWebsitePolicy",
+       "type": "string",
+       "value": "camera; microphone; display-capture; fullscreen; autoplay; clipboard-write; encrypted-media; picture-in-picture"
+      },
+      {
+       "name": "openWebsiteTrigger",
        "type": "string",
        "value": "onaction"
       },
       {
-       "name": "jitsiTriggerMessage",
+       "name": "openWebsiteTriggerMessage",
        "type": "string",
-       "value": "Press SPACE to open Jitsi"
+       "value": "Leertaste: MiroTalk oeffnen"
+      },
+      {
+       "name": "openWebsiteWidth",
+       "type": "int",
+       "value": 60
       }
      ]
     },
@@ -336344,19 +336524,39 @@
      "id": 8,
      "properties": [
       {
-       "name": "jitsiRoom",
+       "name": "openWebsite",
        "type": "string",
-       "value": "white-6"
+       "value": "https://p2p.mirotalk.com/join/WvHPlayground-white-6"
       },
       {
-       "name": "jitsiTrigger",
+       "name": "openWebsiteClosable",
+       "type": "bool",
+       "value": true
+      },
+      {
+       "name": "openWebsiteLabel",
+       "type": "string",
+       "value": "MiroTalk oeffnen"
+      },
+      {
+       "name": "openWebsitePolicy",
+       "type": "string",
+       "value": "camera; microphone; display-capture; fullscreen; autoplay; clipboard-write; encrypted-media; picture-in-picture"
+      },
+      {
+       "name": "openWebsiteTrigger",
        "type": "string",
        "value": "onaction"
       },
       {
-       "name": "jitsiTriggerMessage",
+       "name": "openWebsiteTriggerMessage",
        "type": "string",
-       "value": "Press SPACE to open Jitsi"
+       "value": "Leertaste: MiroTalk oeffnen"
+      },
+      {
+       "name": "openWebsiteWidth",
+       "type": "int",
+       "value": 60
       }
      ]
     },
@@ -336364,19 +336564,39 @@
      "id": 9,
      "properties": [
       {
-       "name": "jitsiRoom",
+       "name": "openWebsite",
        "type": "string",
-       "value": "white-2"
+       "value": "https://p2p.mirotalk.com/join/WvHPlayground-white-2"
       },
       {
-       "name": "jitsiTrigger",
+       "name": "openWebsiteClosable",
+       "type": "bool",
+       "value": true
+      },
+      {
+       "name": "openWebsiteLabel",
+       "type": "string",
+       "value": "MiroTalk oeffnen"
+      },
+      {
+       "name": "openWebsitePolicy",
+       "type": "string",
+       "value": "camera; microphone; display-capture; fullscreen; autoplay; clipboard-write; encrypted-media; picture-in-picture"
+      },
+      {
+       "name": "openWebsiteTrigger",
        "type": "string",
        "value": "onaction"
       },
       {
-       "name": "jitsiTriggerMessage",
+       "name": "openWebsiteTriggerMessage",
        "type": "string",
-       "value": "Press SPACE to open Jitsi"
+       "value": "Leertaste: MiroTalk oeffnen"
+      },
+      {
+       "name": "openWebsiteWidth",
+       "type": "int",
+       "value": 60
       }
      ]
     },
@@ -336384,19 +336604,39 @@
      "id": 9,
      "properties": [
       {
-       "name": "jitsiRoom",
+       "name": "openWebsite",
        "type": "string",
-       "value": "white-2"
+       "value": "https://p2p.mirotalk.com/join/WvHPlayground-white-2"
       },
       {
-       "name": "jitsiTrigger",
+       "name": "openWebsiteClosable",
+       "type": "bool",
+       "value": true
+      },
+      {
+       "name": "openWebsiteLabel",
+       "type": "string",
+       "value": "MiroTalk oeffnen"
+      },
+      {
+       "name": "openWebsitePolicy",
+       "type": "string",
+       "value": "camera; microphone; display-capture; fullscreen; autoplay; clipboard-write; encrypted-media; picture-in-picture"
+      },
+      {
+       "name": "openWebsiteTrigger",
        "type": "string",
        "value": "onaction"
       },
       {
-       "name": "jitsiTriggerMessage",
+       "name": "openWebsiteTriggerMessage",
        "type": "string",
-       "value": "Press SPACE to open Jitsi"
+       "value": "Leertaste: MiroTalk oeffnen"
+      },
+      {
+       "name": "openWebsiteWidth",
+       "type": "int",
+       "value": 60
       }
      ]
     },
@@ -336404,19 +336644,39 @@
      "id": 10,
      "properties": [
       {
-       "name": "jitsiRoom",
+       "name": "openWebsite",
        "type": "string",
-       "value": "white-9"
+       "value": "https://p2p.mirotalk.com/join/WvHPlayground-white-9"
       },
       {
-       "name": "jitsiTrigger",
+       "name": "openWebsiteClosable",
+       "type": "bool",
+       "value": true
+      },
+      {
+       "name": "openWebsiteLabel",
+       "type": "string",
+       "value": "MiroTalk oeffnen"
+      },
+      {
+       "name": "openWebsitePolicy",
+       "type": "string",
+       "value": "camera; microphone; display-capture; fullscreen; autoplay; clipboard-write; encrypted-media; picture-in-picture"
+      },
+      {
+       "name": "openWebsiteTrigger",
        "type": "string",
        "value": "onaction"
       },
       {
-       "name": "jitsiTriggerMessage",
+       "name": "openWebsiteTriggerMessage",
        "type": "string",
-       "value": "Press SPACE to open Jitsi"
+       "value": "Leertaste: MiroTalk oeffnen"
+      },
+      {
+       "name": "openWebsiteWidth",
+       "type": "int",
+       "value": 60
       }
      ]
     },
@@ -336424,19 +336684,39 @@
      "id": 10,
      "properties": [
       {
-       "name": "jitsiRoom",
+       "name": "openWebsite",
        "type": "string",
-       "value": "white-9"
+       "value": "https://p2p.mirotalk.com/join/WvHPlayground-white-9"
       },
       {
-       "name": "jitsiTrigger",
+       "name": "openWebsiteClosable",
+       "type": "bool",
+       "value": true
+      },
+      {
+       "name": "openWebsiteLabel",
+       "type": "string",
+       "value": "MiroTalk oeffnen"
+      },
+      {
+       "name": "openWebsitePolicy",
+       "type": "string",
+       "value": "camera; microphone; display-capture; fullscreen; autoplay; clipboard-write; encrypted-media; picture-in-picture"
+      },
+      {
+       "name": "openWebsiteTrigger",
        "type": "string",
        "value": "onaction"
       },
       {
-       "name": "jitsiTriggerMessage",
+       "name": "openWebsiteTriggerMessage",
        "type": "string",
-       "value": "Press SPACE to open Jitsi"
+       "value": "Leertaste: MiroTalk oeffnen"
+      },
+      {
+       "name": "openWebsiteWidth",
+       "type": "int",
+       "value": 60
       }
      ]
     },
@@ -336444,19 +336724,39 @@
      "id": 11,
      "properties": [
       {
-       "name": "jitsiRoom",
+       "name": "openWebsite",
        "type": "string",
-       "value": "white-8"
+       "value": "https://p2p.mirotalk.com/join/WvHPlayground-white-8"
       },
       {
-       "name": "jitsiTrigger",
+       "name": "openWebsiteClosable",
+       "type": "bool",
+       "value": true
+      },
+      {
+       "name": "openWebsiteLabel",
+       "type": "string",
+       "value": "MiroTalk oeffnen"
+      },
+      {
+       "name": "openWebsitePolicy",
+       "type": "string",
+       "value": "camera; microphone; display-capture; fullscreen; autoplay; clipboard-write; encrypted-media; picture-in-picture"
+      },
+      {
+       "name": "openWebsiteTrigger",
        "type": "string",
        "value": "onaction"
       },
       {
-       "name": "jitsiTriggerMessage",
+       "name": "openWebsiteTriggerMessage",
        "type": "string",
-       "value": "Press SPACE to open Jitsi"
+       "value": "Leertaste: MiroTalk oeffnen"
+      },
+      {
+       "name": "openWebsiteWidth",
+       "type": "int",
+       "value": 60
       }
      ]
     },
@@ -336464,19 +336764,39 @@
      "id": 11,
      "properties": [
       {
-       "name": "jitsiRoom",
+       "name": "openWebsite",
        "type": "string",
-       "value": "white-8"
+       "value": "https://p2p.mirotalk.com/join/WvHPlayground-white-8"
       },
       {
-       "name": "jitsiTrigger",
+       "name": "openWebsiteClosable",
+       "type": "bool",
+       "value": true
+      },
+      {
+       "name": "openWebsiteLabel",
+       "type": "string",
+       "value": "MiroTalk oeffnen"
+      },
+      {
+       "name": "openWebsitePolicy",
+       "type": "string",
+       "value": "camera; microphone; display-capture; fullscreen; autoplay; clipboard-write; encrypted-media; picture-in-picture"
+      },
+      {
+       "name": "openWebsiteTrigger",
        "type": "string",
        "value": "onaction"
       },
       {
-       "name": "jitsiTriggerMessage",
+       "name": "openWebsiteTriggerMessage",
        "type": "string",
-       "value": "Press SPACE to open Jitsi"
+       "value": "Leertaste: MiroTalk oeffnen"
+      },
+      {
+       "name": "openWebsiteWidth",
+       "type": "int",
+       "value": 60
       }
      ]
     },
@@ -336484,19 +336804,39 @@
      "id": 12,
      "properties": [
       {
-       "name": "jitsiRoom",
+       "name": "openWebsite",
        "type": "string",
-       "value": "white-7"
+       "value": "https://p2p.mirotalk.com/join/WvHPlayground-white-7"
       },
       {
-       "name": "jitsiTrigger",
+       "name": "openWebsiteClosable",
+       "type": "bool",
+       "value": true
+      },
+      {
+       "name": "openWebsiteLabel",
+       "type": "string",
+       "value": "MiroTalk oeffnen"
+      },
+      {
+       "name": "openWebsitePolicy",
+       "type": "string",
+       "value": "camera; microphone; display-capture; fullscreen; autoplay; clipboard-write; encrypted-media; picture-in-picture"
+      },
+      {
+       "name": "openWebsiteTrigger",
        "type": "string",
        "value": "onaction"
       },
       {
-       "name": "jitsiTriggerMessage",
+       "name": "openWebsiteTriggerMessage",
        "type": "string",
-       "value": "Press SPACE to open Jitsi"
+       "value": "Leertaste: MiroTalk oeffnen"
+      },
+      {
+       "name": "openWebsiteWidth",
+       "type": "int",
+       "value": 60
       }
      ]
     },
@@ -336504,19 +336844,39 @@
      "id": 12,
      "properties": [
       {
-       "name": "jitsiRoom",
+       "name": "openWebsite",
        "type": "string",
-       "value": "white-7"
+       "value": "https://p2p.mirotalk.com/join/WvHPlayground-white-7"
       },
       {
-       "name": "jitsiTrigger",
+       "name": "openWebsiteClosable",
+       "type": "bool",
+       "value": true
+      },
+      {
+       "name": "openWebsiteLabel",
+       "type": "string",
+       "value": "MiroTalk oeffnen"
+      },
+      {
+       "name": "openWebsitePolicy",
+       "type": "string",
+       "value": "camera; microphone; display-capture; fullscreen; autoplay; clipboard-write; encrypted-media; picture-in-picture"
+      },
+      {
+       "name": "openWebsiteTrigger",
        "type": "string",
        "value": "onaction"
       },
       {
-       "name": "jitsiTriggerMessage",
+       "name": "openWebsiteTriggerMessage",
        "type": "string",
-       "value": "Press SPACE to open Jitsi"
+       "value": "Leertaste: MiroTalk oeffnen"
+      },
+      {
+       "name": "openWebsiteWidth",
+       "type": "int",
+       "value": 60
       }
      ]
     }
