@@ -1563,34 +1563,9 @@
                  "opacity":1,
                  "properties":[
                         {
-                         "name":"openWebsite",
+                         "name":"exitUrl",
                          "type":"string",
-                         "value":"past-playground-link.html"
-                        }, 
-                        {
-                         "name":"openWebsiteClosable",
-                         "type":"bool",
-                         "value":true
-                        }, 
-                        {
-                         "name":"openWebsiteLabel",
-                         "type":"string",
-                         "value":"PAST Playground oeffnen"
-                        }, 
-                        {
-                         "name":"openWebsiteTrigger",
-                         "type":"string",
-                         "value":"onaction"
-                        }, 
-                        {
-                         "name":"openWebsiteTriggerMessage",
-                         "type":"string",
-                         "value":"Leertaste: PAST Playground in neuem Tab oeffnen"
-                        }, 
-                        {
-                         "name":"openWebsiteWidth",
-                         "type":"int",
-                         "value":35
+                         "value":"playground\/playground.tmj#entry\/entry-3"
                         }],
                  "rotation":0,
                  "type":"area",
