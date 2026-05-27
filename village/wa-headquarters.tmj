@@ -1563,9 +1563,34 @@
                  "opacity":1,
                  "properties":[
                         {
-                         "name":"exitUrl",
+                         "name":"openWebsite",
                          "type":"string",
-                         "value":"https:\/\/play.workadventu.re\/@\/past-foundation\/past-foundation\/playground#entry\/entry-3"
+                         "value":"past-playground-link.html"
+                        }, 
+                        {
+                         "name":"openWebsiteClosable",
+                         "type":"bool",
+                         "value":true
+                        }, 
+                        {
+                         "name":"openWebsiteLabel",
+                         "type":"string",
+                         "value":"PAST Playground oeffnen"
+                        }, 
+                        {
+                         "name":"openWebsiteTrigger",
+                         "type":"string",
+                         "value":"onaction"
+                        }, 
+                        {
+                         "name":"openWebsiteTriggerMessage",
+                         "type":"string",
+                         "value":"Leertaste: PAST Playground in neuem Tab oeffnen"
+                        }, 
+                        {
+                         "name":"openWebsiteWidth",
+                         "type":"int",
+                         "value":35
                         }],
                  "rotation":0,
                  "type":"area",
@@ -1627,12 +1652,22 @@
                         {
                          "name":"autoOpen",
                          "type":"bool",
-                         "value":true
+                         "value":false
+                        }, 
+                        {
+                         "name":"closeTriggerMessage",
+                         "type":"string",
+                         "value":"Leertaste: Showroom-Tuer schliessen"
                         }, 
                         {
                          "name":"doorVariable",
                          "type":"string",
                          "value":"doorShowroom"
+                        }, 
+                        {
+                         "name":"openTriggerMessage",
+                         "type":"string",
+                         "value":"Leertaste: Showroom-Tuer oeffnen"
                         }, 
                         {
                          "name":"zone",
