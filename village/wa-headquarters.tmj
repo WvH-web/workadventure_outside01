@@ -1565,7 +1565,7 @@
                         {
                          "name":"exitUrl",
                          "type":"string",
-                         "value":"https:\/\/play.workadventu.re\/@\/workspacesky\/100-roads-design\/100-roads-office"
+                         "value":"https:\/\/play.workadventu.re\/@\/past-foundation\/past-foundation\/playground#entry\/entry-3"
                         }],
                  "rotation":0,
                  "type":"area",
@@ -1573,6 +1573,78 @@
                  "width":42.2161,
                  "x":4154.30047618082,
                  "y":2459.04872799171
+                }, 
+                {
+                 "height":0,
+                 "id":1100,
+                 "name":"doorShowroom",
+                 "opacity":1,
+                 "point":true,
+                 "properties":[
+                        {
+                         "name":"closeLayer",
+                         "type":"string",
+                         "value":"conferenceDoor\/closed"
+                        }, 
+                        {
+                         "name":"default",
+                         "type":"bool",
+                         "value":false
+                        }, 
+                        {
+                         "name":"door",
+                         "type":"bool",
+                         "value":true
+                        }, 
+                        {
+                         "name":"openLayer",
+                         "type":"string",
+                         "value":"conferenceDoor\/open"
+                        }, 
+                        {
+                         "name":"persist",
+                         "type":"bool",
+                         "value":true
+                        }],
+                 "rotation":90,
+                 "type":"variable",
+                 "visible":true,
+                 "width":0,
+                 "x":4144,
+                 "y":1696
+                }, 
+                {
+                 "height":64,
+                 "id":1101,
+                 "name":"zone_showroom_door",
+                 "opacity":1,
+                 "properties":[
+                        {
+                         "name":"autoClose",
+                         "type":"bool",
+                         "value":true
+                        }, 
+                        {
+                         "name":"autoOpen",
+                         "type":"bool",
+                         "value":true
+                        }, 
+                        {
+                         "name":"doorVariable",
+                         "type":"string",
+                         "value":"doorShowroom"
+                        }, 
+                        {
+                         "name":"zone",
+                         "type":"string",
+                         "value":"zone_showroom_door"
+                        }],
+                 "rotation":0,
+                 "type":"area",
+                 "visible":true,
+                 "width":96,
+                 "x":4096,
+                 "y":1664
                 }, 
                 {
                  "height":788.902264827063,
@@ -6122,7 +6194,7 @@
          "y":0
         }],
  "nextlayerid":160,
- "nextobjectid":1100,
+ "nextobjectid":1102,
  "orientation":"orthogonal",
  "properties":[
         {
