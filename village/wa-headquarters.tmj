@@ -3125,12 +3125,7 @@
                  "y":1768.66666666667
                 }],
          "opacity":1,
-         "properties":[
-                {
-                 "name":"tag",
-                 "type":"string",
-                 "value":"admin"
-                }],
+         "properties":[],
          "type":"objectgroup",
          "visible":true,
          "x":0,
