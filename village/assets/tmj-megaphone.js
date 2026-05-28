@@ -10,19 +10,19 @@ const MUSEUM_BOARD_OBJECT_LAYER_NAME = "museumBoards";
 const MUSEUM_BOARD_OBJECT_NAME_PATTERN = /^museumBoard_(show([1-9]|1[0-3]))$/;
 const MUSEUM_SHOWROOM_AREA_NAME = "showroom";
 const MUSEUM_BOARD_RECTS = {
-  show1: { x: 4112, y: 2580, width: 145, height: 62 },
-  show2: { x: 4318, y: 2580, width: 145, height: 62 },
-  show3: { x: 4461, y: 2580, width: 145, height: 62 },
-  show4: { x: 4175, y: 2352, width: 145, height: 62 },
-  show5: { x: 4382, y: 2250, width: 145, height: 62 },
-  show6: { x: 4175, y: 2101, width: 145, height: 62 },
-  show7: { x: 4383, y: 2101, width: 145, height: 62 },
-  show8: { x: 4382, y: 1968, width: 145, height: 62 },
-  show9: { x: 4461, y: 1820, width: 145, height: 62 },
-  show10: { x: 4114, y: 1820, width: 145, height: 62 },
-  show11: { x: 4174, y: 1719, width: 145, height: 62 },
-  show12: { x: 4318, y: 1719, width: 145, height: 62 },
-  show13: { x: 4461, y: 1719, width: 145, height: 62 },
+  show1: { x: 4148.12121212121, y: 2561.41666666667, width: 86.7121212121201, height: 60.333333333333 },
+  show2: { x: 4275.75, y: 2561.93181818182, width: 88.9166666666661, height: 61.7348484848485 },
+  show3: { x: 4467.66666666667, y: 2561.25, width: 87.75, height: 61.9166666666665 },
+  show4: { x: 4180.5, y: 2251.33333333333, width: 87.583333333333, height: 61 },
+  show5: { x: 4404.08333333333, y: 2187.16666666667, width: 87.5, height: 62.9166666666665 },
+  show6: { x: 4180.16666666667, y: 2029.16666666667, width: 87.3333333333339, height: 60.3333333333335 },
+  show7: { x: 4404.5, y: 2028.33333333333, width: 86.6666666666661, height: 61.5 },
+  show8: { x: 4403.83333333333, y: 1931.58333333333, width: 87, height: 62.0833333333333 },
+  show9: { x: 4468.08333333333, y: 1836, width: 87.75, height: 61.75 },
+  show10: { x: 4211.5, y: 1793.33333333333, width: 88.583333333333, height: 61.1414141414139 },
+  show11: { x: 4244.08333333333, y: 1707.75, width: 87.5, height: 60.25 },
+  show12: { x: 4357.41666666667, y: 1707.58333333333, width: 86.25, height: 61 },
+  show13: { x: 4468.33333333333, y: 1708.75, width: 86.5, height: 60.3333333333333 },
 };
 const SYNCED_SPACE_PROPERTIES = [
   "cameraState",
@@ -117,12 +117,16 @@ function getMuseumBoardConfigs(layers) {
     return boardLayerConfigs;
   }
 
+  if (Object.keys(MUSEUM_BOARD_RECTS).length > 0) {
+    return Object.entries(MUSEUM_BOARD_RECTS).map(([boardName, rect]) => ({ boardName, rect }));
+  }
+
   const showObjectConfigs = findShowBoardConfigs(layers);
   if (showObjectConfigs.length > 0) {
     return showObjectConfigs;
   }
 
-  return Object.entries(MUSEUM_BOARD_RECTS).map(([boardName, rect]) => ({ boardName, rect }));
+  return [];
 }
 
 function findAreaObject(layers, areaName) {
