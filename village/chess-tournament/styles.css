@@ -222,6 +222,7 @@ th {
   justify-self: center;
   display: grid;
   grid-template-columns: repeat(8, 1fr);
+  grid-template-rows: repeat(8, 1fr);
   width: min(74vh, 100%);
   max-width: 720px;
   aspect-ratio: 1;
@@ -232,13 +233,17 @@ th {
 }
 
 .square {
+  appearance: none;
   display: grid;
   place-items: center;
   position: relative;
   border: 0;
   border-radius: 0;
   padding: 0;
+  width: 100%;
+  height: 100%;
   min-height: 0;
+  overflow: hidden;
   background: var(--board-light);
   color: #151515;
   font-size: clamp(28px, 7vmin, 64px);
@@ -255,6 +260,10 @@ th {
 
 .square.legal::after {
   content: "";
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
   width: 28%;
   aspect-ratio: 1;
   border-radius: 999px;
