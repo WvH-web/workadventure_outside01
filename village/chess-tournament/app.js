@@ -2,13 +2,16 @@ import { Chess } from "https://esm.sh/chess.js@1.0.0";
 
 const STORAGE_KEY = "wvh-chess-tournament-v1";
 const pieces = {
-  p: "♟", r: "♜", n: "♞", b: "♝", q: "♛", k: "♚",
-  P: "♙", R: "♖", N: "♘", B: "♗", Q: "♕", K: "♔"
+  p: "\u265f", r: "\u265c", n: "\u265e", b: "\u265d", q: "\u265b", k: "\u265a",
+  P: "\u2659", R: "\u2656", N: "\u2658", B: "\u2657", Q: "\u2655", K: "\u2654"
 };
 
 const els = {
   playerForm: document.querySelector("#playerForm"),
   playerName: document.querySelector("#playerName"),
+  trainingWhite: document.querySelector("#trainingWhite"),
+  trainingBlack: document.querySelector("#trainingBlack"),
+  startTraining: document.querySelector("#startTraining"),
   standings: document.querySelector("#standings"),
   roundNumber: document.querySelector("#roundNumber"),
   pairings: document.querySelector("#pairings"),
@@ -30,6 +33,7 @@ let state = loadState();
 let selectedPairingId = null;
 let selectedSquare = null;
 let boardFlipped = false;
+let boardMode = state.training ? "training" : "tournament";
 
 render();
 
@@ -52,6 +56,24 @@ els.startRound.addEventListener("click", () => {
   state.round += 1;
   state.rounds.push({ round: state.round, pairings: createPairings() });
   selectedPairingId = state.rounds.at(-1).pairings.find((pairing) => pairing.blackId)?.id || null;
+  boardMode = "tournament";
+  selectedSquare = null;
+  saveAndRender();
+});
+
+els.startTraining.addEventListener("click", () => {
+  state.training = {
+    id: crypto.randomUUID(),
+    whiteName: els.trainingWhite.value.trim() || "Weiss",
+    blackName: els.trainingBlack.value.trim() || "Schwarz",
+    result: null,
+    fen: new Chess().fen(),
+    pgn: "",
+    moves: []
+  };
+  boardMode = "training";
+  selectedPairingId = null;
+  selectedSquare = null;
   saveAndRender();
 });
 
@@ -60,11 +82,14 @@ els.resetTournament.addEventListener("click", () => {
   state = defaultState();
   selectedPairingId = null;
   selectedSquare = null;
+  boardMode = "tournament";
   saveAndRender();
 });
 
 els.exportPgn.addEventListener("click", async () => {
-  const text = state.rounds.flatMap((round) => round.pairings.map((pairing) => pairing.pgn).filter(Boolean)).join("\n\n");
+  const tournamentPgn = state.rounds.flatMap((round) => round.pairings.map((pairing) => pairing.pgn).filter(Boolean));
+  const trainingPgn = state.training?.pgn ? [state.training.pgn] : [];
+  const text = [...tournamentPgn, ...trainingPgn].join("\n\n");
   await navigator.clipboard.writeText(text || "Noch keine Partien.");
 });
 
@@ -78,12 +103,13 @@ els.whiteWins.addEventListener("click", () => setManualResult("1-0"));
 els.blackWins.addEventListener("click", () => setManualResult("0-1"));
 
 function defaultState() {
-  return { round: 0, players: [], rounds: [] };
+  return { round: 0, players: [], rounds: [], training: null };
 }
 
 function loadState() {
   try {
-    return JSON.parse(localStorage.getItem(STORAGE_KEY)) || defaultState();
+    const loaded = JSON.parse(localStorage.getItem(STORAGE_KEY));
+    return loaded ? { ...defaultState(), ...loaded } : defaultState();
   } catch {
     return defaultState();
   }
@@ -189,7 +215,7 @@ function renderPairings() {
   els.roundNumber.textContent = String(state.round);
   const pairings = currentRound();
   if (!pairings.length) {
-    els.pairings.innerHTML = '<div class="empty">Teilnehmer eintragen und die erste Runde starten.</div>';
+    els.pairings.innerHTML = '<div class="empty">Teilnehmer eintragen und die erste Runde starten oder oben ein Training beginnen.</div>';
     return;
   }
   els.pairings.innerHTML = pairings.map((pairing) => {
@@ -218,6 +244,7 @@ function renderPairings() {
   els.pairings.querySelectorAll("[data-open]").forEach((button) => {
     button.addEventListener("click", () => {
       selectedPairingId = button.dataset.open;
+      boardMode = "tournament";
       selectedSquare = null;
       renderBoard();
     });
@@ -234,20 +261,30 @@ function activePairing() {
   return currentRound().find((pairing) => pairing.id === selectedPairingId) || currentRound().find((pairing) => pairing.blackId) || null;
 }
 
-function activeGame() {
+function activeSession() {
+  if (boardMode === "training" && state.training) {
+    return { mode: "training", gameData: state.training };
+  }
   const pairing = activePairing();
-  if (!pairing?.fen) return null;
+  if (pairing) return { mode: "tournament", gameData: pairing };
+  if (state.training) return { mode: "training", gameData: state.training };
+  return null;
+}
+
+function activeGame() {
+  const session = activeSession();
+  if (!session?.gameData?.fen) return null;
   const game = new Chess();
-  for (const move of pairing.moves || []) {
+  for (const move of session.gameData.moves || []) {
     game.move(move);
   }
   return game;
 }
 
 function renderBoard() {
-  const pairing = activePairing();
+  const session = activeSession();
   const game = activeGame();
-  if (!pairing || !game) {
+  if (!session || !game) {
     els.boardTitle.textContent = "Brett";
     els.boardRound.textContent = "Keine Partie";
     els.gameStatus.textContent = "Bereit";
@@ -256,12 +293,13 @@ function renderBoard() {
     return;
   }
 
-  selectedPairingId = pairing.id;
-  const white = playerById(pairing.whiteId)?.name || "Weiss";
-  const black = playerById(pairing.blackId)?.name || "Schwarz";
+  const data = session.gameData;
+  if (session.mode === "tournament") selectedPairingId = data.id;
+  const white = session.mode === "training" ? data.whiteName : playerById(data.whiteId)?.name || "Weiss";
+  const black = session.mode === "training" ? data.blackName : playerById(data.blackId)?.name || "Schwarz";
   els.boardTitle.textContent = `${white} - ${black}`;
-  els.boardRound.textContent = `Runde ${state.round}`;
-  els.gameStatus.textContent = pairing.result || statusText(game);
+  els.boardRound.textContent = session.mode === "training" ? "Training" : `Runde ${state.round}`;
+  els.gameStatus.textContent = data.result || statusText(game);
 
   const board = game.board();
   const ranks = boardFlipped ? [0, 1, 2, 3, 4, 5, 6, 7] : [7, 6, 5, 4, 3, 2, 1, 0];
@@ -292,9 +330,9 @@ function renderBoard() {
 }
 
 function onSquareClick(event) {
-  const pairing = activePairing();
+  const session = activeSession();
   const game = activeGame();
-  if (!pairing || !game || pairing.result) return;
+  if (!session || !game || session.gameData.result) return;
   const square = event.currentTarget.dataset.square;
   if (!selectedSquare) {
     const piece = game.get(square);
@@ -305,10 +343,10 @@ function onSquareClick(event) {
 
   const move = game.move({ from: selectedSquare, to: square, promotion: "q" });
   if (move) {
-    pairing.fen = game.fen();
-    pairing.pgn = game.pgn();
-    pairing.moves = game.history();
-    pairing.result = gameResult(game);
+    session.gameData.fen = game.fen();
+    session.gameData.pgn = game.pgn();
+    session.gameData.moves = game.history();
+    session.gameData.result = gameResult(game);
     selectedSquare = null;
     saveAndRender();
     return;
@@ -334,9 +372,14 @@ function statusText(game) {
 }
 
 function setManualResult(result) {
-  const pairing = activePairing();
-  if (!pairing) return;
-  setResult(pairing.id, result);
+  const session = activeSession();
+  if (!session) return;
+  if (session.mode === "training") {
+    session.gameData.result = result;
+    saveAndRender();
+    return;
+  }
+  setResult(session.gameData.id, result);
 }
 
 function setResult(id, result) {
