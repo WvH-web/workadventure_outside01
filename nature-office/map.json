@@ -7661,7 +7661,7 @@
     {
      "name": "exitUrl",
      "type": "string",
-     "value": "{{{ exitWestURL }}}"
+     "value": "../village/wa-headquarters.tmj"
     }
    ],
    "type": "tilelayer",
@@ -59106,12 +59106,12 @@
       {
        "name": "default",
        "type": "string",
-       "value": ""
+       "value": "../village/wa-headquarters.tmj"
       },
       {
        "name": "description",
        "type": "string",
-       "value": "A room URL starts with \"/@/\".\ne.g.: \"/@/my-organization/my-world/my-room\""
+       "value": "Ruecksprung zur Headquarters-Map"
       },
       {
        "name": "label",
@@ -74966,7 +74966,7 @@
      "colors": [
       {
        "color": "#ff0000",
-       "name": "",
+       "name": "grass",
        "probability": 1,
        "tile": 291
       }
@@ -75150,7 +75150,7 @@
      "colors": [
       {
        "color": "#ff0000",
-       "name": "",
+       "name": "water-grass",
        "probability": 1,
        "tile": 687
       }
