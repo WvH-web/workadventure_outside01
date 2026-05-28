@@ -3028,6 +3028,54 @@
                  "width":361.856,
                  "x":4553.072,
                  "y":1297.049
+                }, 
+                {
+                 "height":335.235333333334,
+                 "id":1107,
+                 "name":"Chessarea01",
+                 "opacity":1,
+                 "properties":[
+                        {
+                         "name":"openWebsite",
+                         "type":"string",
+                         "value":"chess-tournament\/index.html"
+                        }, 
+                        {
+                         "name":"openWebsiteClosable",
+                         "type":"bool",
+                         "value":true
+                        }, 
+                        {
+                         "name":"openWebsiteLabel",
+                         "type":"string",
+                         "value":"Schachturnier \u00f6ffnen"
+                        }, 
+                        {
+                         "name":"openWebsitePolicy",
+                         "type":"string",
+                         "value":"clipboard-write; fullscreen"
+                        }, 
+                        {
+                         "name":"openWebsiteTrigger",
+                         "type":"string",
+                         "value":"onaction"
+                        }, 
+                        {
+                         "name":"openWebsiteTriggerMessage",
+                         "type":"string",
+                         "value":"Schachturnier \u00f6ffnen"
+                        }, 
+                        {
+                         "name":"openWebsiteWidth",
+                         "type":"int",
+                         "value":60
+                        }],
+                 "rotation":0,
+                 "type":"area",
+                 "visible":true,
+                 "width":589.189333333333,
+                 "x":233.738666666667,
+                 "y":1989.71566666667
                 }],
          "opacity":1,
          "type":"objectgroup",
@@ -6433,7 +6481,7 @@
          "y":0
         }],
  "nextlayerid":160,
- "nextobjectid":1107,
+ "nextobjectid":1108,
  "orientation":"orthogonal",
  "properties":[
         {

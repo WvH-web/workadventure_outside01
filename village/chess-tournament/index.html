@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>WvH Schachturnier</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <main class="app-shell">
+    <section class="panel tournament-panel">
+      <header class="panel-header">
+        <div>
+          <p class="eyebrow">WvH</p>
+          <h1>Schachturnier</h1>
+        </div>
+        <button id="resetTournament" class="ghost danger" type="button">Reset</button>
+      </header>
+
+      <form id="playerForm" class="player-form">
+        <input id="playerName" autocomplete="off" maxlength="32" placeholder="Name eintragen" required>
+        <button type="submit">Beitreten</button>
+      </form>
+
+      <div class="controls">
+        <button id="startRound" type="button">Naechste Runde</button>
+        <button id="exportPgn" class="ghost" type="button">PGN kopieren</button>
+      </div>
+
+      <section>
+        <h2>Tabelle</h2>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>#</th>
+                <th>Name</th>
+                <th>Punkte</th>
+                <th>Spiele</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody id="standings"></tbody>
+          </table>
+        </div>
+      </section>
+
+      <section>
+        <h2>Runde <span id="roundNumber">0</span></h2>
+        <div id="pairings" class="pairings"></div>
+      </section>
+    </section>
+
+    <section class="panel board-panel">
+      <header class="panel-header">
+        <div>
+          <p class="eyebrow" id="boardRound">Keine Partie</p>
+          <h1 id="boardTitle">Brett</h1>
+        </div>
+        <span id="gameStatus" class="status-pill">Bereit</span>
+      </header>
+
+      <div id="board" class="chess-board" aria-label="Schachbrett"></div>
+
+      <div class="game-controls">
+        <button id="flipBoard" class="ghost" type="button">Brett drehen</button>
+        <button id="drawGame" class="ghost" type="button">Remis</button>
+        <button id="whiteWins" class="ghost" type="button">Weiss gewinnt</button>
+        <button id="blackWins" class="ghost" type="button">Schwarz gewinnt</button>
+      </div>
+
+      <section class="move-panel">
+        <h2>Notation</h2>
+        <ol id="moveList" class="move-list"></ol>
+      </section>
+    </section>
+  </main>
+
+  <script type="module" src="app.js"></script>
+</body>
+</html>
