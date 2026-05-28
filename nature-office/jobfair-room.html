@@ -1,0 +1,274 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Jobmesse Raum</title>
+  <style>
+    :root {
+      color-scheme: light;
+      font-family: Arial, Helvetica, sans-serif;
+      --green: #0f7f66;
+      --green-dark: #0b5f4d;
+      --gold: #f2c14e;
+      --blue: #235789;
+      --ink: #12201d;
+      --muted: #5c6965;
+      --line: #d8e1dd;
+      --surface: #eef4f1;
+      --white: #ffffff;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      background:
+        linear-gradient(135deg, rgba(15, 127, 102, 0.12), rgba(35, 87, 137, 0.08)),
+        var(--surface);
+      color: var(--ink);
+    }
+
+    .room {
+      min-height: 100vh;
+      display: grid;
+      grid-template-rows: auto minmax(360px, 1fr) minmax(176px, 28vh);
+      gap: 12px;
+      padding: 12px;
+    }
+
+    .panel {
+      background: var(--white);
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      overflow: hidden;
+      box-shadow: 0 16px 40px rgba(18, 32, 29, 0.12);
+    }
+
+    header.panel {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 16px 18px;
+      border-top: 5px solid var(--green);
+    }
+
+    .eyebrow {
+      margin: 0 0 4px;
+      color: var(--blue);
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0;
+      text-transform: uppercase;
+    }
+
+    h1 {
+      margin: 0;
+      font-size: clamp(22px, 3vw, 34px);
+      line-height: 1.05;
+    }
+
+    .job {
+      margin: 6px 0 0;
+      color: var(--muted);
+      font-size: 16px;
+      font-weight: 700;
+    }
+
+    .room-name {
+      flex: 0 0 auto;
+      padding: 9px 12px;
+      border-radius: 999px;
+      background: #e8f2ee;
+      color: var(--green-dark);
+      font-size: 13px;
+      font-weight: 700;
+      white-space: nowrap;
+    }
+
+    .meeting {
+      display: grid;
+      grid-template-rows: auto 1fr;
+    }
+
+    .section-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 10px 12px;
+      border-bottom: 1px solid var(--line);
+      background: #fbfdfc;
+    }
+
+    .section-head strong {
+      font-size: 14px;
+    }
+
+    .section-head span {
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    iframe {
+      display: block;
+      width: 100%;
+      height: 100%;
+      border: 0;
+      background: #fff;
+    }
+
+    .website {
+      display: grid;
+      grid-template-rows: auto 1fr;
+    }
+
+    .website-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 10px 12px;
+      border-bottom: 1px solid var(--line);
+      background: #fbfdfc;
+    }
+
+    .website-title {
+      min-width: 0;
+    }
+
+    .website-title strong,
+    .website-title span {
+      display: block;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .website-title span {
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    a.button {
+      flex: 0 0 auto;
+      border-radius: 7px;
+      background: var(--green);
+      color: #fff;
+      padding: 9px 12px;
+      font-weight: 700;
+      text-decoration: none;
+    }
+
+    a.button.secondary {
+      background: var(--blue);
+    }
+
+    @media (max-width: 720px) {
+      .room {
+        grid-template-rows: auto minmax(300px, 1fr) minmax(140px, 24vh);
+        padding: 8px;
+      }
+
+      header.panel {
+        align-items: flex-start;
+        flex-direction: column;
+      }
+
+      .room-name {
+        white-space: normal;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="room">
+    <header class="panel">
+      <div>
+        <p class="eyebrow">Jobmesse</p>
+        <h1 id="speaker">Referent</h1>
+        <p class="job" id="job">Jobbezeichnung</p>
+      </div>
+      <div class="room-name" id="roomName">Mirotalk-Raum</div>
+    </header>
+
+    <section class="panel meeting" aria-label="Mirotalk-Raum">
+      <div class="section-head">
+        <strong>Live-Gespräch</strong>
+        <span>Kamera und Mikrofon erst nach Eintritt aktivieren</span>
+      </div>
+      <iframe id="mirotalk" title="Mirotalk-Raum" allow="camera; microphone; display-capture; fullscreen; autoplay; clipboard-write; encrypted-media; picture-in-picture"></iframe>
+    </section>
+
+    <section class="panel website" aria-label="Verlinkte Webseite">
+      <div class="website-bar">
+        <div class="website-title">
+          <strong id="websiteLabel">Webseite</strong>
+          <span id="websiteUrl"></span>
+        </div>
+        <a class="button secondary" id="websiteLink" target="_blank" rel="noopener">Extern oeffnen</a>
+      </div>
+      <iframe id="websiteFrame" title="Verlinkte Webseite" allow="fullscreen; autoplay; clipboard-write; encrypted-media; picture-in-picture"></iframe>
+    </section>
+  </main>
+
+  <script>
+    const params = new URLSearchParams(window.location.search);
+    const getParam = (name, fallback) => params.get(name) || fallback;
+
+    function applyStand(stand) {
+      const room = stand.room || "WvHNatureOffice";
+      const speaker = stand.speaker || "Referent";
+      const job = stand.job || "Jobbezeichnung";
+      const website = stand.website || "https://deine-schule.com/";
+      const websiteLabel = stand.websiteLabel || "Weitere Informationen";
+      const mirotalk = stand.mirotalk || `https://p2p.mirotalk.com/join/${room}`;
+
+      document.title = `${speaker} - ${job}`;
+      document.getElementById("speaker").textContent = speaker;
+      document.getElementById("job").textContent = job;
+      document.getElementById("roomName").textContent = room;
+      document.getElementById("mirotalk").src = mirotalk;
+      document.getElementById("websiteLabel").textContent = websiteLabel;
+      document.getElementById("websiteUrl").textContent = website;
+      document.getElementById("websiteLink").href = website;
+      document.getElementById("websiteFrame").src = website;
+    }
+
+    async function loadStand() {
+      const fallback = {
+        room: getParam("room", "WvHNatureOffice"),
+        speaker: getParam("speaker", "Referent"),
+        job: getParam("job", "Jobbezeichnung"),
+        website: getParam("website", "https://deine-schule.com/"),
+        websiteLabel: getParam("websiteLabel", "Weitere Informationen"),
+        mirotalk: getParam("mirotalk", "")
+      };
+
+      const standId = getParam("stand", "");
+      const source = getParam("source", "jobfair-stands.json");
+      if (!standId) {
+        applyStand(fallback);
+        return;
+      }
+
+      try {
+        const response = await fetch(source, { cache: "no-store" });
+        if (!response.ok) throw new Error(`HTTP ${response.status}`);
+        const data = await response.json();
+        const stand = (data.stands || []).find(item => item.id === standId);
+        applyStand({ ...fallback, ...(stand || {}) });
+      } catch (error) {
+        console.warn("Messestand-Daten konnten nicht geladen werden.", error);
+        applyStand(fallback);
+      }
+    }
+
+    loadStand();
+  </script>
+</body>
+</html>

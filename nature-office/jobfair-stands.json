@@ -1,0 +1,58 @@
+{
+  "stands": [
+    {
+      "id": "GreenStation",
+      "speaker": "Referent eintragen",
+      "job": "Jobbezeichnung eintragen",
+      "room": "WvHNatureOffice-GreenStation",
+      "mirotalk": "https://p2p.mirotalk.com/join/WvHNatureOffice-GreenStation",
+      "websiteLabel": "Webseite zum Beruf",
+      "website": "https://deine-schule.com/"
+    },
+    {
+      "id": "TempoTerritory",
+      "speaker": "Referent eintragen",
+      "job": "Jobbezeichnung eintragen",
+      "room": "WvHNatureOffice-TempoTerritory",
+      "mirotalk": "https://p2p.mirotalk.com/join/WvHNatureOffice-TempoTerritory",
+      "websiteLabel": "Webseite zum Beruf",
+      "website": "https://deine-schule.com/"
+    },
+    {
+      "id": "SpiderSkull",
+      "speaker": "Referent eintragen",
+      "job": "Jobbezeichnung eintragen",
+      "room": "WvHNatureOffice-SpiderSkull",
+      "mirotalk": "https://p2p.mirotalk.com/join/WvHNatureOffice-SpiderSkull",
+      "websiteLabel": "Webseite zum Beruf",
+      "website": "https://deine-schule.com/"
+    },
+    {
+      "id": "LafayetteSquare",
+      "speaker": "Referent eintragen",
+      "job": "Jobbezeichnung eintragen",
+      "room": "WvHNatureOffice-LafayetteSquare",
+      "mirotalk": "https://p2p.mirotalk.com/join/WvHNatureOffice-LafayetteSquare",
+      "websiteLabel": "Webseite zum Beruf",
+      "website": "https://deine-schule.com/"
+    },
+    {
+      "id": "PeanutButter",
+      "speaker": "Referent eintragen",
+      "job": "Jobbezeichnung eintragen",
+      "room": "WvHNatureOffice-PeanutButter",
+      "mirotalk": "https://p2p.mirotalk.com/join/WvHNatureOffice-PeanutButter",
+      "websiteLabel": "Webseite zum Beruf",
+      "website": "https://deine-schule.com/"
+    },
+    {
+      "id": "BeyondTrust",
+      "speaker": "Referent eintragen",
+      "job": "Jobbezeichnung eintragen",
+      "room": "WvHNatureOffice-BeyondTrust",
+      "mirotalk": "https://p2p.mirotalk.com/join/WvHNatureOffice-BeyondTrust",
+      "websiteLabel": "Webseite zum Beruf",
+      "website": "https://deine-schule.com/"
+    }
+  ]
+}
