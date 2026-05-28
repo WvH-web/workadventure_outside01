@@ -318,7 +318,10 @@ function renderBoard() {
       button.type = "button";
       button.className = `square ${((fileIndex + rankIndex) % 2 ? "dark" : "light")}`;
       if (square === selectedSquare) button.classList.add("selected");
-      if (target) button.classList.add("legal", target.captured ? "capture" : "");
+      if (target) {
+        button.classList.add("legal");
+        if (target.captured) button.classList.add("capture");
+      }
       button.dataset.square = square;
       button.textContent = piece ? pieces[piece.color === "w" ? piece.type.toUpperCase() : piece.type] : "";
       button.addEventListener("click", onSquareClick);
