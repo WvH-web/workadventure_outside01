@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="de">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <style>
+      html,
+      body {
+        width: 100%;
+        height: 100%;
+        margin: 0;
+        overflow: hidden;
+        background: transparent;
+        pointer-events: none;
+      }
+
+      img {
+        width: 100%;
+        height: 100%;
+        display: block;
+        object-fit: contain;
+        object-position: center;
+        background: transparent;
+        pointer-events: none;
+      }
+    </style>
+  </head>
+  <body>
+    <img alt="" hidden />
+    <script>
+      const API_URL =
+        "https://deutsche-online-schule.com/schooltools/verwaltung/api/workadventure_museum.php";
+
+      const params = new URLSearchParams(window.location.search);
+      const board = params.get("board");
+      const image = document.querySelector("img");
+
+      async function loadBoardImage() {
+        if (!board || !/^show([1-9]|1[0-3])$/.test(board)) {
+          return;
+        }
+
+        const url = new URL(API_URL);
+        url.searchParams.set("board", board);
+        url.searchParams.set("_", String(Date.now()));
+
+        const response = await fetch(url.toString(), { cache: "no-store" });
+        if (!response.ok) {
+          throw new Error(`Museum API returned ${response.status}`);
+        }
+
+        const data = await response.json();
+        const imageUrl = data?.item?.image_url;
+        if (typeof imageUrl !== "string" || imageUrl.trim() === "") {
+          return;
+        }
+
+        image.src = imageUrl;
+        image.hidden = false;
+      }
+
+      loadBoardImage().catch((error) => {
+        console.error("Could not load museum board image", error);
+      });
+    </script>
+  </body>
+</html>

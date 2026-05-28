@@ -2,6 +2,8 @@ import "./main-1d30c8f5.js";
 
 const MEGAPHONE_LAYER_NAME = "megaphoneZones";
 const SPEAKER_BADGE_URL = new URL("megaphone-speaker-badge.html", import.meta.url).toString();
+const MUSEUM_BOARD_URL = new URL("museum-board.html", import.meta.url).toString();
+const MUSEUM_BOARD_NAME_PATTERN = /^show([1-9]|1[0-3])$/;
 const SYNCED_SPACE_PROPERTIES = [
   "cameraState",
   "microphoneState",
@@ -37,6 +39,46 @@ function findMegaphoneObjects(layers, result = []) {
     }
   }
   return result;
+}
+
+function findMuseumBoardObjects(layers, result = []) {
+  for (const layer of layers || []) {
+    if (layer.type === "group") {
+      findMuseumBoardObjects(layer.layers, result);
+      continue;
+    }
+
+    if (layer.type !== "objectgroup") {
+      continue;
+    }
+
+    for (const object of layer.objects || []) {
+      if (MUSEUM_BOARD_NAME_PATTERN.test(object.name || "") && object.width && object.height) {
+        result.push(object);
+      }
+    }
+  }
+  return result;
+}
+
+async function renderMuseumBoard(object) {
+  const name = `museum-board-${object.name}`;
+  const url = new URL(MUSEUM_BOARD_URL);
+  url.searchParams.set("board", object.name);
+
+  await WA.room.website.delete(name).catch(() => undefined);
+  WA.room.website.create({
+    name,
+    url: url.toString(),
+    position: {
+      x: object.x,
+      y: object.y,
+      width: object.width,
+      height: object.height,
+    },
+    visible: true,
+    origin: "map",
+  });
 }
 
 async function showSpeakerBadge() {
@@ -147,3 +189,13 @@ WA.onInit()
     console.info(`TMJ megaphone zones ready: ${megaphoneObjects.length}`);
   })
   .catch((error) => console.error("TMJ megaphone initialization failed", error));
+
+WA.onInit()
+  .then(async () => {
+    const map = await WA.room.getTiledMap();
+    const boardObjects = findMuseumBoardObjects(map.layers);
+
+    await Promise.all(boardObjects.map((object) => renderMuseumBoard(object)));
+    console.info(`Museum showroom boards ready: ${boardObjects.length}`);
+  })
+  .catch((error) => console.error("Museum showroom board initialization failed", error));
