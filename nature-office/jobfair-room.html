@@ -250,7 +250,7 @@
       };
 
       const standId = getParam("stand", "");
-      const source = getParam("source", "jobfair-stands.json");
+      const source = getParam("source", "https://deutsche-online-schule.com/schooltools/verwaltung/api/workadventure_jobfair.php");
       if (!standId) {
         applyStand(fallback);
         return;
