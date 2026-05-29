@@ -59,7 +59,7 @@
          "width":54,
          "x":0,
          "y":0
-        },
+        }, 
         {
          "data":[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
             0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
@@ -123,7 +123,7 @@
          "width":54,
          "x":0,
          "y":0
-        },
+        }, 
         {
          "data":[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
             0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
@@ -181,7 +181,7 @@
          "width":54,
          "x":0,
          "y":0
-        },
+        }, 
         {
          "data":[3364, 3364, 3364, 3364, 3364, 3364, 3364, 3364, 3364, 3364, 3364, 3364, 3364, 3364, 3364, 3364, 3364, 3364, 3364, 3364, 3364, 3364, 3364, 3364, 3364, 3364, 3364, 3364, 3364, 3364, 3364, 3364, 3364, 3364, 3364, 3364, 3364, 3364, 3364, 3364, 3364, 3364, 3364, 3364, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
             3364, 3364, 3364, 3364, 3364, 3364, 3364, 3364, 3364, 3364, 3364, 3364, 3364, 3364, 3364, 3364, 3364, 3364, 3364, 3364, 3364, 3364, 3364, 3364, 3364, 3364, 3364, 3364, 3364, 3364, 3364, 3364, 3364, 3364, 3364, 3364, 3364, 3364, 3364, 3364, 3364, 3364, 3364, 3364, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
@@ -239,7 +239,7 @@
          "width":54,
          "x":0,
          "y":0
-        },
+        }, 
         {
          "data":[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 6392, 6392, 6392, 6392, 6392, 6392, 6392, 6392, 6392, 6392,
             0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 6392, 6392, 6392, 6392, 6392, 6392, 6392, 6392, 6392, 6392,
@@ -297,7 +297,7 @@
          "width":54,
          "x":0,
          "y":0
-        },
+        }, 
         {
          "data":[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
             0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
@@ -355,7 +355,7 @@
          "width":54,
          "x":0,
          "y":0
-        },
+        }, 
         {
          "data":[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
             0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
@@ -413,7 +413,7 @@
          "width":54,
          "x":0,
          "y":0
-        },
+        }, 
         {
          "data":[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 6453, 0, 0, 0, 0, 0, 0, 0, 0, 0,
             0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 6452, 6453, 0, 0, 0, 0, 0, 0, 0, 0,
@@ -471,7 +471,7 @@
          "width":54,
          "x":0,
          "y":0
-        },
+        }, 
         {
          "data":[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 6787, 6788, 6789, 0, 0, 0,
             0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 6755, 6725, 6788, 6724, 6757, 0, 0,
@@ -529,7 +529,7 @@
          "width":54,
          "x":0,
          "y":0
-        },
+        }, 
         {
          "data":[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
             0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
@@ -587,7 +587,7 @@
          "width":54,
          "x":0,
          "y":0
-        },
+        }, 
         {
          "data":[2543, 2527, 2527, 2527, 2527, 2527, 2527, 2527, 2527, 2527, 2527, 2527, 2527, 2527, 2527, 2147486191, 2527, 2527, 2527, 2527, 2527, 2527, 2527, 2527, 2527, 2527, 2527, 2527, 2527, 2527, 2527, 2527, 2527, 2527, 2527, 2527, 2527, 2527, 2527, 2527, 2527, 2527, 2528, 2428, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
             2622, 2567, 2567, 2567, 2567, 2567, 2567, 2567, 2567, 2567, 2567, 2567, 2567, 2567, 2567, 2622, 2567, 2567, 2567, 2567, 2567, 2567, 2567, 2567, 2567, 2567, 2567, 2567, 2567, 2567, 2567, 2567, 2567, 2567, 2567, 2567, 2567, 2567, 2567, 2567, 2567, 2567, 2568, 2622, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
@@ -645,7 +645,7 @@
          "width":54,
          "x":0,
          "y":0
-        },
+        }, 
         {
          "data":[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
             0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
@@ -703,7 +703,7 @@
          "width":54,
          "x":0,
          "y":0
-        },
+        }, 
         {
          "data":[0, 0, 3695, 3696, 0, 0, 0, 0, 0, 3695, 3696, 0, 0, 0, 0, 0, 0, 0, 0, 3695, 3696, 0, 0, 0, 0, 0, 0, 0, 0, 3695, 3696, 0, 0, 0, 0, 0, 0, 3695, 3696, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
             0, 0, 3711, 3712, 0, 0, 0, 0, 0, 3711, 3712, 0, 0, 0, 0, 0, 0, 0, 0, 3711, 3712, 0, 0, 0, 0, 0, 0, 0, 0, 3711, 3712, 0, 0, 0, 0, 0, 0, 3711, 3712, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
@@ -761,7 +761,7 @@
          "width":54,
          "x":0,
          "y":0
-        },
+        }, 
         {
          "data":[0, 2495, 2495, 2495, 2495, 2495, 2495, 2495, 2495, 2495, 2495, 2495, 2495, 2495, 2495, 0, 2495, 2495, 2495, 2495, 2495, 2495, 2495, 2495, 2495, 2495, 2495, 2495, 2495, 2495, 2495, 2495, 2495, 2495, 2495, 2495, 2495, 2495, 2495, 2495, 2495, 2495, 2495, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
             0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
@@ -819,7 +819,7 @@
          "width":54,
          "x":0,
          "y":0
-        },
+        }, 
         {
          "data":[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
             0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
@@ -877,7 +877,7 @@
          "width":54,
          "x":0,
          "y":0
-        },
+        }, 
         {
          "data":[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
             0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
@@ -935,7 +935,7 @@
          "width":54,
          "x":0,
          "y":0
-        },
+        }, 
         {
          "data":[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
             0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
@@ -993,7 +993,7 @@
          "width":54,
          "x":0,
          "y":0
-        },
+        }, 
         {
          "data":[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
             0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4320, 4321, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4838, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
@@ -1051,7 +1051,7 @@
          "width":54,
          "x":0,
          "y":0
-        },
+        }, 
         {
          "data":[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
             0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
@@ -1109,7 +1109,7 @@
          "width":54,
          "x":0,
          "y":0
-        },
+        }, 
         {
          "data":[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
             0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
@@ -1167,7 +1167,7 @@
          "width":54,
          "x":0,
          "y":0
-        },
+        }, 
         {
          "data":[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
             0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
@@ -1231,7 +1231,7 @@
          "width":54,
          "x":0,
          "y":0
-        },
+        }, 
         {
          "data":[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
             0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
@@ -1289,7 +1289,7 @@
                  "name":"openConfigAdminTag",
                  "type":"string",
                  "value":"admin"
-                },
+                }, 
                 {
                  "name":"zone",
                  "type":"string",
@@ -1300,7 +1300,7 @@
          "width":54,
          "x":0,
          "y":0
-        },
+        }, 
         {
          "draworder":"topdown",
          "id":2,
@@ -1316,42 +1316,42 @@
                          "name":"meetingRoomLabel",
                          "type":"string",
                          "value":"Adventure 01"
-                        },
+                        }, 
                         {
                          "name":"openWebsite",
                          "type":"string",
                          "value":"jobfair-room.html?stand=Adventure01"
-                        },
+                        }, 
                         {
                          "name":"openWebsiteClosable",
                          "type":"bool",
                          "value":true
-                        },
+                        }, 
                         {
                          "name":"openWebsiteLabel",
                          "type":"string",
                          "value":"Messestand oeffnen"
-                        },
+                        }, 
                         {
                          "name":"openWebsitePolicy",
                          "type":"string",
                          "value":"fullscreen; camera; microphone; display-capture; autoplay; clipboard-write; encrypted-media; picture-in-picture"
-                        },
+                        }, 
                         {
                          "name":"openWebsiteTrigger",
                          "type":"string",
                          "value":"onaction"
-                        },
+                        }, 
                         {
                          "name":"openWebsiteTriggerMessage",
                          "type":"string",
                          "value":"Leertaste: Messestand oeffnen"
-                        },
+                        }, 
                         {
                          "name":"openWebsiteWidth",
                          "type":"int",
                          "value":60
-                        },
+                        }, 
                         {
                          "name":"standId",
                          "type":"string",
@@ -1363,7 +1363,7 @@
                  "width":192,
                  "x":32,
                  "y":64
-                },
+                }, 
                 {
                  "height":192,
                  "id":20,
@@ -1374,42 +1374,42 @@
                          "name":"meetingRoomLabel",
                          "type":"string",
                          "value":"Adventure 02"
-                        },
+                        }, 
                         {
                          "name":"openWebsite",
                          "type":"string",
                          "value":"jobfair-room.html?stand=Adventure02"
-                        },
+                        }, 
                         {
                          "name":"openWebsiteClosable",
                          "type":"bool",
                          "value":true
-                        },
+                        }, 
                         {
                          "name":"openWebsiteLabel",
                          "type":"string",
                          "value":"Messestand oeffnen"
-                        },
+                        }, 
                         {
                          "name":"openWebsitePolicy",
                          "type":"string",
                          "value":"fullscreen; camera; microphone; display-capture; autoplay; clipboard-write; encrypted-media; picture-in-picture"
-                        },
+                        }, 
                         {
                          "name":"openWebsiteTrigger",
                          "type":"string",
                          "value":"onaction"
-                        },
+                        }, 
                         {
                          "name":"openWebsiteTriggerMessage",
                          "type":"string",
                          "value":"Leertaste: Messestand oeffnen"
-                        },
+                        }, 
                         {
                          "name":"openWebsiteWidth",
                          "type":"int",
                          "value":60
-                        },
+                        }, 
                         {
                          "name":"standId",
                          "type":"string",
@@ -1421,7 +1421,7 @@
                  "width":192,
                  "x":288,
                  "y":64
-                },
+                }, 
                 {
                  "height":160,
                  "id":21,
@@ -1432,42 +1432,42 @@
                          "name":"meetingRoomLabel",
                          "type":"string",
                          "value":"Adventure 03"
-                        },
+                        }, 
                         {
                          "name":"openWebsite",
                          "type":"string",
                          "value":"jobfair-room.html?stand=Adventure03"
-                        },
+                        }, 
                         {
                          "name":"openWebsiteClosable",
                          "type":"bool",
                          "value":true
-                        },
+                        }, 
                         {
                          "name":"openWebsiteLabel",
                          "type":"string",
                          "value":"Messestand oeffnen"
-                        },
+                        }, 
                         {
                          "name":"openWebsitePolicy",
                          "type":"string",
                          "value":"fullscreen; camera; microphone; display-capture; autoplay; clipboard-write; encrypted-media; picture-in-picture"
-                        },
+                        }, 
                         {
                          "name":"openWebsiteTrigger",
                          "type":"string",
                          "value":"onaction"
-                        },
+                        }, 
                         {
                          "name":"openWebsiteTriggerMessage",
                          "type":"string",
                          "value":"Leertaste: Messestand oeffnen"
-                        },
+                        }, 
                         {
                          "name":"openWebsiteWidth",
                          "type":"int",
                          "value":60
-                        },
+                        }, 
                         {
                          "name":"standId",
                          "type":"string",
@@ -1479,7 +1479,7 @@
                  "width":288,
                  "x":512,
                  "y":64
-                },
+                }, 
                 {
                  "height":160,
                  "id":22,
@@ -1490,42 +1490,42 @@
                          "name":"meetingRoomLabel",
                          "type":"string",
                          "value":"Adventure 04"
-                        },
+                        }, 
                         {
                          "name":"openWebsite",
                          "type":"string",
                          "value":"jobfair-room.html?stand=Adventure04"
-                        },
+                        }, 
                         {
                          "name":"openWebsiteClosable",
                          "type":"bool",
                          "value":true
-                        },
+                        }, 
                         {
                          "name":"openWebsiteLabel",
                          "type":"string",
                          "value":"Messestand oeffnen"
-                        },
+                        }, 
                         {
                          "name":"openWebsitePolicy",
                          "type":"string",
                          "value":"fullscreen; camera; microphone; display-capture; autoplay; clipboard-write; encrypted-media; picture-in-picture"
-                        },
+                        }, 
                         {
                          "name":"openWebsiteTrigger",
                          "type":"string",
                          "value":"onaction"
-                        },
+                        }, 
                         {
                          "name":"openWebsiteTriggerMessage",
                          "type":"string",
                          "value":"Leertaste: Messestand oeffnen"
-                        },
+                        }, 
                         {
                          "name":"openWebsiteWidth",
                          "type":"int",
                          "value":60
-                        },
+                        }, 
                         {
                          "name":"standId",
                          "type":"string",
@@ -1537,7 +1537,7 @@
                  "width":480,
                  "x":864,
                  "y":64
-                },
+                }, 
                 {
                  "height":287,
                  "id":27,
@@ -1548,42 +1548,42 @@
                          "name":"meetingRoomLabel",
                          "type":"string",
                          "value":"Adventure 05"
-                        },
+                        }, 
                         {
                          "name":"openWebsite",
                          "type":"string",
                          "value":"jobfair-room.html?stand=Adventure05"
-                        },
+                        }, 
                         {
                          "name":"openWebsiteClosable",
                          "type":"bool",
                          "value":true
-                        },
+                        }, 
                         {
                          "name":"openWebsiteLabel",
                          "type":"string",
                          "value":"Messestand oeffnen"
-                        },
+                        }, 
                         {
                          "name":"openWebsitePolicy",
                          "type":"string",
                          "value":"fullscreen; camera; microphone; display-capture; autoplay; clipboard-write; encrypted-media; picture-in-picture"
-                        },
+                        }, 
                         {
                          "name":"openWebsiteTrigger",
                          "type":"string",
                          "value":"onaction"
-                        },
+                        }, 
                         {
                          "name":"openWebsiteTriggerMessage",
                          "type":"string",
                          "value":"Leertaste: Messestand oeffnen"
-                        },
+                        }, 
                         {
                          "name":"openWebsiteWidth",
                          "type":"int",
                          "value":60
-                        },
+                        }, 
                         {
                          "name":"standId",
                          "type":"string",
@@ -1595,7 +1595,7 @@
                  "width":222,
                  "x":33,
                  "y":324
-                },
+                }, 
                 {
                  "height":192,
                  "id":23,
@@ -1606,42 +1606,42 @@
                          "name":"meetingRoomLabel",
                          "type":"string",
                          "value":"Adventure 06"
-                        },
+                        }, 
                         {
                          "name":"openWebsite",
                          "type":"string",
                          "value":"jobfair-room.html?stand=Adventure06"
-                        },
+                        }, 
                         {
                          "name":"openWebsiteClosable",
                          "type":"bool",
                          "value":true
-                        },
+                        }, 
                         {
                          "name":"openWebsiteLabel",
                          "type":"string",
                          "value":"Messestand oeffnen"
-                        },
+                        }, 
                         {
                          "name":"openWebsitePolicy",
                          "type":"string",
                          "value":"fullscreen; camera; microphone; display-capture; autoplay; clipboard-write; encrypted-media; picture-in-picture"
-                        },
+                        }, 
                         {
                          "name":"openWebsiteTrigger",
                          "type":"string",
                          "value":"onaction"
-                        },
+                        }, 
                         {
                          "name":"openWebsiteTriggerMessage",
                          "type":"string",
                          "value":"Leertaste: Messestand oeffnen"
-                        },
+                        }, 
                         {
                          "name":"openWebsiteWidth",
                          "type":"int",
                          "value":60
-                        },
+                        }, 
                         {
                          "name":"standId",
                          "type":"string",
@@ -1653,7 +1653,7 @@
                  "width":192,
                  "x":1410,
                  "y":880
-                },
+                }, 
                 {
                  "height":192,
                  "id":25,
@@ -1664,42 +1664,42 @@
                          "name":"meetingRoomLabel",
                          "type":"string",
                          "value":"Adventure 07"
-                        },
+                        }, 
                         {
                          "name":"openWebsite",
                          "type":"string",
                          "value":"jobfair-room.html?stand=Adventure07"
-                        },
+                        }, 
                         {
                          "name":"openWebsiteClosable",
                          "type":"bool",
                          "value":true
-                        },
+                        }, 
                         {
                          "name":"openWebsiteLabel",
                          "type":"string",
                          "value":"Messestand oeffnen"
-                        },
+                        }, 
                         {
                          "name":"openWebsitePolicy",
                          "type":"string",
                          "value":"fullscreen; camera; microphone; display-capture; autoplay; clipboard-write; encrypted-media; picture-in-picture"
-                        },
+                        }, 
                         {
                          "name":"openWebsiteTrigger",
                          "type":"string",
                          "value":"onaction"
-                        },
+                        }, 
                         {
                          "name":"openWebsiteTriggerMessage",
                          "type":"string",
                          "value":"Leertaste: Messestand oeffnen"
-                        },
+                        }, 
                         {
                          "name":"openWebsiteWidth",
                          "type":"int",
                          "value":60
-                        },
+                        }, 
                         {
                          "name":"standId",
                          "type":"string",
@@ -1711,7 +1711,7 @@
                  "width":251,
                  "x":33.5,
                  "y":958
-                },
+                }, 
                 {
                  "height":187,
                  "id":24,
@@ -1722,42 +1722,42 @@
                          "name":"meetingRoomLabel",
                          "type":"string",
                          "value":"Adventure 08"
-                        },
+                        }, 
                         {
                          "name":"openWebsite",
                          "type":"string",
                          "value":"jobfair-room.html?stand=Adventure08"
-                        },
+                        }, 
                         {
                          "name":"openWebsiteClosable",
                          "type":"bool",
                          "value":true
-                        },
+                        }, 
                         {
                          "name":"openWebsiteLabel",
                          "type":"string",
                          "value":"Messestand oeffnen"
-                        },
+                        }, 
                         {
                          "name":"openWebsitePolicy",
                          "type":"string",
                          "value":"fullscreen; camera; microphone; display-capture; autoplay; clipboard-write; encrypted-media; picture-in-picture"
-                        },
+                        }, 
                         {
                          "name":"openWebsiteTrigger",
                          "type":"string",
                          "value":"onaction"
-                        },
+                        }, 
                         {
                          "name":"openWebsiteTriggerMessage",
                          "type":"string",
                          "value":"Leertaste: Messestand oeffnen"
-                        },
+                        }, 
                         {
                          "name":"openWebsiteWidth",
                          "type":"int",
                          "value":60
-                        },
+                        }, 
                         {
                          "name":"standId",
                          "type":"string",
@@ -1769,7 +1769,7 @@
                  "width":222,
                  "x":768.5,
                  "y":1253
-                },
+                }, 
                 {
                  "height":256,
                  "id":18,
@@ -1780,42 +1780,42 @@
                          "name":"meetingRoomLabel",
                          "type":"string",
                          "value":"Adventure 09"
-                        },
+                        }, 
                         {
                          "name":"openWebsite",
                          "type":"string",
                          "value":"jobfair-room.html?stand=Adventure09"
-                        },
+                        }, 
                         {
                          "name":"openWebsiteClosable",
                          "type":"bool",
                          "value":true
-                        },
+                        }, 
                         {
                          "name":"openWebsiteLabel",
                          "type":"string",
                          "value":"Messestand oeffnen"
-                        },
+                        }, 
                         {
                          "name":"openWebsitePolicy",
                          "type":"string",
                          "value":"fullscreen; camera; microphone; display-capture; autoplay; clipboard-write; encrypted-media; picture-in-picture"
-                        },
+                        }, 
                         {
                          "name":"openWebsiteTrigger",
                          "type":"string",
                          "value":"onaction"
-                        },
+                        }, 
                         {
                          "name":"openWebsiteTriggerMessage",
                          "type":"string",
                          "value":"Leertaste: Messestand oeffnen"
-                        },
+                        }, 
                         {
                          "name":"openWebsiteWidth",
                          "type":"int",
                          "value":60
-                        },
+                        }, 
                         {
                          "name":"standId",
                          "type":"string",
@@ -1827,7 +1827,7 @@
                  "width":320,
                  "x":416,
                  "y":1184
-                },
+                }, 
                 {
                  "height":192,
                  "id":17,
@@ -1838,42 +1838,42 @@
                          "name":"meetingRoomLabel",
                          "type":"string",
                          "value":"Adventure 10"
-                        },
+                        }, 
                         {
                          "name":"openWebsite",
                          "type":"string",
                          "value":"jobfair-room.html?stand=Adventure10"
-                        },
+                        }, 
                         {
                          "name":"openWebsiteClosable",
                          "type":"bool",
                          "value":true
-                        },
+                        }, 
                         {
                          "name":"openWebsiteLabel",
                          "type":"string",
                          "value":"Messestand oeffnen"
-                        },
+                        }, 
                         {
                          "name":"openWebsitePolicy",
                          "type":"string",
                          "value":"fullscreen; camera; microphone; display-capture; autoplay; clipboard-write; encrypted-media; picture-in-picture"
-                        },
+                        }, 
                         {
                          "name":"openWebsiteTrigger",
                          "type":"string",
                          "value":"onaction"
-                        },
+                        }, 
                         {
                          "name":"openWebsiteTriggerMessage",
                          "type":"string",
                          "value":"Leertaste: Messestand oeffnen"
-                        },
+                        }, 
                         {
                          "name":"openWebsiteWidth",
                          "type":"int",
                          "value":60
-                        },
+                        }, 
                         {
                          "name":"standId",
                          "type":"string",
@@ -1885,7 +1885,7 @@
                  "width":229,
                  "x":1025,
                  "y":1251
-                },
+                }, 
                 {
                  "height":170,
                  "id":26,
@@ -1896,42 +1896,42 @@
                          "name":"meetingRoomLabel",
                          "type":"string",
                          "value":"Adventure 11"
-                        },
+                        }, 
                         {
                          "name":"openWebsite",
                          "type":"string",
                          "value":"jobfair-room.html?stand=Adventure11"
-                        },
+                        }, 
                         {
                          "name":"openWebsiteClosable",
                          "type":"bool",
                          "value":true
-                        },
+                        }, 
                         {
                          "name":"openWebsiteLabel",
                          "type":"string",
                          "value":"Messestand oeffnen"
-                        },
+                        }, 
                         {
                          "name":"openWebsitePolicy",
                          "type":"string",
                          "value":"fullscreen; camera; microphone; display-capture; autoplay; clipboard-write; encrypted-media; picture-in-picture"
-                        },
+                        }, 
                         {
                          "name":"openWebsiteTrigger",
                          "type":"string",
                          "value":"onaction"
-                        },
+                        }, 
                         {
                          "name":"openWebsiteTriggerMessage",
                          "type":"string",
                          "value":"Leertaste: Messestand oeffnen"
-                        },
+                        }, 
                         {
                          "name":"openWebsiteWidth",
                          "type":"int",
                          "value":60
-                        },
+                        }, 
                         {
                          "name":"standId",
                          "type":"string",
@@ -1943,7 +1943,7 @@
                  "width":351,
                  "x":35,
                  "y":1269
-                },
+                }, 
                 {
                  "height":62.5,
                  "id":32,
@@ -1955,7 +1955,7 @@
                  "width":220.5,
                  "x":127.5,
                  "y":545
-                },
+                }, 
                 {
                  "height":34.5,
                  "id":33,
@@ -1967,7 +1967,7 @@
                  "width":219.5,
                  "x":34.25,
                  "y":220.25
-                },
+                }, 
                 {
                  "height":65,
                  "id":34,
@@ -1979,7 +1979,7 @@
                  "width":177,
                  "x":286.75,
                  "y":222.25
-                },
+                }, 
                 {
                  "height":64.5,
                  "id":35,
@@ -1991,7 +1991,7 @@
                  "width":153.5,
                  "x":516.75,
                  "y":94.25
-                },
+                }, 
                 {
                  "height":58,
                  "id":36,
@@ -2003,7 +2003,7 @@
                  "width":158,
                  "x":997.25,
                  "y":164.75
-                },
+                }, 
                 {
                  "height":54.5,
                  "id":37,
@@ -2015,7 +2015,7 @@
                  "width":188,
                  "x":1411.25,
                  "y":1018.25
-                },
+                }, 
                 {
                  "height":54.5,
                  "id":38,
@@ -2027,7 +2027,7 @@
                  "width":158,
                  "x":1025.75,
                  "y":1256.25
-                },
+                }, 
                 {
                  "height":57,
                  "id":39,
@@ -2039,7 +2039,7 @@
                  "width":153.5,
                  "x":838.75,
                  "y":1257.75
-                },
+                }, 
                 {
                  "height":59.5,
                  "id":40,
@@ -2051,7 +2051,7 @@
                  "width":176.5,
                  "x":560.25,
                  "y":1218.25
-                },
+                }, 
                 {
                  "height":49.5,
                  "id":41,
@@ -2063,7 +2063,7 @@
                  "width":232.5,
                  "x":31.75,
                  "y":1079.25
-                },
+                }, 
                 {
                  "height":48.5,
                  "id":42,
@@ -2075,13 +2075,74 @@
                  "width":182,
                  "x":104.25,
                  "y":1219.25
+                }, 
+                {
+                 "height":449,
+                 "id":45,
+                 "name":"Park",
+                 "opacity":1,
+                 "properties":[
+                         {
+                          "name":"audioLoop",
+                          "type":"bool",
+                          "value":true
+                         }, 
+                         {
+                          "name":"audioVolume",
+                          "type":"float",
+                          "value":0.35
+                         }, 
+                         {
+                          "name":"megaphoneRole",
+                          "type":"string",
+                          "value":"listener"
+                         }, 
+                         {
+                          "name":"megaphoneSpace",
+                          "type":"string",
+                          "value":"Park"
+                         }, 
+                         {
+                          "name":"playAudio",
+                          "type":"string",
+                          "value":"birds.mp3"
+                         }],
+                 "rotation":0,
+                 "type":"area",
+                 "visible":true,
+                 "width":661,
+                 "x":563,
+                 "y":477
+                }, 
+                {
+                 "height":71,
+                 "id":46,
+                 "name":"ParkSpeaker",
+                 "opacity":1,
+                 "properties":[
+                         {
+                          "name":"megaphoneRole",
+                          "type":"string",
+                          "value":"speaker"
+                         }, 
+                         {
+                          "name":"megaphoneSpace",
+                          "type":"string",
+                          "value":"Park"
+                         }],
+                 "rotation":0,
+                 "type":"area",
+                 "visible":true,
+                 "width":121,
+                 "x":867,
+                 "y":734
                 }],
          "opacity":1,
          "type":"objectgroup",
          "visible":true,
          "x":0,
          "y":0
-        },
+        }, 
         {
          "draworder":"topdown",
          "id":36,
@@ -2104,7 +2165,7 @@
          "visible":true,
          "x":0,
          "y":0
-        },
+        }, 
         {
          "data":[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
             0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
@@ -2162,7 +2223,7 @@
          "width":54,
          "x":0,
          "y":0
-        },
+        }, 
         {
          "data":[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
             0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
@@ -2220,7 +2281,7 @@
          "width":54,
          "x":0,
          "y":0
-        },
+        }, 
         {
          "data":[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
             0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
@@ -2278,7 +2339,7 @@
          "width":54,
          "x":0,
          "y":0
-        },
+        }, 
         {
          "data":[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
             0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
@@ -2336,7 +2397,7 @@
          "width":54,
          "x":0,
          "y":0
-        },
+        }, 
         {
          "data":[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 3335, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
             0, 0, 0, 0, 3860, 3861, 0, 0, 0, 0, 0, 3860, 3861, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 3346, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
@@ -2394,7 +2455,7 @@
          "width":54,
          "x":0,
          "y":0
-        },
+        }, 
         {
          "data":[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
             0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
@@ -2454,39 +2515,39 @@
          "y":0
         }],
  "nextlayerid":52,
- "nextobjectid":45,
+ "nextobjectid":47,
  "orientation":"orthogonal",
  "properties":[
         {
          "name":"mapCopyright",
          "type":"string",
          "value":"CC-BY-SA 3.0 (https:\/\/creativecommons.org\/licenses\/by-sa\/3.0\/)"
-        },
+        }, 
         {
          "name":"mapDescription",
          "type":"string",
          "value":"Suitable for up to 30 users.\n\nWork in a zen environment and recharge your batteries by taking a break in one of the natural spaces. If you ever find physical offices that look like this, never leave them!"
-        },
+        }, 
         {
          "name":"mapImage",
          "type":"string",
          "value":"map.png"
-        },
+        }, 
         {
          "name":"mapLink",
          "type":"string",
          "value":"https:\/\/workadventure.github.io\/nature-office\/map.json"
-        },
+        }, 
         {
          "name":"mapName",
          "type":"string",
          "value":"Nature office"
-        },
+        }, 
         {
          "name":"script",
          "type":"string",
          "value":"script.js"
-        },
+        }, 
         {
          "name":"tutorial",
          "type":"bool",
@@ -2508,7 +2569,7 @@
          "tilecount":481,
          "tileheight":32,
          "tilewidth":32
-        },
+        }, 
         {
          "columns":12,
          "firstgid":482,
@@ -2521,7 +2582,7 @@
          "tilecount":120,
          "tileheight":32,
          "tilewidth":32
-        },
+        }, 
         {
          "columns":40,
          "firstgid":602,
@@ -2544,7 +2605,7 @@
                         }]
                 }],
          "tilewidth":32
-        },
+        }, 
         {
          "columns":10,
          "firstgid":2922,
@@ -2557,7 +2618,7 @@
          "tilecount":100,
          "tileheight":32,
          "tilewidth":32
-        },
+        }, 
         {
          "columns":10,
          "firstgid":3022,
@@ -2570,7 +2631,7 @@
          "tilecount":100,
          "tileheight":32,
          "tilewidth":32
-        },
+        }, 
         {
          "columns":11,
          "firstgid":3122,
@@ -2583,7 +2644,7 @@
          "tilecount":121,
          "tileheight":32,
          "tilewidth":32
-        },
+        }, 
         {
          "columns":11,
          "firstgid":3243,
@@ -2596,7 +2657,7 @@
          "tilecount":121,
          "tileheight":32,
          "tilewidth":32
-        },
+        }, 
         {
          "columns":6,
          "firstgid":3364,
@@ -2619,7 +2680,7 @@
                         }]
                 }],
          "tilewidth":32
-        },
+        }, 
         {
          "columns":16,
          "firstgid":3460,
@@ -2632,7 +2693,7 @@
          "tilecount":256,
          "tileheight":32,
          "tilewidth":32
-        },
+        }, 
         {
          "columns":16,
          "firstgid":3716,
@@ -2645,7 +2706,7 @@
          "tilecount":256,
          "tileheight":32,
          "tilewidth":32
-        },
+        }, 
         {
          "columns":16,
          "firstgid":3972,
@@ -2658,7 +2719,7 @@
          "tilecount":256,
          "tileheight":32,
          "tilewidth":32
-        },
+        }, 
         {
          "columns":4,
          "firstgid":4228,
@@ -2671,7 +2732,7 @@
          "tilecount":24,
          "tileheight":32,
          "tilewidth":32
-        },
+        }, 
         {
          "columns":4,
          "firstgid":4252,
@@ -2684,7 +2745,7 @@
          "tilecount":16,
          "tileheight":32,
          "tilewidth":32
-        },
+        }, 
         {
          "columns":16,
          "firstgid":4268,
@@ -2697,7 +2758,7 @@
          "tilecount":256,
          "tileheight":32,
          "tilewidth":32
-        },
+        }, 
         {
          "columns":18,
          "firstgid":4524,
@@ -2710,7 +2771,7 @@
          "tilecount":522,
          "tileheight":32,
          "tilewidth":32
-        },
+        }, 
         {
          "columns":6,
          "firstgid":5046,
@@ -2723,7 +2784,7 @@
          "tilecount":30,
          "tileheight":32,
          "tilewidth":32
-        },
+        }, 
         {
          "columns":32,
          "firstgid":5076,
@@ -2736,7 +2797,7 @@
          "tilecount":1024,
          "tileheight":32,
          "tilewidth":32
-        },
+        }, 
         {
          "columns":32,
          "firstgid":6100,
@@ -2765,56 +2826,56 @@
                         {
                          "tileid":196,
                          "wangid":[1, 1, 0, 0, 0, 1, 1, 1]
-                        },
+                        }, 
                         {
                          "tileid":197,
                          "wangid":[1, 1, 1, 1, 0, 0, 0, 1]
-                        },
+                        }, 
                         {
                          "tileid":228,
                          "wangid":[0, 0, 0, 1, 1, 1, 1, 1]
-                        },
+                        }, 
                         {
                          "tileid":229,
                          "wangid":[0, 1, 1, 1, 1, 1, 0, 0]
-                        },
+                        }, 
                         {
                          "tileid":259,
                          "wangid":[0, 0, 0, 1, 0, 0, 0, 0]
-                        },
+                        }, 
                         {
                          "tileid":260,
                          "wangid":[0, 0, 0, 1, 1, 1, 0, 0]
-                        },
+                        }, 
                         {
                          "tileid":261,
                          "wangid":[0, 0, 0, 0, 0, 1, 0, 0]
-                        },
+                        }, 
                         {
                          "tileid":291,
                          "wangid":[0, 1, 1, 1, 0, 0, 0, 0]
-                        },
+                        }, 
                         {
                          "tileid":292,
                          "wangid":[1, 1, 1, 1, 1, 1, 1, 1]
-                        },
+                        }, 
                         {
                          "tileid":293,
                          "wangid":[0, 0, 0, 0, 0, 1, 1, 1]
-                        },
+                        }, 
                         {
                          "tileid":323,
                          "wangid":[0, 1, 0, 0, 0, 0, 0, 0]
-                        },
+                        }, 
                         {
                          "tileid":324,
                          "wangid":[1, 1, 0, 0, 0, 0, 0, 1]
-                        },
+                        }, 
                         {
                          "tileid":325,
                          "wangid":[0, 0, 0, 0, 0, 0, 0, 1]
                         }]
-                },
+                }, 
                 {
                  "colors":[
                         {
@@ -2830,57 +2891,57 @@
                         {
                          "tileid":592,
                          "wangid":[1, 1, 0, 0, 0, 1, 1, 1]
-                        },
+                        }, 
                         {
                          "tileid":593,
                          "wangid":[1, 1, 1, 1, 0, 0, 0, 1]
-                        },
+                        }, 
                         {
                          "tileid":624,
                          "wangid":[0, 0, 0, 1, 1, 1, 1, 1]
-                        },
+                        }, 
                         {
                          "tileid":625,
                          "wangid":[0, 1, 1, 1, 1, 1, 0, 0]
-                        },
+                        }, 
                         {
                          "tileid":655,
                          "wangid":[0, 0, 0, 1, 0, 0, 0, 0]
-                        },
+                        }, 
                         {
                          "tileid":656,
                          "wangid":[0, 0, 0, 1, 1, 1, 0, 0]
-                        },
+                        }, 
                         {
                          "tileid":657,
                          "wangid":[0, 0, 0, 0, 0, 1, 0, 0]
-                        },
+                        }, 
                         {
                          "tileid":687,
                          "wangid":[0, 1, 1, 1, 0, 0, 0, 0]
-                        },
+                        }, 
                         {
                          "tileid":688,
                          "wangid":[1, 1, 1, 1, 1, 1, 1, 1]
-                        },
+                        }, 
                         {
                          "tileid":689,
                          "wangid":[0, 0, 0, 0, 0, 1, 1, 1]
-                        },
+                        }, 
                         {
                          "tileid":719,
                          "wangid":[0, 1, 0, 0, 0, 0, 0, 0]
-                        },
+                        }, 
                         {
                          "tileid":720,
                          "wangid":[1, 1, 0, 0, 0, 0, 0, 1]
-                        },
+                        }, 
                         {
                          "tileid":721,
                          "wangid":[0, 0, 0, 0, 0, 0, 0, 1]
                         }]
                 }]
-        },
+        }, 
         {
          "columns":32,
          "firstgid":7124,
@@ -2893,7 +2954,7 @@
          "tilecount":1024,
          "tileheight":32,
          "tilewidth":32
-        },
+        }, 
         {
          "columns":9,
          "firstgid":8148,
@@ -2906,7 +2967,7 @@
          "tilecount":180,
          "tileheight":32,
          "tilewidth":32
-        },
+        }, 
         {
          "columns":13,
          "firstgid":8328,
@@ -2919,7 +2980,7 @@
          "tilecount":273,
          "tileheight":32,
          "tilewidth":32
-        },
+        }, 
         {
          "columns":6,
          "firstgid":8601,
@@ -2942,7 +3003,7 @@
                         }]
                 }],
          "tilewidth":32
-        },
+        }, 
         {
          "columns":1,
          "firstgid":8697,

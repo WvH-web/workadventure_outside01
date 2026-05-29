@@ -4,6 +4,28 @@ import { bootstrapExtra } from "@workadventure/scripting-api-extra";
 console.log('Script started successfully');
 
 const JOBFAIR_API_URL = "https://deutsche-online-schule.com/schooltools/verwaltung/api/workadventure_jobfair.php";
+const SYNCED_SPACE_PROPERTIES = [
+    "cameraState",
+    "microphoneState",
+    "screenSharingState",
+    "megaphoneState"
+];
+
+interface MegaphoneSpaceState {
+    space: {
+        startStreaming: () => void;
+        stopStreaming: () => void;
+        leave: () => void;
+    };
+    listeners: number;
+    speakers: number;
+}
+
+interface ActiveMegaphoneZone {
+    role: "speaker" | "listener";
+    spaceName: string;
+    actionMessage?: { remove: () => void };
+}
 
 interface TiledProperty {
     name: string;
@@ -62,6 +84,15 @@ interface JobfairEventArea {
     height: number;
 }
 
+interface MegaphoneObject {
+    object: TiledObject;
+    role: "speaker" | "listener";
+    spaceName: string;
+}
+
+const activeMegaphoneZones = new Map<string, ActiveMegaphoneZone>();
+const activeMegaphoneSpaces = new Map<string, MegaphoneSpaceState>();
+
 function collectJobfairLabelAreas(layers: TiledLayer[]): JobfairLabelArea[] {
     const areas: JobfairLabelArea[] = [];
 
@@ -114,6 +145,124 @@ function collectJobfairEventArea(layers: TiledLayer[]): JobfairEventArea | undef
     }
 
     return undefined;
+}
+
+function getProperty(properties: TiledProperty[] | undefined, name: string): unknown {
+    return (properties ?? []).find(property => property.name === name)?.value;
+}
+
+function collectMegaphoneObjects(layers: TiledLayer[]): MegaphoneObject[] {
+    const objects: MegaphoneObject[] = [];
+
+    for (const layer of layers) {
+        if (layer.type === "objectgroup") {
+            for (const object of layer.objects ?? []) {
+                const role = getProperty(object.properties, "megaphoneRole");
+                const spaceName = getProperty(object.properties, "megaphoneSpace");
+                if ((role === "speaker" || role === "listener") && typeof spaceName === "string") {
+                    objects.push({ object, role, spaceName });
+                }
+            }
+        }
+
+        if (layer.layers) {
+            objects.push(...collectMegaphoneObjects(layer.layers));
+        }
+    }
+
+    return objects;
+}
+
+async function enterMegaphoneZone(areaName: string, role: "speaker" | "listener", spaceName: string): Promise<void> {
+    if (activeMegaphoneZones.has(areaName)) {
+        return;
+    }
+
+    const spacesApi = (WA as unknown as { spaces?: { joinSpace?: (name: string, type: string, properties: string[]) => Promise<MegaphoneSpaceState["space"]> } }).spaces;
+    if (!spacesApi?.joinSpace) {
+        console.error("WorkAdventure Spaces API is not available; park speaker zone skipped.");
+        return;
+    }
+
+    let activeSpace = activeMegaphoneSpaces.get(spaceName);
+    if (!activeSpace) {
+        const space = await spacesApi.joinSpace(
+            `tmj-megaphone-${spaceName}`,
+            "streaming",
+            SYNCED_SPACE_PROPERTIES
+        );
+        activeSpace = { space, listeners: 0, speakers: 0 };
+        activeMegaphoneSpaces.set(spaceName, activeSpace);
+    }
+
+    let actionMessage: ActiveMegaphoneZone["actionMessage"];
+    if (role === "speaker") {
+        activeSpace.speakers += 1;
+        if (activeSpace.speakers === 1) {
+            activeSpace.space.startStreaming();
+        }
+        actionMessage = WA.ui.displayActionMessage({
+            message: "Park-Lautsprecher aktiv: Du bist im Parkbereich hoerbar. Verlasse den Speaker-Bereich zum Stoppen.",
+            callback: () => undefined
+        });
+    } else {
+        activeSpace.listeners += 1;
+    }
+
+    activeMegaphoneZones.set(areaName, { role, spaceName, actionMessage });
+}
+
+function leaveMegaphoneZone(areaName: string): void {
+    const activeZone = activeMegaphoneZones.get(areaName);
+    if (!activeZone) {
+        return;
+    }
+
+    activeZone.actionMessage?.remove();
+    const activeSpace = activeMegaphoneSpaces.get(activeZone.spaceName);
+    if (!activeSpace) {
+        activeMegaphoneZones.delete(areaName);
+        return;
+    }
+
+    if (activeZone.role === "speaker") {
+        activeSpace.speakers = Math.max(0, activeSpace.speakers - 1);
+        if (activeSpace.speakers === 0) {
+            activeSpace.space.stopStreaming();
+        }
+    } else {
+        activeSpace.listeners = Math.max(0, activeSpace.listeners - 1);
+    }
+
+    if (activeSpace.speakers === 0 && activeSpace.listeners === 0) {
+        activeSpace.space.leave();
+        activeMegaphoneSpaces.delete(activeZone.spaceName);
+    }
+
+    activeMegaphoneZones.delete(areaName);
+}
+
+async function registerMegaphoneZones(): Promise<void> {
+    const map = await WA.room.getTiledMap() as TiledMap;
+    const megaphoneObjects = collectMegaphoneObjects(map.layers);
+
+    for (const { object, role, spaceName } of megaphoneObjects) {
+        if (!object.name) {
+            continue;
+        }
+
+        WA.room.area.onEnter(object.name).subscribe(() => {
+            enterMegaphoneZone(object.name as string, role, spaceName).catch(error => {
+                console.error(`Could not enter megaphone zone "${object.name}"`, error);
+            });
+        });
+
+        WA.room.area.onLeave(object.name).subscribe(() => {
+            leaveMegaphoneZone(object.name as string);
+        });
+    }
+
+    console.info(`Megaphone zones ready: ${megaphoneObjects.length}`);
 }
 
 async function loadJobfairData(): Promise<JobfairData> {
@@ -200,4 +349,5 @@ WA.onInit().then(() => {
     }).catch(e => console.error(e));
 
     renderJobfairLabels().catch(e => console.error(e));
+    registerMegaphoneZones().catch(e => console.error(e));
 }).catch(e => console.error(e));
