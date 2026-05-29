@@ -1,56 +1,101 @@
 {
   "stands": [
     {
-      "id": "GreenStation",
+      "id": "Adventure01",
       "speaker": "Referent eintragen",
       "job": "Jobbezeichnung eintragen",
-      "room": "WvHNatureOffice-GreenStation",
-      "mirotalk": "https://p2p.mirotalk.com/join/WvHNatureOffice-GreenStation",
+      "room": "WvHNatureOffice-Adventure01",
+      "mirotalk": "https://p2p.mirotalk.com/join/WvHNatureOffice-Adventure01",
       "websiteLabel": "Informationen zum Messestand",
       "website": "jobfair-placeholder.html"
     },
     {
-      "id": "TempoTerritory",
+      "id": "Adventure02",
       "speaker": "Referent eintragen",
       "job": "Jobbezeichnung eintragen",
-      "room": "WvHNatureOffice-TempoTerritory",
-      "mirotalk": "https://p2p.mirotalk.com/join/WvHNatureOffice-TempoTerritory",
+      "room": "WvHNatureOffice-Adventure02",
+      "mirotalk": "https://p2p.mirotalk.com/join/WvHNatureOffice-Adventure02",
       "websiteLabel": "Informationen zum Messestand",
       "website": "jobfair-placeholder.html"
     },
     {
-      "id": "SpiderSkull",
+      "id": "Adventure03",
       "speaker": "Referent eintragen",
       "job": "Jobbezeichnung eintragen",
-      "room": "WvHNatureOffice-SpiderSkull",
-      "mirotalk": "https://p2p.mirotalk.com/join/WvHNatureOffice-SpiderSkull",
+      "room": "WvHNatureOffice-Adventure03",
+      "mirotalk": "https://p2p.mirotalk.com/join/WvHNatureOffice-Adventure03",
       "websiteLabel": "Informationen zum Messestand",
       "website": "jobfair-placeholder.html"
     },
     {
-      "id": "LafayetteSquare",
+      "id": "Adventure04",
       "speaker": "Referent eintragen",
       "job": "Jobbezeichnung eintragen",
-      "room": "WvHNatureOffice-LafayetteSquare",
-      "mirotalk": "https://p2p.mirotalk.com/join/WvHNatureOffice-LafayetteSquare",
+      "room": "WvHNatureOffice-Adventure04",
+      "mirotalk": "https://p2p.mirotalk.com/join/WvHNatureOffice-Adventure04",
       "websiteLabel": "Informationen zum Messestand",
       "website": "jobfair-placeholder.html"
     },
     {
-      "id": "PeanutButter",
+      "id": "Adventure05",
       "speaker": "Referent eintragen",
       "job": "Jobbezeichnung eintragen",
-      "room": "WvHNatureOffice-PeanutButter",
-      "mirotalk": "https://p2p.mirotalk.com/join/WvHNatureOffice-PeanutButter",
+      "room": "WvHNatureOffice-Adventure05",
+      "mirotalk": "https://p2p.mirotalk.com/join/WvHNatureOffice-Adventure05",
       "websiteLabel": "Informationen zum Messestand",
       "website": "jobfair-placeholder.html"
     },
     {
-      "id": "BeyondTrust",
+      "id": "Adventure06",
       "speaker": "Referent eintragen",
       "job": "Jobbezeichnung eintragen",
-      "room": "WvHNatureOffice-BeyondTrust",
-      "mirotalk": "https://p2p.mirotalk.com/join/WvHNatureOffice-BeyondTrust",
+      "room": "WvHNatureOffice-Adventure06",
+      "mirotalk": "https://p2p.mirotalk.com/join/WvHNatureOffice-Adventure06",
+      "websiteLabel": "Informationen zum Messestand",
+      "website": "jobfair-placeholder.html"
+    },
+    {
+      "id": "Adventure07",
+      "speaker": "Referent eintragen",
+      "job": "Jobbezeichnung eintragen",
+      "room": "WvHNatureOffice-Adventure07",
+      "mirotalk": "https://p2p.mirotalk.com/join/WvHNatureOffice-Adventure07",
+      "websiteLabel": "Informationen zum Messestand",
+      "website": "jobfair-placeholder.html"
+    },
+    {
+      "id": "Adventure08",
+      "speaker": "Referent eintragen",
+      "job": "Jobbezeichnung eintragen",
+      "room": "WvHNatureOffice-Adventure08",
+      "mirotalk": "https://p2p.mirotalk.com/join/WvHNatureOffice-Adventure08",
+      "websiteLabel": "Informationen zum Messestand",
+      "website": "jobfair-placeholder.html"
+    },
+    {
+      "id": "Adventure09",
+      "speaker": "Referent eintragen",
+      "job": "Jobbezeichnung eintragen",
+      "room": "WvHNatureOffice-Adventure09",
+      "mirotalk": "https://p2p.mirotalk.com/join/WvHNatureOffice-Adventure09",
+      "websiteLabel": "Informationen zum Messestand",
+      "website": "jobfair-placeholder.html"
+    },
+    {
+      "id": "Adventure10",
+      "speaker": "Referent eintragen",
+      "job": "Jobbezeichnung eintragen",
+      "room": "WvHNatureOffice-Adventure10",
+      "mirotalk": "https://p2p.mirotalk.com/join/WvHNatureOffice-Adventure10",
+      "websiteLabel": "Informationen zum Messestand",
+      "website": "jobfair-placeholder.html"
+    },
+    {
+      "id": "Adventure11",
+      "speaker": "Referent eintragen",
+      "job": "Jobbezeichnung eintragen",
+      "room": "WvHNatureOffice-Adventure11",
+      "mirotalk": "https://p2p.mirotalk.com/join/WvHNatureOffice-Adventure11",
       "websiteLabel": "Informationen zum Messestand",
       "website": "jobfair-placeholder.html"
     }
