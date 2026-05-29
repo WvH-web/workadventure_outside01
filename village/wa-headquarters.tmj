@@ -43200,6 +43200,10 @@
          "tilecount":322,
          "tileheight":32,
          "tilewidth":32
+        }, 
+        {
+         "firstgid":173111,
+         "source":"tilesets\/games-stands-4x7.tsx"
         }],
  "tilewidth":32,
  "type":"map",

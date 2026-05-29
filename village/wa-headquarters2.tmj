@@ -59661,6 +59661,10 @@
                  "id":239
                 }],
          "tilewidth":32
+        }, 
+        {
+         "firstgid":172769,
+         "source":"tilesets\/games-stands-4x7.tsx"
         }],
  "tilewidth":32,
  "type":"map",
