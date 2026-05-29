@@ -7657,13 +7657,7 @@
    "id": 35,
    "name": "exitWest",
    "opacity": 1,
-   "properties": [
-    {
-     "name": "exitUrl",
-     "type": "string",
-     "value": "../village/wa-headquarters.tmj"
-    }
-   ],
+   "properties": [],
    "type": "tilelayer",
    "visible": true,
    "width": 54,
@@ -56142,24 +56136,9 @@
    "opacity": 1,
    "properties": [
     {
-     "name": "openConfig",
-     "type": "string",
-     "value": "exitWestURL"
-    },
-    {
      "name": "openConfigAdminTag",
      "type": "string",
      "value": "admin"
-    },
-    {
-     "name": "openConfigTrigger",
-     "type": "string",
-     "value": "onaction"
-    },
-    {
-     "name": "openConfigTriggerMessage",
-     "type": "string",
-     "value": "Configure the West exit URL"
     },
     {
      "name": "zone",
@@ -56168,7 +56147,7 @@
     }
    ],
    "type": "tilelayer",
-   "visible": true,
+   "visible": false,
    "width": 54,
    "x": 0,
    "y": 0
@@ -56970,48 +56949,7 @@
    "draworder": "topdown",
    "id": 36,
    "name": "configuration",
-   "objects": [
-    {
-     "height": 0,
-     "id": 3,
-     "name": "exitWestURL",
-     "opacity": 1,
-     "point": true,
-     "properties": [
-      {
-       "name": "default",
-       "type": "string",
-       "value": "../village/wa-headquarters.tmj"
-      },
-      {
-       "name": "description",
-       "type": "string",
-       "value": "Ruecksprung zur Headquarters-Map"
-      },
-      {
-       "name": "label",
-       "type": "string",
-       "value": "West exit URL"
-      },
-      {
-       "name": "persist",
-       "type": "bool",
-       "value": true
-      },
-      {
-       "name": "writableBy",
-       "type": "string",
-       "value": "admin"
-      }
-     ],
-     "rotation": 0,
-     "type": "variable",
-     "visible": true,
-     "width": 0,
-     "x": 19.3333333333334,
-     "y": 776
-    }
-   ],
+   "objects": [],
    "opacity": 1,
    "type": "objectgroup",
    "visible": true,
