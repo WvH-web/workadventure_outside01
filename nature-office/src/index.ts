@@ -38,11 +38,24 @@ interface JobfairStand {
 }
 
 interface JobfairResponse {
+    eventName?: string;
     stands?: JobfairStand[];
 }
 
 interface JobfairLabelArea {
     standId: string;
+    x: number;
+    y: number;
+    width: number;
+    height: number;
+}
+
+interface JobfairData {
+    eventName: string;
+    stands: Map<string, JobfairStand>;
+}
+
+interface JobfairEventArea {
     x: number;
     y: number;
     width: number;
@@ -78,7 +91,32 @@ function collectJobfairLabelAreas(layers: TiledLayer[]): JobfairLabelArea[] {
     return areas;
 }
 
-async function loadJobfairStands(): Promise<Map<string, JobfairStand>> {
+function collectJobfairEventArea(layers: TiledLayer[]): JobfairEventArea | undefined {
+    for (const layer of layers) {
+        if (layer.type === "objectgroup") {
+            const object = (layer.objects ?? []).find(candidate => (candidate.name ?? "").toLowerCase() === "eventname");
+            if (object?.x !== undefined && object.y !== undefined && object.width !== undefined && object.height !== undefined) {
+                return {
+                    x: object.x,
+                    y: object.y,
+                    width: object.width,
+                    height: object.height
+                };
+            }
+        }
+
+        if (layer.layers) {
+            const nested = collectJobfairEventArea(layer.layers);
+            if (nested) {
+                return nested;
+            }
+        }
+    }
+
+    return undefined;
+}
+
+async function loadJobfairData(): Promise<JobfairData> {
     let response = await fetch(JOBFAIR_API_URL, { cache: "no-store" });
     if (!response.ok) {
         console.warn(`Jobfair API responded with ${response.status}. Falling back to local stand data.`);
@@ -94,26 +132,45 @@ async function loadJobfairStands(): Promise<Map<string, JobfairStand>> {
     for (const stand of payload.stands ?? []) {
         stands.set(stand.id, stand);
     }
-    return stands;
+
+    return {
+        eventName: (payload.eventName ?? "WvH Jobmesse").trim() || "WvH Jobmesse",
+        stands
+    };
 }
 
 async function renderJobfairLabels(): Promise<void> {
     const map = await WA.room.getTiledMap() as TiledMap;
     const labelAreas = collectJobfairLabelAreas(map.layers);
-    if (labelAreas.length === 0) {
+    const eventArea = collectJobfairEventArea(map.layers);
+    if (labelAreas.length === 0 && !eventArea) {
         return;
     }
 
-    let stands: Map<string, JobfairStand>;
+    let data: JobfairData;
     try {
-        stands = await loadJobfairStands();
+        data = await loadJobfairData();
     } catch (error) {
         console.error("Could not load job fair stand labels", error);
         return;
     }
 
+    if (eventArea) {
+        WA.room.website.create({
+            name: "jobfair-event-name",
+            url: `jobfair-event-label.html?event=${encodeURIComponent(data.eventName)}`,
+            position: {
+                x: eventArea.x,
+                y: eventArea.y,
+                width: eventArea.width,
+                height: eventArea.height
+            },
+            allowApi: false
+        });
+    }
+
     for (const area of labelAreas) {
-        const job = (stands.get(area.standId)?.job ?? "").trim();
+        const job = (data.stands.get(area.standId)?.job ?? "").trim();
         if (!job) {
             continue;
         }
