@@ -35,7 +35,7 @@
     .room {
       min-height: 100vh;
       display: grid;
-      grid-template-rows: auto minmax(360px, 1fr) minmax(176px, 28vh);
+      grid-template-rows: auto minmax(520px, 1fr) auto;
       gap: 12px;
       padding: 12px;
     }
@@ -53,14 +53,14 @@
       align-items: center;
       justify-content: space-between;
       gap: 12px;
-      padding: 16px 18px;
-      border-top: 5px solid var(--green);
+      padding: 10px 14px;
+      border-top: 4px solid var(--green);
     }
 
     .eyebrow {
       margin: 0 0 4px;
       color: var(--blue);
-      font-size: 12px;
+      font-size: 11px;
       font-weight: 700;
       letter-spacing: 0;
       text-transform: uppercase;
@@ -68,24 +68,25 @@
 
     h1 {
       margin: 0;
-      font-size: clamp(22px, 3vw, 34px);
-      line-height: 1.05;
+      font-size: clamp(20px, 2.3vw, 28px);
+      line-height: 1.08;
     }
 
     .job {
-      margin: 6px 0 0;
+      margin: 4px 0 0;
       color: var(--muted);
-      font-size: 16px;
+      font-size: 14px;
       font-weight: 700;
+      line-height: 1.25;
     }
 
     .room-name {
       flex: 0 0 auto;
-      padding: 9px 12px;
+      padding: 7px 10px;
       border-radius: 999px;
       background: #e8f2ee;
       color: var(--green-dark);
-      font-size: 13px;
+      font-size: 12px;
       font-weight: 700;
       white-space: nowrap;
     }
@@ -123,22 +124,17 @@
     }
 
     .website {
-      display: grid;
-      grid-template-rows: auto 1fr;
-    }
-
-    .website-bar {
       display: flex;
       align-items: center;
       justify-content: space-between;
       gap: 12px;
-      padding: 10px 12px;
-      border-bottom: 1px solid var(--line);
-      background: #fbfdfc;
+      padding: 12px;
     }
 
     .website-title {
       min-width: 0;
+      display: grid;
+      gap: 3px;
     }
 
     .website-title strong,
@@ -151,7 +147,14 @@
 
     .website-title span {
       color: var(--muted);
-      font-size: 13px;
+      font-size: 12px;
+    }
+
+    .website-title small {
+      color: var(--green-dark);
+      font-size: 12px;
+      font-weight: 700;
+      text-transform: uppercase;
     }
 
     a.button {
@@ -161,6 +164,7 @@
       color: #fff;
       padding: 9px 12px;
       font-weight: 700;
+      white-space: nowrap;
       text-decoration: none;
     }
 
@@ -170,7 +174,7 @@
 
     @media (max-width: 720px) {
       .room {
-        grid-template-rows: auto minmax(300px, 1fr) minmax(140px, 24vh);
+        grid-template-rows: auto minmax(420px, 1fr) auto;
         padding: 8px;
       }
 
@@ -181,6 +185,11 @@
 
       .room-name {
         white-space: normal;
+      }
+
+      .website {
+        align-items: stretch;
+        flex-direction: column;
       }
     }
   </style>
@@ -205,14 +214,12 @@
     </section>
 
     <section class="panel website" aria-label="Verlinkte Webseite">
-      <div class="website-bar">
-        <div class="website-title">
-          <strong id="websiteLabel">Webseite</strong>
-          <span id="websiteUrl"></span>
-        </div>
-        <a class="button secondary" id="websiteLink" target="_blank" rel="noopener">Extern oeffnen</a>
+      <div class="website-title">
+        <small>Webseite</small>
+        <strong id="websiteLabel">Weitere Informationen</strong>
+        <span id="websiteUrl"></span>
       </div>
-      <iframe id="websiteFrame" title="Verlinkte Webseite" allow="fullscreen; autoplay; clipboard-write; encrypted-media; picture-in-picture"></iframe>
+      <a class="button secondary" id="websiteLink" target="_blank" rel="noopener">Extern oeffnen</a>
     </section>
   </main>
 
@@ -236,7 +243,6 @@
       document.getElementById("websiteLabel").textContent = websiteLabel;
       document.getElementById("websiteUrl").textContent = website;
       document.getElementById("websiteLink").href = website;
-      document.getElementById("websiteFrame").src = website;
     }
 
     async function loadStand() {
