@@ -43250,10 +43250,90 @@
          "tilecount":322,
          "tileheight":32,
          "tilewidth":32
-        }, 
+        },
         {
          "firstgid":173111,
-         "source":"tilesets\/games-stands-4x7.tsx"
+         "columns":7,
+         "image":"tilesets\/games-stands-4x7.png",
+         "imageheight":224,
+         "imagewidth":896,
+         "margin":0,
+         "name":"games-stands-4x7",
+         "spacing":0,
+         "tilecount":7,
+         "tileheight":224,
+         "tiles":[
+                {
+                 "id":0,
+                 "properties":[
+                        {
+                         "name":"label",
+                         "type":"string",
+                         "value":"Scribblio"
+                        }],
+                 "type":"stand"
+                },
+                {
+                 "id":1,
+                 "properties":[
+                        {
+                         "name":"label",
+                         "type":"string",
+                         "value":"Codenames"
+                        }],
+                 "type":"stand"
+                },
+                {
+                 "id":2,
+                 "properties":[
+                        {
+                         "name":"label",
+                         "type":"string",
+                         "value":"Bonk.io"
+                        }],
+                 "type":"stand"
+                },
+                {
+                 "id":3,
+                 "properties":[
+                        {
+                         "name":"label",
+                         "type":"string",
+                         "value":"Funocracy"
+                        }],
+                 "type":"stand"
+                },
+                {
+                 "id":4,
+                 "properties":[
+                        {
+                         "name":"label",
+                         "type":"string",
+                         "value":"Gartic Phone"
+                        }],
+                 "type":"stand"
+                },
+                {
+                 "id":5,
+                 "properties":[
+                        {
+                         "name":"label",
+                         "type":"string",
+                         "value":"Codenames"
+                        }],
+                 "type":"stand"
+                },
+                {
+                 "id":6,
+                 "properties":[
+                        {
+                         "name":"label",
+                         "type":"string",
+                         "value":"Dungeons & Dragons"
+                        }],
+                 "type":"stand"
+                }],
+         "tilewidth":128
         }],
  "tilewidth":32,
  "type":"map",
