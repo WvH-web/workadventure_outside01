@@ -1,3 +1,4 @@
+import "./roof-fast.js";
 import "./main-1d30c8f5.js";
 
 const MEGAPHONE_LAYER_NAME = "megaphoneZones";
