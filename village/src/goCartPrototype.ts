@@ -2,8 +2,6 @@
 
 import type { ActionMessage } from "@workadventure/iframe-api-typings";
 import type { ButtonActionBarClickedCallback } from "@workadventure/iframe-api-typings/play/src/front/Api/Iframe/Ui/ButtonActionBar";
-import type { PlayerPosition } from "@workadventure/iframe-api-typings/play/src/front/Api/Events/PlayerPosition";
-import type { RemotePlayerInterface } from "@workadventure/iframe-api-typings/play/src/front/Api/Iframe/Players/RemotePlayer";
 
 const TILE_SIZE = 32;
 const TILE_CENTER = TILE_SIZE / 2;
@@ -22,30 +20,38 @@ const CART_INTERACTION_RADIUS = TILE_SIZE * 2;
 const GEAR_BOOST_DISTANCES = [120, 220, 360] as const;
 const BOOST_COOLDOWN_MS = 80;
 const CART_Y_OFFSET = 6;
+const TEMPORARY_WOKA_TEXTURE_ID = "wvh-go-cart-avatar-v3";
+const TEMPORARY_WOKA_URL = "https://together.deine-schule.com/resources/wvh/go-cart-avatar.png?v=3";
+const TEMPORARY_WOKA_FRAME_WIDTH = 96;
+const TEMPORARY_WOKA_FRAME_HEIGHT = 80;
+const TEMPORARY_WOKA_SCALE = 0.62;
 const EXIT_CART_BUTTON_ID = "wvh-exit-go-cart";
 const GEAR_BUTTON_IDS = ["wvh-go-cart-gear-1", "wvh-go-cart-gear-2", "wvh-go-cart-gear-3"] as const;
 const GEAR_SPEEDS = [420, 860, 1500] as const;
 const DEFAULT_GEAR = 2;
-const CART_STATE_VARIABLE = "wvhGoCartState";
 
 type Direction = "left" | "right" | "up" | "down";
-type CartWebsite = ReturnType<typeof WA.room.website.create>;
-type CartState = {
-    inCart: boolean;
-    gear: number;
-    nonce: string;
+type WvhPlayerApi = typeof WA.player & {
+    setTemporaryWoka?: (options: {
+        textureId: string;
+        url: string;
+        frameWidth: number;
+        frameHeight: number;
+        scale: number;
+    }) => Promise<void>;
+    restoreWoka?: () => Promise<void>;
 };
 
-let driverCart: CartWebsite | undefined;
+let driverCart: ReturnType<typeof WA.room.website.create> | undefined;
 let actionMessage: ActionMessage | undefined;
 let cartMode = false;
+let nativeCartAvatarActive = false;
 let boostRunning = false;
 let lastBoostAt = 0;
 let cartFollowTimer: number | undefined;
 let cartFollowInFlight = false;
 let exitHintWebsite: Awaited<ReturnType<typeof WA.ui.website.open>> | undefined;
 let currentGear = DEFAULT_GEAR;
-const remoteDriverCarts = new Map<number, CartWebsite>();
 
 const driverCartUrl = new URL("../go-cart-driver.html", import.meta.url).toString();
 const exitHintUrl = new URL("../go-cart-exit-hint.html", import.meta.url).toString();
@@ -69,31 +75,21 @@ const directionVector = (direction: Direction) => {
     }
 };
 
-const isCartState = (value: unknown): value is CartState =>
-    Boolean(
-        value &&
-        typeof value === "object" &&
-        "inCart" in value &&
-        typeof value.inCart === "boolean"
-    );
-
-const moveCartWebsiteTo = (cart: CartWebsite, x: number, y: number) => {
-    cart.x = x - CART_WIDTH / 2;
-    cart.y = y - CART_HEIGHT + CART_Y_OFFSET;
-};
-
 const moveWebsiteToPlayer = async () => {
     if (!driverCart) return;
     const position = await WA.player.getPosition();
-    moveCartWebsiteTo(driverCart, position.x, position.y);
+    driverCart.x = position.x - CART_WIDTH / 2;
+    driverCart.y = position.y - CART_HEIGHT + CART_Y_OFFSET;
 };
 
 const moveDriverCartTo = (x: number, y: number) => {
-    if (!driverCart) return;
-    moveCartWebsiteTo(driverCart, x, y);
+    if (nativeCartAvatarActive || !driverCart) return;
+    driverCart.x = x - CART_WIDTH / 2;
+    driverCart.y = y - CART_HEIGHT + CART_Y_OFFSET;
 };
 
 const startCartFollow = () => {
+    if (nativeCartAvatarActive) return;
     if (cartFollowTimer !== undefined) return;
 
     cartFollowTimer = window.setInterval(() => {
@@ -124,25 +120,10 @@ const refreshGearHint = () => {
     exitHintWebsite.url = exitHintUrlForGear();
 };
 
-const publishCartState = async (inCart: boolean) => {
-    const state: CartState = {
-        inCart,
-        gear: currentGear,
-        nonce: `${Date.now()}-${Math.random()}`,
-    };
-
-    await WA.player.state.saveVariable(CART_STATE_VARIABLE, state, {
-        public: true,
-        persist: false,
-        scope: "room",
-    });
-};
-
 const setGear = (gear: number) => {
     if (!cartMode || !Number.isInteger(gear) || gear < 1 || gear > GEAR_SPEEDS.length) return;
     currentGear = gear;
     refreshGearHint();
-    publishCartState(true).catch(error => console.error("Go-Cart gear state publish failed", error));
 };
 
 const exitButtonCallback: ButtonActionBarClickedCallback = () => {
@@ -201,81 +182,6 @@ const hideExitControls = async () => {
     exitHintWebsite.visible = false;
 };
 
-const createCartWebsite = (name: string, x: number, y: number) =>
-    WA.room.website.create({
-        name,
-        url: driverCartUrl,
-        position: {
-            x: x - CART_WIDTH / 2,
-            y: y - CART_HEIGHT + CART_Y_OFFSET,
-            width: CART_WIDTH,
-            height: CART_HEIGHT,
-        },
-        visible: true,
-        origin: "map",
-    });
-
-const removeRemoteCart = (playerId: number) => {
-    const remoteCart = remoteDriverCarts.get(playerId);
-    if (!remoteCart) return;
-
-    remoteDriverCarts.delete(playerId);
-    WA.room.website.delete(remoteCart.name).catch(() => undefined);
-};
-
-const renderRemoteCart = (player: RemotePlayerInterface) => {
-    const state = player.state[CART_STATE_VARIABLE];
-    if (!isCartState(state) || !state.inCart) {
-        removeRemoteCart(player.playerId);
-        return;
-    }
-
-    const cartName = `go-cart-driver-remote-${player.playerId}`;
-    let remoteCart = remoteDriverCarts.get(player.playerId);
-
-    if (!remoteCart) {
-        remoteCart = createCartWebsite(cartName, player.position.x, player.position.y);
-        remoteDriverCarts.set(player.playerId, remoteCart);
-        return;
-    }
-
-    remoteCart.visible = true;
-    moveCartWebsiteTo(remoteCart, player.position.x, player.position.y);
-};
-
-const moveRemoteCart = (playerId: number, position: PlayerPosition) => {
-    const remoteCart = remoteDriverCarts.get(playerId);
-    if (!remoteCart) return;
-    moveCartWebsiteTo(remoteCart, position.x, position.y);
-};
-
-const startRemoteCartTracking = async () => {
-    await WA.players.configureTracking({
-        players: true,
-        movement: true,
-    });
-
-    for (const player of WA.players.list()) {
-        renderRemoteCart(player);
-    }
-
-    WA.players.onPlayerEnters.subscribe(player => {
-        renderRemoteCart(player);
-    });
-
-    WA.players.onPlayerLeaves.subscribe(player => {
-        removeRemoteCart(player.playerId);
-    });
-
-    WA.players.onPlayerMoves.subscribe(({ player, newPosition }) => {
-        moveRemoteCart(player.playerId, newPosition);
-    });
-
-    WA.players.onVariableChange(CART_STATE_VARIABLE).subscribe(({ player }) => {
-        renderRemoteCart(player);
-    });
-};
-
 const enterCart = async () => {
     if (cartMode) return;
     cartMode = true;
@@ -283,9 +189,39 @@ const enterCart = async () => {
     WA.room.hideLayer(PARKED_CART_LAYER);
 
     const position = await WA.player.getPosition();
-    driverCart = createCartWebsite("go-cart-driver-prototype", position.x, position.y);
-    startCartFollow();
-    await publishCartState(true);
+    const wvhPlayer = WA.player as WvhPlayerApi;
+
+    if (typeof wvhPlayer.setTemporaryWoka === "function") {
+        try {
+            await wvhPlayer.setTemporaryWoka({
+                textureId: TEMPORARY_WOKA_TEXTURE_ID,
+                url: TEMPORARY_WOKA_URL,
+                frameWidth: TEMPORARY_WOKA_FRAME_WIDTH,
+                frameHeight: TEMPORARY_WOKA_FRAME_HEIGHT,
+                scale: TEMPORARY_WOKA_SCALE,
+            });
+            nativeCartAvatarActive = true;
+        } catch (error) {
+            nativeCartAvatarActive = false;
+            console.warn("Native Go-Cart avatar unavailable, using overlay fallback", error);
+        }
+    }
+
+    if (!nativeCartAvatarActive) {
+        driverCart = WA.room.website.create({
+            name: "go-cart-driver-prototype",
+            url: driverCartUrl,
+            position: {
+                x: position.x - CART_WIDTH / 2,
+                y: position.y - CART_HEIGHT + CART_Y_OFFSET,
+                width: CART_WIDTH,
+                height: CART_HEIGHT,
+            },
+            visible: true,
+            origin: "map",
+        });
+        startCartFollow();
+    }
 
     actionMessage?.remove();
     actionMessage = undefined;
@@ -300,7 +236,12 @@ const exitCart = async () => {
     actionMessage?.remove();
     actionMessage = undefined;
     await hideExitControls();
-    await publishCartState(false).catch(error => console.error("Go-Cart state clear failed", error));
+
+    if (nativeCartAvatarActive) {
+        const wvhPlayer = WA.player as WvhPlayerApi;
+        await wvhPlayer.restoreWoka?.().catch(error => console.error("Go-Cart avatar restore failed", error));
+        nativeCartAvatarActive = false;
+    }
 
     if (driverCart) {
         await WA.room.website.delete(driverCart.name).catch(() => undefined);
@@ -346,7 +287,6 @@ const boost = async (direction: Direction, x: number, y: number) => {
 WA.onInit().then(() => {
     showParkedCarts();
     window.addEventListener("keydown", handleKeyDown, true);
-    startRemoteCartTracking().catch(error => console.error("Go-Cart remote tracking failed", error));
 
     CART_PARKING_TILES.forEach((tile, index) => {
         const spot = tileToPixelCenter(tile);
