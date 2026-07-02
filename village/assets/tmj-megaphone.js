@@ -1,5 +1,10 @@
-import "./roof-fast.js";
-import "./main-1d30c8f5.js";
+const BOOTSTRAP_IMPORTS = ["./roof-fast.js", "./main-4b5876b3.js"];
+
+for (const scriptUrl of BOOTSTRAP_IMPORTS) {
+  import(scriptUrl)
+    .then(() => console.info(`Village module loaded: ${scriptUrl}`))
+    .catch((error) => console.error(`Village module failed: ${scriptUrl}`, error));
+}
 
 const MEGAPHONE_LAYER_NAME = "megaphoneZones";
 const SPEAKER_BADGE_URL = new URL("megaphone-speaker-badge.html", import.meta.url).toString();

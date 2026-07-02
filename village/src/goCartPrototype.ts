@@ -1,6 +1,7 @@
 /// <reference types="@workadventure/iframe-api-typings" />
 
 import type { ActionMessage } from "@workadventure/iframe-api-typings";
+import type { ButtonActionBarClickedCallback } from "@workadventure/iframe-api-typings/play/src/front/Api/Iframe/Ui/ButtonActionBar";
 
 const TILE_SIZE = 32;
 const TILE_CENTER = TILE_SIZE / 2;
@@ -16,7 +17,6 @@ const CART_PARKING_TILES = [
 const CART_WIDTH = 68;
 const CART_HEIGHT = 56;
 const CART_INTERACTION_RADIUS = TILE_SIZE * 2;
-const CART_SPEED = 1050;
 const BOOST_DISTANCE = 220;
 const BOOST_COOLDOWN_MS = 80;
 const CART_Y_OFFSET = 6;
@@ -25,6 +25,10 @@ const TEMPORARY_WOKA_URL = "https://together.deine-schule.com/resources/wvh/go-c
 const TEMPORARY_WOKA_FRAME_WIDTH = 96;
 const TEMPORARY_WOKA_FRAME_HEIGHT = 80;
 const TEMPORARY_WOKA_SCALE = 0.62;
+const EXIT_CART_BUTTON_ID = "wvh-exit-go-cart";
+const GEAR_BUTTON_IDS = ["wvh-go-cart-gear-1", "wvh-go-cart-gear-2", "wvh-go-cart-gear-3"] as const;
+const GEAR_SPEEDS = [760, 1050, 1400] as const;
+const DEFAULT_GEAR = 2;
 
 type Direction = "left" | "right" | "up" | "down";
 type WvhPlayerApi = typeof WA.player & {
@@ -46,8 +50,12 @@ let boostRunning = false;
 let lastBoostAt = 0;
 let cartFollowTimer: number | undefined;
 let cartFollowInFlight = false;
+let exitHintWebsite: Awaited<ReturnType<typeof WA.ui.website.open>> | undefined;
+let currentGear = DEFAULT_GEAR;
 
 const driverCartUrl = new URL("../go-cart-driver.html", import.meta.url).toString();
+const exitHintUrl = new URL("../go-cart-exit-hint.html", import.meta.url).toString();
+const exitHintUrlForGear = () => `${exitHintUrl}?gear=${currentGear}`;
 
 const tileToPixelCenter = ([tileX, tileY]: readonly [number, number]) => ({
     x: tileX * TILE_SIZE + TILE_CENTER,
@@ -107,9 +115,77 @@ const showParkedCarts = () => {
     WA.room.showLayer(PARKED_CART_LAYER);
 };
 
+const refreshGearHint = () => {
+    if (!exitHintWebsite) return;
+    exitHintWebsite.url = exitHintUrlForGear();
+};
+
+const setGear = (gear: number) => {
+    if (!cartMode || !Number.isInteger(gear) || gear < 1 || gear > GEAR_SPEEDS.length) return;
+    currentGear = gear;
+    refreshGearHint();
+};
+
+const exitButtonCallback: ButtonActionBarClickedCallback = () => {
+    void exitCart();
+};
+
+const gearButtonCallbacks = GEAR_BUTTON_IDS.map((_, index): ButtonActionBarClickedCallback => {
+    const gear = index + 1;
+    return () => setGear(gear);
+});
+
+const showExitControls = async () => {
+    WA.ui.actionBar.addButton({
+        id: EXIT_CART_BUTTON_ID,
+        label: "Aussteigen",
+        callback: exitButtonCallback,
+    });
+
+    GEAR_BUTTON_IDS.forEach((id, index) => {
+        const gear = index + 1;
+        WA.ui.actionBar.addButton({
+            id,
+            label: `Gang ${gear}`,
+            callback: gearButtonCallbacks[index],
+        });
+    });
+
+    if (!exitHintWebsite) {
+        exitHintWebsite = await WA.ui.website.open({
+            url: exitHintUrlForGear(),
+            visible: true,
+            position: {
+                vertical: "bottom",
+                horizontal: "middle",
+            },
+            size: {
+                width: "260px",
+                height: "64px",
+            },
+            margin: {
+                bottom: "112px",
+            },
+        });
+        return;
+    }
+
+    exitHintWebsite.visible = true;
+    refreshGearHint();
+};
+
+const hideExitControls = async () => {
+    WA.ui.actionBar.removeButton(EXIT_CART_BUTTON_ID);
+    GEAR_BUTTON_IDS.forEach(id => WA.ui.actionBar.removeButton(id));
+
+    if (!exitHintWebsite) return;
+    exitHintWebsite.visible = false;
+};
+
 const enterCart = async () => {
     if (cartMode) return;
     cartMode = true;
+    currentGear = DEFAULT_GEAR;
     WA.room.hideLayer(PARKED_CART_LAYER);
 
     const position = await WA.player.getPosition();
@@ -148,12 +224,8 @@ const enterCart = async () => {
     }
 
     actionMessage?.remove();
-    actionMessage = WA.ui.displayActionMessage({
-        message: "Go-Cart aktiv: Laufe in eine Richtung fuer Boost. Leertaste = aussteigen.",
-        callback: () => {
-            void exitCart();
-        },
-    });
+    actionMessage = undefined;
+    await showExitControls();
 };
 
 const exitCart = async () => {
@@ -163,6 +235,7 @@ const exitCart = async () => {
     stopCartFollow();
     actionMessage?.remove();
     actionMessage = undefined;
+    await hideExitControls();
 
     if (nativeCartAvatarActive) {
         const wvhPlayer = WA.player as WvhPlayerApi;
@@ -178,6 +251,23 @@ const exitCart = async () => {
     showParkedCarts();
 };
 
+const handleKeyDown = (event: KeyboardEvent) => {
+    if (!cartMode) return;
+
+    if (event.key === "Escape") {
+        event.preventDefault();
+        event.stopPropagation();
+        void exitCart();
+        return;
+    }
+
+    if (event.key === "1" || event.key === "2" || event.key === "3") {
+        event.preventDefault();
+        event.stopPropagation();
+        setGear(Number(event.key));
+    }
+};
+
 const boost = async (direction: Direction, x: number, y: number) => {
     const now = Date.now();
     if (!cartMode || boostRunning || now - lastBoostAt < BOOST_COOLDOWN_MS) return;
@@ -188,9 +278,10 @@ const boost = async (direction: Direction, x: number, y: number) => {
     const vector = directionVector(direction);
     const targetX = x + vector.x * BOOST_DISTANCE;
     const targetY = y + vector.y * BOOST_DISTANCE;
+    const cartSpeed = GEAR_SPEEDS[currentGear - 1];
 
     try {
-        await WA.player.moveTo(targetX, targetY, CART_SPEED);
+        await WA.player.moveTo(targetX, targetY, cartSpeed);
         await moveWebsiteToPlayer();
     } catch (error) {
         console.error("Go-Cart boost failed", error);
@@ -201,6 +292,7 @@ const boost = async (direction: Direction, x: number, y: number) => {
 
 WA.onInit().then(() => {
     showParkedCarts();
+    window.addEventListener("keydown", handleKeyDown, true);
 
     CART_PARKING_TILES.forEach((tile, index) => {
         const spot = tileToPixelCenter(tile);
