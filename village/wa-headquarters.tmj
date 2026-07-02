@@ -6731,7 +6731,7 @@
         {
          "name":"script",
          "type":"string",
-         "value":"assets\/tmj-megaphone.js?v=20260702-5"
+         "value":"assets\/tmj-megaphone.js?v=20260702-6"
         }],
  "renderorder":"right-down",
  "tiledversion":"1.12.1",
