@@ -2975,12 +2975,17 @@
                  "id":1102,
                  "name":"haxballArea01",
                  "opacity":1,
-                 "properties":[
-                        {
-                         "name":"openWebsite",
+                  "properties":[
+                         {
+                         "name":"meetingRoomLabel",
                          "type":"string",
-                         "value":"https:\/\/www.haxball.com\/"
+                         "value":"Haxball Treffpunkt"
                         }, 
+                        {
+                          "name":"openWebsite",
+                          "type":"string",
+                          "value":"haxball-external.html"
+                         }, 
                         {
                          "name":"openWebsiteClosable",
                          "type":"bool",
@@ -2989,7 +2994,7 @@
                         {
                          "name":"openWebsiteLabel",
                          "type":"string",
-                         "value":"Haxball \u00f6ffnen"
+                         "value":"Haxball extern \u00f6ffnen"
                         }, 
                         {
                          "name":"openWebsitePolicy",
@@ -3004,7 +3009,7 @@
                         {
                          "name":"openWebsiteTriggerMessage",
                          "type":"string",
-                         "value":"Leertaste: Haxball \u00f6ffnen"
+                         "value":"Leertaste: Haxball extern \u00f6ffnen"
                         }, 
                         {
                          "name":"openWebsiteWidth",
@@ -3041,11 +3046,16 @@
                  "id":1103,
                  "name":"GamesArea01",
                  "opacity":1,
-                 "properties":[
-                        {
-                         "name":"openWebsite",
+                  "properties":[
+                         {
+                         "name":"meetingRoomLabel",
                          "type":"string",
-                         "value":"https:\/\/codenames.game\/"
+                         "value":"Codenames Treffpunkt 1"
+                        }, 
+                        {
+                          "name":"openWebsite",
+                          "type":"string",
+                          "value":"https:\/\/codenames.game\/"
                         }, 
                         {
                          "name":"openWebsiteClosable",
@@ -3087,13 +3097,18 @@
                 {
                  "height":181.902,
                  "id":1104,
-                 "name":"GamesArea01",
+                 "name":"GamesArea02",
                  "opacity":1,
-                 "properties":[
-                        {
-                         "name":"openWebsite",
+                  "properties":[
+                         {
+                         "name":"meetingRoomLabel",
                          "type":"string",
-                         "value":"https:\/\/garticphone.com\/de"
+                         "value":"Gartic Phone Treffpunkt"
+                        }, 
+                        {
+                          "name":"openWebsite",
+                          "type":"string",
+                          "value":"https:\/\/garticphone.com\/de"
                         }, 
                         {
                          "name":"openWebsiteClosable",
@@ -3135,13 +3150,18 @@
                 {
                  "height":181.902,
                  "id":1105,
-                 "name":"GamesArea01",
+                 "name":"GamesArea03",
                  "opacity":1,
-                 "properties":[
-                        {
-                         "name":"openWebsite",
+                  "properties":[
+                         {
+                         "name":"meetingRoomLabel",
                          "type":"string",
-                         "value":"https:\/\/skribbl.io\/"
+                         "value":"Skribbl Treffpunkt"
+                        }, 
+                        {
+                          "name":"openWebsite",
+                          "type":"string",
+                          "value":"https:\/\/skribbl.io\/"
                         }, 
                         {
                          "name":"openWebsiteClosable",
@@ -3183,13 +3203,18 @@
                 {
                  "height":181.902,
                  "id":1106,
-                 "name":"GamesArea01",
+                 "name":"GamesArea04",
                  "opacity":1,
-                 "properties":[
-                        {
-                         "name":"openWebsite",
+                  "properties":[
+                         {
+                         "name":"meetingRoomLabel",
                          "type":"string",
-                         "value":"https:\/\/codenames.game\/"
+                         "value":"Codenames Treffpunkt 2"
+                        }, 
+                        {
+                          "name":"openWebsite",
+                          "type":"string",
+                          "value":"https:\/\/codenames.game\/"
                         }, 
                         {
                          "name":"openWebsiteClosable",
@@ -3227,6 +3252,59 @@
                  "width":361.856,
                  "x":4553.072,
                  "y":1297.049
+                }, 
+                {
+                 "height":181.902,
+                 "id":1110,
+                 "name":"GamesArea05",
+                 "opacity":1,
+                  "properties":[
+                         {
+                         "name":"meetingRoomLabel",
+                         "type":"string",
+                         "value":"Funocracy Treffpunkt"
+                        }, 
+                        {
+                          "name":"openWebsite",
+                          "type":"string",
+                          "value":"https:\/\/funocracy.com\/de"
+                        }, 
+                        {
+                         "name":"openWebsiteClosable",
+                         "type":"bool",
+                         "value":true
+                        }, 
+                        {
+                         "name":"openWebsiteLabel",
+                         "type":"string",
+                         "value":"Spiel \u00f6ffnen"
+                        }, 
+                        {
+                         "name":"openWebsitePolicy",
+                         "type":"string",
+                         "value":"camera; microphone; display-capture; fullscreen; autoplay; clipboard-write; encrypted-media; picture-in-picture"
+                        }, 
+                        {
+                         "name":"openWebsiteTrigger",
+                         "type":"string",
+                         "value":"onaction"
+                        }, 
+                        {
+                         "name":"openWebsiteTriggerMessage",
+                         "type":"string",
+                         "value":"Funocrazy \u00f6ffnen"
+                        }, 
+                        {
+                         "name":"openWebsiteWidth",
+                         "type":"int",
+                         "value":60
+                        }],
+                 "rotation":0,
+                 "type":"area",
+                 "visible":true,
+                 "width":361.856,
+                 "x":1549.072,
+                 "y":2797.049
                 }],
          "opacity":1,
          "type":"objectgroup",
@@ -6632,7 +6710,7 @@
          "y":0
         }],
  "nextlayerid":161,
- "nextobjectid":1110,
+ "nextobjectid":1111,
  "orientation":"orthogonal",
  "properties":[
         {
