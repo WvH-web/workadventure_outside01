@@ -17,7 +17,7 @@ const CART_PARKING_TILES = [
 const CART_WIDTH = 68;
 const CART_HEIGHT = 56;
 const CART_INTERACTION_RADIUS = TILE_SIZE * 2;
-const BOOST_DISTANCE = 220;
+const GEAR_BOOST_DISTANCES = [120, 220, 360] as const;
 const BOOST_COOLDOWN_MS = 80;
 const CART_Y_OFFSET = 6;
 const TEMPORARY_WOKA_TEXTURE_ID = "wvh-go-cart-avatar-v3";
@@ -27,7 +27,7 @@ const TEMPORARY_WOKA_FRAME_HEIGHT = 80;
 const TEMPORARY_WOKA_SCALE = 0.62;
 const EXIT_CART_BUTTON_ID = "wvh-exit-go-cart";
 const GEAR_BUTTON_IDS = ["wvh-go-cart-gear-1", "wvh-go-cart-gear-2", "wvh-go-cart-gear-3"] as const;
-const GEAR_SPEEDS = [760, 1050, 1400] as const;
+const GEAR_SPEEDS = [420, 860, 1500] as const;
 const DEFAULT_GEAR = 2;
 
 type Direction = "left" | "right" | "up" | "down";
@@ -258,13 +258,6 @@ const handleKeyDown = (event: KeyboardEvent) => {
         event.preventDefault();
         event.stopPropagation();
         void exitCart();
-        return;
-    }
-
-    if (event.key === "1" || event.key === "2" || event.key === "3") {
-        event.preventDefault();
-        event.stopPropagation();
-        setGear(Number(event.key));
     }
 };
 
@@ -276,8 +269,9 @@ const boost = async (direction: Direction, x: number, y: number) => {
     lastBoostAt = now;
 
     const vector = directionVector(direction);
-    const targetX = x + vector.x * BOOST_DISTANCE;
-    const targetY = y + vector.y * BOOST_DISTANCE;
+    const boostDistance = GEAR_BOOST_DISTANCES[currentGear - 1];
+    const targetX = x + vector.x * boostDistance;
+    const targetY = y + vector.y * boostDistance;
     const cartSpeed = GEAR_SPEEDS[currentGear - 1];
 
     try {

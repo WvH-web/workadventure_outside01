@@ -1,4 +1,4 @@
-const BOOTSTRAP_IMPORTS = ["./roof-fast.js", "./main-4b5876b3.js"];
+const BOOTSTRAP_IMPORTS = ["./roof-fast.js", "./main-fd78224e.js"];
 
 for (const scriptUrl of BOOTSTRAP_IMPORTS) {
   import(scriptUrl)
