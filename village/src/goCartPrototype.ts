@@ -24,13 +24,9 @@ const TEMPORARY_WOKA_FRAME_WIDTH = 96;
 const TEMPORARY_WOKA_FRAME_HEIGHT = 80;
 const TEMPORARY_WOKA_SCALE = 0.62;
 const EXIT_CART_BUTTON_ID = "wvh-exit-go-cart";
-const GEAR_BUTTON_IDS = ["wvh-go-cart-gear-1", "wvh-go-cart-gear-2", "wvh-go-cart-gear-3"] as const;
-const DEFAULT_GEAR = 2;
-const GEAR_SETTINGS = [
-    { distance: 80, speed: 180, cooldownMs: 520 },
-    { distance: 220, speed: 760, cooldownMs: 180 },
-    { distance: 520, speed: 2200, cooldownMs: 40 },
-] as const;
+const BOOST_DISTANCE = 220;
+const BOOST_SPEED = 1050;
+const BOOST_COOLDOWN_MS = 80;
 
 type Direction = "left" | "right" | "up" | "down";
 type WvhPlayerApi = typeof WA.player & {
@@ -53,11 +49,9 @@ let lastBoostAt = 0;
 let cartFollowTimer: number | undefined;
 let cartFollowInFlight = false;
 let exitHintWebsite: Awaited<ReturnType<typeof WA.ui.website.open>> | undefined;
-let currentGear = DEFAULT_GEAR;
 
 const driverCartUrl = new URL("../go-cart-driver.html", import.meta.url).toString();
 const exitHintUrl = new URL("../go-cart-exit-hint.html", import.meta.url).toString();
-const exitHintUrlForGear = () => `${exitHintUrl}?gear=${currentGear}`;
 
 const tileToPixelCenter = ([tileX, tileY]: readonly [number, number]) => ({
     x: tileX * TILE_SIZE + TILE_CENTER,
@@ -117,25 +111,9 @@ const showParkedCarts = () => {
     WA.room.showLayer(PARKED_CART_LAYER);
 };
 
-const refreshGearHint = () => {
-    if (!exitHintWebsite) return;
-    exitHintWebsite.url = exitHintUrlForGear();
-};
-
-const setGear = (gear: number) => {
-    if (!cartMode || !Number.isInteger(gear) || gear < 1 || gear > GEAR_SETTINGS.length) return;
-    currentGear = gear;
-    refreshGearHint();
-};
-
 const exitButtonCallback: ButtonActionBarClickedCallback = () => {
     void exitCart();
 };
-
-const gearButtonCallbacks = GEAR_BUTTON_IDS.map((_, index): ButtonActionBarClickedCallback => {
-    const gear = index + 1;
-    return () => setGear(gear);
-});
 
 const showExitControls = async () => {
     WA.ui.actionBar.addButton({
@@ -144,18 +122,9 @@ const showExitControls = async () => {
         callback: exitButtonCallback,
     });
 
-    GEAR_BUTTON_IDS.forEach((id, index) => {
-        const gear = index + 1;
-        WA.ui.actionBar.addButton({
-            id,
-            label: `Gang ${gear}`,
-            callback: gearButtonCallbacks[index],
-        });
-    });
-
     if (!exitHintWebsite) {
         exitHintWebsite = await WA.ui.website.open({
-            url: exitHintUrlForGear(),
+            url: exitHintUrl,
             visible: true,
             position: {
                 vertical: "bottom",
@@ -173,12 +142,10 @@ const showExitControls = async () => {
     }
 
     exitHintWebsite.visible = true;
-    refreshGearHint();
 };
 
 const hideExitControls = async () => {
     WA.ui.actionBar.removeButton(EXIT_CART_BUTTON_ID);
-    GEAR_BUTTON_IDS.forEach(id => WA.ui.actionBar.removeButton(id));
 
     if (!exitHintWebsite) return;
     exitHintWebsite.visible = false;
@@ -187,7 +154,6 @@ const hideExitControls = async () => {
 const enterCart = async () => {
     if (cartMode) return;
     cartMode = true;
-    currentGear = DEFAULT_GEAR;
     WA.room.hideLayer(PARKED_CART_LAYER);
 
     const position = await WA.player.getPosition();
@@ -265,18 +231,17 @@ const handleKeyDown = (event: KeyboardEvent) => {
 
 const boost = async (direction: Direction, x: number, y: number) => {
     const now = Date.now();
-    const gear = GEAR_SETTINGS[currentGear - 1];
-    if (!cartMode || boostRunning || now - lastBoostAt < gear.cooldownMs) return;
+    if (!cartMode || boostRunning || now - lastBoostAt < BOOST_COOLDOWN_MS) return;
 
     boostRunning = true;
     lastBoostAt = now;
 
     const vector = directionVector(direction);
-    const targetX = x + vector.x * gear.distance;
-    const targetY = y + vector.y * gear.distance;
+    const targetX = x + vector.x * BOOST_DISTANCE;
+    const targetY = y + vector.y * BOOST_DISTANCE;
 
     try {
-        await WA.player.moveTo(targetX, targetY, gear.speed);
+        await WA.player.moveTo(targetX, targetY, BOOST_SPEED);
         await moveWebsiteToPlayer();
     } catch (error) {
         console.error("Go-Cart boost failed", error);
