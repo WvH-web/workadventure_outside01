@@ -48,7 +48,9 @@ let boostRunning = false;
 let lastBoostAt = 0;
 let cartFollowTimer: number | undefined;
 let cartFollowInFlight = false;
+let exitInProgress = false;
 let exitHintWebsite: Awaited<ReturnType<typeof WA.ui.website.open>> | undefined;
+let exitActionMessage: ActionMessage | undefined;
 
 const driverCartUrl = new URL("../go-cart-driver.html", import.meta.url).toString();
 const exitHintUrl = new URL("../go-cart-exit-hint.html", import.meta.url).toString();
@@ -112,14 +114,59 @@ const showParkedCarts = () => {
 };
 
 const exitButtonCallback: ButtonActionBarClickedCallback = () => {
-    void exitCart();
+    requestExitCart();
+};
+
+const requestExitCart = () => {
+    void exitCart().catch(error => console.error("Go-Cart exit failed", error));
+};
+
+const safeRemoveActionBarButton = (id: string) => {
+    try {
+        WA.ui.actionBar.removeButton(id);
+    } catch (error) {
+        console.warn(`Go-Cart button cleanup failed: ${id}`, error);
+    }
+};
+
+const safeAddExitButton = () => {
+    try {
+        WA.ui.actionBar.addButton({
+            id: EXIT_CART_BUTTON_ID,
+            label: "Aussteigen",
+            callback: exitButtonCallback,
+        });
+    } catch (error) {
+        console.warn("Go-Cart exit button setup failed", error);
+    }
+};
+
+const waitWithTimeout = async (promise: Promise<unknown> | undefined, timeoutMs: number, label: string) => {
+    if (!promise) return;
+
+    let timeoutHandle: number | undefined;
+    const timeout = new Promise<void>(resolve => {
+        timeoutHandle = window.setTimeout(() => {
+            console.warn(`${label} timed out`);
+            resolve();
+        }, timeoutMs);
+    });
+
+    await Promise.race([promise.catch(error => console.error(label, error)), timeout]);
+
+    if (timeoutHandle !== undefined) {
+        window.clearTimeout(timeoutHandle);
+    }
 };
 
 const showExitControls = async () => {
-    WA.ui.actionBar.addButton({
-        id: EXIT_CART_BUTTON_ID,
-        label: "Aussteigen",
-        callback: exitButtonCallback,
+    safeRemoveActionBarButton(EXIT_CART_BUTTON_ID);
+    safeAddExitButton();
+
+    exitActionMessage?.remove();
+    exitActionMessage = WA.ui.displayActionMessage({
+        message: "Go-Cart verlassen: Leertaste oder Esc.",
+        callback: requestExitCart,
     });
 
     if (!exitHintWebsite) {
@@ -144,8 +191,10 @@ const showExitControls = async () => {
     exitHintWebsite.visible = true;
 };
 
-const hideExitControls = async () => {
-    WA.ui.actionBar.removeButton(EXIT_CART_BUTTON_ID);
+const hideExitControls = () => {
+    safeRemoveActionBarButton(EXIT_CART_BUTTON_ID);
+    exitActionMessage?.remove();
+    exitActionMessage = undefined;
 
     if (!exitHintWebsite) return;
     exitHintWebsite.visible = false;
@@ -197,35 +246,41 @@ const enterCart = async () => {
 };
 
 const exitCart = async () => {
-    if (!cartMode) return;
-    cartMode = false;
-    boostRunning = false;
-    stopCartFollow();
-    actionMessage?.remove();
-    actionMessage = undefined;
-    await hideExitControls();
+    if (!cartMode || exitInProgress) return;
+    exitInProgress = true;
 
-    if (nativeCartAvatarActive) {
-        const wvhPlayer = WA.player as WvhPlayerApi;
-        await wvhPlayer.restoreWoka?.().catch(error => console.error("Go-Cart avatar restore failed", error));
-        nativeCartAvatarActive = false;
+    try {
+        cartMode = false;
+        boostRunning = false;
+        stopCartFollow();
+        actionMessage?.remove();
+        actionMessage = undefined;
+        hideExitControls();
+
+        if (nativeCartAvatarActive) {
+            const wvhPlayer = WA.player as WvhPlayerApi;
+            await waitWithTimeout(wvhPlayer.restoreWoka?.(), 1000, "Go-Cart avatar restore failed");
+            nativeCartAvatarActive = false;
+        }
+
+        if (driverCart) {
+            await waitWithTimeout(WA.room.website.delete(driverCart.name), 1000, "Go-Cart overlay cleanup failed");
+            driverCart = undefined;
+        }
+
+        showParkedCarts();
+    } finally {
+        exitInProgress = false;
     }
-
-    if (driverCart) {
-        await WA.room.website.delete(driverCart.name).catch(() => undefined);
-        driverCart = undefined;
-    }
-
-    showParkedCarts();
 };
 
 const handleKeyDown = (event: KeyboardEvent) => {
     if (!cartMode) return;
 
-    if (event.key === "Escape") {
+    if (event.key === "Escape" || event.code === "Space" || event.key === " ") {
         event.preventDefault();
         event.stopPropagation();
-        void exitCart();
+        requestExitCart();
     }
 };
 
@@ -253,6 +308,7 @@ const boost = async (direction: Direction, x: number, y: number) => {
 WA.onInit().then(() => {
     showParkedCarts();
     window.addEventListener("keydown", handleKeyDown, true);
+    document.addEventListener("keydown", handleKeyDown, true);
 
     CART_PARKING_TILES.forEach((tile, index) => {
         const spot = tileToPixelCenter(tile);
