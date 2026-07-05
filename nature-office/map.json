@@ -1356,6 +1356,11 @@
                          "name":"standId",
                          "type":"string",
                          "value":"Adventure01"
+                        }, 
+                        {
+                         "name":"silent",
+                         "type":"bool",
+                         "value":true
                         }],
                  "rotation":0,
                  "type":"area",
@@ -1414,6 +1419,11 @@
                          "name":"standId",
                          "type":"string",
                          "value":"Adventure02"
+                        }, 
+                        {
+                         "name":"silent",
+                         "type":"bool",
+                         "value":true
                         }],
                  "rotation":0,
                  "type":"area",
@@ -1472,6 +1482,11 @@
                          "name":"standId",
                          "type":"string",
                          "value":"Adventure03"
+                        }, 
+                        {
+                         "name":"silent",
+                         "type":"bool",
+                         "value":true
                         }],
                  "rotation":0,
                  "type":"area",
@@ -1530,6 +1545,11 @@
                          "name":"standId",
                          "type":"string",
                          "value":"Adventure04"
+                        }, 
+                        {
+                         "name":"silent",
+                         "type":"bool",
+                         "value":true
                         }],
                  "rotation":0,
                  "type":"area",
@@ -1588,6 +1608,11 @@
                          "name":"standId",
                          "type":"string",
                          "value":"Adventure05"
+                        }, 
+                        {
+                         "name":"silent",
+                         "type":"bool",
+                         "value":true
                         }],
                  "rotation":0,
                  "type":"area",
@@ -1646,6 +1671,11 @@
                          "name":"standId",
                          "type":"string",
                          "value":"Adventure06"
+                        }, 
+                        {
+                         "name":"silent",
+                         "type":"bool",
+                         "value":true
                         }],
                  "rotation":0,
                  "type":"area",
@@ -1704,6 +1734,11 @@
                          "name":"standId",
                          "type":"string",
                          "value":"Adventure07"
+                        }, 
+                        {
+                         "name":"silent",
+                         "type":"bool",
+                         "value":true
                         }],
                  "rotation":0,
                  "type":"area",
@@ -1762,6 +1797,11 @@
                          "name":"standId",
                          "type":"string",
                          "value":"Adventure08"
+                        }, 
+                        {
+                         "name":"silent",
+                         "type":"bool",
+                         "value":true
                         }],
                  "rotation":0,
                  "type":"area",
@@ -1820,6 +1860,11 @@
                          "name":"standId",
                          "type":"string",
                          "value":"Adventure09"
+                        }, 
+                        {
+                         "name":"silent",
+                         "type":"bool",
+                         "value":true
                         }],
                  "rotation":0,
                  "type":"area",
@@ -1878,6 +1923,11 @@
                          "name":"standId",
                          "type":"string",
                          "value":"Adventure10"
+                        }, 
+                        {
+                         "name":"silent",
+                         "type":"bool",
+                         "value":true
                         }],
                  "rotation":0,
                  "type":"area",
@@ -1936,6 +1986,11 @@
                          "name":"standId",
                          "type":"string",
                          "value":"Adventure11"
+                        }, 
+                        {
+                         "name":"silent",
+                         "type":"bool",
+                         "value":true
                         }],
                  "rotation":0,
                  "type":"area",
