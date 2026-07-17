@@ -1520,7 +1520,7 @@
                         {
                          "name":"openWebsite",
                          "type":"string",
-                         "value":"stumble-guys-game.html"
+                         "value":"https:\/\/deutsche-online-schule.com\/schooltools\/verwaltung\/api\/workadventure_museum_open.php?board=stumbleguysgame"
                         }, 
                         {
                          "name":"openWebsiteClosable",
@@ -2984,7 +2984,7 @@
                         {
                          "name":"openWebsite",
                          "type":"string",
-                         "value":"haxball-external.html"
+                         "value":"https:\/\/deutsche-online-schule.com\/schooltools\/verwaltung\/api\/workadventure_museum_open.php?board=haxballarea01"
                         }, 
                         {
                          "name":"openWebsiteClosable",
@@ -3055,7 +3055,7 @@
                         {
                          "name":"openWebsite",
                          "type":"string",
-                         "value":"https:\/\/codenames.game\/"
+                         "value":"https:\/\/deutsche-online-schule.com\/schooltools\/verwaltung\/api\/workadventure_museum_open.php?board=gamesarea01"
                         }, 
                         {
                          "name":"openWebsiteClosable",
@@ -3108,7 +3108,7 @@
                         {
                          "name":"openWebsite",
                          "type":"string",
-                         "value":"https:\/\/garticphone.com\/de"
+                         "value":"https:\/\/deutsche-online-schule.com\/schooltools\/verwaltung\/api\/workadventure_museum_open.php?board=gamesarea02"
                         }, 
                         {
                          "name":"openWebsiteClosable",
@@ -3161,7 +3161,7 @@
                         {
                          "name":"openWebsite",
                          "type":"string",
-                         "value":"https:\/\/skribbl.io\/"
+                         "value":"https:\/\/deutsche-online-schule.com\/schooltools\/verwaltung\/api\/workadventure_museum_open.php?board=gamesarea03"
                         }, 
                         {
                          "name":"openWebsiteClosable",
@@ -3214,7 +3214,7 @@
                         {
                          "name":"openWebsite",
                          "type":"string",
-                         "value":"https:\/\/codenames.game\/"
+                         "value":"https:\/\/deutsche-online-schule.com\/schooltools\/verwaltung\/api\/workadventure_museum_open.php?board=gamesarea04"
                         }, 
                         {
                          "name":"openWebsiteClosable",
@@ -3267,7 +3267,7 @@
                         {
                          "name":"openWebsite",
                          "type":"string",
-                         "value":"https:\/\/funocracy.com\/de"
+                         "value":"https:\/\/deutsche-online-schule.com\/schooltools\/verwaltung\/api\/workadventure_museum_open.php?board=gamesarea05"
                         }, 
                         {
                          "name":"openWebsiteClosable",
