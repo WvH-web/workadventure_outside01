@@ -244,6 +244,7 @@ async function renderMusicScreen(boardName, rect, visible) {
 
   const name = `music-screen-${boardName}`;
   const url = new URL(MUSIC_SCREEN_URL);
+  url.searchParams.set("v", "20260720-music-frame-2");
   url.searchParams.set("board", boardName);
   if (imageUrl) {
     url.searchParams.set("image", imageUrl);
