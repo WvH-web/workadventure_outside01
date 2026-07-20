@@ -9,12 +9,15 @@ for (const scriptUrl of BOOTSTRAP_IMPORTS) {
 const MEGAPHONE_LAYER_NAME = "megaphoneZones";
 const SPEAKER_BADGE_URL = new URL("megaphone-speaker-badge.html", import.meta.url).toString();
 const MUSEUM_BOARD_URL = new URL("museum-board.html", import.meta.url).toString();
+const MUSIC_SCREEN_URL = new URL("music-screen.html", import.meta.url).toString();
 const MUSEUM_API_URL =
   "https://deutsche-online-schule.com/schooltools/verwaltung/api/workadventure_museum.php";
 const MUSEUM_BOARD_NAME_PATTERN = /^show([1-9]|1[0-3])$/;
+const MUSIC_SCREEN_NAME_PATTERN = /^musik0[1-7]$/;
 const MUSEUM_BOARD_OBJECT_LAYER_NAME = "museumBoards";
 const MUSEUM_BOARD_OBJECT_NAME_PATTERN = /^museumBoard_(show([1-9]|1[0-3]))$/;
 const MUSEUM_SHOWROOM_AREA_NAME = "showroom";
+const MUSIC_ROOM_AREA_NAME = "roof_office_area";
 const MUSEUM_BOARD_RECTS = {
   show1: { x: 4148.12121212121, y: 2561.41666666667, width: 86.7121212121201, height: 60.333333333333 },
   show2: { x: 4275.75, y: 2561.93181818182, width: 88.9166666666661, height: 61.7348484848485 },
@@ -41,6 +44,7 @@ const activeZones = new Map();
 const activeSpaces = new Map();
 let speakerBadge;
 const museumBoardWebsites = [];
+const musicScreenWebsites = [];
 
 function getProperty(properties, name) {
   return (properties || []).find((property) => property.name === name)?.value;
@@ -107,6 +111,29 @@ function findShowBoardConfigs(layers, result = []) {
 
     for (const object of layer.objects || []) {
       if (MUSEUM_BOARD_NAME_PATTERN.test(object.name || "") && object.width && object.height) {
+        result.push({
+          boardName: object.name,
+          rect: { x: object.x, y: object.y, width: object.width, height: object.height },
+        });
+      }
+    }
+  }
+  return result;
+}
+
+function findMusicScreenConfigs(layers, result = []) {
+  for (const layer of layers || []) {
+    if (layer.type === "group") {
+      findMusicScreenConfigs(layer.layers, result);
+      continue;
+    }
+
+    if (layer.type !== "objectgroup") {
+      continue;
+    }
+
+    for (const object of layer.objects || []) {
+      if (MUSIC_SCREEN_NAME_PATTERN.test(object.name || "") && object.width && object.height) {
         result.push({
           boardName: object.name,
           rect: { x: object.x, y: object.y, width: object.width, height: object.height },
@@ -207,8 +234,45 @@ async function renderMuseumBoard(boardName, rect, visible) {
   museumBoardWebsites.push(website);
 }
 
+async function renderMusicScreen(boardName, rect, visible) {
+  let imageUrl;
+  try {
+    imageUrl = await getMuseumBoardImageUrl(boardName);
+  } catch (error) {
+    console.warn(`Could not load music image for ${boardName}`, error);
+  }
+
+  const name = `music-screen-${boardName}`;
+  const url = new URL(MUSIC_SCREEN_URL);
+  url.searchParams.set("board", boardName);
+  if (imageUrl) {
+    url.searchParams.set("image", imageUrl);
+  }
+
+  await WA.room.website.delete(name).catch(() => undefined);
+  const website = WA.room.website.create({
+    name,
+    url: url.toString(),
+    position: {
+      x: rect.x,
+      y: rect.y,
+      width: rect.width,
+      height: rect.height,
+    },
+    visible,
+    origin: "map",
+  });
+  musicScreenWebsites.push(website);
+}
+
 function setMuseumBoardsVisible(visible) {
   for (const website of museumBoardWebsites) {
+    website.visible = visible;
+  }
+}
+
+function setMusicScreensVisible(visible) {
+  for (const website of musicScreenWebsites) {
     website.visible = visible;
   }
 }
@@ -338,3 +402,24 @@ WA.onInit()
     console.info(`Museum showroom boards ready: ${boardConfigs.length}`);
   })
   .catch((error) => console.error("Museum showroom board initialization failed", error));
+
+WA.onInit()
+  .then(async () => {
+    const map = await WA.room.getTiledMap();
+    const screenConfigs = findMusicScreenConfigs(map.layers);
+    const musicRoomArea = findAreaObject(map.layers, MUSIC_ROOM_AREA_NAME);
+    const playerPosition = await WA.player.getPosition();
+    const visible = musicRoomArea ? isInsideRect(playerPosition, musicRoomArea) : true;
+
+    await Promise.all(
+      screenConfigs.map((config) => renderMusicScreen(config.boardName, config.rect, visible))
+    );
+
+    if (musicRoomArea) {
+      WA.room.area.onEnter(MUSIC_ROOM_AREA_NAME).subscribe(() => setMusicScreensVisible(true));
+      WA.room.area.onLeave(MUSIC_ROOM_AREA_NAME).subscribe(() => setMusicScreensVisible(false));
+    }
+
+    console.info(`Music screens ready: ${screenConfigs.length}`);
+  })
+  .catch((error) => console.error("Music screen initialization failed", error));
