@@ -1,0 +1,118 @@
+<!doctype html>
+<html lang="de">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Schulschloss - Grundriss</title>
+    <link rel="stylesheet" href="preview.css" />
+    <link rel="icon" href="art/portrait.gif" type="image/gif" />
+    <script defer src="vendor/lucide.min.js"></script>
+  </head>
+  <body>
+    <header>
+      <a class="brand" href="./">Schulschloss <span>Grundriss</span></a>
+      <label class="sr-only" for="floor">Karte</label>
+      <select id="floor">
+        <option value="erdgeschoss">Erdgeschoss</option>
+        <option value="obergeschoss">Obergeschoss</option>
+        <option value="kino">Kino</option>
+        <option value="umgebung">Dorf &amp; Umgebung</option>
+      </select>
+      <div class="modes" role="group" aria-label="Ansicht">
+        <button id="overview" aria-pressed="true">Grundriss</button
+        ><button id="explore" aria-pressed="false">Erkunden</button>
+      </div>
+      <div class="tools">
+        <button
+          id="groups"
+          class="icon"
+          title="Gespraechszonen"
+          aria-label="Gespraechszonen"
+          aria-pressed="false"
+        >
+          <i data-lucide="audio-lines"></i></button
+        ><button
+          id="zoom-out"
+          class="icon"
+          title="Verkleinern"
+          aria-label="Verkleinern"
+        >
+          <i data-lucide="minus"></i></button
+        ><button
+          id="zoom-in"
+          class="icon"
+          title="Vergroessern"
+          aria-label="Vergroessern"
+        >
+          <i data-lucide="plus"></i>
+        </button>
+      </div>
+    </header>
+    <main>
+      <aside id="directory">
+        <h1>Orte</h1>
+        <nav id="rooms" aria-label="Raeume"></nav>
+        <a
+          class="reference"
+          href="art/erdgeschoss-overview.png"
+          target="_blank"
+          rel="noopener"
+          ><i data-lucide="image"></i>Plan als Bild</a
+        >
+      </aside>
+      <section id="viewport" aria-label="Begehbarer Schlossgrundriss">
+        <canvas id="map" tabindex="0" aria-label="Schlosskarte"></canvas>
+        <div id="loading" role="status">Schloss wird geladen</div>
+        <div class="location">
+          <span id="location" aria-live="polite">Grosse Halle</span
+          ><span id="conversation"></span>
+        </div>
+        <button id="cinema-open" hidden>
+          <i data-lucide="clapperboard"></i>Kino oeffnen
+        </button>
+        <button id="action" hidden></button>
+        <div id="touch-controls" aria-label="Laufsteuerung">
+          <button data-dir="up" aria-label="Nach oben">
+            <i data-lucide="chevron-up"></i>
+          </button>
+          <div>
+            <button data-dir="left" aria-label="Nach links">
+              <i data-lucide="chevron-left"></i></button
+            ><button data-dir="down" aria-label="Nach unten">
+              <i data-lucide="chevron-down"></i></button
+            ><button data-dir="right" aria-label="Nach rechts">
+              <i data-lucide="chevron-right"></i>
+            </button>
+          </div>
+        </div>
+      </section>
+      <aside id="content" hidden>
+        <div class="content-bar">
+          <strong>Kino</strong
+          ><a
+            id="content-external"
+            target="_blank"
+            rel="noopener"
+            title="Extern oeffnen"
+            aria-label="Extern oeffnen"
+            ><i data-lucide="external-link"></i></a
+          ><button
+            id="content-close"
+            class="icon"
+            title="Schliessen"
+            aria-label="Seitenfenster schliessen"
+          >
+            <i data-lucide="x"></i>
+          </button>
+        </div>
+        <iframe
+          id="content-frame"
+          title="Schulkino"
+          allow="autoplay; fullscreen; encrypted-media; picture-in-picture"
+          allowfullscreen
+        ></iframe>
+      </aside>
+    </main>
+    <script type="module" src="preview.js"></script>
+  </body>
+</html>

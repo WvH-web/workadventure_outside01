@@ -1,0 +1,20 @@
+Tool: built-in image_gen
+Purpose: eight aligned animation frames for a living school-castle painting.
+
+Use case: stylized-concept. Asset type: animation sprite sheet for living
+paintings on the walls of a fictional magical online school castle. Make ONE
+clean sprite sheet with exactly 4 columns and 2 rows, eight equal rectangular
+cells with no gutters, no labels, no text. Each cell is the SAME ornate
+rectangular gold-framed painted portrait of a kindly middle-aged woman scholar
+in a deep teal robe, holding a closed red book, on a forest-green painted
+background. Small whimsical but sophisticated original fantasy-school oil
+painting, warm highlights, crisp silhouette readable at tiny game sizes, no
+recognizable copyrighted character. The entire gold frame is fully inside each
+cell and is perfectly identical and aligned in every frame. All eight cells
+have identical camera, size, background and character identity. A very subtle
+animation sequence left-to-right then next row: eyes open; eyes open; eyes
+half-closed; eyes closed; eyes open; slight knowing smile; looking a little
+sideways; eyes forward. Nothing moves outside the frame. Entire sheet
+approximately landscape 4:3, each individual portrait approximately 2:3.
+Opaque full cell background; no checkerboards, no watermarks. This is a
+production sprite sheet, not a collage or screenshot.

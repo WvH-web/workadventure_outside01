@@ -1,0 +1,402 @@
+:root {
+  font-family: "Segoe UI", Arial, sans-serif;
+  color: #263a39;
+  background: #f4f6f3;
+  font-size: 14px;
+  letter-spacing: 0;
+  color-scheme: light;
+}
+* {
+  box-sizing: border-box;
+}
+body {
+  margin: 0;
+}
+header {
+  height: 62px;
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  border-bottom: 1px solid #d3ddd6;
+  padding: 0 20px;
+  background: #fff;
+}
+.brand {
+  color: #213c39;
+  font-weight: 650;
+  text-decoration: none;
+  font-size: 18px;
+  white-space: nowrap;
+}
+.brand span {
+  font-size: 12px;
+  color: #6b7972;
+  font-weight: 400;
+  margin-left: 8px;
+}
+button,
+select {
+  font: inherit;
+  letter-spacing: 0;
+}
+button,
+select,
+a {
+  touch-action: manipulation;
+}
+button {
+  cursor: pointer;
+  color: inherit;
+  border: 1px solid #cbd7ce;
+  background: #fff;
+  border-radius: 5px;
+  min-height: 36px;
+}
+button:hover {
+  background: #edf2ee;
+}
+button:focus-visible,
+a:focus-visible,
+select:focus-visible,
+canvas:focus-visible {
+  outline: 3px solid #c07958;
+  outline-offset: -3px;
+}
+select {
+  border: 1px solid #cbd7ce;
+  border-radius: 5px;
+  padding: 7px 26px 7px 10px;
+  max-width: 190px;
+  background: #fff;
+  min-height: 36px;
+}
+.modes {
+  display: flex;
+  flex: none;
+}
+.modes button {
+  border-radius: 0;
+  padding: 0 13px;
+}
+.modes button:first-child {
+  border-radius: 5px 0 0 5px;
+}
+.modes button:last-child {
+  border-radius: 0 5px 5px 0;
+  border-left: 0;
+}
+.modes [aria-pressed="true"] {
+  background: #2f5b52;
+  color: #fff;
+  border-color: #2f5b52;
+}
+.tools {
+  display: flex;
+  gap: 6px;
+  margin-left: auto;
+}
+.icon {
+  width: 36px;
+  display: grid;
+  place-items: center;
+  flex: none;
+}
+.icon svg,
+.reference svg,
+.content-bar svg {
+  width: 18px;
+  height: 18px;
+}
+.tools [aria-pressed="true"] {
+  background: #e3ede7;
+  border-color: #567f68;
+}
+main {
+  height: calc(100dvh - 62px);
+  display: flex;
+  min-height: 320px;
+}
+#directory {
+  width: 220px;
+  flex: none;
+  padding: 22px 12px 12px;
+  background: #f7f8f5;
+  overflow: auto;
+  border-right: 1px solid #d3ddd6;
+}
+h1 {
+  font-size: 12px;
+  text-transform: uppercase;
+  color: #728077;
+  letter-spacing: 0;
+  font-weight: 600;
+  margin: 0 10px 12px;
+}
+#rooms {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+#rooms button {
+  text-align: left;
+  border: 0;
+  background: none;
+  padding: 10px;
+  border-radius: 4px;
+  min-height: 39px;
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  line-height: 1.25;
+}
+#rooms button:hover,
+#rooms button[aria-current="true"] {
+  background: #e4ede6;
+}
+#rooms .dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: #8b9c80;
+  flex: none;
+}
+.reference {
+  display: flex;
+  gap: 9px;
+  align-items: center;
+  color: #507267;
+  text-decoration: none;
+  padding: 18px 10px;
+  border-top: 1px solid #d9e1d9;
+  margin-top: 18px;
+  font-size: 12px;
+}
+#viewport {
+  position: relative;
+  min-width: 0;
+  flex: 1;
+  overflow: hidden;
+  background: #416650;
+}
+canvas {
+  width: 100%;
+  height: 100%;
+  display: block;
+  outline: none;
+  touch-action: none;
+}
+#loading {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  background: #e5eade;
+  color: #3b5a49;
+}
+#loading[hidden] {
+  display: none;
+}
+.location {
+  position: absolute;
+  left: 18px;
+  bottom: 18px;
+  background: #f8faf5e8;
+  border: 1px solid #d5ddd4;
+  border-radius: 5px;
+  min-height: 36px;
+  padding: 9px 12px;
+  pointer-events: none;
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  max-width: calc(100% - 36px);
+}
+#conversation {
+  color: #576e9c;
+  font-size: 12px;
+  align-self: center;
+}
+#action {
+  position: absolute;
+  bottom: 66px;
+  left: 18px;
+  background: #f8f4e6;
+  border-color: #d8bb79;
+  padding: 9px 16px;
+  max-width: calc(100% - 36px);
+  font-weight: 600;
+}
+#content {
+  width: 44%;
+  min-width: 320px;
+  max-width: 760px;
+  background: #fff;
+  display: flex;
+  flex-direction: column;
+  border-left: 1px solid #cbd7ce;
+}
+#content[hidden] {
+  display: none;
+}
+.content-bar {
+  height: 46px;
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  padding: 0 10px 0 14px;
+  flex: none;
+  border-bottom: 1px solid #d8e0d8;
+}
+.content-bar strong {
+  font-size: 14px;
+  margin-right: auto;
+}
+.content-bar a {
+  color: #4b655a;
+  padding: 8px;
+}
+.content-bar .icon {
+  border: 0;
+}
+iframe {
+  width: 100%;
+  border: 0;
+  flex: 1;
+  min-height: 0;
+}
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+}
+#touch-controls {
+  display: none;
+  position: absolute;
+  right: 12px;
+  bottom: 64px;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+}
+#touch-controls div {
+  display: flex;
+  gap: 4px;
+}
+#touch-controls button {
+  width: 44px;
+  height: 44px;
+  display: grid;
+  place-items: center;
+  background: #f7faf0e8;
+}
+#touch-controls svg {
+  width: 21px;
+  height: 21px;
+}
+@media (max-width: 1000px) {
+  header {
+    gap: 10px;
+    padding: 0 12px;
+  }
+  .brand span {
+    display: none;
+  }
+  #directory {
+    width: 180px;
+  }
+  #content {
+    position: absolute;
+    right: 0;
+    top: 62px;
+    bottom: 0;
+    width: 58%;
+    z-index: 5;
+  }
+}
+@media (max-width: 680px) {
+  header {
+    height: 104px;
+    flex-wrap: wrap;
+    align-content: center;
+    gap: 8px 10px;
+  }
+  .brand {
+    width: calc(100% - 180px);
+    font-size: 16px;
+  }
+  header select {
+    max-width: 170px;
+    flex: 1;
+  }
+  .modes {
+    order: 3;
+  }
+  .tools {
+    order: 4;
+  }
+  main {
+    height: calc(100dvh - 104px);
+  }
+  #directory {
+    display: none;
+  }
+  #content {
+    top: 104px;
+    width: 100%;
+    max-width: none;
+    min-width: 0;
+  }
+  .location {
+    font-size: 12px;
+    left: 12px;
+    bottom: 12px;
+    max-width: calc(100% - 24px);
+  }
+  #action {
+    left: 12px;
+  }
+  .icon {
+    width: 40px;
+    min-height: 40px;
+  }
+  #touch-controls {
+    display: flex;
+  }
+  body[data-overview="true"] #touch-controls {
+    display: none;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  * {
+    scroll-behavior: auto !important;
+  }
+}
+#cinema-open {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 9px 12px;
+  background: #f8faf2ed;
+}
+#cinema-open[hidden] {
+  display: none;
+}
+#cinema-open svg {
+  width: 18px;
+  height: 18px;
+}
+@media (max-width: 380px) {
+  header .modes button {
+    font-size: 12px;
+    padding: 0 8px;
+  }
+  header .tools .icon {
+    width: 36px;
+    min-height: 36px;
+  }
+}
