@@ -12,6 +12,7 @@ const seats=[
  ...[360,430,500,566].map((x,n)=>({id:'table-south-'+(n+1),label:'Tafelplatz '+(n+5),x,y:290,standX:x,standY:352,facing:'up'})),
  {id:'desk',label:'Schreibtisch',x:684,y:432,standX:624,standY:464,facing:'up'},
 ];
+for(const seat of seats)seat.audioGroup=seat.id.startsWith('table-')?'council':seat.id.startsWith('armchair-')?'fireplace':'';
 const blocked=new Set();
 function rect(x1,y1,x2,y2){for(let y=y1;y<=y2;y++)for(let x=x1;x<=x2;x++)blocked.add(y*W+x)}
 rect(0,0,23,4);rect(0,0,0,15);rect(23,0,23,15);rect(0,15,10,15);rect(13,15,23,15);
@@ -53,12 +54,18 @@ const layers=[
  tileLayer('west',markers([[11,13]]),[prop('startLayer',true)]),
  tileLayer('south',markers([[11,14],[12,14]]),[prop('startLayer',true)]),
  tileLayer('floor',Array.from({length:W*H},(_,i)=>i+1)),
+ ...[-12,0,12].map((offsetx,n)=>{
+  const data=Array(W*H).fill(0);
+  data[4*W+7]=771+112+n;
+  data[5*W+7]=771+134+n;
+  return {...tileLayer('hearth-flames-'+(n+1),data),offsetx,offsety:8};
+ }),
  tileLayer('collisions',Array.from({length:W*H},(_,i)=>blocked.has(i)?385:0)),
  tileLayer('exitSouth',markers([[11,15],[12,15]]),[prop('exitUrl','Schloss01.tmj')]),
  objectLayer('seating',seats.map(s=>area('seat-'+s.id,s.x-16,s.y-16,32,32,
-  [prop('seatId',s.id),prop('seatLabel',s.label),prop('seatX',s.x),prop('seatY',s.y),prop('standX',s.standX),prop('standY',s.standY),prop('facing',s.facing)]))),
- objectLayer('conversationAreas',[
-  area('kollegiumsgespraech',0,0,W*T,H*T,[prop('audioSpace','kollegium')]),
+  [prop('seatId',s.id),prop('seatLabel',s.label),prop('seatX',s.x),prop('seatY',s.y),prop('standX',s.standX),prop('standY',s.standY),prop('facing',s.facing),prop('audioGroup',s.audioGroup)]))),
+ objectLayer('ambience',[
+  area('kamin-prasseln',32,144,256,208,[prop('playAudio','village/fire.mp3'),prop('audioLoop',true),prop('audioVolume',0.12)]),
  ]),
  objectLayer('tools',[
   area('kollegiumstafel-links',624,160,48,144,[prop('openWebsite','assets/teacher-lounge-20261107/resources.html'),
@@ -70,13 +77,23 @@ const layers=[
 const map={compressionlevel:-1,height:H,width:W,infinite:false,layers,nextlayerid:lid,nextobjectid:oid,orientation:'orthogonal',renderorder:'right-down',
  tiledversion:'1.11.2',tileheight:T,tilewidth:T,type:'map',version:'1.10',
  properties:[prop('mapName','Das magische Lehrerzimmer'),prop('mapDescription','Ein geschuetzter Ort fuer das Kollegium.'),
-  prop('mapImage','assets/teacher-lounge-20261107/floor.png'),prop('script','assets/teacher-lounge-20261107/room.js?v=20261107-2'),
+  prop('mapImage','assets/teacher-lounge-20261107/floor.png'),prop('script','assets/teacher-lounge-20261107/room.js?v=20261107-3'),
   prop('teacherLoungeResources',JSON.stringify(resources)),prop('mapCopyright','Original artwork generated for deine Schule. Fictional wizard-school interior.')],
  tilesets:[{firstgid:1,name:'Zauberschul-Lehrerzimmer',columns:W,image:'assets/teacher-lounge-20261107/floor.png',imageheight:H*T,imagewidth:W*T,margin:0,spacing:0,tilecount:W*H,tileheight:T,tilewidth:T},
  {firstgid:385,name:'Collision marker',columns:1,image:'assets/teacher-lounge-20261107/marker.png',imageheight:T,imagewidth:T,margin:0,spacing:0,tilecount:1,tileheight:T,tilewidth:T,tiles:[{id:0,properties:[prop('collides',true)]}]},
  {firstgid:386,name:'Entry marker',columns:1,image:'assets/teacher-lounge-20261107/marker.png',imageheight:T,imagewidth:T,margin:0,spacing:0,tilecount:1,tileheight:T,tilewidth:T}],
 };
 map.tilesets.push({firstgid:387,name:'Chair and table fronts',columns:W,image:'assets/teacher-lounge-20261107/fronts.png',imageheight:H*T,imagewidth:W*T,margin:0,spacing:0,tilecount:W*H,tileheight:T,tilewidth:T});
+const fire=JSON.parse(fs.readFileSync(path.join(root,'village/wa-headquarters.tmj'),'utf8')).tilesets.find(t=>t.name==='fire');
+const fireAnimations=[];
+for(const source of fire.tiles){
+ for(let phase=0;phase<3;phase++){
+  const shift=phase*2;
+  const animation=source.animation.slice(shift).concat(source.animation.slice(0,shift));
+  fireAnimations.push({id:source.id+phase,animation});
+ }
+}
+map.tilesets.push({...fire,firstgid:771,image:'village/tilesets/fire.png',tiles:fireAnimations});
 const frontShapes=[
  [[320,218],[606,218],[606,276],[320,276]],
  [[57,192],[70,194],[77,207],[111,210],[121,200],[127,206],[125,225],[106,235],[74,232],[66,218]],

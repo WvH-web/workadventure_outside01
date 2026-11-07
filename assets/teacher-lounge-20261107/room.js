@@ -1,6 +1,6 @@
 export const SEAT_KEY = 'teacherLoungeSeatV1';
 const PUBLIC_STATE = { public: true, persist: false };
-const SYNC_PROPERTIES = ['cameraState', 'microphoneState', 'screenSharingState', 'megaphoneState'];
+const SYNC_PROPERTIES = ['cameraState', 'microphoneState', 'screenSharingState'];
 const STAND_BUTTON = 'teacher-lounge-stand';
 
 function properties(object) {
@@ -8,7 +8,7 @@ function properties(object) {
 }
 
 export function parseLoungeMap(map) {
-  const seats = [], spaces = [];
+  const seats = [];
   function walk(layers) {
     for (const layer of layers || []) {
       if (layer.layers) walk(layer.layers);
@@ -16,20 +16,15 @@ export function parseLoungeMap(map) {
         const p = properties(object);
         if (p.seatId) {
           const seat = { id: p.seatId, label: p.seatLabel, x: p.seatX, y: p.seatY,
-            standX: p.standX, standY: p.standY, facing: p.facing };
+            standX: p.standX, standY: p.standY, facing: p.facing, audioGroup: p.audioGroup || null };
           if (![seat.x, seat.y, seat.standX, seat.standY].every(Number.isFinite)) throw Error('Invalid seat coordinates');
           seats.push(seat);
         }
-        if (p.audioSpace) spaces.push({ id: p.audioSpace, x: object.x, y: object.y, width: object.width, height: object.height });
       }
     }
   }
   walk(map.layers);
-  return { seats, spaces };
-}
-
-export function spaceAt(position, spaces) {
-  return spaces.find((s) => position.x >= s.x && position.x < s.x + s.width && position.y >= s.y && position.y < s.y + s.height)?.id || null;
+  return { seats };
 }
 
 export function bounded(promise, milliseconds = 4000) {
@@ -135,10 +130,16 @@ export class TeacherLounge {
       this.wa.controls.disablePlayerControls();
       const direction = { up: [0, -1], down: [0, 1], left: [-1, 0], right: [1, 0] }[seat.facing] || [0, 1];
       const centre = { x: Math.floor(seat.x / 32) * 32 + 16, y: Math.floor(seat.y / 32) * 32 + 16 };
-      await bounded(this.wa.player.teleport(centre.x - direction[0] * 8, centre.y - direction[1] * 8));
+      // Native pathfinding treats a same-tile move as an empty path and picks a
+      // neighbour instead. Approach from another tile, accounting for the feet.
+      const turnFrom = { x: centre.x - direction[0] * 32,
+        y: centre.y - 16 - direction[1] * 32 };
+      await bounded(this.wa.player.teleport(turnFrom.x, turnFrom.y));
       if (this.disposed || this.seat !== seat) return false;
       try {
-        await bounded(this.wa.player.moveTo(centre.x, centre.y, 32), 2500);
+        // Keep the turn longer than one render frame, otherwise the engine can
+        // snap to the endpoint without updating the avatar's direction.
+        await bounded(this.wa.player.moveTo(centre.x, centre.y, 4), 2500);
       } catch (error) {
         if (!/No path found/i.test(error.message)) throw error;
       }
@@ -180,7 +181,7 @@ export class TeacherLounge {
 
   updateAudio() {
     if (this.disposed) return;
-    this.desiredSpaceId = spaceAt(this.position, this.layout.spaces);
+    this.desiredSpaceId = this.phase === 'seated' ? this.seat?.audioGroup || null : null;
     if (this.audioTask || this.desiredSpaceId === this.activeSpaceId || Date.now() < this.audioRetryAt) return;
     this.audioTask = this.syncAudio().catch((error) => {
       this.audioRetryAt = Date.now() + 5000;
@@ -199,15 +200,12 @@ export class TeacherLounge {
       if (!desired) return;
       let joined;
       try {
-        // Native spaces reuse participant media if a proximity bubble overlaps.
-        // Every occupant can speak, without overriding microphone/camera choices.
-        const space = joined = await this.wa.spaces.joinSpace(`teacher-lounge-20261107-${desired}`, 'streaming', SYNC_PROPERTIES);
+        // Each table has its own native two-way meeting. Standing up leaves it.
+        const space = joined = await this.wa.spaces.joinSpace(`teacher-lounge-tables-v2-${desired}`, 'everyone', SYNC_PROPERTIES);
         if (this.disposed || desired !== this.desiredSpaceId) {
           await bounded(space.leave());
           continue;
         }
-        await bounded(space.startStreaming());
-        if (this.disposed || desired !== this.desiredSpaceId) { await bounded(space.leave()); continue; }
         this.activeSpace = space; this.activeSpaceId = desired;
       } catch (error) {
         if (joined) { try { await bounded(joined.leave()); } catch {} }

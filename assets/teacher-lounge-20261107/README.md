@@ -12,15 +12,25 @@ native sitting animation: seating is positioning, facing and foreground occlusio
 replicated through ordinary player movement and transient public player state.
 
 Twelve seating objects live in the `seating` layer. Their `seatX`, `seatY`,
-`standX`, `standY` and `facing` properties control the interaction. Approach points
+`standX`, `standY`, `facing` and `audioGroup` properties control the interaction. Approach points
 must remain walkable; seat sockets may be inside furniture. Keep `seatFronts`
 above `floorLayer`. The visible action-bar button always allows standing up.
 
-The common staff conversation uses a native WorkAdventure streaming space, with
-every occupant a speaker. User microphone/camera choices are not changed.
-WorkAdventure deduplicates participant media when a proximity bubble overlaps;
-a two-client live check confirmed one audible remote stream. Leaving this map
-removes the space; it does not affect other school maps or their permissions.
+The eight conference seats share the native `council` conversation. The three
+armchairs share a separate `fireplace` conversation. Joining happens only once
+seated; standing up leaves the group and ordinary proximity remains available.
+The writing desk has no automatic group. No whole-room broadcast remains.
+User microphone/camera choices are not changed. These native two-way spaces are
+room-specific and do not alter the permissions or audio of other school maps.
+
+Facing uses a short native movement from a different tile before snapping to the
+chair. A same-tile movement is not reliable: EasyStar returns an empty path, and
+WorkAdventure then walks to a neighbouring tile. The sixteen-pixel foot offset
+also has to be accounted for. Native movement events are checked for all chairs.
+
+Three phased tile animations reuse `village/tilesets/fire.png`; no new artwork is
+needed. The `kamin-prasseln` area loops `village/fire.mp3` at volume 0.12, only near
+the hearth. Both visuals and audio use the existing native WorkAdventure players.
 
 The board at the east wall opens `resources.html`. Existing meeting and leisure
 links are retained in the map's `teacherLoungeResources` property. The server's

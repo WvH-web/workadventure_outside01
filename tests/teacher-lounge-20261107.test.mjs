@@ -1,7 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
-import { TeacherLounge, parseLoungeMap, spaceAt, SEAT_KEY } from '../assets/teacher-lounge-20261107/room.js';
+import { TeacherLounge, parseLoungeMap, SEAT_KEY } from '../assets/teacher-lounge-20261107/room.js';
 
 const map = JSON.parse(fs.readFileSync(new URL('../teachersmeetingground.tmj', import.meta.url)));
 const layout = parseLoungeMap(map);
@@ -17,13 +17,13 @@ function observable() {
 
 function fixture(id = 1) {
   const state = {}, remotes = [], moved = observable(), changed = observable(), enters = observable(), leaves = observable();
-  const calls = { disabled: false, proximity: true, buttons: new Set(), published: [], spaceLeaves: 0, joined: [] };
+  const calls = { disabled: false, proximity: true, buttons: new Set(), published: [], spaceLeaves: 0, joined: [], teleports: [], moves: [] };
   let position = { x: 360, y: 176 };
   const wa = {
     player: { playerId: id, state: { saveVariable: async (key, value, options) => { state[key] = value; calls.published.push({ key, value, options }); } },
       getPosition: async () => ({ ...position }),
-      teleport: async (x, y) => { position = { x, y }; moved.emit(position); },
-      moveTo: async (x, y) => { position = { x, y }; moved.emit(position); return { x, y, cancelled: false }; },
+      teleport: async (x, y) => { calls.teleports.push({x,y}); position = { x, y }; moved.emit(position); },
+      moveTo: async (x, y) => { calls.moves.push({x,y}); position = { x, y }; moved.emit(position); return { x, y, cancelled: false }; },
       onPlayerMove: (listener) => moved.subscribe(listener) },
     players: { configureTracking: async () => {}, list: () => remotes.values(), onVariableChange: () => changed,
       onPlayerEnters: enters, onPlayerLeaves: leaves },
@@ -42,7 +42,8 @@ function fixture(id = 1) {
 test('native tile dimensions, gids and empty entry markers are consistent', () => {
   assert.equal(map.width, 24); assert.equal(map.height, 16); assert.equal(map.tilewidth, 32);
   for (const l of map.layers.filter((l) => l.type === 'tilelayer')) {
-    assert.equal(l.data.length, 384); assert.ok(l.data.every((id) => Number.isInteger(id) && id >= 0 && id <= 770));
+    const last = map.tilesets.at(-1);
+    assert.equal(l.data.length, 384); assert.ok(l.data.every((id) => Number.isInteger(id) && id >= 0 && id < last.firstgid + last.tilecount));
   }
   const start = map.layers.find((l) => l.name === 'start');
   assert.ok(start.data.some(Boolean));
@@ -70,12 +71,27 @@ test('every chair approach is reachable without walking through furniture', () =
   }
 });
 
-test('one staff conversation covers this room but not another map', () => {
-  assert.equal(layout.spaces.length, 1);
-  assert.equal(spaceAt({ x: 100, y: 220 }, layout.spaces), 'kollegium');
-  assert.equal(spaceAt({ x: 430, y: 280 }, layout.spaces), 'kollegium');
-  assert.equal(spaceAt({ x: 384, y: 432 }, layout.spaces), 'kollegium');
-  assert.equal(spaceAt({ x: -1, y: 432 }, layout.spaces), null);
+test('eight table seats and three armchairs have separate conversation groups', () => {
+  assert.equal(layout.seats.filter(s => s.audioGroup === 'council').length, 8);
+  assert.equal(layout.seats.filter(s => s.audioGroup === 'fireplace').length, 3);
+  assert.equal(layout.seats.find(s => s.id === 'desk').audioGroup, null);
+  assert.ok(!map.layers.some(l => l.name === 'conversationAreas'));
+});
+
+test('fire uses native tile animations and quiet local looping audio', () => {
+  const fire = map.tilesets.find(t => t.name === 'fire');
+  assert.ok(fire);
+  assert.equal(fire.tiles.length, 6);
+  for (const tile of fire.tiles) {
+    assert.equal(tile.animation.length, 7);
+    assert.ok(tile.animation.every(f => f.tileid < fire.tilecount && f.duration >= 100));
+  }
+  assert.equal(map.layers.filter(l => l.name.startsWith('hearth-flames-')).length, 3);
+  const sound = map.layers.find(l => l.name === 'ambience').objects[0];
+  const props = Object.fromEntries(sound.properties.map(p => [p.name,p.value]));
+  assert.equal(props.audioLoop, true); assert.equal(props.playAudio, 'village/fire.mp3');
+  assert.ok(props.audioVolume <= 0.15);
+  assert.ok(sound.x + sound.width < 320);
 });
 
 test('sitting publishes transient public state and keeps the native avatar', async () => {
@@ -142,15 +158,34 @@ test('standing during a pending sitting movement cannot teleport back to the cha
   } finally { f.controller.dispose(); }
 });
 
-test('staff audio uses a native broadcast space without disabling users media', async () => {
+test('only seated participants join their native table meeting', async () => {
   const f = fixture(); await f.controller.start();
   try {
     await f.controller.audioTask;
-    assert.equal(f.calls.joined.length, 1);
-    assert.equal(f.calls.joined[0].filter, 'streaming');
-    assert.ok(f.calls.joined[0].props.includes('megaphoneState'));
+    assert.equal(f.calls.joined.length, 0);
+    await f.controller.sit('table-north-1'); await f.controller.audioTask;
+    assert.equal(f.calls.joined[0].filter, 'everyone');
+    assert.ok(f.calls.joined[0].name.endsWith('-council'));
+    assert.ok(!f.calls.joined[0].props.includes('megaphoneState'));
+    await f.controller.stand(); await f.controller.audioTask;
+    assert.equal(f.calls.spaceLeaves, 1); assert.equal(f.controller.activeSpaceId, null);
     assert.equal(f.calls.proximity, true);
   } finally { f.controller.dispose(); }
+});
+
+test('facing alignment accounts for the native sixteen pixel foot offset', async () => {
+  for (const seat of layout.seats) {
+    const f=fixture(); await f.controller.start();
+    try {
+      await f.wa.player.teleport(seat.standX,seat.standY);
+      await f.controller.sit(seat.id);
+      const from=f.calls.teleports.at(-2),to=f.calls.moves.at(-1);
+      const dx=to.x-from.x,dy=to.y-16-from.y;
+      assert.equal(dx, {left:-32,right:32,up:0,down:0}[seat.facing], seat.id);
+      assert.equal(dy, {left:0,right:0,up:-32,down:32}[seat.facing], seat.id);
+      assert.ok(Math.floor(from.x/32)!==Math.floor(to.x/32)||Math.floor(from.y/32)!==Math.floor(to.y/32));
+    } finally {f.controller.dispose();}
+  }
 });
 
 test('late audio joins are left after exiting a region', async () => {
