@@ -1,0 +1,241 @@
+export const SEAT_KEY = 'teacherLoungeSeatV1';
+const PUBLIC_STATE = { public: true, persist: false };
+const SYNC_PROPERTIES = ['cameraState', 'microphoneState', 'screenSharingState'];
+const STAND_BUTTON = 'teacher-lounge-stand';
+
+function properties(object) {
+  return Object.fromEntries((object.properties || []).map((entry) => [entry.name, entry.value]));
+}
+
+export function parseLoungeMap(map) {
+  const seats = [], spaces = [];
+  function walk(layers) {
+    for (const layer of layers || []) {
+      if (layer.layers) walk(layer.layers);
+      for (const object of layer.objects || []) {
+        const p = properties(object);
+        if (p.seatId) {
+          const seat = { id: p.seatId, label: p.seatLabel, x: p.seatX, y: p.seatY,
+            standX: p.standX, standY: p.standY, facing: p.facing };
+          if (![seat.x, seat.y, seat.standX, seat.standY].every(Number.isFinite)) throw Error('Invalid seat coordinates');
+          seats.push(seat);
+        }
+        if (p.audioSpace) spaces.push({ id: p.audioSpace, x: object.x, y: object.y, width: object.width, height: object.height });
+      }
+    }
+  }
+  walk(map.layers);
+  return { seats, spaces };
+}
+
+export function spaceAt(position, spaces) {
+  return spaces.find((s) => position.x >= s.x && position.x < s.x + s.width && position.y >= s.y && position.y < s.y + s.height)?.id || null;
+}
+
+export function bounded(promise, milliseconds = 4000) {
+  let timer;
+  return Promise.race([Promise.resolve(promise), new Promise((_, reject) => {
+    timer = setTimeout(() => reject(Error('Lounge action timed out')), milliseconds);
+  })]).finally(() => clearTimeout(timer));
+}
+
+export class TeacherLounge {
+  constructor(wa, layout, options = {}) {
+    this.wa = wa;
+    this.layout = layout;
+    this.delay = options.delay || ((ms) => new Promise((resolve) => setTimeout(resolve, ms)));
+    this.position = { x: 384, y: 432 };
+    this.seat = null;
+    this.phase = 'standing';
+    this.prompt = null;
+    this.promptKey = '';
+    this.subscriptions = [];
+    this.activeSpace = null;
+    this.activeSpaceId = null;
+    this.desiredSpaceId = null;
+    this.audioTask = null;
+    this.audioRetryAt = 0;
+    this.disposed = false;
+    this.standingTask = null;
+  }
+
+  async start() {
+    await this.wa.players.configureTracking({ players: true, movement: true });
+    await this.wa.player.state.saveVariable(SEAT_KEY, null, PUBLIC_STATE);
+    this.position = await this.wa.player.getPosition();
+    const changed = () => { this.reconcileSeat(); this.updatePrompt(); };
+    this.subscriptions.push(this.wa.players.onVariableChange(SEAT_KEY).subscribe(changed));
+    this.subscriptions.push(this.wa.players.onPlayerEnters.subscribe(changed));
+    this.subscriptions.push(this.wa.players.onPlayerLeaves.subscribe(changed));
+    this.subscriptions.push(this.wa.player.onPlayerMove((position) => {
+      this.position = position;
+      this.updatePrompt();
+      this.updateAudio();
+    }));
+    this.heartbeat = setInterval(() => { changed(); this.updateAudio(); }, 1000);
+    this.updatePrompt();
+    this.updateAudio();
+    return this;
+  }
+
+  othersAt(id) {
+    return [...this.wa.players.list()].filter((player) => {
+      const value = player.state[SEAT_KEY];
+      return value && typeof value === 'object' && value.id === id && ['claiming', 'seated'].includes(value.stage);
+    });
+  }
+
+  reconcileSeat() {
+    if (!this.seat || this.phase === 'standing') return;
+    // Tracking covers nearby occupants. Ties between simultaneous claims settle
+    // deterministically, without a persistent lock left behind by disconnected tabs.
+    if (this.othersAt(this.seat.id).some((p) => p.playerId < this.wa.player.playerId)) {
+      this.stand().catch((error) => console.warn('Seat release failed:', error.message));
+    }
+  }
+
+  nearestSeat() {
+    return this.layout.seats.map((seat) => ({ seat, distance: Math.min(
+      Math.hypot(this.position.x - seat.x, this.position.y - seat.y),
+      Math.hypot(this.position.x - seat.standX, this.position.y - seat.standY)
+    ) })).filter((entry) => entry.distance <= 52 && this.othersAt(entry.seat.id).length === 0)
+      .sort((a, b) => a.distance - b.distance)[0]?.seat;
+  }
+
+  updatePrompt() {
+    if (this.disposed) return;
+    const candidate = this.seat || this.nearestSeat();
+    const key = this.seat ? 'stand' : candidate?.id || '';
+    if (key === this.promptKey) return;
+    this.prompt?.remove(); this.prompt = null; this.promptKey = key;
+    if (!candidate) return;
+    this.prompt = this.wa.ui.displayActionMessage({
+      message: this.seat ? 'Aufstehen' : `Hinsetzen: ${candidate.label}`,
+      callback: () => { (this.seat ? this.stand() : this.sit(candidate.id)).catch((error) => console.warn('Seat action failed:', error.message)); }
+    });
+  }
+
+  async sit(id) {
+    if (this.disposed || this.seat || this.standingTask) return false;
+    const seat = this.layout.seats.find((s) => s.id === id);
+    if (!seat || this.othersAt(id).length || Math.min(
+      Math.hypot(this.position.x - seat.x, this.position.y - seat.y),
+      Math.hypot(this.position.x - seat.standX, this.position.y - seat.standY)
+    ) > 80) return false;
+    this.seat = seat; this.phase = 'claiming';
+    try {
+      await bounded(this.wa.player.state.saveVariable(SEAT_KEY, { id, stage: 'claiming' }, PUBLIC_STATE));
+      await this.delay(260);
+      if (this.seat !== seat || this.othersAt(id).some((p) => p.playerId < this.wa.player.playerId)) {
+        await this.stand(); return false;
+      }
+      this.wa.ui.actionBar.addButton({ id: STAND_BUTTON, label: 'Aufstehen', callback: () => {
+        this.stand().catch((error) => console.warn('Standing up failed:', error.message));
+      } });
+      this.wa.controls.disablePlayerControls();
+      const direction = { up: [0, -1], down: [0, 1], left: [-1, 0], right: [1, 0] }[seat.facing] || [0, 1];
+      await bounded(this.wa.player.teleport(seat.x - direction[0] * 2, seat.y - direction[1] * 2));
+      const move = await bounded(this.wa.player.moveTo(seat.x, seat.y, 32), 2500);
+      if (move?.cancelled) await bounded(this.wa.player.teleport(seat.x, seat.y));
+      if (this.seat !== seat) return false;
+      this.position = await bounded(this.wa.player.getPosition());
+      this.phase = 'seated';
+      await bounded(this.wa.player.state.saveVariable(SEAT_KEY, { id, stage: 'seated' }, PUBLIC_STATE));
+      this.updatePrompt(); this.updateAudio();
+      return true;
+    } catch (error) {
+      await this.stand();
+      throw error;
+    }
+  }
+
+  stand() {
+    if (this.standingTask) return this.standingTask;
+    const seat = this.seat;
+    this.seat = null; this.phase = 'standing';
+    this.prompt?.remove(); this.prompt = null; this.promptKey = '';
+    this.wa.ui.actionBar.removeButton(STAND_BUTTON);
+    this.standingTask = (async () => {
+      try {
+        const actions = [bounded(this.wa.player.state.saveVariable(SEAT_KEY, null, PUBLIC_STATE))];
+        if (seat) actions.push(bounded(this.wa.player.teleport(seat.standX, seat.standY)));
+        await Promise.allSettled(actions);
+      } finally {
+        this.wa.controls.restorePlayerControls();
+        if (seat) this.position = { x: seat.standX, y: seat.standY };
+        this.standingTask = null;
+        this.updatePrompt(); this.updateAudio();
+      }
+    })();
+    return this.standingTask;
+  }
+
+  updateAudio() {
+    if (this.disposed) return;
+    this.desiredSpaceId = spaceAt(this.position, this.layout.spaces);
+    if (this.audioTask || this.desiredSpaceId === this.activeSpaceId || Date.now() < this.audioRetryAt) return;
+    this.audioTask = this.syncAudio().catch((error) => {
+      this.audioRetryAt = Date.now() + 5000;
+      this.wa.controls.restorePlayerProximityMeeting();
+      console.warn('Lounge audio transition failed:', error.message);
+    }).finally(() => { this.audioTask = null; });
+  }
+
+  async syncAudio() {
+    while (!this.disposed && this.activeSpaceId !== this.desiredSpaceId) {
+      if (this.activeSpace) {
+        const previous = this.activeSpace;
+        this.activeSpace = null; this.activeSpaceId = null;
+        await bounded(previous.leave());
+      }
+      const desired = this.desiredSpaceId;
+      if (!desired) { this.wa.controls.restorePlayerProximityMeeting(); return; }
+      this.wa.controls.disablePlayerProximityMeeting();
+      try {
+        const space = await this.wa.spaces.joinSpace(`teacher-lounge-20261107-${desired}`, 'everyone', SYNC_PROPERTIES);
+        if (this.disposed || desired !== this.desiredSpaceId) {
+          await bounded(space.leave());
+          if (this.disposed || !this.desiredSpaceId) this.wa.controls.restorePlayerProximityMeeting();
+          continue;
+        }
+        this.activeSpace = space; this.activeSpaceId = desired;
+      } catch (error) {
+        this.audioRetryAt = Date.now() + 5000;
+        this.wa.controls.restorePlayerProximityMeeting();
+        console.warn('Lounge audio unavailable:', error.message);
+        return;
+      }
+    }
+  }
+
+  dispose() {
+    if (this.disposed) return;
+    this.disposed = true;
+    clearInterval(this.heartbeat);
+    this.prompt?.remove(); this.prompt = null;
+    this.wa.ui.actionBar.removeButton(STAND_BUTTON);
+    this.wa.controls.restorePlayerControls();
+    this.wa.controls.restorePlayerProximityMeeting();
+    const space = this.activeSpace;
+    if (space) Promise.resolve().then(() => space.leave()).catch(() => {});
+    this.activeSpace = null;
+    for (const subscription of this.subscriptions) subscription?.unsubscribe?.();
+    this.wa.player.state.saveVariable(SEAT_KEY, null, PUBLIC_STATE).catch(() => {});
+  }
+}
+
+if (typeof WA !== 'undefined') {
+  window.teacherLoungeInitState = 'waiting-for-api';
+  WA.onInit().then(async () => {
+    window.teacherLoungeInitState = 'reading-map';
+    const lounge = new TeacherLounge(WA, parseLoungeMap(await WA.room.getTiledMap()));
+    window.teacherLoungeInitState = 'tracking-players';
+    await lounge.start();
+    window.teacherLounge = lounge;
+    window.teacherLoungeInitState = 'ready';
+    window.addEventListener('pagehide', () => lounge.dispose(), { once: true });
+  }).catch((error) => {
+    window.teacherLoungeInitState = 'failed';
+    console.error('Teacher lounge initialization failed:', error.message);
+  });
+}
