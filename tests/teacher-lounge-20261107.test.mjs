@@ -142,7 +142,7 @@ test('standing during a pending sitting movement cannot teleport back to the cha
   } finally { f.controller.dispose(); }
 });
 
-test('staff audio uses native speaker status without disabling users media', async () => {
+test('staff audio uses a native broadcast space without disabling users media', async () => {
   const f = fixture(); await f.controller.start();
   try {
     await f.controller.audioTask;

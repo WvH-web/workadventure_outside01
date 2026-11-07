@@ -18,8 +18,9 @@ above `floorLayer`. The visible action-bar button always allows standing up.
 
 The common staff conversation uses a native WorkAdventure streaming space, with
 every occupant a speaker. User microphone/camera choices are not changed.
-Native speaker status prevents a second proximity call. Leaving this map removes
-the space; it does not affect the other school maps or their permissions.
+WorkAdventure deduplicates participant media when a proximity bubble overlaps;
+a two-client live check confirmed one audible remote stream. Leaving this map
+removes the space; it does not affect other school maps or their permissions.
 
 The board at the east wall opens `resources.html`. Existing meeting and leisure
 links are retained in the map's `teacherLoungeResources` property. The server's

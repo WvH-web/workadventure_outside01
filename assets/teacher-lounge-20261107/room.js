@@ -199,8 +199,8 @@ export class TeacherLounge {
       if (!desired) return;
       let joined;
       try {
-        // Native speaker status suspends proximity without muting the microphone.
-        // Every occupant is a speaker, so the staff conversation is two-way.
+        // Native spaces reuse participant media if a proximity bubble overlaps.
+        // Every occupant can speak, without overriding microphone/camera choices.
         const space = joined = await this.wa.spaces.joinSpace(`teacher-lounge-20261107-${desired}`, 'streaming', SYNC_PROPERTIES);
         if (this.disposed || desired !== this.desiredSpaceId) {
           await bounded(space.leave());
