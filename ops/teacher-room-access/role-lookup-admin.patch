@@ -1,0 +1,10 @@
+--- workadventure-role-lookup.php
++++ workadventure-role-lookup.php
+@@ -39,5 +39,6 @@
+     $queries = [
+-        'teacher' => "SELECT 1 FROM users WHERE LOWER(email) = LOWER(?) AND is_active = 1 AND role_id = 3 LIMIT 1",
++        // The staff-room access tag also includes active school administrators.
++        'teacher' => "SELECT 1 FROM users WHERE LOWER(email) = LOWER(?) AND is_active = 1 AND role_id IN (1, 3) LIMIT 1",
+         'parent' => "SELECT 1 FROM guardians WHERE LOWER(email) = LOWER(?) AND is_active = 1 LIMIT 1",
+         'student' => "SELECT 1 FROM students WHERE LOWER(email) = LOWER(?) AND is_active = 1 LIMIT 1",
+     ];
