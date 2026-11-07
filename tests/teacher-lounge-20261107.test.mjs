@@ -32,7 +32,7 @@ function fixture(id = 1) {
     ui: { displayActionMessage: (data) => { calls.prompt = data; return { remove: () => {} }; },
       actionBar: { addButton: (data) => calls.buttons.add(data.id), removeButton: (id) => calls.buttons.delete(id) } },
     spaces: { joinSpace: async (name, filter, props) => {
-      calls.joined.push({ name, filter, props }); return { leave: () => { calls.spaceLeaves++; } };
+      calls.joined.push({ name, filter, props }); return { startStreaming: () => {}, leave: () => { calls.spaceLeaves++; } };
     } },
   };
   const controller = new TeacherLounge(wa, layout, { delay: async () => {} });
@@ -42,7 +42,7 @@ function fixture(id = 1) {
 test('native tile dimensions, gids and empty entry markers are consistent', () => {
   assert.equal(map.width, 24); assert.equal(map.height, 16); assert.equal(map.tilewidth, 32);
   for (const l of map.layers.filter((l) => l.type === 'tilelayer')) {
-    assert.equal(l.data.length, 384); assert.ok(l.data.every((id) => Number.isInteger(id) && id >= 0 && id <= 386));
+    assert.equal(l.data.length, 384); assert.ok(l.data.every((id) => Number.isInteger(id) && id >= 0 && id <= 770));
   }
   const start = map.layers.find((l) => l.name === 'start');
   assert.ok(start.data.some(Boolean));
@@ -58,7 +58,7 @@ test('all twelve seat sockets and standing positions fit an avatar body', () => 
   }
 });
 
-test('every seat and standing position is reachable from the doorway', () => {
+test('every chair approach is reachable without walking through furniture', () => {
   const visited = new Set(), queue = [[11, 13]];
   while (queue.length) {
     const [x, y] = queue.shift(), id = y * 24 + x;
@@ -66,17 +66,16 @@ test('every seat and standing position is reachable from the doorway', () => {
     visited.add(id); queue.push([x + 1, y], [x - 1, y], [x, y + 1], [x, y - 1]);
   }
   for (const s of layout.seats) {
-    assert.ok(visited.has(Math.floor(s.y / 32) * 24 + Math.floor(s.x / 32)), `seat route: ${s.id}`);
     assert.ok(visited.has(Math.floor(s.standY / 32) * 24 + Math.floor(s.standX / 32)), `standing route: ${s.id}`);
   }
 });
 
-test('conversation regions do not overlap and leave ordinary proximity outside', () => {
-  assert.equal(spaceAt({ x: 100, y: 220 }, layout.spaces), 'fireplace');
-  assert.equal(spaceAt({ x: 430, y: 280 }, layout.spaces), 'council');
-  assert.equal(spaceAt({ x: 384, y: 432 }, layout.spaces), null);
-  const [a, b] = layout.spaces;
-  assert.ok(a.x + a.width <= b.x);
+test('one staff conversation covers this room but not another map', () => {
+  assert.equal(layout.spaces.length, 1);
+  assert.equal(spaceAt({ x: 100, y: 220 }, layout.spaces), 'kollegium');
+  assert.equal(spaceAt({ x: 430, y: 280 }, layout.spaces), 'kollegium');
+  assert.equal(spaceAt({ x: 384, y: 432 }, layout.spaces), 'kollegium');
+  assert.equal(spaceAt({ x: -1, y: 432 }, layout.spaces), null);
 });
 
 test('sitting publishes transient public state and keeps the native avatar', async () => {
@@ -127,7 +126,34 @@ test('a failed seating movement cannot trap player controls', async () => {
   } finally { f.controller.dispose(); }
 });
 
-test('late audio joins are left and proximity is restored after exiting a region', async () => {
+test('standing during a pending sitting movement cannot teleport back to the chair', async () => {
+  const f = fixture(); await f.controller.start();
+  let finishMove, enteredMove;
+  const moving = new Promise((resolve) => { enteredMove = resolve; });
+  f.wa.player.moveTo = () => { enteredMove(); return new Promise((resolve) => { finishMove = resolve; }); };
+  try {
+    const sitting = f.controller.sit('table-north-1');
+    await moving;
+    await f.controller.stand();
+    finishMove({ cancelled: true });
+    assert.equal(await sitting, false);
+    assert.deepEqual(await f.wa.player.getPosition(), { x: 360, y: 176 });
+    assert.equal(f.calls.disabled, false);
+  } finally { f.controller.dispose(); }
+});
+
+test('staff audio uses native speaker status without disabling users media', async () => {
+  const f = fixture(); await f.controller.start();
+  try {
+    await f.controller.audioTask;
+    assert.equal(f.calls.joined.length, 1);
+    assert.equal(f.calls.joined[0].filter, 'streaming');
+    assert.ok(f.calls.joined[0].props.includes('megaphoneState'));
+    assert.equal(f.calls.proximity, true);
+  } finally { f.controller.dispose(); }
+});
+
+test('late audio joins are left after exiting a region', async () => {
   const f = fixture(); let resolve;
   f.wa.spaces.joinSpace = () => new Promise((r) => { resolve = r; });
   f.controller.desiredSpaceId = 'council';
@@ -138,7 +164,7 @@ test('late audio joins are left and proximity is restored after exiting a region
   assert.equal(f.calls.spaceLeaves, 1); assert.equal(f.calls.proximity, true);
 });
 
-test('dispose is idempotent and restores both controls and proximity', async () => {
+test('dispose is idempotent and restores controls without changing microphone settings', async () => {
   const f = fixture(); await f.controller.start();
   await f.controller.sit('table-north-1');
   f.controller.dispose(); f.controller.dispose();

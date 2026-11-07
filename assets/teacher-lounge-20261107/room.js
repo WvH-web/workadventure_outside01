@@ -1,6 +1,6 @@
 export const SEAT_KEY = 'teacherLoungeSeatV1';
 const PUBLIC_STATE = { public: true, persist: false };
-const SYNC_PROPERTIES = ['cameraState', 'microphoneState', 'screenSharingState'];
+const SYNC_PROPERTIES = ['cameraState', 'microphoneState', 'screenSharingState', 'megaphoneState'];
 const STAND_BUTTON = 'teacher-lounge-stand';
 
 function properties(object) {
@@ -134,9 +134,17 @@ export class TeacherLounge {
       } });
       this.wa.controls.disablePlayerControls();
       const direction = { up: [0, -1], down: [0, 1], left: [-1, 0], right: [1, 0] }[seat.facing] || [0, 1];
-      await bounded(this.wa.player.teleport(seat.x - direction[0] * 2, seat.y - direction[1] * 2));
-      const move = await bounded(this.wa.player.moveTo(seat.x, seat.y, 32), 2500);
-      if (move?.cancelled) await bounded(this.wa.player.teleport(seat.x, seat.y));
+      const centre = { x: Math.floor(seat.x / 32) * 32 + 16, y: Math.floor(seat.y / 32) * 32 + 16 };
+      await bounded(this.wa.player.teleport(centre.x - direction[0] * 8, centre.y - direction[1] * 8));
+      if (this.disposed || this.seat !== seat) return false;
+      try {
+        await bounded(this.wa.player.moveTo(centre.x, centre.y, 32), 2500);
+      } catch (error) {
+        if (!/No path found/i.test(error.message)) throw error;
+      }
+      if (this.disposed || this.seat !== seat) return false;
+      // Native pathfinding finishes at a tile centre, not the exact chair socket.
+      await bounded(this.wa.player.teleport(seat.x, seat.y));
       if (this.seat !== seat) return false;
       this.position = await bounded(this.wa.player.getPosition());
       this.phase = 'seated';
@@ -176,7 +184,6 @@ export class TeacherLounge {
     if (this.audioTask || this.desiredSpaceId === this.activeSpaceId || Date.now() < this.audioRetryAt) return;
     this.audioTask = this.syncAudio().catch((error) => {
       this.audioRetryAt = Date.now() + 5000;
-      this.wa.controls.restorePlayerProximityMeeting();
       console.warn('Lounge audio transition failed:', error.message);
     }).finally(() => { this.audioTask = null; });
   }
@@ -189,19 +196,22 @@ export class TeacherLounge {
         await bounded(previous.leave());
       }
       const desired = this.desiredSpaceId;
-      if (!desired) { this.wa.controls.restorePlayerProximityMeeting(); return; }
-      this.wa.controls.disablePlayerProximityMeeting();
+      if (!desired) return;
+      let joined;
       try {
-        const space = await this.wa.spaces.joinSpace(`teacher-lounge-20261107-${desired}`, 'everyone', SYNC_PROPERTIES);
+        // Native speaker status suspends proximity without muting the microphone.
+        // Every occupant is a speaker, so the staff conversation is two-way.
+        const space = joined = await this.wa.spaces.joinSpace(`teacher-lounge-20261107-${desired}`, 'streaming', SYNC_PROPERTIES);
         if (this.disposed || desired !== this.desiredSpaceId) {
           await bounded(space.leave());
-          if (this.disposed || !this.desiredSpaceId) this.wa.controls.restorePlayerProximityMeeting();
           continue;
         }
+        await bounded(space.startStreaming());
+        if (this.disposed || desired !== this.desiredSpaceId) { await bounded(space.leave()); continue; }
         this.activeSpace = space; this.activeSpaceId = desired;
       } catch (error) {
+        if (joined) { try { await bounded(joined.leave()); } catch {} }
         this.audioRetryAt = Date.now() + 5000;
-        this.wa.controls.restorePlayerProximityMeeting();
         console.warn('Lounge audio unavailable:', error.message);
         return;
       }
@@ -211,11 +221,11 @@ export class TeacherLounge {
   dispose() {
     if (this.disposed) return;
     this.disposed = true;
+    this.seat = null; this.phase = 'standing';
     clearInterval(this.heartbeat);
     this.prompt?.remove(); this.prompt = null;
     this.wa.ui.actionBar.removeButton(STAND_BUTTON);
     this.wa.controls.restorePlayerControls();
-    this.wa.controls.restorePlayerProximityMeeting();
     const space = this.activeSpace;
     if (space) Promise.resolve().then(() => space.leave()).catch(() => {});
     this.activeSpace = null;
