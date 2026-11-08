@@ -22,6 +22,10 @@ test('cinema is a compact native 30x28 room with 32px avatars and individual 32x
   assert.equal(chair.width,32);assert.equal(chair.height,36);assert.equal(chair.hasAlpha,true);
   assert.equal(source.mapdata.sourceSha256,crypto.createHash('sha256').update(fs.readFileSync(new URL('room-source.png',art))).digest('hex'));
   assert.equal(props(map).castleRevision,source.scene.revision);
+  for(const ts of map.tilesets){
+    assert.ok(!/[?#]/.test(ts.image),'Local Tiled image paths must be literal file names');
+    assert.ok(fs.existsSync(new URL(ts.image,base)));
+  }
 });
 test('48 silent seats and 16 conversation seats keep both scripting and native foot positions in their audio area',()=>{
   assert.equal(layout.seats.length,64);assert.equal(new Set(layout.seats.map(s=>s.id)).size,64);
@@ -86,7 +90,9 @@ test('entry, every seat approach and the exit are reachable without crossing an 
 });
 test('furniture foreground uses matching source pixels and leaves every seated head and upper torso visible',async()=>{
   const floor=await sharp(fs.readFileSync(new URL('floor.png',art))).ensureAlpha().raw().toBuffer();
-  const fronts=await sharp(fs.readFileSync(new URL('fronts.png',art))).ensureAlpha().raw().toBuffer();
+  const frontImage=map.tilesets.find(t=>t.name==='Moebel-Vorderkanten').image;
+  const fronts=await sharp(fs.readFileSync(new URL(frontImage,base))).ensureAlpha().raw().toBuffer();
+  assert.deepEqual(fs.readFileSync(new URL(frontImage,base)),fs.readFileSync(new URL('fronts.png',art)),'Legacy cache alias is pixel-identical');
   let opaque=0;
   for(let i=0;i<fronts.length;i+=4)if(fronts[i+3]){
     opaque++;assert.equal(fronts[i+3],255);assert.deepEqual(fronts.subarray(i,i+4),floor.subarray(i,i+4));

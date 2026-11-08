@@ -22,14 +22,16 @@ Mit dem integrierten Bildgenerator erzeugt, die grosse Halle nur als Stilreferen
 
 `scene.json` ist die editierbare Quelle fuer Platzierung und Abmessungen.
 `node tools/build-cinema.cjs --update-world` erzeugt daraus `floor.png`,
-`fronts.png`, `chair.png`, `lounge.png`, `marker.png`, `candles.png`,
+`fronts-20261108-v2.png`, `chair.png`, `lounge.png`, `marker.png`, `candles.png`,
 `layout.json`, die Karten und die Uebersicht. Auch der gesamte Schlossbauer
 verwendet diesen Erzeuger, damit er das Kino nicht durch den Platzhalter ersetzt.
 Die Vordergrundmasken kopieren ausschliesslich vorhandene Moebelpixel und lassen
 Koepfe sowie Oberkoerper frei.
 An den nach vorne gerichteten Tischstuehlen reicht die Freistellung bis zum
 Oberkoerper; hinter den Rueckenlehnen der Kinosessel bleibt der Kopf sichtbar.
-Die Vordergrundgrafik hat einen eigenen Versionsparameter gegen alte Bildcaches.
+Die Vordergrundgrafik hat einen versionierten Dateinamen gegen alte Bildcaches,
+keinen URL-Parameter im lokalen Tiled-Bildpfad. `fronts.png` bleibt als
+bytegleicher Alias fuer bereits zwischengespeicherte Vorschau-Karten erhalten.
 Die Kerzen verwenden die vorhandenen sieben
 Animationsframes aus dem Village, ohne verschobene Kachelebenen.
 
@@ -59,3 +61,33 @@ kuenstliche Testkonten und Tonquellen. Der Film-Endpunkt wird dort lokal durch
 eine neutrale Testseite ersetzt, damit kein echter Film oder fremdes Konto
 gestartet wird. Dies prueft Einbindung und Fenster-Lebensdauer, nicht erneut
 die Synchronisation innerhalb der unveraenderten Kino-Anwendung.
+
+## Abnahme am 8. November 2026
+
+106 Karten-, Sitz-, Steuerungs-, Audio- und Zugriffstests sowie sechs Widgettests
+sind bestanden. Alle 64 Kinoplaetze wurden in der Browservorschau bei 1440 x 960,
+390 x 844 und 320 x 740 Pixeln getestet, einschliesslich Sitzen, Aufstehen,
+Gespraechszuordnung, Fenster und Rueckwegen. Keine Layout- oder Browserfehler.
+
+Der Live-Test von `20261108-kino4` verwendete vier getrennte Browserprofile mit
+kurzlebigen synthetischen Konten und kuenstlichem Sprachton, keine echten Konten,
+Kameras oder Mikrofone. Zwei Personen im vorderen Ruhebereich blieben auch bei
+32 Pixel Abstand stumm, waehrend zwei Personen am hinteren Tisch gegenseitig
+nichtstummen Ton dekodierten. Danach liefen zwei isolierte Zweiergespraeche an
+benachbarten Tischen, auch bei nur 48 Pixel Abstand ueber die Gruppengrenze.
+Alle vier erhielten dabei Ton: Der Wechsel aus der Ruhezone stellt die
+normale Teilnahme am Tischgespraech wieder her.
+
+Der Film-Endpunkt wurde erst nach dem Klick auf den eigenen Kino-Knopf einmal
+geladen. Das gleiche Fenster blieb bei einem Wechsel zwischen vorderen und
+hinteren Sitzen erhalten. Der Rueckweg erreichte die neue Halle ohne Ruecksprung
+und schloss das eigene Filmfenster. Die echte Kino-Anwendung wurde dabei durch
+eine neutrale Testseite ersetzt, nicht veraendert. Native Spielbilder und
+Canvas-Pixel wurden auf Desktop und Mobilansicht geprueft; die Sitzdarstellung
+wurde an Sesseln und beiden Seiten der Tische kontrolliert. Keine Browserfehler.
+
+Wiederholbarer Live-Test: `node tools/check-cinema-live.cjs`, nach privater
+Bereitstellung der kurzlebigen Testkonten. Berichte, Bilder und private Daten
+liegen ausserhalb des Repositories unter `../output/cinema-live-qa/`, bezogen
+auf den Repository-Stamm. Dies ist kein Lasttest mit 400 Personen und keine
+erneute Abnahme der Hardware oder der Film-Synchronisation im Kino-Portal.

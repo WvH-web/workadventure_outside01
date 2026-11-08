@@ -118,7 +118,10 @@ async function buildCinema() {
     if(keep){foregroundPixels++;frontCells.add(Math.floor(y/T)*W+Math.floor(x/T));}
     else data.fill(0,(y*info.width+x)*4,(y*info.width+x)*4+4);
   }
-  await sharp(data,{raw:{width:info.width,height:info.height,channels:4}}).png({compressionLevel:9}).toFile(path.join(art,'fronts.png'));
+  const frontFile='fronts-20261108-v2.png';
+  await sharp(data,{raw:{width:info.width,height:info.height,channels:4}}).png({compressionLevel:9}).toFile(path.join(art,frontFile));
+  // Keep an identical alias for preview clients that already cached the earlier map.
+  fs.copyFileSync(path.join(art,frontFile),path.join(art,'fronts.png'));
   await sharp({create:{width:T,height:T,channels:4,background:'#00000000'}}).png().toFile(path.join(art,'marker.png'));
   const candles=await buildCandles(scene);
   const collisionGid=count+1,entryGid=count+2,frontGid=count+3,candleGid=count*2+3;
@@ -146,7 +149,7 @@ async function buildCinema() {
   ]));
   layers.push(objects('floorLayer',[]),tile('furniture-fronts',Array.from({length:count},(_,i)=>frontCells.has(i)?frontGid+i:0)));
   const imageSet=(firstgid,name,image,columns,tilecount,imagewidth,imageheight,extra={})=>({firstgid,name,
-    image:artPath+image+(image==='fronts.png'?'?v='+scene.revision:''),columns,tilecount,imagewidth,imageheight,tilewidth:T,tileheight:T,margin:0,spacing:0,...extra});
+    image:artPath+image,columns,tilecount,imagewidth,imageheight,tilewidth:T,tileheight:T,margin:0,spacing:0,...extra});
   const mapdata={pixelWidth:W*T,pixelHeight:H*T,avatarSize:32,seats:seats.length,quietSeats:48,conversationSeats:16,
     chairWidth:scene.chair.width,chairHeight:scene.chair.height,blockedTiles:blocked.size,reachableFloorTiles:reachable.size,foregroundPixels,
     sourceSha256:crypto.createHash('sha256').update(fs.readFileSync(path.join(art,'room-source.png'))).digest('hex')};
@@ -156,7 +159,7 @@ async function buildCinema() {
       P('castleArtScale',1),P('castleNativeMeetings',true),P('castleNativeRoomUrl',nativeTarget('kino.tmj')),P('castleHallUrl',nativeTarget('grosse-halle.tmj#kino')),
       P('castleMapdata',JSON.stringify(mapdata)),P('mapCopyright','Original room and cinema chair generated for deine Schule. Furniture at the approved Great Hall avatar scale; existing village flame animation.')],
     tilesets:[imageSet(1,'Schlosskino','floor.png',W,count,W*T,H*T),imageSet(collisionGid,'Collision marker','marker.png',1,1,T,T,{tiles:[{id:0,properties:[P('collides',true)]}]}),
-      imageSet(entryGid,'Entry marker','marker.png',1,1,T,T),imageSet(frontGid,'Moebel-Vorderkanten','fronts.png',W,count,W*T,H*T),
+      imageSet(entryGid,'Entry marker','marker.png',1,1,T,T),imageSet(frontGid,'Moebel-Vorderkanten',frontFile,W,count,W*T,H*T),
       imageSet(candleGid,'Kino-Kerzen','candles.png',candles.count,candles.count,candles.count*T,T,{tiles:candles.tiles})]};
   const world={id:'kino',width:W,height:H,illustrated:true,artScale:1,rooms:[
     {id:'kinosaal',title:'Stiller Kinosaal',...scene.audience.quiet,floor:'kino'},
