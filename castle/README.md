@@ -77,6 +77,9 @@ gezeichnet sind. Die Spielfigur bleibt im normalen 32-Pixel-Massstab. Die
 Vorschau verwendet ebenfalls einen 32 Pixel hohen Platzhalter, keinen
 mitvergroesserten Avatar. Sitzpunkte, Masken, Hindernisse, Feuer und Gruppen
 werden aus derselben aktuellen Raumvorlage erzeugt.
+Die native Sitzsteuerung gleicht die Position zusaetzlich regelmaessig mit dem
+Client ab, weil Bewegungsereignisse in der Live-Version veraltete Koordinaten
+enthalten koennen. Laufende Sitz- und Rutschbewegungen werden dabei nicht ueberschrieben.
 
 Die Raumgrafik wurde mit dem eingebauten Bildgenerator und dem Lehrerzimmer
 als reiner Stilreferenz erstellt. Original, Produktionsprompt, 1:2 verkleinerter

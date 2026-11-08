@@ -84,6 +84,9 @@ export class CastleRoom {
     this.busy = false;
     this.audioTask = null;
     this.retryAt = 0;
+    this.positionTask = null;
+    this.positionRevision = 0;
+    this.positionRetryAt = 0;
   }
   async start() {
     await this.wa.players.configureTracking({ players: true, movement: true });
@@ -91,6 +94,7 @@ export class CastleRoom {
     this.position = await this.wa.player.getPosition();
     this.subscriptions.push(
       this.wa.player.onPlayerMove((p) => {
+        this.positionRevision++;
         this.position = p;
         this.refresh();
       }),
@@ -98,9 +102,52 @@ export class CastleRoom {
     this.subscriptions.push(
       this.wa.players.onVariableChange(STATE).subscribe(() => this.refresh()),
     );
-    this.timer = setInterval(() => this.refresh(), 900);
+    this.timer = setInterval(() => {
+      this.refresh();
+      void this.syncPosition();
+    }, 400);
     this.refresh();
     return this;
+  }
+  syncPosition() {
+    if (this.positionTask) return this.positionTask;
+    if (
+      this.disposed ||
+      this.busy ||
+      this.seat ||
+      this.riding ||
+      this.standingTask ||
+      Date.now() < this.positionRetryAt
+    )
+      return Promise.resolve();
+    const revision = this.positionRevision;
+    // Movement notifications can lag behind the real position in the native client.
+    this.positionTask = bounded(
+      Promise.resolve().then(() => this.wa.player.getPosition()),
+      1500,
+    )
+      .then((position) => {
+        if (
+          this.disposed ||
+          this.busy ||
+          this.seat ||
+          this.riding ||
+          this.standingTask ||
+          revision !== this.positionRevision
+        )
+          return;
+        this.position = position;
+        this.refresh();
+      })
+      .catch((error) => {
+        this.positionRetryAt = Date.now() + 5000;
+        if (!this.disposed)
+          console.warn("Castle position synchronization:", error.message);
+      })
+      .finally(() => {
+        this.positionTask = null;
+      });
+    return this.positionTask;
   }
   occupants(id) {
     return [...this.wa.players.list()].filter((p) => p.state[STATE]?.id === id);

@@ -402,6 +402,70 @@ function fixture() {
 const settle = async () => {
   for (let i = 0; i < 8; i++) await new Promise((r) => setImmediate(r));
 };
+
+test("fresh positions restore seating prompts and group audio after stale movement notifications", async () => {
+  const f = fixture(),
+    layout = readLayout(maps.get("mittelstufe"));
+  const room = new CastleRoom(f.wa, layout, { delay: async () => {} });
+  await room.start();
+  try {
+    const s = layout.seats.find((s) => s.id === "sofa-rechts");
+    await f.wa.player.teleport(s.standX, s.standY);
+    f.moved.emit({ x: 480, y: 560, moving: false });
+    assert.equal(room.promptId, "");
+    await room.syncPosition();
+    await settle();
+    assert.equal(room.nearby().id, s.id);
+    assert.equal(f.calls.prompt.message, "Hinsetzen");
+    assert.ok(f.calls.joined.at(-1).name.endsWith("area-kaminrunde"));
+  } finally {
+    room.dispose();
+  }
+});
+
+test("position polling neither overlaps nor replaces a newer movement event", async () => {
+  const f = fixture(),
+    room = new CastleRoom(f.wa, readLayout(maps.get("mittelstufe")));
+  await room.start();
+  try {
+    let resolvePosition,
+      calls = 0;
+    f.wa.player.getPosition = () => {
+      calls++;
+      return new Promise((r) => {
+        resolvePosition = r;
+      });
+    };
+    const first = room.syncPosition(),
+      second = room.syncPosition();
+    await settle();
+    assert.equal(calls, 1);
+    f.moved.emit({ x: 480, y: 560 });
+    resolvePosition({ x: 0, y: 0 });
+    await Promise.all([first, second]);
+    assert.deepEqual(room.position, { x: 480, y: 560 });
+  } finally {
+    room.dispose();
+  }
+});
+
+test("late position responses cannot update a disposed room", async () => {
+  const f = fixture(),
+    room = new CastleRoom(f.wa, readLayout(maps.get("mittelstufe")));
+  await room.start();
+  let resolvePosition;
+  f.wa.player.getPosition = () =>
+    new Promise((r) => {
+      resolvePosition = r;
+    });
+  const task = room.syncPosition();
+  await settle();
+  room.dispose();
+  resolvePosition({ x: 348, y: 306 });
+  await task;
+  assert.deepEqual(room.position, { x: 0, y: 0 });
+  assert.equal(f.calls.joined.length, 0);
+});
 test("group entry and departure change native conversation without changing microphone state", async () => {
   const f = fixture(),
     layout = readLayout(maps.get("erdgeschoss")),
