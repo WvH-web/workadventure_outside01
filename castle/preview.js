@@ -1,4 +1,5 @@
-import { readLayout, conversationAt } from "./room.js?v=20261108-library1";
+import { readLayout, conversationAt } from "./room.js?v=20261108-gs1";
+import {activitySettings} from './activities.js?v=20261108-gs1';
 const $ = (id) => document.getElementById(id);
 function showError() {
   const retry = document.createElement("button");
@@ -16,7 +17,7 @@ window.addEventListener("error", (event) => {
 });
 const canvas = $("map"),
   ctx = canvas.getContext("2d");
-const manifest = await fetch("layout.json?v=20261108-library1").then((r) =>
+const manifest = await fetch("layout.json?v=20261108-gs1").then((r) =>
   r.json(),
 );
 const images = new Map();
@@ -142,7 +143,7 @@ async function load(id, entry = "start") {
     if (!cache.has(id))
       cache.set(
         id,
-        await fetch(id + ".tmj?v=20261108-library1").then((r) => {
+        await fetch(id + ".tmj?v=20261108-gs1").then((r) => {
           if (!r.ok) throw Error("Karte nicht erreichbar");
           return r.json();
         }),
@@ -320,6 +321,8 @@ function refresh() {
       obergeschoss: "Wandelgang",
       kino: "Foyer",
       mittelstufe: "Mittelstufenraum",
+      bibliothek: "Schlossbibliothek",
+      grundschule: "Grundschulstube",
       "grosse-halle": "Grosse Halle",
     }[world.id];
   const conversation = conversationAt(layout, position, seat);
@@ -338,13 +341,18 @@ function refresh() {
     .find((o) => o.properties?.some((p) => p.name === "hallAction") && inArea(position,o)) : null;
   const podium = world.id === "grosse-halle" && map.layers.flatMap((l) => l.objects || [])
     .some((o) => o.properties?.some((p) => p.name === "hallPodium" && p.value === true) && inArea(position,o));
-  $("hall-open").hidden = !hallAction;
+  const activity=map.layers.flatMap(l=>l.objects||[]).find(o=>o.properties?.some(p=>p.name==='castleActivityId')&&inArea(position,o));
+  $("hall-open").hidden = !hallAction&&!activity;
   if (hallAction) {
     const kind=hallAction.properties.find((p)=>p.name==="hallAction").value;
     const title=kind==="games"?"Spielrunden":"Schlossbrett";
     $("hall-open-label").textContent=title;
     $("hall-open").onclick=()=>openPanel(kind==="games"?new URL("hall-games.html",location.href).href:
       "https://deutsche-online-schule.com/schooltools/verwaltung/api/workadventure_museum_open.php?board=hallnotice01",title);
+  }else if(activity){
+    const settings=activitySettings(activity),url=new URL(settings.url);
+    if(settings.api)url.searchParams.set('preview','1');
+    $('hall-open-label').textContent=settings.label;$('hall-open').onclick=()=>openPanel(url.href,settings.label);
   }
   let label = "";
   currentAction = null;

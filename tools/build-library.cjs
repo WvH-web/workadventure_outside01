@@ -1,8 +1,7 @@
 const fs=require('node:fs'),path=require('node:path'),crypto=require('node:crypto');
 const sharp=require('./castle-deps.cjs')('sharp');
 const {nativeTarget,writeWam}=require('./castle-wam.cjs');
-const root=path.resolve(__dirname,'..'),art=path.join(root,'castle/art/bibliothek-20261108');
-const artPath='art/bibliothek-20261108/';
+const root=path.resolve(__dirname,'..');
 const P=(name,value)=>({name,type:typeof value==='boolean'?'bool':typeof value==='number'?'float':'string',value});
 const contains=(r,x,y)=>x>=r.x&&y>=r.y&&x<r.x+r.width&&y<r.y+r.height;
 function inside(x,y,p){
@@ -35,7 +34,8 @@ function geometry(scene,seats,rects){
       reachable.add(next);queue.push(next);
     }
   }
-  if(seats.length!==13||new Set(seats.map(s=>s.id)).size!==13)throw Error('Library must have thirteen unique seats');
+  const expected=scene.expectedSeats??13;
+  if(seats.length!==expected||new Set(seats.map(s=>s.id)).size!==expected)throw Error('Unexpected room seat count or duplicate seats');
   for(const s of seats){
     if(!reachable.has(cell(s.standX,s.standY))||blocked.has(cell(s.x,s.y)))throw Error('Unreachable library seat: '+s.id);
     const g=scene.groups.find(g=>g.id===s.audioGroup);
@@ -46,16 +46,19 @@ function geometry(scene,seats,rects){
   if(![...portal].some(n=>reachable.has(n-W)))throw Error('Library exit unreachable');
   return {blocked,reachable};
 }
-async function buildLibrary(){
+async function buildFurnishedRoom(options={}){
+  const id=options.id||'bibliothek',folder=options.folder||'bibliothek-20261108';
+  const art=path.join(root,'castle/art',folder),artPath='art/'+folder+'/';
+  const name=options.name||'Schlossbibliothek',description=options.description||'Gemuetliche Schlossbibliothek mit drei getrennten Lesegruppen, Fensternische und Kamin.';
   const scene=JSON.parse(fs.readFileSync(path.join(art,'scene.json'))),{width:W,height:H,tileSize:T}=scene,count=W*H;
-  if(W!==28||H!==22||T!==32||scene.avatarPixels!==32)throw Error('Approved library scale changed');
+  if(W!==28||H!==(options.height||22)||T!==32||scene.avatarPixels!==32)throw Error('Approved room scale changed');
   const ref=JSON.parse(fs.readFileSync(path.resolve(art,scene.circle.reference))),c=scene.circle,dx=c.x-c.sourceX,dy=c.y-c.sourceY;
   const seats=ref.seats.filter(s=>s.audioGroup==='kaminrunde').map(s=>({...s,id:'lese-'+s.id,label:s.label.replace('Kamin','Lese'),
     x:s.x+dx,y:s.y+dy,standX:s.standX+dx,standY:s.standY+dy,audioGroup:'lesekamin'}));
   const b=scene.bookclub;
   for(const [side,y,standY,facing]of [['n',b.northY,b.northStandY,'down'],['s',b.southY,b.southStandY,'up']])
-    for(const [i,x]of b.columns.entries())seats.push({id:'buchclub-'+side+i,label:'Buchclub '+side+(i+1),x:b.x+x,y:b.y+y,standX:b.x+x,standY:b.y+standY,facing,audioGroup:'buchclub'});
-  for(const [i,x]of scene.window.columns.entries())seats.push({id:'fenster-'+i,label:'Fensterbank '+(i+1),x,y:scene.window.y,standX:x,standY:scene.window.standY,facing:'down',audioGroup:'fensterleser'});
+    for(const [i,x]of b.columns.entries())seats.push({id:'buchclub-'+side+i,label:(b.label||'Buchclub')+' '+side+(i+1),x:b.x+x,y:b.y+y,standX:b.x+x,standY:b.y+standY,facing,audioGroup:'buchclub'});
+  for(const [i,x]of scene.window.columns.entries())seats.push({id:'fenster-'+i,label:(scene.window.label||'Fensterbank')+' '+(i+1),x,y:scene.window.y,standX:x,standY:scene.window.standY,facing:'down',audioGroup:'fensterleser'});
   const circleIds=['lounge-lamps','lounge-sofa','tea-table','lounge-chair-west','lounge-chair-east','lounge-chair-south'];
   const rects=[...scene.collisions,...ref.collisionRects.filter(r=>circleIds.includes(r.id)).map(r=>({...r,x:r.x+dx,y:r.y+dy}))];
   const {blocked,reachable}=geometry(scene,seats,rects);
@@ -102,26 +105,31 @@ async function buildLibrary(){
     ['id','label','x','y','standX','standY','facing','audioGroup'].map((key,i)=>P(['seatId','seatLabel','seatX','seatY','standX','standY','facing','audioGroup'][i],s[key]))))));
   layers.push(objects('conversationAreas',scene.groups.map(g=>area('group-'+g.id,g,[P('conversationGroup',g.id),P('conversationLabel',g.label)]))));
   layers.push(objects('ambience',[area('kamin-prasseln',scene.hearth.audio,[P('playAudio','../village/fire.mp3'),P('audioLoop',true),P('audioVolume',.06)])]));
+  if(scene.activities)layers.push(objects('activities',scene.activities.map(a=>area('activity-'+a.id,scene.groups.find(g=>g.id===a.group),[
+    P('castleActivityId',a.id),P('castleActivityLabel',a.label),P('castleActivityUrl',a.url),P('castleActivityApi',a.api)]))));
+  if(scene.storyVariable)layers.push(objects('variables',[{id:oid++,name:scene.storyVariable,type:'variable',x:0,y:0,width:0,height:0,rotation:0,visible:false,properties:[P('persist',false),P('default',false)]}]));
   layers.push(objects('floorLayer',[]),tile('furniture-fronts',Array.from({length:count},(_,i)=>frontCells.has(i)?frontGid+i:0)));
   const imageSet=(firstgid,name,image,columns,tilecount,imagewidth,imageheight,extra={})=>({firstgid,name,image:artPath+image,columns,tilecount,imagewidth,imageheight,tilewidth:T,tileheight:T,margin:0,spacing:0,...extra});
   const mapdata={pixelWidth:W*T,pixelHeight:H*T,avatarSize:32,seats:seats.length,groups:scene.groups.length,sofaWidthPixels:100,bookclubChairWidthPixels:40,
     blockedTiles:blocked.size,reachableFloorTiles:reachable.size,foregroundPixels,sourceSha256:crypto.createHash('sha256').update(fs.readFileSync(path.join(art,'room-source.png'))).digest('hex')};
   const fireTiles=Array.from({length:6},(_,i)=>{const id=Math.floor(i/3)*animation.length*3+i%3;return {id,animation:animation.map((f,j)=>({tileid:id+j*3,duration:f.duration}))}});
   const map={compressionlevel:-1,width:W,height:H,tilewidth:T,tileheight:T,infinite:false,orientation:'orthogonal',renderorder:'right-down',tiledversion:'1.11.2',type:'map',version:'1.10',nextlayerid:lid,nextobjectid:oid,layers,
-    properties:[P('mapName','Schlossbibliothek'),P('mapDescription','Gemuetliche Schlossbibliothek mit drei getrennten Lesegruppen, Fensternische und Kamin.'),P('mapImage',artPath+'floor.png'),P('script','room.js?v='+scene.revision),
-      P('castleMapId','bibliothek'),P('castleRevision',scene.revision),P('castleArtScale',1),P('castleNativeMeetings',true),P('castleNativeRoomUrl',nativeTarget('bibliothek.tmj')),P('castleHallUrl',nativeTarget('grosse-halle.tmj#bibliothek')),
-      P('castleMapdata',JSON.stringify(mapdata)),P('mapCopyright','Original library and book-club artwork generated for deine Schule; approved Great Hall reading furniture; existing village fire animation.')],
+    properties:[P('mapName',name),P('mapDescription',description),P('mapImage',artPath+'floor.png'),P('script',(options.script||'room.js')+'?v='+scene.revision),
+      P('castleMapId',id),P('castleRevision',scene.revision),P('castleArtScale',1),P('castleNativeMeetings',true),P('castleNativeRoomUrl',nativeTarget(id+'.tmj')),P('castleHallUrl',nativeTarget(e.target+'#'+e.entry)),
+      ...(scene.storyVariable?[P('castleStoryVariable',scene.storyVariable)]:[]),
+      P('castleMapdata',JSON.stringify(mapdata)),P('mapCopyright',options.copyright||'Original library and book-club artwork generated for deine Schule; approved Great Hall reading furniture; existing village fire animation.')],
     tilesets:[imageSet(1,'Schlossbibliothek','floor.png',W,count,W*T,H*T),imageSet(collisionGid,'Collision marker','marker.png',1,1,T,T,{tiles:[{id:0,properties:[P('collides',true)]}]}),
       imageSet(entryGid,'Entry marker','marker.png',1,1,T,T),imageSet(frontGid,'Moebel-Vorderkanten','fronts.png',W,count,W*T,H*T),imageSet(fireGid,'Bibliothekskamin','fire.png',animation.length*3,animation.length*6,animation.length*96,64,{tiles:fireTiles})]};
-  const world={id:'bibliothek',width:W,height:H,illustrated:true,artScale:1,rooms:scene.groups.map(g=>({id:g.id,title:g.label,x:g.x,y:g.y,width:g.width,height:g.height,floor:'bibliothek'})),
+  const world={id,width:W,height:H,illustrated:true,artScale:1,rooms:scene.groups.map(g=>({id:g.id,title:g.label,x:g.x,y:g.y,width:g.width,height:g.height,floor:id})),
     seats,rides:[],entries:scene.entries,links:[{name:'halle',x:e.x*T,y:e.y*T,width:e.width*T,height:e.height*T,target:e.target,entry:e.entry}],mapdata};
-  fs.writeFileSync(path.join(root,'castle/bibliothek.tmj'),JSON.stringify(map)+'\n');writeWam(map,path.join(root,'castle'));
+  fs.writeFileSync(path.join(root,'castle',id+'.tmj'),JSON.stringify(map)+'\n');writeWam(map,path.join(root,'castle'));
   fs.writeFileSync(path.join(art,'layout.json'),JSON.stringify({scene,seats,groups:scene.groups,collisionRects:rects,frontPolygons:polygons,mapdata},null,2)+'\n');
   const previewFire=await sharp(path.join(art,'fire.png')).extract({left:0,top:0,width:96,height:64}).png().toBuffer();
-  await sharp(path.join(art,'floor.png')).composite([{input:previewFire,left:scene.hearth.tileX*T,top:scene.hearth.tileY*T}]).png().toFile(path.join(root,'castle/art/bibliothek-overview.png'));
+  await sharp(path.join(art,'floor.png')).composite([{input:previewFire,left:scene.hearth.tileX*T,top:scene.hearth.tileY*T}]).png().toFile(path.join(root,'castle/art',id+'-overview.png'));
   return {map,world};
 }
-module.exports={buildLibrary};
+const buildLibrary=()=>buildFurnishedRoom();
+module.exports={buildLibrary,buildFurnishedRoom};
 if(require.main===module)buildLibrary().then(({world})=>{
   if(process.argv.includes('--update-world')){
     const file=path.join(root,'castle/layout.json'),m=JSON.parse(fs.readFileSync(file)),i=m.worlds.findIndex(w=>w.id===world.id);

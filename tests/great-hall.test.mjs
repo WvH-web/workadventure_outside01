@@ -39,7 +39,7 @@ const bodyFree = (x, y) => [x - 8, x + 8].every((xx) => [y - 8, y + 8].every((yy
 const center = ([x, y]) => [x * T + T / 2, y * T + T / 2];
 const groupCounts = { kaminrunde: 6, "tafel-nord": 8, "tafel-sued": 8, lehrerbank: 4, spieltreff: 4, gemeinschaftstafel: 12 };
 const expectedEntries = {
-  start: [23, 26], "vom-lehrerzimmer": [5, 9], mittelstufe: [17, 9], kino: [31, 9], bibliothek: [40, 9], "vom-og": [44, 9], schlosstor: [24, 26],
+  start: [23, 26], "vom-lehrerzimmer": [5, 9], mittelstufe: [17, 9], kino: [31, 9], bibliothek: [40, 9], "vom-og": [44, 9], schlosstor: [24, 26], grundschule:[4,24],
 };
 const expectedExits = {
   "door-lehrerzimmer": { x: 5, y: 7, width: 1, height: 1, url: "../teachersmeetingground.tmj" },
@@ -48,6 +48,7 @@ const expectedExits = {
   "door-bibliothek": { x: 40, y: 7, width: 1, height: 1, url: "bibliothek.tmj#halle" },
   "door-treppe": { x: 44, y: 7, width: 2, height: 1, url: "obergeschoss.tmj#vom-eg" },
   "door-schlosstor": { x: 23, y: 29, width: 2, height: 1, url: "umgebung.tmj#schlosstor" },
+  "door-grundschule": {x:4,y:29,width:1,height:1,url:"grundschule.tmj#halle"},
 };
 const imageCache = new Map();
 function rgba(url) {
@@ -160,7 +161,7 @@ test("forty-two native seat sockets include the twelve-place communal table in s
   for (const [i, a] of groups.entries()) for (const b of groups.slice(i + 1)) assert.equal(overlaps(a, b), false, `${a.id} / ${b.id}`);
 });
 
-test("all seven return markers are clear and outside every exit trigger", () => {
+test("all eight return markers are clear and outside every exit trigger", () => {
   assert.deepEqual(entries, expectedEntries);
   assert.deepEqual(entries, source.entries);
   for (const [name, point] of Object.entries(entries)) {
@@ -171,9 +172,9 @@ test("all seven return markers are clear and outside every exit trigger", () => 
   }
 });
 
-test("six native exits have exact unobstructed portal cells and existing destinations", () => {
+test("seven native exits have exact unobstructed portal cells and existing destinations", () => {
   assert.deepEqual(exits.map((l) => l.name).sort(), Object.keys(expectedExits).sort());
-  assert.equal(portalCells.size, 8);
+  assert.equal(portalCells.size, 9);
   for (const l of exits) {
     const e = expectedExits[l.name], points = [];
     for (let y = e.y; y < e.y + e.height; y++) for (let x = e.x; x < e.x + e.width; x++) points.push(y * W + x);
@@ -333,7 +334,7 @@ test("nine portrait animations reproduce all eight inset GIF frames exactly with
 });
 
 test("native floor retains the entire 1:1 source image without cropping or shrinking avatars", async () => {
-  const original = await rgba(new URL("source.png", art));
+  const original = await rgba(new URL(source.render.source, art));
   const floor = await rgba(new URL(tileset("Grosse Halle").image, castle));
   assert.deepEqual([original.info.width, original.info.height], [1536, 1024]);
   assert.deepEqual([floor.info.width, floor.info.height], [1536, 1024]);
@@ -343,7 +344,7 @@ test("native floor retains the entire 1:1 source image without cropping or shrin
 test("furniture is actually smaller while the architecture and 32px avatar remain unchanged", async () => {
   const config=readJson(new URL('furniture.json',art));
   const old=await rgba(new URL('art/grosse-halle-20261107/source.png',castle));
-  const current=await rgba(new URL('source.png',art));
+  const current=await rgba(new URL(source.render.source,art));
   assert.equal(source.measurements.furnitureScale,0.625);
   assert.equal(source.measurements.avatarPixels,32);
   assert.equal(source.collisionRects.find(r=>r.id==='lounge-sofa').width,100);
@@ -354,9 +355,22 @@ test("furniture is actually smaller while the architecture and 32px avatar remai
   }
   for(const r of config.preserved)for(let y=r.y;y<r.y+r.height;y++){
     const begin=(y*1536+r.x)*4,end=begin+r.width*4;
-    assert.deepEqual(current.data.subarray(begin,end),old.data.subarray(begin,end));
+    for(let p=begin;p<end;p+=4){
+      const x=(p/4)%1536;
+      if((config.addedDoors||[]).some(d=>x>=d.target.x&&x<d.target.x+d.crop.width&&y>=d.target.y&&y<d.target.y+d.crop.height))continue;
+      assert.deepEqual(current.data.subarray(p,p+4),old.data.subarray(p,p+4));
+    }
   }
   assert.equal(seats.filter(s=>s.audioGroup==='gemeinschaftstafel').length,12);
+});
+
+test('the new primary-school doorway is the only visual change to the approved Hall artwork',async()=>{
+  const previous=await rgba(new URL('source.png',art)),current=await rgba(new URL(source.render.source,art));
+  const config=readJson(new URL('furniture.json',art));
+  for(let y=0;y<1024;y++)for(let x=0;x<1536;x++){
+    if(config.addedDoors.some(d=>x>=d.target.x&&x<d.target.x+d.crop.width&&y>=d.target.y&&y<d.target.y+d.crop.height))continue;
+    const p=(y*1536+x)*4;assert.deepEqual(current.data.subarray(p,p+4),previous.data.subarray(p,p+4));
+  }
 });
 
 test("foreground copies exact furniture pixels and leaves every seated head and central walkway clear", async () => {

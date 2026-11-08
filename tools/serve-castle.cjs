@@ -11,6 +11,7 @@ const types = {
   ".tmj": "application/json",
   ".wam": "application/json",
   ".png": "image/png",
+  ".webp": "image/webp",
   ".gif": "image/gif",
 };
 http

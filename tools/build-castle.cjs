@@ -5,6 +5,7 @@ const { buildMiddleCommonRoom } = require("./build-middle-common-room.cjs");
 const { buildGreatHall } = require("./build-great-hall.cjs");
 const { buildCinema } = require("./build-cinema.cjs");
 const { buildLibrary } = require("./build-library.cjs");
+const { buildPrimaryCommonRoom } = require("./build-primary-common-room.cjs");
 const { nativeTarget, writeWam } = require("./castle-wam.cjs");
 const { createCanvas, loadImage } = dep("@napi-rs/canvas");
 const sharp = dep("sharp");
@@ -1616,6 +1617,7 @@ async function main() {
   const hall = await buildGreatHall();
   const cinema = await buildCinema();
   const library = await buildLibrary();
+  const primary = await buildPrimaryCommonRoom();
   const manifest = {
     version: 1,
     tileSize: T,
@@ -1641,6 +1643,7 @@ async function main() {
       hall.world,
       cinema.world,
       library.world,
+      primary.world,
     ],
   };
   fs.writeFileSync(

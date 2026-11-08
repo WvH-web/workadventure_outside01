@@ -22,9 +22,13 @@ async function prepareHallFurniture(){
   const oldSource=path.join(oldArt,original.render.source);
   const composites=[];
   for(const r of config.preserved)composites.push({input:await sharp(oldSource).extract({left:r.x,top:r.y,width:r.width,height:r.height}).png().toBuffer(),left:r.x,top:r.y});
+  for(const door of config.addedDoors||[])composites.push({input:await sharp(oldSource).extract(door.crop).png().toBuffer(),left:door.target.x,top:door.target.y});
   layout.seats=[];layout.groups=[];layout.frontPolygons=[];
   const movedIds=new Set(config.clusters.flatMap(c=>c.collisionIds));
   layout.collisionRects=original.collisionRects.filter(r=>!movedIds.has(r.id));
+  for(const door of config.addedDoors||[]){
+    layout.portals.push(door.portal);layout.entries[door.id]=door.entry;layout.collisionRects.push(...door.posts);
+  }
   for(const cluster of config.clusters){
     const src=cluster.source,target=cluster.target;
     const point=(x,y)=>[Math.round(target.x+(x-src.x)*scale),Math.round(target.y+(y-src.y)*scale)];
@@ -66,7 +70,7 @@ async function prepareHallFurniture(){
       x,y:row.y,standX:x,standY:row.standY,facing:row.facing,audioGroup:big.group.id});
   }
   layout.games={...config.clusters.find(c=>c.id==='spieltreff').group};
-  layout.render={source:'source.png',floor:'floor.png',fronts:'fronts.png',fire:'fire.png',portrait:'portrait.png'};
+  layout.render={source:'source-gs1.png',floor:'floor-gs1.png',fronts:'fronts.png',fire:'fire.png',portrait:'portrait.png'};
   layout.measurements={...original.measurements,sourcePrompt:'floor-prompt.txt',expectedSeats:42,furnitureScale:scale,
     avatarPixels:32,sofaWidthPixels:100,chairPitchPixels:40,communalSeats:12,
     longTableChairHeightPixels:[28,36],armchairHeightPixels:[39,50],staffBenchSeatSpacingPixels:24,

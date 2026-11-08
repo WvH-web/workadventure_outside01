@@ -1,0 +1,69 @@
+{
+  "version": "2.1.0",
+  "mapUrl": "https://wvh-web.github.io/workadventure_outside01/castle/grundschule.tmj?v=20261108-gs1",
+  "entities": {},
+  "areas": [
+    {
+      "id": "04800860-b6d3-4ffb-b4ec-016530294958",
+      "name": "Vorlese- und Erzaehlrunde",
+      "x": 64,
+      "y": 256,
+      "width": 288,
+      "height": 272,
+      "visible": true,
+      "properties": [
+        {
+          "id": "905490a7-2ae8-4500-9858-cbd2bad6af33",
+          "type": "livekitRoomProperty",
+          "roomName": "school-castle-v2-grundschule-area-lesekamin"
+        }
+      ]
+    },
+    {
+      "id": "cc8e1df0-12cf-4edb-a50b-eab03f9d3b4a",
+      "name": "Musiknische",
+      "x": 688,
+      "y": 128,
+      "width": 144,
+      "height": 208,
+      "visible": true,
+      "properties": [
+        {
+          "id": "72f3425f-007d-457c-b0c3-a84ab19cb026",
+          "type": "livekitRoomProperty",
+          "roomName": "school-castle-v2-grundschule-area-fensterleser"
+        }
+      ]
+    },
+    {
+      "id": "7f5f5956-3930-48fb-86e7-0850215d315e",
+      "name": "Bau- und Spielgruppe",
+      "x": 544,
+      "y": 352,
+      "width": 288,
+      "height": 240,
+      "visible": true,
+      "properties": [
+        {
+          "id": "e1938255-416a-4ebe-bc6e-d6dd2eafafdf",
+          "type": "livekitRoomProperty",
+          "roomName": "school-castle-v2-grundschule-area-buchclub"
+        }
+      ]
+    }
+  ],
+  "entityCollections": [],
+  "settings": {
+    "megaphone": {
+      "enabled": false,
+      "title": "",
+      "scope": "ROOM"
+    }
+  },
+  "metadata": {
+    "name": "Grundschulstube",
+    "description": "Kleine gemuetliche Schlossstube mit Vorleserunde, gemeinsamem Erzaehlspiel, Bausteinraetseln und Musikwerkstatt.",
+    "copyright": "Original primary-school room and building-table artwork generated for deine Schule; approved Great Hall seating; existing village fire animation.",
+    "thumbnail": "https://wvh-web.github.io/workadventure_outside01/castle/art/grundschule-20261108/floor.png"
+  }
+}

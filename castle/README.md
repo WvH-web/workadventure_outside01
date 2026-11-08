@@ -30,7 +30,7 @@ Die bestaetigte Einrichtung nicht ohne neuen Auftrag umskalieren. Neue Raeume
 weiterhin einzeln in der getrennten Vorschau ausbauen; das bisherige Schloss
 bleibt bis zur ausdruecklichen Freigabe unveraendert.
 
-## Sieben verbundene Karten
+## Acht verbundene Karten
 
 - `erdgeschoss.tmj`: Grosse Halle, Grundschule, Mittelstufe, Bibliothek,
   Musikzimmer, Museum, Atelier, Wohnfluegel, Spielesaal, Lehrersalon und Kinofoyer.
@@ -39,6 +39,8 @@ bleibt bis zur ausdruecklichen Freigabe unveraendert.
   Zuschauerplaetze vorne und vier Gespraechstische mit insgesamt 16 Plaetzen hinten.
 - `bibliothek.tmj`: Kleine gemalte Schlossbibliothek, 28 x 22 Kacheln, drei
   getrennte Lesegruppen und 13 Sitzplaetze, mit Fensternische und animiertem Kamin.
+- `grundschule.tmj`: Kleine gemalte Gemeinschaftsstube, 28 x 20 Kacheln,
+  zwoelf Sitzplaetze, drei Hoerbereiche, Erzaehlkarten, Bausteinraetsel und Musik.
 - `umgebung.tmj`: Schlossansicht, Dorfplatz, Bachbruecke, Markt, Schlossgarten,
   Rutschenturm und vorbereiteter Rundkurs.
 - `mittelstufe.tmj`: Gemalter Gemeinschaftsraum, vom Mittelstufenbereich im
@@ -48,7 +50,7 @@ bleibt bis zur ausdruecklichen Freigabe unveraendert.
   Verbindet Mittelstufe, Kino, Bibliothek, Treppe, Schulpark und Lehrerzimmer.
 
 Tiled kann jede TMJ direkt oeffnen. Tileset und Skriptpfade bleiben relativ.
-Die sieben kleinen `.wam`-Dateien ergaenzen native Besprechungsbereiche, ohne
+Die acht kleinen `.wam`-Dateien ergaenzen native Besprechungsbereiche, ohne
 Grafiken zu duplizieren. Der Spieleinstieg ist
 `https://together.deine-schule.com/~/castle-preview/grosse-halle.wam`.
 Die alten Vorschau-TMJ-Links leiten vor dem Start ihrer Raumsteuerung dorthin
@@ -80,7 +82,7 @@ eroeffnen keine zweite, doppelte Audioverbindung.
 Die WAM-Dateien werden bei jedem Kartenbau aus denselben TMJ-Gruppen und
 Sitzdaten erzeugt. Nicht gruppierte Tische bekommen kleine eigene Bereiche;
 Ruheplaetze im Kino bleiben ausgenommen. `tools/castle-wam.cjs` prueft
-Ueberschneidungen. Nur diese sieben Wrapper werden nach
+Ueberschneidungen. Nur diese acht Wrapper werden nach
 `/map-storage/castle-preview/` uebertragen; die Bilder bleiben auf GitHub.
 
 Die Kinoruhezone verwendet zusaetzlich die native Silent-Eigenschaft. Dort wird
@@ -178,7 +180,7 @@ damit Ebenen, Kollisionen und Spieler weiterhin kontrollierbar bleiben.
 Einige Effekte sind absichtlich selten; sie sind keine Wartezeit-Belohnungen.
 
 Alle Moebel sind am 32-Pixel-Raster und an einer normalen Spielfigur ausgerichtet.
-Die Vorschau hat 232 Sitzplaetze. Sofas und weitere Einrichtungsgegenstaende sind
+Die Vorschau hat 244 Sitzplaetze. Sofas und weitere Einrichtungsgegenstaende sind
 teilweise noch dekorative Platzhalter; nicht jede Sofagrafik ist bereits ein Sitz.
 Fuer die Endgrafik folgen eigene Raumansichten, Vordergrundteile und individuell
 ausgearbeitete Sitzecken. Der Grundriss wird vorher anhand echter Wege abgestimmt.

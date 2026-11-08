@@ -4,7 +4,7 @@ const root = path.resolve(__dirname, ".."), out = path.resolve(root, "../output/
 const manifest = JSON.parse(fs.readFileSync(path.join(root, "castle/layout.json"), "utf8"));
 const worlds = new Map(manifest.worlds.map((w) => [w.id, w]));
 const hall = worlds.get("grosse-halle"), commonRoom = worlds.get("mittelstufe");
-const mapIds = ["grosse-halle", "erdgeschoss", "mittelstufe", "obergeschoss", "kino", "umgebung", "bibliothek"];
+const mapIds = ["grosse-halle", "erdgeschoss", "mittelstufe", "obergeschoss", "kino", "umgebung", "bibliothek", "grundschule"];
 const viewports = [{ width: 1440, height: 960 }, { width: 390, height: 844 }, { width: 320, height: 740 }];
 const base = new URL(process.argv[2] || "http://127.0.0.1:4192/");
 base.hash = "";
@@ -189,7 +189,7 @@ async function checkBoard(page, viewport) {
 }
 
 (async () => {
-  assert(worlds.size === 7 && mapIds.every((id) => worlds.has(id)), "Build the seven-map test castle before browser QA");
+  assert(worlds.size === 8 && mapIds.every((id) => worlds.has(id)), "Build the eight-map test castle before browser QA");
   assert(hall.seats.length === 42, "Expected 42 Hall seats including the communal table");
   assert(commonRoom.links[0].target === "grosse-halle.tmj", "Middle common room must return to Hall, not EG");
   const browser = await chromium.launch({ headless: true, ...(!fs.existsSync(chromium.executablePath()) ? { channel: "chrome" } : {}) });
@@ -215,7 +215,7 @@ async function checkBoard(page, viewport) {
         await page.goto(base.href, { waitUntil: "networkidle" });
         await ready(page, "grosse-halle");
         assert((await page.locator("#floor").inputValue()) === "grosse-halle", "Hall is not the default map");
-        assert((await page.locator("#floor option").count()) === 7, "Map selector does not contain seven maps");
+        assert((await page.locator("#floor option").count()) === 8, "Map selector does not contain eight maps");
         assert((await page.locator("header svg").count()) >= 3, "Missing toolbar icons");
         await layoutCheck(page, "default Hall");
         const pixels = await canvasColors(page);
@@ -286,6 +286,13 @@ async function checkBoard(page, viewport) {
         await page.click("#overview");
         await screenshot(page,"bibliothek-overview",viewport);
         await walkThrough(page,worlds.get("bibliothek").links[0]);
+        await load(page,'grundschule');
+        const primarySeats=await checkSeats(page,worlds.get('grundschule'),viewport);
+        await page.click('#overview');await screenshot(page,'grundschule-overview',viewport);
+        await move(page,198,288,'story activity');await page.click('#hall-open');
+        await page.frameLocator('#content-frame').getByRole('button',{name:'Neue Karten'}).click();
+        await layoutCheck(page,'story activity');await screenshot(page,'grundschule-story',viewport);await closePanel(page);
+        await walkThrough(page,worlds.get('grundschule').links[0]);
         await load(page, "erdgeschoss");
         const egSeat = worlds.get("erdgeschoss").seats.find((s) => s.id === "halle-west-n0");
         await move(page, egSeat.standX, egSeat.standY, egSeat.id);

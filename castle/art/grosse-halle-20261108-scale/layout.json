@@ -3,8 +3,8 @@
   "height": 32,
   "tileSize": 32,
   "render": {
-    "source": "source.png",
-    "floor": "floor.png",
+    "source": "source-gs1.png",
+    "floor": "floor-gs1.png",
     "fronts": "fronts.png",
     "fire": "fire.png",
     "portrait": "portrait.png"
@@ -18,7 +18,7 @@
       1536,
       1024
     ],
-    "sourceSha256": "c2ee6834d315709b1f39a983e5b07ee967b3c0e777ed6dbdd58533a4bb9faadb",
+    "sourceSha256": "13867968fe8dfa57051e96b0234d3d9c295843c866ea67d6cf808bee1979d4ad",
     "nativePixels": [
       1536,
       1024
@@ -86,6 +86,10 @@
     "schlosstor": [
       24,
       26
+    ],
+    "grundschule": [
+      4,
+      24
     ]
   },
   "portals": [
@@ -141,6 +145,15 @@
       "height": 1,
       "target": "umgebung.tmj",
       "entry": "schlosstor"
+    },
+    {
+      "id": "grundschule",
+      "x": 4,
+      "y": 29,
+      "width": 1,
+      "height": 1,
+      "target": "grundschule.tmj",
+      "entry": "halle"
     }
   ],
   "podium": {
@@ -362,6 +375,22 @@
       "y": 384,
       "width": 192,
       "height": 192,
+      "preserve": true
+    },
+    {
+      "id": "gs-door-left",
+      "x": 96,
+      "y": 832,
+      "width": 32,
+      "height": 144,
+      "preserve": true
+    },
+    {
+      "id": "gs-door-right",
+      "x": 160,
+      "y": 832,
+      "width": 32,
+      "height": 144,
       "preserve": true
     },
     {
