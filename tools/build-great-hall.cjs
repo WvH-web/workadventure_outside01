@@ -1,10 +1,11 @@
 const fs = require("node:fs");
 const path = require("node:path");
 const { nativeTarget, writeWam } = require("./castle-wam.cjs");
+const { prepareHallFurniture } = require("./prepare-hall-furniture.cjs");
 const sharp = require("./castle-deps.cjs")("sharp");
 const root = path.resolve(__dirname, "..");
-const art = path.join(root, "castle/art/grosse-halle-20261107");
-const artPath = "art/grosse-halle-20261107/";
+const art = path.join(root, "castle/art/grosse-halle-20261108-scale");
+const artPath = "art/grosse-halle-20261108-scale/";
 const P = (name, value) => ({
   name,
   type: typeof value === "boolean" ? "bool" : typeof value === "number" ? "float" : "string",
@@ -61,7 +62,7 @@ function geometry(layout) {
     const n = y * W + x;
     if (portalCells.has(n) || !reachable.has(n)) throw Error(`Unsafe or unreachable entry: ${name}`);
   }
-  if (seats.length !== 30 || new Set(seats.map((s) => s.id)).size !== seats.length) throw Error("Expected 30 unique hall seats");
+  if (seats.length !== layout.measurements.expectedSeats || new Set(seats.map((s) => s.id)).size !== seats.length) throw Error("Unexpected hall seat count or duplicate IDs");
   for (const s of seats) {
     if (!reachable.has(cell(s.standX, s.standY))) throw Error(`Unreachable seat approach: ${s.id}`);
     if (blocked.has(cell(s.x, s.y))) throw Error(`Blocked seat: ${s.id}`);
@@ -131,7 +132,7 @@ async function buildPortrait(layout) {
 }
 
 async function buildGreatHall() {
-  const layout = JSON.parse(fs.readFileSync(path.join(art, "layout.json"), "utf8"));
+  const layout = await prepareHallFurniture();
   const { width: W, height: H, tileSize: T, seats, groups, entries } = layout;
   const { blocked, reachable, portalCells } = geometry(layout);
   const count = W * H, collisionGid = count + 1, entryGid = count + 2, frontGid = count + 3, fireGid = 2 * count + 3, portraitGid = fireGid + 28;
@@ -143,9 +144,9 @@ async function buildGreatHall() {
   const frontCells = new Set();
   let foregroundPixels = 0;
   for (let y = 0; y < info.height; y++) for (let x = 0; x < info.width; x++) {
-    if (layout.frontPolygons.some((p) => inside(x + 0.5, y + 0.5, p))) {
-      if (seats.some((s) => x >= s.x - 9 && x < s.x + 9 && y >= s.y - 17 && y < s.y - 3))
-        throw Error(`Furniture foreground covers a seated head at ${x},${y}`);
+    const head=layout.measurements.headClearance;
+    const protectedAvatar=seats.some((s)=>x>=s.x-head.x&&x<s.x+head.x&&y>=s.y-head.top&&y<s.y+head.bottom);
+    if (!protectedAvatar && layout.frontPolygons.some((p) => inside(x + 0.5, y + 0.5, p))) {
       foregroundPixels++;
       frontCells.add(Math.floor(y / T) * W + Math.floor(x / T));
     } else data.fill(0, (y * info.width + x) * 4, (y * info.width + x) * 4 + 4);
@@ -201,7 +202,8 @@ async function buildGreatHall() {
     compressionlevel: -1, width: W, height: H, tilewidth: T, tileheight: T, infinite: false, orientation: "orthogonal", renderorder: "right-down", tiledversion: "1.11.2", type: "map", version: "1.10", nextlayerid: lid, nextobjectid: oid, layers,
     properties: [
       P("mapName", "Grosse Halle"), P("mapDescription", "Gemeinsame Schlosshalle mit Kaminrunde, Tafeln, Lehrerbank, Spieltreff und Podium."),
-      P("mapImage", artPath + layout.render.floor), P("script", "hall.js?v=20261108-wam1"), P("castleArtScale", 1), P("castleMapId", "grosse-halle"),
+      P("mapImage", artPath + layout.render.floor), P("script", "hall.js?v=20261108-scale1"), P("castleArtScale", 1), P("castleMapId", "grosse-halle"),
+      P("castleRevision", "20261108-scale1"), P("castleFurnitureScale", layout.measurements.furnitureScale),
       P("castleNativeMeetings", true),
       P("castleNativeRoomUrl", nativeTarget("grosse-halle.tmj")),
       P("hallAudioUrl", "https://together.deine-schule.com/castle-audio/"),

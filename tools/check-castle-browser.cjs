@@ -189,7 +189,7 @@ async function checkBoard(page, viewport) {
 
 (async () => {
   assert(worlds.size === 6 && mapIds.every((id) => worlds.has(id)), "Build the six-map test castle before browser QA");
-  assert(hall.seats.length === 30, "Expected 30 Hall seats");
+  assert(hall.seats.length === 42, "Expected 42 Hall seats including the communal table");
   assert(commonRoom.links[0].target === "grosse-halle.tmj", "Middle common room must return to Hall, not EG");
   const browser = await chromium.launch({ headless: true, ...(!fs.existsSync(chromium.executablePath()) ? { channel: "chrome" } : {}) });
   try {

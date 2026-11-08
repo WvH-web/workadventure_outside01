@@ -18,7 +18,7 @@ Ruecklink in die neue Halle; sein bisheriger Ausgang bleibt erhalten.
   Rutschenturm und vorbereiteter Rundkurs.
 - `mittelstufe.tmj`: Gemalter Gemeinschaftsraum, vom Mittelstufenbereich im
   Erdgeschoss und aus der Grossen Halle erreichbar, mit Rueckweg zur Halle.
-- `grosse-halle.tmj`: 48 x 32 Kacheln, 30 Sitzplaetze, fuenf Gespraechsbereiche,
+- `grosse-halle.tmj`: 48 x 32 Kacheln, 42 Sitzplaetze, sechs Gespraechsbereiche,
   geschuetztes Rednerpult, Schlossbrett, Spielrunden, animierter Kamin und Portraet.
   Verbindet Mittelstufe, Kino, Bibliothek, Treppe, Schulpark und Lehrerzimmer.
 
@@ -90,7 +90,7 @@ damit Ebenen, Kollisionen und Spieler weiterhin kontrollierbar bleiben.
 Einige Effekte sind absichtlich selten; sie sind keine Wartezeit-Belohnungen.
 
 Alle Moebel sind am 32-Pixel-Raster und an einer normalen Spielfigur ausgerichtet.
-Die Vorschau hat 207 Sitzplaetze. Sofas und weitere Einrichtungsgegenstaende sind
+Die Vorschau hat 219 Sitzplaetze. Sofas und weitere Einrichtungsgegenstaende sind
 teilweise noch dekorative Platzhalter; nicht jede Sofagrafik ist bereits ein Sitz.
 Fuer die Endgrafik folgen eigene Raumansichten, Vordergrundteile und individuell
 ausgearbeitete Sitzecken. Der Grundriss wird vorher anhand echter Wege abgestimmt.
@@ -123,10 +123,11 @@ Sitze, Moebelmasken, Kollisionen und Gruppen. Neubau ueber
 ## Grosse Halle und Ansagen
 
 Die Halle hat getrennte Gruppen fuer Kaminrunde (6), zwei Tafeln (je 8),
-Lehrerbank (4) und Spieltreff (4). Auch Stehende in diesen Bereichen gehoeren
+Lehrerbank (4), Spieltreff (4) und die neue Gemeinschaftstafel (12). Auch Stehende in diesen Bereichen gehoeren
 zum jeweiligen Gespraech. Avatare bleiben im nativen 32-Pixel-Massstab.
 Produktionsgrafik, Prompt und editierbare Geometrie liegen unter
-`art/grosse-halle-20261107/`; Neubau: `node tools/build-great-hall.cjs`.
+`art/grosse-halle-20261108-scale/`; Neubau: `node tools/build-great-hall.cjs`.
+Die Einrichtung wurde auf 62,5 Prozent verkleinert, bei unveraenderten Avataren.
 
 Auf dem Podest erscheint die Codeeingabe. Nur nach serverseitiger Pruefung
 erhaelt genau eine Person die Mikrofonfreigabe fuer die Halle. Der Code ist

@@ -7,7 +7,7 @@ import { createRequire } from "node:module";
 const sharp = createRequire(import.meta.url)("../tools/castle-deps.cjs")("sharp");
 const {nativeTarget} = createRequire(import.meta.url)("../tools/castle-wam.cjs");
 const castle = new URL("../castle/", import.meta.url);
-const art = new URL("art/grosse-halle-20261107/", castle);
+const art = new URL("art/grosse-halle-20261108-scale/", castle);
 const readJson = (url) => JSON.parse(fs.readFileSync(url, "utf8"));
 const map = readJson(new URL("grosse-halle.tmj", castle));
 const source = readJson(new URL("layout.json", art));
@@ -37,7 +37,7 @@ const portalCells = new Set(exits.flatMap((l) => l.data.flatMap((gid, i) => gid 
 const bodyFree = (x, y) => [x - 8, x + 8].every((xx) => [y - 8, y + 8].every((yy) =>
   xx >= 0 && yy >= 0 && xx < W * T && yy < H * T && !collisions[Math.floor(yy / T) * W + Math.floor(xx / T)]));
 const center = ([x, y]) => [x * T + T / 2, y * T + T / 2];
-const groupCounts = { kaminrunde: 6, "tafel-nord": 8, "tafel-sued": 8, lehrerbank: 4, spieltreff: 4 };
+const groupCounts = { kaminrunde: 6, "tafel-nord": 8, "tafel-sued": 8, lehrerbank: 4, spieltreff: 4, gemeinschaftstafel: 12 };
 const expectedEntries = {
   start: [23, 26], "vom-lehrerzimmer": [5, 9], mittelstufe: [17, 9], kino: [31, 9], bibliothek: [40, 9], "vom-og": [44, 9], schlosstor: [24, 26],
 };
@@ -116,7 +116,8 @@ test("Great Hall is a native 48x32 map with valid grids, gids and local assets",
   assert.equal(map.orientation, "orthogonal");
   assert.equal(properties(map).castleMapId, "grosse-halle");
   assert.equal(properties(map).castleArtScale, 1);
-  assert.equal(properties(map).script, "hall.js?v=20261108-wam1");
+  assert.equal(properties(map).script, "hall.js?v=20261108-scale1");
+  assert.equal(properties(map).castleFurnitureScale, 0.625);
   assert.ok(!map.properties.some((p) => /playerScale|avatarScale/i.test(p.name)));
   for (const l of tileLayers) {
     assert.equal(l.data.length, W * H, l.name);
@@ -140,11 +141,11 @@ test("Great Hall is a native 48x32 map with valid grids, gids and local assets",
   assert.ok(!tileset("Entry marker").tiles?.some((t) => properties(t).collides));
 });
 
-test("thirty distinct native seat sockets belong to five separate social groups", () => {
-  assert.equal(seats.length, 30);
-  assert.equal(new Set(seats.map((s) => s.id)).size, 30);
+test("forty-two native seat sockets include the twelve-place communal table in six separate groups", () => {
+  assert.equal(seats.length, 42);
+  assert.equal(new Set(seats.map((s) => s.id)).size, 42);
   assert.deepEqual(seats, source.seats);
-  assert.equal(groups.length, 5);
+  assert.equal(groups.length, 6);
   assert.deepEqual(groups.map((g) => g.id).sort(), Object.keys(groupCounts).sort());
   for (const [id, count] of Object.entries(groupCounts)) assert.equal(seats.filter((s) => s.audioGroup === id).length, count, id);
   for (const s of seats) {
@@ -209,7 +210,7 @@ test("table centers, walls, books, lamps, lectern and noticeboard remain solid a
   for (const r of source.collisionRects.filter((r) => r.preserve))
     for (let y = 0; y < H; y++) for (let x = 0; x < W; x++)
       if (contains(r, ...center([x, y]))) assert.ok(collisions[y * W + x], `${r.id}: ${x},${y}`);
-  for (const [x, y] of [[352, 496], [992, 464], [992, 656], [1376, 768], [112, 752], [768, 288], [1408, 480], [16, 400], [1520, 400], [752, 16], [752, 1008]])
+  for (const [x, y] of [[320, 464], [992, 464], [992, 656], [1376, 752], [80, 656], [496, 816], [768, 288], [1408, 480], [16, 400], [1520, 400], [752, 16], [752, 1008]])
     assert.equal(bodyFree(x, y), false, `Solid furniture/wall at ${x},${y}`);
 });
 
@@ -339,6 +340,25 @@ test("native floor retains the entire 1:1 source image without cropping or shrin
   assert.deepEqual(floor.data, original.data);
 });
 
+test("furniture is actually smaller while the architecture and 32px avatar remain unchanged", async () => {
+  const config=readJson(new URL('furniture.json',art));
+  const old=await rgba(new URL('art/grosse-halle-20261107/source.png',castle));
+  const current=await rgba(new URL('source.png',art));
+  assert.equal(source.measurements.furnitureScale,0.625);
+  assert.equal(source.measurements.avatarPixels,32);
+  assert.equal(source.collisionRects.find(r=>r.id==='lounge-sofa').width,100);
+  for(const cluster of config.clusters){
+    const metadata=await sharp(fs.readFileSync(new URL(cluster.id+'.png',art))).metadata();
+    assert.equal(metadata.width,Math.round(cluster.source.width*0.625));
+    assert.equal(metadata.height,Math.round(cluster.source.height*0.625));
+  }
+  for(const r of config.preserved)for(let y=r.y;y<r.y+r.height;y++){
+    const begin=(y*1536+r.x)*4,end=begin+r.width*4;
+    assert.deepEqual(current.data.subarray(begin,end),old.data.subarray(begin,end));
+  }
+  assert.equal(seats.filter(s=>s.audioGroup==='gemeinschaftstafel').length,12);
+});
+
 test("foreground copies exact furniture pixels and leaves every seated head and central walkway clear", async () => {
   const floor = await rgba(new URL(tileset("Grosse Halle").image, castle));
   const front = await rgba(new URL(tileset("Moebel-Vorderkanten").image, castle));
@@ -375,7 +395,7 @@ test("saved Hall metadata and preview world agree with current native geometry",
   assert.deepEqual(world.seats, seats);
   assert.deepEqual(world.entries, entries);
   assert.deepEqual(world.mapdata, data);
-  assert.equal(world.rooms.length, 7);
+  assert.equal(world.rooms.length, 8);
   assert.equal(world.links.length, exits.length);
   for (const l of exits) {
     const e = expectedExits[l.name], [target, entry = ""] = e.url.split("#");

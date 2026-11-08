@@ -1,15 +1,15 @@
 {
   "version": "2.1.0",
-  "mapUrl": "https://wvh-web.github.io/workadventure_outside01/castle/grosse-halle.tmj",
+  "mapUrl": "https://wvh-web.github.io/workadventure_outside01/castle/grosse-halle.tmj?v=20261108-scale1",
   "entities": {},
   "areas": [
     {
       "id": "9cf60c06-6717-4b15-bb8d-9cae8f424945",
       "name": "Kaminrunde",
-      "x": 160,
+      "x": 176,
       "y": 336,
-      "width": 416,
-      "height": 304,
+      "width": 304,
+      "height": 256,
       "visible": true,
       "properties": [
         {
@@ -22,10 +22,10 @@
     {
       "id": "64ceb1c8-d797-40a4-9289-9e7e758a753e",
       "name": "Noerdliche Tafel",
-      "x": 816,
+      "x": 848,
       "y": 368,
-      "width": 368,
-      "height": 200,
+      "width": 288,
+      "height": 192,
       "visible": true,
       "properties": [
         {
@@ -38,10 +38,10 @@
     {
       "id": "fddee8f8-967c-4be9-a3b0-f393d501f6a4",
       "name": "Suedliche Tafel",
-      "x": 816,
-      "y": 568,
-      "width": 368,
-      "height": 216,
+      "x": 848,
+      "y": 576,
+      "width": 288,
+      "height": 192,
       "visible": true,
       "properties": [
         {
@@ -55,9 +55,9 @@
       "id": "6e178bf8-374a-4dae-b2a8-d1c469829342",
       "name": "Lehrer- und Besucherbank",
       "x": 192,
-      "y": 704,
-      "width": 416,
-      "height": 224,
+      "y": 608,
+      "width": 160,
+      "height": 160,
       "visible": true,
       "properties": [
         {
@@ -73,13 +73,29 @@
       "x": 1248,
       "y": 672,
       "width": 240,
-      "height": 240,
+      "height": 208,
       "visible": true,
       "properties": [
         {
           "id": "61f547aa-f130-42df-a03f-2d139f6b8234",
           "type": "livekitRoomProperty",
           "roomName": "school-castle-v2-grosse-halle-area-spieltreff"
+        }
+      ]
+    },
+    {
+      "id": "c09504dd-50b6-4b7a-a1d8-2651ce4c9c73",
+      "name": "Grosse Gemeinschaftstafel",
+      "x": 352,
+      "y": 720,
+      "width": 288,
+      "height": 208,
+      "visible": true,
+      "properties": [
+        {
+          "id": "ba309f1d-3fd9-4614-97bc-86c34833cba9",
+          "type": "livekitRoomProperty",
+          "roomName": "school-castle-v2-grosse-halle-area-gemeinschaftstafel"
         }
       ]
     }
@@ -96,6 +112,6 @@
     "name": "Grosse Halle",
     "description": "Gemeinsame Schlosshalle mit Kaminrunde, Tafeln, Lehrerbank, Spieltreff und Podium.",
     "copyright": "Original artwork generated for deine Schule. Original fantasy school interior; fire from the existing village tileset.",
-    "thumbnail": "https://wvh-web.github.io/workadventure_outside01/castle/art/grosse-halle-20261107/floor.png"
+    "thumbnail": "https://wvh-web.github.io/workadventure_outside01/castle/art/grosse-halle-20261108-scale/floor.png"
   }
 }

@@ -119,6 +119,7 @@ async function join(browser,number) {
     if(!script||!widget)await page.waitForTimeout(500);
   }
   assert.ok(script&&widget,'Hall controller and audio widget must initialize');
+  assert.equal(await script.evaluate(()=>window.castleRoom.layout.seats.length),42,'Updated furniture revision must be live');
   await widget.waitForFunction(()=>document.getElementById('status')?.textContent==='Keine Ansage');
   await context.storageState({path:storage});
   console.log('Synthetic participant '+number+' entered the hall.');
@@ -221,7 +222,11 @@ async function main() {
     assert.equal(audiencePublishDenied,true,'Actual LiveKit must reject an audience microphone');
     await sit(speaker,'tafel-sued-n4');
     // Native areas use the avatar's foot point, below the scripting position.
-    await move(north,962,544);await move(south,962,592);
+    const boundary=await north.script.evaluate(()=>{
+      const l=window.castleRoom.layout,n=l.groups.find(g=>g.group==='tafel-nord'),s=l.groups.find(g=>g.group==='tafel-sued');
+      return {x:l.seats.find(s=>s.id==='tafel-nord-n2').x,northY:n.y+n.height-24,southY:s.y};
+    });
+    await move(north,boundary.x,boundary.northY);await move(south,boundary.x,boundary.southY);
     await north.page.waitForTimeout(2500);
     const boundaryBefore={north:await stats(north.page.mainFrame()),south:await stats(south.page.mainFrame())};
     await north.page.waitForTimeout(3500);
@@ -240,20 +245,40 @@ async function main() {
     const proximityAfter={north:await stats(north.page.mainFrame()),partner:await stats(partner.page.mainFrame())};
     const proximityRestored=total(proximityAfter.north)>total(proximityBefore.north)&&
       total(proximityAfter.partner)>total(proximityBefore.partner);
+    let communalConversation=null;
+    const hasCommunal=await north.script.evaluate(()=>window.castleRoom.layout.seats.some(s=>s.id==='gemeinschaft-n1'));
+    if(hasCommunal){
+      await sit(north,'gemeinschaft-n1');await sit(partner,'gemeinschaft-s6');
+      await north.page.waitForTimeout(2500);
+      const before={north:await stats(north.page.mainFrame()),partner:await stats(partner.page.mainFrame())};
+      await north.page.waitForTimeout(3500);
+      const after={north:await stats(north.page.mainFrame()),partner:await stats(partner.page.mainFrame())};
+      const rooms={north:await nativeRooms(north),partner:await nativeRooms(partner),other:await nativeRooms(south)};
+      communalConversation=energy(after.north)>energy(before.north)&&energy(after.partner)>energy(before.partner)&&
+        rooms.north.some(r=>r.endsWith('area-gemeinschaftstafel')&&rooms.partner.includes(r))&&
+        !rooms.north.some(r=>rooms.other.includes(r));
+      await north.page.screenshot({path:path.join(out,'hall-communal-table.png')});
+    }
+    for(const seat of ['kamin-sofa-mitte','kamin-sessel-west','lehrerbank-2']){
+      await north.script.evaluate(async()=>{await window.castleRoom.stand()});
+      await sit(north,seat);
+      await north.page.screenshot({path:path.join(out,'hall-scale-'+seat+'.png')});
+    }
     const proof={syntheticAccounts:4,realMicrophonesUsed:false,wrongCodeRejected:true,
       hallRtpAudioAcrossTwoTableZones:audio,rights:{speaker:speakerRights,listener:listenerRights},
       tableGroups,tableBaseline,tableBefore,tableDuring,tablePartnersReceive,tableIsolation,tableHasAudioEnergy,announcementHasAudioEnergy,
       tableConversationContinues,tableIsolationDuring,actualNativeRooms,boundaryBefore,boundaryAfter,boundaryRooms,boundaryIsolation,
-      proximityBefore,proximityAfter,proximityRestored,podiumDepartureStopped:true,audiencePublishDenied,
+      proximityBefore,proximityAfter,proximityRestored,communalConversation,podiumDepartureStopped:true,audiencePublishDenied,
       errors:[...speaker.errors,...north.errors,...south.errors,...partner.errors]};
     fs.writeFileSync(path.join(out,'result.json'),JSON.stringify(proof,null,2)+'\n');
     console.log(JSON.stringify({participants:4,tablePartnersReceive,tableConversationContinues,tableIsolation,tableIsolationDuring,
-      boundaryIsolation,proximityRestored,tableHasAudioEnergy,announcementHasAudioEnergy,hallAnnouncement:true,podiumDepartureStopped:true,audiencePublishDenied,errors:proof.errors},null,2));
+      boundaryIsolation,proximityRestored,communalConversation,tableHasAudioEnergy,announcementHasAudioEnergy,hallAnnouncement:true,podiumDepartureStopped:true,audiencePublishDenied,errors:proof.errors},null,2));
     assert.ok(tablePartnersReceive&&tableConversationContinues,'Native table conversation must run before and during the announcement');
     assert.ok(tableHasAudioEnergy,'Table partners must decode non-silent audio');
     assert.ok(tableIsolation&&tableIsolationDuring,'Separate table conversations must remain isolated');
     assert.ok(boundaryIsolation,'Nearby participants across a table boundary must remain isolated');
     assert.ok(proximityRestored,'Leaving native meeting areas must restore ordinary proximity audio');
+    if(hasCommunal)assert.ok(communalConversation,'New communal table must carry isolated non-silent conversation');
     assert.deepEqual(proof.errors,[]);
   } catch(error) {
     let number=0;

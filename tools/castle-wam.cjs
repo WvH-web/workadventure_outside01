@@ -66,7 +66,9 @@ function createWam(map) {
     visible:true,properties:[{id:uuid(id+'/'+group.id+'/meeting'),type:'livekitRoomProperty',
       roomName:'school-castle-v2-'+id+'-'+group.id}],
   }));
-  return {version:'2.1.0',mapUrl:new URL(id+'.tmj',mapBase).href,entities:{},areas,entityCollections:[],
+  const sourceUrl=new URL(id+'.tmj',mapBase);
+  if(settings.castleRevision)sourceUrl.searchParams.set('v',settings.castleRevision);
+  return {version:'2.1.0',mapUrl:sourceUrl.href,entities:{},areas,entityCollections:[],
     settings:{megaphone:{enabled:false,title:'',scope:'ROOM'}},
     metadata:{name:settings.mapName || id,description:settings.mapDescription || '',
       copyright:settings.mapCopyright || '',thumbnail:new URL(settings.mapImage,mapBase).href}};

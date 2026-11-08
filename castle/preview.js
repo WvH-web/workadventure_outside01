@@ -1,4 +1,4 @@
-import { readLayout, conversationAt } from "./room.js?v=20261108-wam1";
+import { readLayout, conversationAt } from "./room.js?v=20261108-scale1";
 const $ = (id) => document.getElementById(id);
 function showError() {
   const retry = document.createElement("button");
@@ -16,7 +16,7 @@ window.addEventListener("error", (event) => {
 });
 const canvas = $("map"),
   ctx = canvas.getContext("2d");
-const manifest = await fetch("layout.json?v=20261108-wam1").then((r) =>
+const manifest = await fetch("layout.json?v=20261108-scale1").then((r) =>
   r.json(),
 );
 const images = new Map();
@@ -142,7 +142,7 @@ async function load(id, entry = "start") {
     if (!cache.has(id))
       cache.set(
         id,
-        await fetch(id + ".tmj?v=20261108-wam1").then((r) => {
+        await fetch(id + ".tmj?v=20261108-scale1").then((r) => {
           if (!r.ok) throw Error("Karte nicht erreichbar");
           return r.json();
         }),

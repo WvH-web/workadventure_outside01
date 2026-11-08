@@ -1,0 +1,5 @@
+Use case: precise-object-edit
+Edit target: existing Great Hall source.png, 1536 x 1024 pixel-art game map.
+Create a clean floor plate for deterministic reinstallation of properly scaled furniture.
+Remove ONLY the free-standing floor furniture clusters and their little rugs: the entire sofa/three-armchair/tea-table/lamp lounge on the left; both eight-chair dining tables on the right; the lower-left bookcase, plants, bench, basket and small side table; and the lower-right chess table with four chairs. Fill these footprints with the matching continuous wooden floor planks and ambient illumination.
+Preserve the identical room canvas, camera, perspective, northern wall, all four doors, staircase, fireplace, windows, paintings, stone pillars, southern door and walls, central burgundy-and-gold runner, central raised podium and lectern, and the wall-mounted announcement frame on the right. Do not move or resize any preserved element. No new furniture, no people, no text, no watermark. Match the original rich burgundy, gold, wood and turquoise-window pixel-art rendering exactly. Output the same 1536 x 1024 composition, not a crop or zoom.

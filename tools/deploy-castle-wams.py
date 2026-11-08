@@ -38,7 +38,11 @@ with zipfile.ZipFile(archive) as bundle:
         raw=bundle.read(name)
         wam=json.loads(raw)
         source='https://wvh-web.github.io/workadventure_outside01/castle/'+name[:-4]+'.tmj'
-        if wam.get('version')!='2.1.0' or wam.get('mapUrl')!=source or wam.get('entities')!={} or wam.get('entityCollections')!=[]:
+        parsed=urllib.parse.urlsplit(wam.get('mapUrl',''))
+        query=urllib.parse.parse_qs(parsed.query)
+        valid_source=urllib.parse.urlunsplit((parsed.scheme,parsed.netloc,parsed.path,'',''))==source and not parsed.fragment
+        valid_query=not query or (set(query)=={'v'} and len(query['v'])==1 and len(query['v'][0])<=64 and query['v'][0].replace('-','').isalnum())
+        if wam.get('version')!='2.1.0' or not valid_source or not valid_query or wam.get('entities')!={} or wam.get('entityCollections')!=[]:
             raise RuntimeError('Unexpected source or assets in '+name)
         if any(prop.get('type')!='livekitRoomProperty' for area in wam['areas'] for prop in area['properties']):
             raise RuntimeError('Only native meeting properties are allowed in this preview deployment')

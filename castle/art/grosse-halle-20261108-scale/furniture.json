@@ -1,0 +1,44 @@
+{
+  "scale": 0.625,
+  "preserved": [
+    {"x":0,"y":0,"width":1536,"height":288},
+    {"x":0,"y":288,"width":32,"height":736},
+    {"x":1504,"y":288,"width":32,"height":736},
+    {"x":0,"y":960,"width":1536,"height":64},
+    {"x":608,"y":248,"width":320,"height":112},
+    {"x":1280,"y":368,"width":224,"height":224},
+    {"x":640,"y":848,"width":256,"height":176},
+    {"x":672,"y":360,"width":128,"height":488}
+  ],
+  "clusters": [
+    {"id":"kaminrunde","source":{"x":176,"y":336,"width":368,"height":288},"target":{"x":208,"y":368},
+      "seatPrefix":"kamin-","collisionIds":["lounge-lamps","lounge-sofa","tea-table","lounge-chair-west","lounge-chair-east","lounge-chair-south"],
+      "masks":[[[190,411],[519,411],[519,603],[190,603]],[[208,350],[292,350],[292,453],[208,453]],[[289,362],[457,362],[457,456],[289,456]],[[313,528],[399,528],[399,616],[313,616]]],
+      "group":{"id":"kaminrunde","label":"Kaminrunde","x":176,"y":336,"width":304,"height":256}},
+    {"id":"tafel-nord","source":{"x":816,"y":368,"width":368,"height":200},"target":{"x":880,"y":404},
+      "seatPrefix":"tafel-nord-","collisionIds":["north-table","north-chairs","north-table-south-chairs"],
+      "masks":[[[816,416],[1184,416],[1184,564],[816,564]],[[876,392],[920,392],[920,444],[876,444]],[[940,392],[984,392],[984,444],[940,444]],[[1004,392],[1048,392],[1048,444],[1004,444]],[[1068,392],[1112,392],[1112,444],[1068,444]]],
+      "group":{"id":"tafel-nord","label":"Noerdliche Tafel","x":848,"y":368,"width":288,"height":192}},
+    {"id":"tafel-sued","source":{"x":816,"y":568,"width":368,"height":216},"target":{"x":880,"y":600},
+      "seatPrefix":"tafel-sued-","collisionIds":["south-table","south-table-north-chairs","south-table-south-chairs"],
+      "masks":[[[816,608],[1184,608],[1184,756],[816,756]],[[876,586],[920,586],[920,636],[876,636]],[[940,586],[984,586],[984,636],[940,636]],[[1004,586],[1048,586],[1048,636],[1004,636]],[[1068,586],[1112,586],[1112,636],[1068,636]]],
+      "group":{"id":"tafel-sued","label":"Suedliche Tafel","x":848,"y":576,"width":288,"height":192}},
+    {"id":"lehrerbank","source":{"x":48,"y":656,"width":512,"height":240},"target":{"x":48,"y":600},
+      "seatPrefix":"lehrerbank-","collisionIds":["west-books","west-plant","bench-side-table","staff-bench","bench-basket"],
+      "masks":[[[56,656],[192,656],[192,864],[56,864]],[[192,700],[288,700],[288,844],[192,844]],[[272,736],[328,736],[328,864],[272,864]],[[320,736],[512,736],[512,864],[320,864]],[[512,752],[560,752],[560,844],[512,844]]],
+      "group":{"id":"lehrerbank","label":"Lehrer- und Besucherbank","x":192,"y":608,"width":160,"height":160}},
+    {"id":"spieltreff","source":{"x":1264,"y":688,"width":224,"height":208},"target":{"x":1280,"y":704},
+      "seatPrefix":"spiel-","collisionIds":["game-table","game-north-chairs","game-south-chairs"],
+      "masks":[[[1288,735],[1452,735],[1452,794],[1445,794],[1445,836],[1434,836],[1434,802],[1306,802],[1306,836],[1294,836],[1294,802],[1284,792],[1284,742]],[[1316,700],[1360,700],[1360,744],[1316,744]],[[1381,700],[1425,700],[1425,744],[1381,744]],[[1316,800],[1360,800],[1360,864],[1316,864]],[[1381,800],[1425,800],[1425,864],[1381,864]]],
+      "group":{"id":"spieltreff","label":"Spieltreff","x":1248,"y":672,"width":240,"height":208}}
+  ],
+  "communal": {
+    "image":{"x":368,"y":752,"width":256,"height":128},
+    "group":{"id":"gemeinschaftstafel","label":"Grosse Gemeinschaftstafel","x":352,"y":720,"width":288,"height":208},
+    "columns":[398,437,476,516,556,595],
+    "north":{"y":778,"standY":736,"facing":"down"},
+    "south":{"y":840,"standY":896,"facing":"up"},
+    "collision":{"id":"communal-table","x":384,"y":800,"width":224,"height":32,"preserve":true},
+    "frontPolygons":[[[379,821],[613,821],[619,830],[619,858],[612,864],[606,864],[606,836],[390,836],[390,864],[384,864],[379,854]]]
+  }
+}

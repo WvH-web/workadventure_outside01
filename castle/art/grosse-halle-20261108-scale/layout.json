@@ -1,0 +1,2084 @@
+{
+  "width": 48,
+  "height": 32,
+  "tileSize": 32,
+  "render": {
+    "source": "source.png",
+    "floor": "floor.png",
+    "fronts": "fronts.png",
+    "fire": "fire.png",
+    "portrait": "portrait.png"
+  },
+  "measurements": {
+    "requestedSource": [
+      2304,
+      1536
+    ],
+    "actualSource": [
+      1536,
+      1024
+    ],
+    "sourceSha256": "c2ee6834d315709b1f39a983e5b07ee967b3c0e777ed6dbdd58533a4bb9faadb",
+    "nativePixels": [
+      1536,
+      1024
+    ],
+    "coordinateSpace": "All geometry is final native pixels except entries, portals and hearth/portrait tileX/tileY, which are native tile coordinates.",
+    "avatarPixels": 32,
+    "longTableChairHeightPixels": [
+      28,
+      36
+    ],
+    "armchairHeightPixels": [
+      39,
+      50
+    ],
+    "staffBenchSeatSpacingPixels": 24,
+    "northDoorCentersPixels": [
+      176,
+      550,
+      998,
+      1296
+    ],
+    "stairsCenterPixels": [
+      1424,
+      240
+    ],
+    "sourcePrompt": "floor-prompt.txt",
+    "expectedSeats": 42,
+    "furnitureScale": 0.625,
+    "sofaWidthPixels": 100,
+    "chairPitchPixels": 40,
+    "communalSeats": 12,
+    "headClearance": {
+      "x": 10,
+      "top": 22,
+      "bottom": 3
+    },
+    "originalLayout": "../grosse-halle-20261107/layout.json",
+    "tablePrompt": "table-prompt.txt"
+  },
+  "entries": {
+    "start": [
+      23,
+      26
+    ],
+    "vom-lehrerzimmer": [
+      5,
+      9
+    ],
+    "mittelstufe": [
+      17,
+      9
+    ],
+    "kino": [
+      31,
+      9
+    ],
+    "bibliothek": [
+      40,
+      9
+    ],
+    "vom-og": [
+      44,
+      9
+    ],
+    "schlosstor": [
+      24,
+      26
+    ]
+  },
+  "portals": [
+    {
+      "id": "lehrerzimmer",
+      "x": 5,
+      "y": 7,
+      "width": 1,
+      "height": 1,
+      "target": "../teachersmeetingground.tmj"
+    },
+    {
+      "id": "mittelstufe",
+      "x": 17,
+      "y": 7,
+      "width": 1,
+      "height": 1,
+      "target": "mittelstufe.tmj",
+      "entry": "vom-flur"
+    },
+    {
+      "id": "kino",
+      "x": 31,
+      "y": 7,
+      "width": 1,
+      "height": 1,
+      "target": "kino.tmj",
+      "entry": "foyer"
+    },
+    {
+      "id": "bibliothek",
+      "x": 40,
+      "y": 7,
+      "width": 1,
+      "height": 1,
+      "target": "erdgeschoss.tmj",
+      "entry": "bibliothek-anreise"
+    },
+    {
+      "id": "treppe",
+      "x": 44,
+      "y": 7,
+      "width": 2,
+      "height": 1,
+      "target": "obergeschoss.tmj",
+      "entry": "vom-eg"
+    },
+    {
+      "id": "schlosstor",
+      "x": 23,
+      "y": 29,
+      "width": 2,
+      "height": 1,
+      "target": "umgebung.tmj",
+      "entry": "schlosstor"
+    }
+  ],
+  "podium": {
+    "id": "podium",
+    "label": "Podium",
+    "x": 624,
+    "y": 272,
+    "width": 288,
+    "height": 88
+  },
+  "noticeboard": {
+    "approach": {
+      "id": "noticeboard",
+      "x": 1248,
+      "y": 384,
+      "width": 256,
+      "height": 224
+    },
+    "display": {
+      "x": 1343,
+      "y": 429,
+      "width": 120,
+      "height": 96
+    }
+  },
+  "games": {
+    "id": "spieltreff",
+    "label": "Spieltreff",
+    "x": 1248,
+    "y": 672,
+    "width": 240,
+    "height": 208
+  },
+  "foyer": {
+    "id": "foyer",
+    "label": "Schlossfoyer",
+    "x": 608,
+    "y": 800,
+    "width": 640,
+    "height": 160
+  },
+  "groups": [
+    {
+      "id": "kaminrunde",
+      "label": "Kaminrunde",
+      "x": 176,
+      "y": 336,
+      "width": 304,
+      "height": 256
+    },
+    {
+      "id": "tafel-nord",
+      "label": "Noerdliche Tafel",
+      "x": 848,
+      "y": 368,
+      "width": 288,
+      "height": 192
+    },
+    {
+      "id": "tafel-sued",
+      "label": "Suedliche Tafel",
+      "x": 848,
+      "y": 576,
+      "width": 288,
+      "height": 192
+    },
+    {
+      "id": "lehrerbank",
+      "label": "Lehrer- und Besucherbank",
+      "x": 192,
+      "y": 608,
+      "width": 160,
+      "height": 160
+    },
+    {
+      "id": "spieltreff",
+      "label": "Spieltreff",
+      "x": 1248,
+      "y": 672,
+      "width": 240,
+      "height": 208
+    },
+    {
+      "id": "gemeinschaftstafel",
+      "label": "Grosse Gemeinschaftstafel",
+      "x": 352,
+      "y": 720,
+      "width": 288,
+      "height": 208
+    }
+  ],
+  "hearth": {
+    "tileX": 9,
+    "tileY": 6,
+    "flames": [
+      {
+        "x": 6,
+        "y": 24,
+        "phase": 0
+      },
+      {
+        "x": 21,
+        "y": 22,
+        "phase": 2
+      },
+      {
+        "x": 36,
+        "y": 24,
+        "phase": 4
+      }
+    ],
+    "audio": {
+      "x": 160,
+      "y": 192,
+      "width": 416,
+      "height": 448
+    }
+  },
+  "portrait": {
+    "source": "castle/art/portrait.gif",
+    "tileX": 36,
+    "tileY": 1,
+    "insetX": 20,
+    "insetY": 24,
+    "width": 52,
+    "height": 64
+  },
+  "collisionRects": [
+    {
+      "id": "north-wall",
+      "x": 0,
+      "y": 0,
+      "width": 1536,
+      "height": 224,
+      "preserve": true
+    },
+    {
+      "id": "north-threshold-band",
+      "x": 0,
+      "y": 224,
+      "width": 1536,
+      "height": 32
+    },
+    {
+      "id": "west-wall",
+      "x": 0,
+      "y": 224,
+      "width": 32,
+      "height": 800,
+      "preserve": true
+    },
+    {
+      "id": "east-wall",
+      "x": 1504,
+      "y": 224,
+      "width": 32,
+      "height": 800,
+      "preserve": true
+    },
+    {
+      "id": "south-wall",
+      "x": 0,
+      "y": 960,
+      "width": 1536,
+      "height": 64,
+      "preserve": true
+    },
+    {
+      "id": "south-door-west-post",
+      "x": 640,
+      "y": 864,
+      "width": 96,
+      "height": 96,
+      "preserve": true
+    },
+    {
+      "id": "south-door-east-post",
+      "x": 800,
+      "y": 864,
+      "width": 96,
+      "height": 96,
+      "preserve": true
+    },
+    {
+      "id": "fireplace",
+      "x": 256,
+      "y": 224,
+      "width": 128,
+      "height": 64,
+      "preserve": true
+    },
+    {
+      "id": "stairs-west-rail",
+      "x": 1344,
+      "y": 224,
+      "width": 64,
+      "height": 64,
+      "preserve": true
+    },
+    {
+      "id": "stairs-east-rail",
+      "x": 1472,
+      "y": 224,
+      "width": 32,
+      "height": 64,
+      "preserve": true
+    },
+    {
+      "id": "lectern",
+      "x": 736,
+      "y": 256,
+      "width": 64,
+      "height": 64,
+      "preserve": true
+    },
+    {
+      "id": "noticeboard",
+      "x": 1312,
+      "y": 384,
+      "width": 192,
+      "height": 192,
+      "preserve": true
+    },
+    {
+      "id": "lounge-lamps",
+      "x": 218,
+      "y": 378,
+      "width": 60,
+      "height": 60,
+      "preserve": false
+    },
+    {
+      "id": "lounge-sofa",
+      "x": 278,
+      "y": 398,
+      "width": 100,
+      "height": 40,
+      "preserve": false
+    },
+    {
+      "id": "tea-table",
+      "x": 278,
+      "y": 458,
+      "width": 80,
+      "height": 40,
+      "preserve": false
+    },
+    {
+      "id": "lounge-chair-west",
+      "x": 238,
+      "y": 458,
+      "width": 40,
+      "height": 40,
+      "preserve": false
+    },
+    {
+      "id": "lounge-chair-east",
+      "x": 358,
+      "y": 458,
+      "width": 40,
+      "height": 40,
+      "preserve": false
+    },
+    {
+      "id": "lounge-chair-south",
+      "x": 298,
+      "y": 498,
+      "width": 40,
+      "height": 40,
+      "preserve": false
+    },
+    {
+      "id": "north-table",
+      "x": 910,
+      "y": 454,
+      "width": 160,
+      "height": 40,
+      "preserve": false
+    },
+    {
+      "id": "north-chairs",
+      "x": 910,
+      "y": 424,
+      "width": 160,
+      "height": 20,
+      "preserve": false
+    },
+    {
+      "id": "north-table-south-chairs",
+      "x": 910,
+      "y": 494,
+      "width": 160,
+      "height": 20,
+      "preserve": false
+    },
+    {
+      "id": "south-table",
+      "x": 910,
+      "y": 645,
+      "width": 160,
+      "height": 40,
+      "preserve": false
+    },
+    {
+      "id": "south-table-north-chairs",
+      "x": 910,
+      "y": 615,
+      "width": 160,
+      "height": 20,
+      "preserve": false
+    },
+    {
+      "id": "south-table-south-chairs",
+      "x": 910,
+      "y": 685,
+      "width": 160,
+      "height": 20,
+      "preserve": false
+    },
+    {
+      "id": "west-books",
+      "x": 58,
+      "y": 630,
+      "width": 80,
+      "height": 100,
+      "preserve": false
+    },
+    {
+      "id": "west-plant",
+      "x": 138,
+      "y": 650,
+      "width": 60,
+      "height": 60,
+      "preserve": false
+    },
+    {
+      "id": "bench-side-table",
+      "x": 198,
+      "y": 670,
+      "width": 20,
+      "height": 60,
+      "preserve": false
+    },
+    {
+      "id": "staff-bench",
+      "x": 218,
+      "y": 650,
+      "width": 120,
+      "height": 80,
+      "preserve": false
+    },
+    {
+      "id": "bench-basket",
+      "x": 338,
+      "y": 670,
+      "width": 20,
+      "height": 40,
+      "preserve": false
+    },
+    {
+      "id": "game-table",
+      "x": 1290,
+      "y": 734,
+      "width": 120,
+      "height": 40,
+      "preserve": false
+    },
+    {
+      "id": "game-north-chairs",
+      "x": 1310,
+      "y": 714,
+      "width": 80,
+      "height": 20,
+      "preserve": false
+    },
+    {
+      "id": "game-south-chairs",
+      "x": 1310,
+      "y": 774,
+      "width": 80,
+      "height": 40,
+      "preserve": false
+    },
+    {
+      "id": "communal-table",
+      "x": 384,
+      "y": 800,
+      "width": 224,
+      "height": 32,
+      "preserve": true
+    }
+  ],
+  "seats": [
+    {
+      "id": "kamin-sofa-links",
+      "label": "Kaminsofa links",
+      "x": 302,
+      "y": 418,
+      "standX": 302,
+      "standY": 368,
+      "facing": "down",
+      "audioGroup": "kaminrunde"
+    },
+    {
+      "id": "kamin-sofa-mitte",
+      "label": "Kaminsofa Mitte",
+      "x": 330,
+      "y": 418,
+      "standX": 330,
+      "standY": 368,
+      "facing": "down",
+      "audioGroup": "kaminrunde"
+    },
+    {
+      "id": "kamin-sofa-rechts",
+      "label": "Kaminsofa rechts",
+      "x": 358,
+      "y": 418,
+      "standX": 358,
+      "standY": 368,
+      "facing": "down",
+      "audioGroup": "kaminrunde"
+    },
+    {
+      "id": "kamin-sessel-west",
+      "label": "Kaminsessel links",
+      "x": 260,
+      "y": 476,
+      "standX": 228,
+      "standY": 488,
+      "facing": "right",
+      "audioGroup": "kaminrunde"
+    },
+    {
+      "id": "kamin-sessel-ost",
+      "label": "Kaminsessel rechts",
+      "x": 382,
+      "y": 476,
+      "standX": 428,
+      "standY": 488,
+      "facing": "left",
+      "audioGroup": "kaminrunde"
+    },
+    {
+      "id": "kamin-sessel-sued",
+      "label": "Kaminsessel unten",
+      "x": 320,
+      "y": 506,
+      "standX": 328,
+      "standY": 548,
+      "facing": "up",
+      "audioGroup": "kaminrunde"
+    },
+    {
+      "id": "tafel-nord-n1",
+      "label": "Noerdliche Tafel 1",
+      "x": 931,
+      "y": 431,
+      "standX": 931,
+      "standY": 404,
+      "facing": "down",
+      "audioGroup": "tafel-nord"
+    },
+    {
+      "id": "tafel-nord-n2",
+      "label": "Noerdliche Tafel 2",
+      "x": 971,
+      "y": 431,
+      "standX": 971,
+      "standY": 404,
+      "facing": "down",
+      "audioGroup": "tafel-nord"
+    },
+    {
+      "id": "tafel-nord-n3",
+      "label": "Noerdliche Tafel 3",
+      "x": 1011,
+      "y": 431,
+      "standX": 1011,
+      "standY": 404,
+      "facing": "down",
+      "audioGroup": "tafel-nord"
+    },
+    {
+      "id": "tafel-nord-n4",
+      "label": "Noerdliche Tafel 4",
+      "x": 1051,
+      "y": 431,
+      "standX": 1051,
+      "standY": 404,
+      "facing": "down",
+      "audioGroup": "tafel-nord"
+    },
+    {
+      "id": "tafel-nord-s1",
+      "label": "Noerdliche Tafel 5",
+      "x": 931,
+      "y": 494,
+      "standX": 931,
+      "standY": 524,
+      "facing": "up",
+      "audioGroup": "tafel-nord"
+    },
+    {
+      "id": "tafel-nord-s2",
+      "label": "Noerdliche Tafel 6",
+      "x": 971,
+      "y": 494,
+      "standX": 971,
+      "standY": 524,
+      "facing": "up",
+      "audioGroup": "tafel-nord"
+    },
+    {
+      "id": "tafel-nord-s3",
+      "label": "Noerdliche Tafel 7",
+      "x": 1011,
+      "y": 494,
+      "standX": 1011,
+      "standY": 524,
+      "facing": "up",
+      "audioGroup": "tafel-nord"
+    },
+    {
+      "id": "tafel-nord-s4",
+      "label": "Noerdliche Tafel 8",
+      "x": 1051,
+      "y": 494,
+      "standX": 1051,
+      "standY": 524,
+      "facing": "up",
+      "audioGroup": "tafel-nord"
+    },
+    {
+      "id": "tafel-sued-n1",
+      "label": "Suedliche Tafel 1",
+      "x": 931,
+      "y": 623,
+      "standX": 931,
+      "standY": 605,
+      "facing": "down",
+      "audioGroup": "tafel-sued"
+    },
+    {
+      "id": "tafel-sued-n2",
+      "label": "Suedliche Tafel 2",
+      "x": 971,
+      "y": 623,
+      "standX": 971,
+      "standY": 605,
+      "facing": "down",
+      "audioGroup": "tafel-sued"
+    },
+    {
+      "id": "tafel-sued-n3",
+      "label": "Suedliche Tafel 3",
+      "x": 1011,
+      "y": 623,
+      "standX": 1011,
+      "standY": 605,
+      "facing": "down",
+      "audioGroup": "tafel-sued"
+    },
+    {
+      "id": "tafel-sued-n4",
+      "label": "Suedliche Tafel 4",
+      "x": 1051,
+      "y": 623,
+      "standX": 1051,
+      "standY": 605,
+      "facing": "down",
+      "audioGroup": "tafel-sued"
+    },
+    {
+      "id": "tafel-sued-s1",
+      "label": "Suedliche Tafel 5",
+      "x": 931,
+      "y": 686,
+      "standX": 931,
+      "standY": 725,
+      "facing": "up",
+      "audioGroup": "tafel-sued"
+    },
+    {
+      "id": "tafel-sued-s2",
+      "label": "Suedliche Tafel 6",
+      "x": 971,
+      "y": 686,
+      "standX": 971,
+      "standY": 725,
+      "facing": "up",
+      "audioGroup": "tafel-sued"
+    },
+    {
+      "id": "tafel-sued-s3",
+      "label": "Suedliche Tafel 7",
+      "x": 1011,
+      "y": 686,
+      "standX": 1011,
+      "standY": 725,
+      "facing": "up",
+      "audioGroup": "tafel-sued"
+    },
+    {
+      "id": "tafel-sued-s4",
+      "label": "Suedliche Tafel 8",
+      "x": 1051,
+      "y": 686,
+      "standX": 1051,
+      "standY": 725,
+      "facing": "up",
+      "audioGroup": "tafel-sued"
+    },
+    {
+      "id": "lehrerbank-1",
+      "label": "Lehrerbank 1",
+      "x": 235,
+      "y": 687,
+      "standX": 228,
+      "standY": 740,
+      "facing": "down",
+      "audioGroup": "lehrerbank"
+    },
+    {
+      "id": "lehrerbank-2",
+      "label": "Lehrerbank 2",
+      "x": 259,
+      "y": 687,
+      "standX": 258,
+      "standY": 740,
+      "facing": "down",
+      "audioGroup": "lehrerbank"
+    },
+    {
+      "id": "lehrerbank-3",
+      "label": "Lehrerbank 3",
+      "x": 282,
+      "y": 687,
+      "standX": 288,
+      "standY": 740,
+      "facing": "down",
+      "audioGroup": "lehrerbank"
+    },
+    {
+      "id": "lehrerbank-4",
+      "label": "Lehrerbank 4",
+      "x": 306,
+      "y": 687,
+      "standX": 318,
+      "standY": 740,
+      "facing": "down",
+      "audioGroup": "lehrerbank"
+    },
+    {
+      "id": "spiel-nw",
+      "label": "Spieltisch Nordwest",
+      "x": 1326,
+      "y": 722,
+      "standX": 1326,
+      "standY": 704,
+      "facing": "down",
+      "audioGroup": "spieltreff"
+    },
+    {
+      "id": "spiel-no",
+      "label": "Spieltisch Nordost",
+      "x": 1367,
+      "y": 722,
+      "standX": 1367,
+      "standY": 704,
+      "facing": "down",
+      "audioGroup": "spieltreff"
+    },
+    {
+      "id": "spiel-sw",
+      "label": "Spieltisch Suedwest",
+      "x": 1326,
+      "y": 787,
+      "standX": 1326,
+      "standY": 824,
+      "facing": "up",
+      "audioGroup": "spieltreff"
+    },
+    {
+      "id": "spiel-so",
+      "label": "Spieltisch Suedost",
+      "x": 1367,
+      "y": 787,
+      "standX": 1367,
+      "standY": 824,
+      "facing": "up",
+      "audioGroup": "spieltreff"
+    },
+    {
+      "id": "gemeinschaft-n1",
+      "label": "Gemeinschaftstafel 1",
+      "x": 398,
+      "y": 778,
+      "standX": 398,
+      "standY": 736,
+      "facing": "down",
+      "audioGroup": "gemeinschaftstafel"
+    },
+    {
+      "id": "gemeinschaft-n2",
+      "label": "Gemeinschaftstafel 2",
+      "x": 437,
+      "y": 778,
+      "standX": 437,
+      "standY": 736,
+      "facing": "down",
+      "audioGroup": "gemeinschaftstafel"
+    },
+    {
+      "id": "gemeinschaft-n3",
+      "label": "Gemeinschaftstafel 3",
+      "x": 476,
+      "y": 778,
+      "standX": 476,
+      "standY": 736,
+      "facing": "down",
+      "audioGroup": "gemeinschaftstafel"
+    },
+    {
+      "id": "gemeinschaft-n4",
+      "label": "Gemeinschaftstafel 4",
+      "x": 516,
+      "y": 778,
+      "standX": 516,
+      "standY": 736,
+      "facing": "down",
+      "audioGroup": "gemeinschaftstafel"
+    },
+    {
+      "id": "gemeinschaft-n5",
+      "label": "Gemeinschaftstafel 5",
+      "x": 556,
+      "y": 778,
+      "standX": 556,
+      "standY": 736,
+      "facing": "down",
+      "audioGroup": "gemeinschaftstafel"
+    },
+    {
+      "id": "gemeinschaft-n6",
+      "label": "Gemeinschaftstafel 6",
+      "x": 595,
+      "y": 778,
+      "standX": 595,
+      "standY": 736,
+      "facing": "down",
+      "audioGroup": "gemeinschaftstafel"
+    },
+    {
+      "id": "gemeinschaft-s1",
+      "label": "Gemeinschaftstafel 7",
+      "x": 398,
+      "y": 840,
+      "standX": 398,
+      "standY": 896,
+      "facing": "up",
+      "audioGroup": "gemeinschaftstafel"
+    },
+    {
+      "id": "gemeinschaft-s2",
+      "label": "Gemeinschaftstafel 8",
+      "x": 437,
+      "y": 840,
+      "standX": 437,
+      "standY": 896,
+      "facing": "up",
+      "audioGroup": "gemeinschaftstafel"
+    },
+    {
+      "id": "gemeinschaft-s3",
+      "label": "Gemeinschaftstafel 9",
+      "x": 476,
+      "y": 840,
+      "standX": 476,
+      "standY": 896,
+      "facing": "up",
+      "audioGroup": "gemeinschaftstafel"
+    },
+    {
+      "id": "gemeinschaft-s4",
+      "label": "Gemeinschaftstafel 10",
+      "x": 516,
+      "y": 840,
+      "standX": 516,
+      "standY": 896,
+      "facing": "up",
+      "audioGroup": "gemeinschaftstafel"
+    },
+    {
+      "id": "gemeinschaft-s5",
+      "label": "Gemeinschaftstafel 11",
+      "x": 556,
+      "y": 840,
+      "standX": 556,
+      "standY": 896,
+      "facing": "up",
+      "audioGroup": "gemeinschaftstafel"
+    },
+    {
+      "id": "gemeinschaft-s6",
+      "label": "Gemeinschaftstafel 12",
+      "x": 595,
+      "y": 840,
+      "standX": 595,
+      "standY": 896,
+      "facing": "up",
+      "audioGroup": "gemeinschaftstafel"
+    }
+  ],
+  "frontPolygons": [
+    [
+      [
+        286,
+        429
+      ],
+      [
+        374,
+        429
+      ],
+      [
+        376,
+        437
+      ],
+      [
+        369,
+        442
+      ],
+      [
+        292,
+        442
+      ],
+      [
+        284,
+        436
+      ]
+    ],
+    [
+      [
+        285,
+        414
+      ],
+      [
+        291,
+        414
+      ],
+      [
+        294,
+        429
+      ],
+      [
+        291,
+        437
+      ],
+      [
+        285,
+        434
+      ],
+      [
+        282,
+        424
+      ]
+    ],
+    [
+      [
+        371,
+        413
+      ],
+      [
+        376,
+        414
+      ],
+      [
+        379,
+        424
+      ],
+      [
+        377,
+        435
+      ],
+      [
+        371,
+        438
+      ],
+      [
+        368,
+        429
+      ]
+    ],
+    [
+      [
+        242,
+        484
+      ],
+      [
+        248,
+        486
+      ],
+      [
+        254,
+        492
+      ],
+      [
+        267,
+        492
+      ],
+      [
+        274,
+        486
+      ],
+      [
+        279,
+        483
+      ],
+      [
+        280,
+        496
+      ],
+      [
+        274,
+        503
+      ],
+      [
+        253,
+        506
+      ],
+      [
+        245,
+        497
+      ]
+    ],
+    [
+      [
+        364,
+        484
+      ],
+      [
+        370,
+        486
+      ],
+      [
+        376,
+        492
+      ],
+      [
+        389,
+        492
+      ],
+      [
+        396,
+        486
+      ],
+      [
+        402,
+        484
+      ],
+      [
+        401,
+        496
+      ],
+      [
+        396,
+        503
+      ],
+      [
+        374,
+        505
+      ],
+      [
+        366,
+        497
+      ]
+    ],
+    [
+      [
+        304,
+        515
+      ],
+      [
+        335,
+        515
+      ],
+      [
+        335,
+        524
+      ],
+      [
+        330,
+        529
+      ],
+      [
+        308,
+        528
+      ],
+      [
+        304,
+        522
+      ]
+    ],
+    [
+      [
+        287,
+        458
+      ],
+      [
+        294,
+        452
+      ],
+      [
+        346,
+        453
+      ],
+      [
+        355,
+        459
+      ],
+      [
+        357,
+        476
+      ],
+      [
+        348,
+        485
+      ],
+      [
+        296,
+        487
+      ],
+      [
+        286,
+        477
+      ]
+    ],
+    [
+      [
+        907,
+        447
+      ],
+      [
+        1074,
+        447
+      ],
+      [
+        1079,
+        453
+      ],
+      [
+        1079,
+        478
+      ],
+      [
+        1074,
+        483
+      ],
+      [
+        1073,
+        498
+      ],
+      [
+        1069,
+        498
+      ],
+      [
+        1068,
+        483
+      ],
+      [
+        916,
+        483
+      ],
+      [
+        916,
+        498
+      ],
+      [
+        911,
+        498
+      ],
+      [
+        910,
+        483
+      ],
+      [
+        905,
+        478
+      ],
+      [
+        905,
+        454
+      ]
+    ],
+    [
+      [
+        922,
+        497
+      ],
+      [
+        926,
+        499
+      ],
+      [
+        926,
+        505
+      ],
+      [
+        938,
+        505
+      ],
+      [
+        938,
+        499
+      ],
+      [
+        942,
+        497
+      ],
+      [
+        944,
+        507
+      ],
+      [
+        941,
+        517
+      ],
+      [
+        938,
+        517
+      ],
+      [
+        937,
+        512
+      ],
+      [
+        927,
+        512
+      ],
+      [
+        926,
+        517
+      ],
+      [
+        923,
+        517
+      ],
+      [
+        921,
+        507
+      ]
+    ],
+    [
+      [
+        962,
+        497
+      ],
+      [
+        966,
+        499
+      ],
+      [
+        966,
+        505
+      ],
+      [
+        978,
+        505
+      ],
+      [
+        978,
+        499
+      ],
+      [
+        982,
+        497
+      ],
+      [
+        984,
+        507
+      ],
+      [
+        981,
+        517
+      ],
+      [
+        978,
+        517
+      ],
+      [
+        977,
+        512
+      ],
+      [
+        967,
+        512
+      ],
+      [
+        966,
+        517
+      ],
+      [
+        963,
+        517
+      ],
+      [
+        961,
+        507
+      ]
+    ],
+    [
+      [
+        1002,
+        497
+      ],
+      [
+        1006,
+        499
+      ],
+      [
+        1006,
+        505
+      ],
+      [
+        1018,
+        505
+      ],
+      [
+        1018,
+        499
+      ],
+      [
+        1022,
+        497
+      ],
+      [
+        1024,
+        507
+      ],
+      [
+        1021,
+        517
+      ],
+      [
+        1018,
+        517
+      ],
+      [
+        1017,
+        512
+      ],
+      [
+        1007,
+        512
+      ],
+      [
+        1006,
+        517
+      ],
+      [
+        1003,
+        517
+      ],
+      [
+        1001,
+        507
+      ]
+    ],
+    [
+      [
+        1042,
+        497
+      ],
+      [
+        1046,
+        499
+      ],
+      [
+        1046,
+        505
+      ],
+      [
+        1058,
+        505
+      ],
+      [
+        1058,
+        499
+      ],
+      [
+        1062,
+        497
+      ],
+      [
+        1064,
+        507
+      ],
+      [
+        1061,
+        517
+      ],
+      [
+        1058,
+        517
+      ],
+      [
+        1057,
+        512
+      ],
+      [
+        1047,
+        512
+      ],
+      [
+        1046,
+        517
+      ],
+      [
+        1043,
+        517
+      ],
+      [
+        1041,
+        507
+      ]
+    ],
+    [
+      [
+        908,
+        639
+      ],
+      [
+        1075,
+        639
+      ],
+      [
+        1079,
+        646
+      ],
+      [
+        1079,
+        671
+      ],
+      [
+        1074,
+        675
+      ],
+      [
+        1073,
+        689
+      ],
+      [
+        1069,
+        689
+      ],
+      [
+        1068,
+        676
+      ],
+      [
+        916,
+        676
+      ],
+      [
+        916,
+        690
+      ],
+      [
+        911,
+        690
+      ],
+      [
+        910,
+        675
+      ],
+      [
+        906,
+        671
+      ],
+      [
+        906,
+        646
+      ]
+    ],
+    [
+      [
+        922,
+        689
+      ],
+      [
+        926,
+        691
+      ],
+      [
+        926,
+        697
+      ],
+      [
+        938,
+        697
+      ],
+      [
+        938,
+        691
+      ],
+      [
+        942,
+        689
+      ],
+      [
+        944,
+        699
+      ],
+      [
+        941,
+        709
+      ],
+      [
+        938,
+        709
+      ],
+      [
+        937,
+        704
+      ],
+      [
+        927,
+        704
+      ],
+      [
+        926,
+        709
+      ],
+      [
+        923,
+        709
+      ],
+      [
+        921,
+        699
+      ]
+    ],
+    [
+      [
+        962,
+        689
+      ],
+      [
+        966,
+        691
+      ],
+      [
+        966,
+        697
+      ],
+      [
+        978,
+        697
+      ],
+      [
+        978,
+        691
+      ],
+      [
+        982,
+        689
+      ],
+      [
+        984,
+        699
+      ],
+      [
+        981,
+        709
+      ],
+      [
+        978,
+        709
+      ],
+      [
+        977,
+        704
+      ],
+      [
+        967,
+        704
+      ],
+      [
+        966,
+        709
+      ],
+      [
+        963,
+        709
+      ],
+      [
+        961,
+        699
+      ]
+    ],
+    [
+      [
+        1002,
+        689
+      ],
+      [
+        1006,
+        691
+      ],
+      [
+        1006,
+        697
+      ],
+      [
+        1018,
+        697
+      ],
+      [
+        1018,
+        691
+      ],
+      [
+        1022,
+        689
+      ],
+      [
+        1024,
+        699
+      ],
+      [
+        1021,
+        709
+      ],
+      [
+        1018,
+        709
+      ],
+      [
+        1017,
+        704
+      ],
+      [
+        1007,
+        704
+      ],
+      [
+        1006,
+        709
+      ],
+      [
+        1003,
+        709
+      ],
+      [
+        1001,
+        699
+      ]
+    ],
+    [
+      [
+        1042,
+        689
+      ],
+      [
+        1046,
+        691
+      ],
+      [
+        1046,
+        697
+      ],
+      [
+        1058,
+        697
+      ],
+      [
+        1058,
+        691
+      ],
+      [
+        1062,
+        689
+      ],
+      [
+        1064,
+        699
+      ],
+      [
+        1061,
+        709
+      ],
+      [
+        1058,
+        709
+      ],
+      [
+        1057,
+        704
+      ],
+      [
+        1047,
+        704
+      ],
+      [
+        1046,
+        709
+      ],
+      [
+        1043,
+        709
+      ],
+      [
+        1041,
+        699
+      ]
+    ],
+    [
+      [
+        222,
+        703
+      ],
+      [
+        324,
+        703
+      ],
+      [
+        326,
+        710
+      ],
+      [
+        319,
+        715
+      ],
+      [
+        317,
+        718
+      ],
+      [
+        314,
+        718
+      ],
+      [
+        312,
+        713
+      ],
+      [
+        233,
+        713
+      ],
+      [
+        232,
+        719
+      ],
+      [
+        228,
+        719
+      ],
+      [
+        227,
+        713
+      ],
+      [
+        222,
+        710
+      ]
+    ],
+    [
+      [
+        221,
+        678
+      ],
+      [
+        226,
+        678
+      ],
+      [
+        229,
+        696
+      ],
+      [
+        229,
+        708
+      ],
+      [
+        222,
+        711
+      ],
+      [
+        219,
+        698
+      ]
+    ],
+    [
+      [
+        322,
+        678
+      ],
+      [
+        327,
+        677
+      ],
+      [
+        328,
+        697
+      ],
+      [
+        325,
+        711
+      ],
+      [
+        319,
+        709
+      ],
+      [
+        319,
+        696
+      ]
+    ],
+    [
+      [
+        1295,
+        737
+      ],
+      [
+        1395,
+        737
+      ],
+      [
+        1398,
+        742
+      ],
+      [
+        1398,
+        769
+      ],
+      [
+        1394,
+        774
+      ],
+      [
+        1392,
+        794
+      ],
+      [
+        1388,
+        794
+      ],
+      [
+        1387,
+        775
+      ],
+      [
+        1305,
+        775
+      ],
+      [
+        1303,
+        795
+      ],
+      [
+        1299,
+        795
+      ],
+      [
+        1298,
+        774
+      ],
+      [
+        1294,
+        768
+      ],
+      [
+        1294,
+        742
+      ]
+    ],
+    [
+      [
+        1316,
+        792
+      ],
+      [
+        1321,
+        794
+      ],
+      [
+        1321,
+        799
+      ],
+      [
+        1333,
+        799
+      ],
+      [
+        1333,
+        794
+      ],
+      [
+        1337,
+        792
+      ],
+      [
+        1339,
+        802
+      ],
+      [
+        1336,
+        810
+      ],
+      [
+        1333,
+        810
+      ],
+      [
+        1332,
+        805
+      ],
+      [
+        1321,
+        805
+      ],
+      [
+        1321,
+        810
+      ],
+      [
+        1317,
+        810
+      ],
+      [
+        1315,
+        802
+      ]
+    ],
+    [
+      [
+        1357,
+        792
+      ],
+      [
+        1361,
+        794
+      ],
+      [
+        1361,
+        799
+      ],
+      [
+        1373,
+        799
+      ],
+      [
+        1374,
+        794
+      ],
+      [
+        1378,
+        792
+      ],
+      [
+        1380,
+        802
+      ],
+      [
+        1377,
+        810
+      ],
+      [
+        1373,
+        810
+      ],
+      [
+        1373,
+        805
+      ],
+      [
+        1362,
+        805
+      ],
+      [
+        1361,
+        810
+      ],
+      [
+        1358,
+        810
+      ],
+      [
+        1356,
+        802
+      ]
+    ],
+    [
+      [
+        379,
+        821
+      ],
+      [
+        613,
+        821
+      ],
+      [
+        619,
+        830
+      ],
+      [
+        619,
+        858
+      ],
+      [
+        612,
+        864
+      ],
+      [
+        606,
+        864
+      ],
+      [
+        606,
+        836
+      ],
+      [
+        390,
+        836
+      ],
+      [
+        390,
+        864
+      ],
+      [
+        384,
+        864
+      ],
+      [
+        379,
+        854
+      ]
+    ]
+  ]
+}
