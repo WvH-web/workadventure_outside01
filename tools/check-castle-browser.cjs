@@ -69,6 +69,7 @@ async function move(page, x, y, label) {
   assert(await page.evaluate(({ x, y }) => window.castlePreview.moveTo(x, y), { x, y }), "Blocked approach: " + label);
 }
 async function walkThrough(page, link) {
+  if(!await page.locator('#content').evaluate(e=>e.hidden))await closePanel(page);
   const target = link.target.replace(/\.tmj$/, "");
   assert(!target.startsWith("../"), "Protected external teacher route must not be opened by browser QA");
   const options = [
@@ -225,6 +226,12 @@ async function checkBoard(page, viewport) {
         for (const id of mapIds) {
           await page.selectOption("#floor", id);
           await ready(page, id);
+          if(id==='kino'){
+            await page.frameLocator('#content-frame').getByText('Kinoverbindung',{exact:true}).waitFor();
+            await layoutCheck(page,'automatic cinema panel');
+            await screenshot(page,'kino-auto-panel',viewport);
+            await closePanel(page);
+          }
           await page.click("#overview");
           await page.evaluate(() => new Promise((resolve) => requestAnimationFrame(resolve)));
           await layoutCheck(page, id);
@@ -263,6 +270,8 @@ async function checkBoard(page, viewport) {
         assert(await page.evaluate(() => window.castlePreview.state.world === "grosse-halle"), "MS exit returned to EG instead of Hall");
         await walkThrough(page, hall.links.find((l) => l.target === "mittelstufe.tmj"));
         await load(page, "kino");
+        await page.frameLocator('#content-frame').getByText('Kinoverbindung',{exact:true}).waitFor();
+        await closePanel(page);
         const cinemaSeats = await checkSeats(page, worlds.get("kino"), viewport);
         await page.click("#overview");
         await screenshot(page, "kino-overview", viewport);

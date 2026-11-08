@@ -54,7 +54,7 @@ test('all four native rear groups are disjoint and include four seats, while the
   }
   assert.equal(props(layout.quiet[0]).silent,true);
 });
-test('one continuous explicitly opened film area reuses the existing player without sharing the seat action key',()=>{
+test('one continuous film area reuses the existing player without sharing the seat action key',()=>{
   const p=props(film);
   assert.equal(p.castleCinemaUrl,'https://deutsche-online-schule.com/kino/public/kino.php');
   assert.equal(p.castleCinemaWidth,60);assert.match(p.castleCinemaPolicy,/autoplay/);
@@ -89,10 +89,10 @@ test('entry, every seat approach and the exit are reachable without crossing an 
   assert.equal(props(map.layers.find(l=>l.name==='door-foyer')).exitUrl,'https://together.deine-schule.com/~/castle-preview/grosse-halle.wam#kino');
 });
 test('furniture foreground uses matching source pixels and leaves every seated head and upper torso visible',async()=>{
-  const floor=await sharp(fs.readFileSync(new URL('floor.png',art))).ensureAlpha().raw().toBuffer();
+  const floor=await sharp(fs.readFileSync(new URL(map.tilesets[0].image,base))).ensureAlpha().raw().toBuffer();
   const frontImage=map.tilesets.find(t=>t.name==='Moebel-Vorderkanten').image;
   const fronts=await sharp(fs.readFileSync(new URL(frontImage,base))).ensureAlpha().raw().toBuffer();
-  assert.deepEqual(fs.readFileSync(new URL(frontImage,base)),fs.readFileSync(new URL('fronts.png',art)),'Legacy cache alias is pixel-identical');
+  assert.deepEqual(fs.readFileSync(new URL('fronts-20261108-v2.png',art)),fs.readFileSync(new URL('fronts.png',art)),'Earlier preview assets remain unchanged');
   let opaque=0;
   for(let i=0;i<fronts.length;i+=4)if(fronts[i+3]){
     opaque++;assert.equal(fronts[i+3],255);assert.deepEqual(fronts.subarray(i,i+4),floor.subarray(i,i+4));
@@ -102,6 +102,25 @@ test('furniture foreground uses matching source pixels and leaves every seated h
     assert.equal(fronts[(y*960+x)*4+3],0,s.id);
   for(let y=240;y<848;y++)assert.equal(fronts[(y*960+480)*4+3],0,'clear centre aisle');
   assert.ok(map.layers.findIndex(l=>l.name==='furniture-fronts')>map.layers.findIndex(l=>l.name==='floorLayer'));
+});
+test('two readable directional sign sprites mark the viewing and conversation areas without blocking seats or the centre aisle',async()=>{
+  const signs=source.scene.signs,markers=map.layers.find(l=>l.name==='wayfinding').objects;
+  assert.equal(signs.length,2);assert.equal(markers.length,2);
+  assert.deepEqual(signs.map(s=>[s.id,s.direction]),[['quiet','up'],['conversation','down']]);
+  assert.match(props(markers[0]).cinemaSignText,/VORNE: Nur Film/);
+  assert.match(props(markers[1]).cinemaSignText,/HINTEN: Film & Gespr\u00e4che/);
+  for(const s of signs){
+    const sprite=await sharp(fs.readFileSync(new URL('sign-'+s.id+'.png',art))).metadata();
+    assert.equal(sprite.width,112);assert.equal(sprite.height,80);assert.equal(sprite.hasAlpha,true);
+    assert.ok(collision[cell(s.base.x+s.base.width/2,s.base.y+s.base.height/2)]);
+    assert.ok(s.y+s.height<layout.groups[0].y,'Signs point towards the respective front/rear areas');
+  }
+  const old=await sharp(fs.readFileSync(new URL('floor.png',art))).ensureAlpha().raw().toBuffer();
+  const current=await sharp(fs.readFileSync(new URL(map.tilesets[0].image,base))).ensureAlpha().raw().toBuffer();
+  for(let y=0;y<896;y++)for(let x=0;x<960;x++)if(!signs.some(s=>inside(s,x,y))){
+    const p=(y*960+x)*4;
+    assert.deepEqual(current.subarray(p,p+4),old.subarray(p,p+4),'Existing furniture and scale remain unchanged');
+  }
 });
 test('candle flames use seven valid native animation frames without layer offsets',async()=>{
   const ts=map.tilesets.find(t=>t.name==='Kino-Kerzen');

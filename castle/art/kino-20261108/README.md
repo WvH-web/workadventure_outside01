@@ -19,6 +19,8 @@ Mit dem integrierten Bildgenerator erzeugt, die grosse Halle nur als Stilreferen
 - `chair-source.png`: unveraenderter freigestellter Kinosessel; `chair-prompt.txt`.
 - `lounge-source.png`: Tischvariante aus dem vorhandenen Spieltreff, ohne das
   Original zu aendern; `lounge-prompt.txt`. Echte Alpha-Transparenz bleibt erhalten.
+- `sign-source.png`: freigestellter Aufsteller aus dem integrierten Bildgenerator;
+  `sign-prompt.txt`. Beschriftung und Pfeile werden im Erzeuger exakt gesetzt.
 
 `scene.json` ist die editierbare Quelle fuer Platzierung und Abmessungen.
 `node tools/build-cinema.cjs --update-world` erzeugt daraus `floor.png`,
@@ -37,10 +39,12 @@ Animationsframes aus dem Village, ohne verschobene Kachelebenen.
 
 ## Film und Schutz
 
-Eine durchgehende, erst auf Knopfdruck geoeffnete Filmflaeche verbindet alle
-64 Plaetze. `castle/cinema.js` zeigt einen eigenen Kino-Knopf in der Aktionsleiste,
-damit sich der Filmzugang nicht mit der Sitzaktion und deren Leertasten-Hinweis
-ueberlagert. Es wird erst nach einem Klick genau ein Fenster ueber die
+Eine durchgehende Filmflaeche verbindet alle 64 Plaetze und oeffnet die Kinoseite
+beim Betreten automatisch, wie im bisherigen Schloss. `castle/cinema.js` behaelt
+zusaetzlich den Kino-Knopf zum Schliessen und erneuten Oeffnen. Ein bewusst
+geschlossenes Fenster wird erst beim naechsten Betreten wieder automatisch
+geoeffnet. Fehlgeschlagene Oeffnungen werden mit begrenzter Wiederholung behandelt.
+Es wird genau ein Fenster ueber die
 [offizielle Co-Website-API](https://docs.workadventu.re/developer/map-scripting/references/api-nav)
 geoeffnet. Fremde Fenster bleiben unangetastet. Manuelles Schliessen und spaete
 Antworten nach Verlassen werden ebenfalls beruecksichtigt.
@@ -62,7 +66,7 @@ eine neutrale Testseite ersetzt, damit kein echter Film oder fremdes Konto
 gestartet wird. Dies prueft Einbindung und Fenster-Lebensdauer, nicht erneut
 die Synchronisation innerhalb der unveraenderten Kino-Anwendung.
 
-## Abnahme am 8. November 2026
+## Abnahme der ersten Fassung am 8. November 2026
 
 106 Karten-, Sitz-, Steuerungs-, Audio- und Zugriffstests sowie sechs Widgettests
 sind bestanden. Alle 64 Kinoplaetze wurden in der Browservorschau bei 1440 x 960,
@@ -91,3 +95,15 @@ Bereitstellung der kurzlebigen Testkonten. Berichte, Bilder und private Daten
 liegen ausserhalb des Repositories unter `../output/cinema-live-qa/`, bezogen
 auf den Repository-Stamm. Dies ist kein Lasttest mit 400 Personen und keine
 erneute Abnahme der Hardware oder der Film-Synchronisation im Kino-Portal.
+
+## Automatischer Eintritt und Aufsteller
+
+Ab `20261108-kino5` oeffnet sich der Player beim Eintritt automatisch. Die zwei
+kleinen Aufsteller an den Seiten zeigen `VORNE: Nur Film` mit Pfeil nach vorne
+und `HINTEN: Film & Gespraeche` mit Pfeil nach hinten. Ihre Fussbereiche sind
+solide, alle 64 Plaetze und der Mittelgang bleiben erreichbar. Der bestaetigte
+Moebelmassstab und die Sitzpositionen bleiben unveraendert.
+
+Die Variante verwendet `floor-signs-20261108.png` und `fronts-signs-20261108.png`.
+Fruehere Grafiken bleiben fuer zwischengespeicherte Karten unveraendert erhalten.
+`sign-quiet.png` und `sign-conversation.png` sind einzeln importierbare Aufsteller.

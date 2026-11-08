@@ -3,6 +3,7 @@ const path = require('node:path');
 const crypto = require('node:crypto');
 const sharp = require('./castle-deps.cjs')('sharp');
 const { nativeTarget, writeWam } = require('./castle-wam.cjs');
+const {createCanvas,loadImage}=require('./castle-deps.cjs')('@napi-rs/canvas');
 const root = path.resolve(__dirname, '..');
 const art = path.join(root, 'castle/art/kino-20261108');
 const artPath = 'art/kino-20261108/';
@@ -69,6 +70,34 @@ async function buildCandles(scene) {
   return {count:animation.length,tiles:scene.candles.map(c=>({id:c.phase,
     animation:animation.map((f,i)=>({tileid:(i+c.phase)%animation.length,duration:f.duration}))}))};
 }
+async function buildSigns(scene){
+  const signs=[];
+  for(const sign of scene.signs){
+    const base=await sharp(path.join(art,'sign-source.png')).trim()
+      .resize(sign.width,sign.height,{fit:'fill',kernel:'lanczos3'}).png().toBuffer();
+    const c=createCanvas(sign.width*4,sign.height*4),ctx=c.getContext('2d');
+    ctx.scale(4,4);ctx.imageSmoothingEnabled=false;
+    ctx.drawImage(await loadImage(base),0,0,sign.width,sign.height);
+    ctx.textAlign='center';ctx.textBaseline='middle';
+    ctx.fillStyle='#e9c47a';ctx.font='bold 8px Georgia';ctx.fillText(sign.heading,51,22);
+    ctx.fillStyle=sign.color;
+    for(const [i,line]of sign.lines.entries()){
+      const size=sign.lines.length===1?12:11;
+      ctx.font=`bold ${size}px Georgia`;
+      if(ctx.measureText(line).width>76)throw Error('Cinema sign text does not fit: '+sign.id);
+      ctx.fillText(line,51,sign.lines.length===1?38:34+i*12);
+    }
+    const tip=sign.direction==='up'?31:47,tail=sign.direction==='up'?47:31;
+    const head=sign.direction==='up'?35:43;
+    ctx.strokeStyle='#e9c47a';ctx.lineWidth=1.4;ctx.lineJoin='round';ctx.lineCap='round';
+    ctx.beginPath();ctx.moveTo(93,tail);ctx.lineTo(93,tip);
+    ctx.moveTo(89,head);ctx.lineTo(93,tip);ctx.lineTo(97,head);ctx.stroke();
+    const image=await sharp(c.toBuffer('image/png')).resize(sign.width,sign.height,{kernel:'lanczos3'}).png().toBuffer();
+    fs.writeFileSync(path.join(art,'sign-'+sign.id+'.png'),image);
+    signs.push({...sign,image,alpha:await sharp(image).ensureAlpha().raw().toBuffer()});
+  }
+  return signs;
+}
 async function buildCinema() {
   const scene=JSON.parse(fs.readFileSync(path.join(art,'scene.json')));
   const {width:W,height:H,tileSize:T}=scene,count=W*H;
@@ -105,10 +134,16 @@ async function buildCinema() {
     const r=ref.collisionRects.find(r=>r.id==='game-table');
     collisionRects.push({...r,id:id+'-table',x:r.x+dx,y:r.y+dy});
   }
+  for(const sign of await buildSigns(scene)){
+    composites.push({input:sign.image,left:sign.x,top:sign.y});
+    frontShapes.push({x:sign.x,y:sign.y,width:sign.width,height:sign.height,alpha:sign.alpha});
+    collisionRects.push(sign.base);
+  }
   const {blocked,reachable}=geometry(scene,seats,groups,collisionRects);
+  const floorFile=scene.render.floor;
   await sharp(path.join(art,'room-source.png')).resize(W*T,H*T,{fit:'fill',kernel:'lanczos3'})
-    .composite(composites).png({compressionLevel:9}).toFile(path.join(art,'floor.png'));
-  const {data,info}=await sharp(path.join(art,'floor.png')).ensureAlpha().raw().toBuffer({resolveWithObject:true});
+    .composite(composites).png({compressionLevel:9}).toFile(path.join(art,floorFile));
+  const {data,info}=await sharp(path.join(art,floorFile)).ensureAlpha().raw().toBuffer({resolveWithObject:true});
   const frontCells=new Set();let foregroundPixels=0;
   for(let y=0;y<info.height;y++)for(let x=0;x<info.width;x++){
     const h=scene.headClearance;
@@ -118,10 +153,8 @@ async function buildCinema() {
     if(keep){foregroundPixels++;frontCells.add(Math.floor(y/T)*W+Math.floor(x/T));}
     else data.fill(0,(y*info.width+x)*4,(y*info.width+x)*4+4);
   }
-  const frontFile='fronts-20261108-v2.png';
+  const frontFile=scene.render.fronts;
   await sharp(data,{raw:{width:info.width,height:info.height,channels:4}}).png({compressionLevel:9}).toFile(path.join(art,frontFile));
-  // Keep an identical alias for preview clients that already cached the earlier map.
-  fs.copyFileSync(path.join(art,frontFile),path.join(art,'fronts.png'));
   await sharp({create:{width:T,height:T,channels:4,background:'#00000000'}}).png().toFile(path.join(art,'marker.png'));
   const candles=await buildCandles(scene);
   const collisionGid=count+1,entryGid=count+2,frontGid=count+3,candleGid=count*2+3;
@@ -147,6 +180,8 @@ async function buildCinema() {
       P('castleCinemaPolicy','fullscreen; autoplay; encrypted-media; picture-in-picture')]),
     area('kino-ruhezone',scene.audience.quiet,[P('silent',true)])
   ]));
+  layers.push(objects('wayfinding',scene.signs.map(s=>area('sign-'+s.id,s,[P('cinemaSignFor',s.id),
+    P('cinemaSignText',s.heading+': '+s.lines.join(' ')),P('cinemaSignDirection',s.direction)]))));
   layers.push(objects('floorLayer',[]),tile('furniture-fronts',Array.from({length:count},(_,i)=>frontCells.has(i)?frontGid+i:0)));
   const imageSet=(firstgid,name,image,columns,tilecount,imagewidth,imageheight,extra={})=>({firstgid,name,
     image:artPath+image,columns,tilecount,imagewidth,imageheight,tilewidth:T,tileheight:T,margin:0,spacing:0,...extra});
@@ -155,10 +190,10 @@ async function buildCinema() {
     sourceSha256:crypto.createHash('sha256').update(fs.readFileSync(path.join(art,'room-source.png'))).digest('hex')};
   const map={compressionlevel:-1,width:W,height:H,tilewidth:T,tileheight:T,infinite:false,orientation:'orthogonal',renderorder:'right-down',tiledversion:'1.11.2',type:'map',version:'1.10',nextlayerid:lid,nextobjectid:oid,layers,
     properties:[P('mapName','Schlosskino'),P('mapDescription','Ein kleines Schlosskino mit ruhigen Filmsesseln und vier gemuetlichen Gespraechstischen.'),
-      P('mapImage',artPath+'floor.png'),P('script','cinema.js?v='+scene.revision),P('castleMapId','kino'),P('castleRevision',scene.revision),
+      P('mapImage',artPath+floorFile),P('script','cinema.js?v='+scene.revision),P('castleMapId','kino'),P('castleRevision',scene.revision),
       P('castleArtScale',1),P('castleNativeMeetings',true),P('castleNativeRoomUrl',nativeTarget('kino.tmj')),P('castleHallUrl',nativeTarget('grosse-halle.tmj#kino')),
       P('castleMapdata',JSON.stringify(mapdata)),P('mapCopyright','Original room and cinema chair generated for deine Schule. Furniture at the approved Great Hall avatar scale; existing village flame animation.')],
-    tilesets:[imageSet(1,'Schlosskino','floor.png',W,count,W*T,H*T),imageSet(collisionGid,'Collision marker','marker.png',1,1,T,T,{tiles:[{id:0,properties:[P('collides',true)]}]}),
+    tilesets:[imageSet(1,'Schlosskino',floorFile,W,count,W*T,H*T),imageSet(collisionGid,'Collision marker','marker.png',1,1,T,T,{tiles:[{id:0,properties:[P('collides',true)]}]}),
       imageSet(entryGid,'Entry marker','marker.png',1,1,T,T),imageSet(frontGid,'Moebel-Vorderkanten',frontFile,W,count,W*T,H*T),
       imageSet(candleGid,'Kino-Kerzen','candles.png',candles.count,candles.count,candles.count*T,T,{tiles:candles.tiles})]};
   const world={id:'kino',width:W,height:H,illustrated:true,artScale:1,rooms:[
@@ -169,7 +204,7 @@ async function buildCinema() {
   fs.writeFileSync(path.join(root,'castle/kino.tmj'),JSON.stringify(map)+'\n');
   writeWam(map,path.join(root,'castle'));
   fs.writeFileSync(path.join(art,'layout.json'),JSON.stringify({scene,seats,groups,collisionRects,mapdata},null,2)+'\n');
-  await sharp(path.join(art,'floor.png')).png().toFile(path.join(root,'castle/art/kino-overview.png'));
+  await sharp(path.join(art,floorFile)).png().toFile(path.join(root,'castle/art/kino-overview.png'));
   return {map,world};
 }
 module.exports={buildCinema};

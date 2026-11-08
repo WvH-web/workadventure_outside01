@@ -12,14 +12,15 @@ function fixture(){
   const cinema=new CastleCinema(wa,room,map);
   return {wa,room,cinema,buttons,calls,closed,sites};
 }
-test('entering or sitting only offers the independent cinema button, never autoplay or a proximity change',()=>{
-  const f=fixture();f.cinema.refresh();assert.equal(f.calls.length,0);
-  assert.equal(f.buttons.get('castle-cinema').label,'Kino');
+test('entering opens the film automatically once without changing proximity or duplicating it on refresh',async()=>{
+  const f=fixture();f.cinema.refresh();await f.cinema.openTask;assert.equal(f.calls.length,1);
+  f.cinema.refresh();await Promise.resolve();assert.equal(f.calls.length,1);
+  assert.equal(f.buttons.get('castle-cinema').label,'Kino schliessen');
   f.room.position={x:500,y:100};f.cinema.refresh();assert.equal(f.buttons.size,0);
   f.cinema.dispose();
 });
-test('explicit click opens one policy-preserving 60-percent film window without granting scripting access',async()=>{
-  const f=fixture();f.cinema.refresh();await f.buttons.get('castle-cinema').callback();
+test('automatic opening preserves the 60-percent film policy without granting scripting access',async()=>{
+  const f=fixture();f.cinema.refresh();
   await f.cinema.openTask;
   assert.equal(f.calls.length,1);
   assert.deepEqual(f.calls[0],['https://deutsche-online-schule.com/kino/public/kino.php',false,
@@ -47,7 +48,24 @@ test('departure cancels a pending open and closes only its late result',async()=
 test('closing by the native cross is detected and permits a fresh explicit open',async()=>{
   const f=fixture();await f.cinema.open();f.sites.clear();await f.cinema.checkWebsite();
   assert.equal(f.cinema.website,null);assert.equal(f.buttons.get('castle-cinema').label,'Kino');
+  f.cinema.refresh();await Promise.resolve();assert.equal(f.calls.length,1,'Do not reopen a manually closed window');
   await f.cinema.open();assert.equal(f.calls.length,2);f.cinema.dispose();
+});
+test('manual close is respected until the viewer leaves and enters the cinema again',async()=>{
+  const f=fixture();f.cinema.refresh();await f.cinema.openTask;
+  await f.cinema.close(true);f.cinema.refresh();await Promise.resolve();assert.equal(f.calls.length,1);
+  f.room.position={x:480,y:900};f.cinema.refresh();
+  f.room.position={x:480,y:816};f.cinema.refresh();await f.cinema.openTask;
+  assert.equal(f.calls.length,2);f.cinema.dispose();
+});
+test('failed automatic opening is retried with backoff, never on every position refresh',async t=>{
+  t.mock.method(console,'warn',()=>{});
+  const f=fixture();let attempts=0;
+  f.wa.nav.openCoWebSite=async()=>{attempts++;throw Error('synthetic offline')};
+  f.cinema.refresh();await f.cinema.openTask.catch(()=>{});
+  f.cinema.refresh();await Promise.resolve();assert.equal(attempts,1);
+  f.cinema.retryAt=0;f.cinema.refresh();await f.cinema.openTask.catch(()=>{});assert.equal(attempts,2);
+  f.cinema.dispose();
 });
 test('leaving the film area closes its owned window and disposal never touches another website',async()=>{
   const f=fixture();f.sites.add('unrelated');await f.cinema.open();

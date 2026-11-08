@@ -3,7 +3,11 @@
     "width": 30,
     "height": 28,
     "tileSize": 32,
-    "revision": "20261108-kino4",
+    "revision": "20261108-kino5",
+    "render": {
+      "floor": "floor-signs-20261108.png",
+      "fronts": "fronts-signs-20261108.png"
+    },
     "avatarPixels": 32,
     "headClearance": {
       "x": 10,
@@ -140,6 +144,49 @@
         "x": 21,
         "y": 2,
         "phase": 3
+      }
+    ],
+    "signs": [
+      {
+        "id": "quiet",
+        "x": 64,
+        "y": 544,
+        "width": 112,
+        "height": 80,
+        "heading": "VORNE",
+        "lines": [
+          "Nur Film"
+        ],
+        "direction": "up",
+        "color": "#fff2d0",
+        "base": {
+          "id": "quiet-sign-base",
+          "x": 80,
+          "y": 608,
+          "width": 80,
+          "height": 32
+        }
+      },
+      {
+        "id": "conversation",
+        "x": 784,
+        "y": 544,
+        "width": 112,
+        "height": 80,
+        "heading": "HINTEN",
+        "lines": [
+          "Film &",
+          "Gespräche"
+        ],
+        "direction": "down",
+        "color": "#d7f0de",
+        "base": {
+          "id": "conversation-sign-base",
+          "x": 800,
+          "y": 608,
+          "width": 80,
+          "height": 32
+        }
       }
     ]
   },
@@ -886,6 +933,20 @@
       "width": 120,
       "height": 40,
       "preserve": false
+    },
+    {
+      "id": "quiet-sign-base",
+      "x": 80,
+      "y": 608,
+      "width": 80,
+      "height": 32
+    },
+    {
+      "id": "conversation-sign-base",
+      "x": 800,
+      "y": 608,
+      "width": 80,
+      "height": 32
     }
   ],
   "mapdata": {
@@ -897,9 +958,9 @@
     "conversationSeats": 16,
     "chairWidth": 32,
     "chairHeight": 36,
-    "blockedTiles": 312,
-    "reachableFloorTiles": 522,
-    "foregroundPixels": 54940,
+    "blockedTiles": 317,
+    "reachableFloorTiles": 517,
+    "foregroundPixels": 68176,
     "sourceSha256": "42644f71fdaf58519e2ed8bf20fc7f41858a057338281789f634ef2606df7bfb"
   }
 }

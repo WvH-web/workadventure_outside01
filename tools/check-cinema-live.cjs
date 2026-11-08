@@ -84,7 +84,7 @@ async function join(browser,number){
   assert.ok(script,'Cinema controller loaded');
   assert.equal(await script.evaluate(()=>window.castleRoom.layout.seats.length),64);
   assert.equal(await script.evaluate(()=>window.castleRoom.layout.groups.length),4);
-  assert.equal(await script.evaluate(async()=> (await WA.room.getTiledMap()).properties.find(p=>p.name==='castleRevision')?.value),'20261108-kino4');
+  assert.equal(await script.evaluate(async()=> (await WA.room.getTiledMap()).properties.find(p=>p.name==='castleRevision')?.value),'20261108-kino5');
   await script.waitForFunction(()=>Boolean(window.castleCinema));
   await context.storageState({path:storage});
   console.log('Synthetic cinema participant '+number+' entered.');
@@ -134,7 +134,10 @@ async function main(){
       after[2].rooms.some(r=>r.endsWith('area-kino-lounge-0')&&after[3].rooms.includes(r));
     assert.ok(quietFront,'Quiet front must not receive table/proximity audio');
     assert.ok(rearConversation,'Rear partners must decode non-silent conversation');
-    assert.equal(a.filmRequests,0,'No film is loaded before the cinema action');
+    for(const u of users){
+      assert.equal(u.filmRequests,1,'Cinema opens automatically once for each entrant');
+      assert.ok(u.page.frames().some(f=>f.url().startsWith(filmUrl)),'Film iframe opens without a click');
+    }
     await a.page.screenshot({path:path.join(out,'cinema-front-desktop.png')});
     const canvas={desktop:await pixels(a.page,'cinema-canvas-desktop')};
     await a.page.setViewportSize({width:390,height:844});await a.page.waitForTimeout(1500);
@@ -152,8 +155,10 @@ async function main(){
     for(const id of ['kino-2-0','kino-5-7','kino-lounge-2-nw','kino-lounge-2-so']){
       await sit(a,id);await a.page.screenshot({path:path.join(out,'cinema-seat-'+id+'.png')});
     }
+    for(const [name,x,y]of [['quiet',192,584],['conversation',768,648]]){
+      await move(a,x,y);await a.page.screenshot({path:path.join(out,'cinema-sign-'+name+'.png')});
+    }
     await sit(a,'kino-0-3');
-    await a.page.getByRole('button',{name:'Kino',exact:true}).click({timeout:15000});
     let player;
     for(let n=0;n<30&&!player;n++){
       player=a.page.frames().find(f=>f.url().startsWith(filmUrl));if(!player)await a.page.waitForTimeout(500);
@@ -166,6 +171,13 @@ async function main(){
     }
     assert.equal(a.filmRequests,1,'Film page must not reload when changing seats');
     await a.page.screenshot({path:path.join(out,'cinema-film-panel.png')});
+    await a.script.evaluate(()=>castleCinema.website.close());
+    await a.script.waitForFunction(()=>castleCinema.dismissed&&!castleCinema.website);
+    await a.page.waitForTimeout(1800);assert.equal(a.filmRequests,1,'Respect manual window closure');
+    assert.ok(!a.page.frames().some(f=>f.url().startsWith(filmUrl)));
+    await a.page.getByRole('button',{name:'Kino',exact:true}).click();
+    await a.script.waitForFunction(()=>Boolean(castleCinema.website));
+    await a.page.waitForTimeout(1000);assert.equal(a.filmRequests,2,'Explicit reopening remains available');
     await a.script.evaluate(()=>castleRoom.returnToHall()).catch(e=>{
       if(!/Execution context was destroyed|Frame was detached/.test(e.message))throw e;
     });
@@ -178,8 +190,9 @@ async function main(){
     await a.page.waitForTimeout(2500);
     assert.equal(await hall.evaluate(()=>castleRoom.layout.id),'grosse-halle');
     assert.ok(!a.page.frames().some(f=>f.url().startsWith(filmUrl)),'Film iframe closes on leaving cinema');
-    const proof={revision:'20261108-kino4',participants:4,realMicrophonesUsed:false,quietFront,rearConversation,boundaryIsolation,
+    const proof={revision:'20261108-kino5',participants:4,realMicrophonesUsed:false,quietFront,rearConversation,boundaryIsolation,
       cinemaEndpoint:filmUrl,filmWasStubbed:true,filmRequests:a.filmRequests,filmIframePreservedAcrossSeats:true,
+      automaticOpening:true,manualClosureRespected:true,directionalSigns:true,
       returnToSeparateHall:true,canvas,before,after,boundaryBefore,boundaryAfter,errors:users.flatMap(u=>u.errors)};
     fs.writeFileSync(path.join(out,'result.json'),JSON.stringify(proof,null,2)+'\n');
     console.log(JSON.stringify({participants:4,quietFront,rearConversation,boundaryIsolation,filmIframePreservedAcrossSeats:true,
