@@ -138,7 +138,7 @@ async function buildCinema() {
     ['id','label','x','y','standX','standY','facing','audioGroup'].map((key,i)=>P(['seatId','seatLabel','seatX','seatY','standX','standY','facing','audioGroup'][i],s[key]))))));
   layers.push(objects('conversationAreas',groups.map(g=>area('group-'+g.id,g,[P('conversationGroup',g.id),P('conversationLabel',g.label)]))));
   layers.push(objects('cinema',[
-    area('kino-film',scene.film,[P('openWebsite',scene.film.url),P('openWebsiteTrigger','onaction'),P('openWebsiteTriggerMessage','Kino oeffnen'),
+    area('kino-film',scene.film,[P('openWebsite',scene.film.url),P('openWebsiteTrigger','onicon'),P('openWebsiteTriggerMessage','Kino oeffnen'),
       P('openWebsiteWidth',scene.film.panelWidth),P('openWebsitePolicy','fullscreen; autoplay; encrypted-media; picture-in-picture')]),
     area('kino-ruhezone',scene.audience.quiet,[P('silent',true)])
   ]));

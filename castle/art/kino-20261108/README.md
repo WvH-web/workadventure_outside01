@@ -32,7 +32,10 @@ Animationsframes aus dem Village, ohne verschobene Kachelebenen.
 ## Film und Schutz
 
 Eine durchgehende, erst auf Knopfdruck geoeffnete Filmflaeche verbindet alle
-64 Plaetze. Ein Wechsel zwischen Ruhe- und Gespraechsplaetzen soll das
+64 Plaetze. Der native Symbolausloeser `onicon` vermeidet eine Ueberlagerung
+mit der Sitzaktion und verwendet nicht deren Leertasten-Hinweis. Siehe die
+[WorkAdventure-Dokumentation](https://docs.workadventu.re/map-building/tiled-editor/opening-a-website/).
+Ein Wechsel zwischen Ruhe- und Gespraechsplaetzen soll das
 Seitenfenster nicht neu laden. Der Link bleibt der bewaehrte Kino-Endpunkt;
 dessen Anmeldung, Alterspruefung und Film-Synchronisation werden nicht kopiert
 oder veraendert. Die Leinwandgrafik in der Karte ist bewusst neutral: Der Film

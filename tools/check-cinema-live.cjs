@@ -84,7 +84,7 @@ async function join(browser,number){
   assert.ok(script,'Cinema controller loaded');
   assert.equal(await script.evaluate(()=>window.castleRoom.layout.seats.length),64);
   assert.equal(await script.evaluate(()=>window.castleRoom.layout.groups.length),4);
-  assert.equal(await script.evaluate(async()=> (await WA.room.getTiledMap()).properties.find(p=>p.name==='castleRevision')?.value),'20261108-kino1');
+  assert.equal(await script.evaluate(async()=> (await WA.room.getTiledMap()).properties.find(p=>p.name==='castleRevision')?.value),'20261108-kino2');
   await context.storageState({path:storage});
   console.log('Synthetic cinema participant '+number+' entered.');
   return {context,page,script,errors,get filmRequests(){return filmRequests}};
@@ -142,7 +142,7 @@ async function main(){
     await sit(d,'kino-lounge-1-so');await move(a,216,728);await move(b,264,728);
     await a.page.waitForTimeout(2500);const boundaryBefore=await Promise.all(users.map(stats));
     await a.page.waitForTimeout(4500);const boundaryAfter=await Promise.all(users.map(stats));
-    const boundaryIsolation=boundaryAfter[0].energy>boundaryBefore[0].energy&&boundaryAfter[1].energy>boundaryBefore[1].energy&&
+    const boundaryIsolation=boundaryAfter.every((s,i)=>s.energy>boundaryBefore[i].energy)&&
       boundaryAfter[0].rooms.some(r=>r.endsWith('area-kino-lounge-0')&&boundaryAfter[2].rooms.includes(r))&&
       boundaryAfter[1].rooms.some(r=>r.endsWith('area-kino-lounge-1')&&boundaryAfter[3].rooms.includes(r))&&
       !boundaryAfter[0].rooms.some(r=>boundaryAfter[1].rooms.includes(r));
@@ -152,7 +152,7 @@ async function main(){
       await sit(a,id);await a.page.screenshot({path:path.join(out,'cinema-seat-'+id+'.png')});
     }
     await sit(a,'kino-0-3');
-    await a.page.getByText('Kino oeffnen',{exact:true}).click({timeout:15000});
+    await a.page.getByRole('button',{name:'Open Website',exact:true}).click({timeout:15000});
     let player;
     for(let n=0;n<30&&!player;n++){
       player=a.page.frames().find(f=>f.url().startsWith(filmUrl));if(!player)await a.page.waitForTimeout(500);
@@ -165,7 +165,9 @@ async function main(){
     }
     assert.equal(a.filmRequests,1,'Film page must not reload when changing seats');
     await a.page.screenshot({path:path.join(out,'cinema-film-panel.png')});
-    await a.script.evaluate(()=>castleRoom.returnToHall());
+    await a.script.evaluate(()=>castleRoom.returnToHall()).catch(e=>{
+      if(!/Execution context was destroyed|Frame was detached/.test(e.message))throw e;
+    });
     let hall;
     for(let n=0;n<80&&!hall;n++){
       for(const f of a.page.frames())if(await f.evaluate(()=>window.castleRoom?.layout.id==='grosse-halle').catch(()=>false))hall=f;
@@ -191,4 +193,5 @@ async function main(){
     throw e;
   }finally{await browser.close()}
 }
-main().catch(e=>{console.error(e.stack);process.exitCode=1});
+module.exports={join,sit,stats};
+if(require.main===module)main().catch(e=>{console.error(e.stack);process.exitCode=1});

@@ -50,10 +50,10 @@ test('all four native rear groups are disjoint and include four seats, while the
   }
   assert.equal(props(layout.quiet[0]).silent,true);
 });
-test('one continuous on-action film area reuses the existing authenticated synchronised player at every seat',()=>{
+test('one continuous icon-triggered film area reuses the existing player without sharing the seat action key',()=>{
   const p=props(film);
   assert.equal(p.openWebsite,'https://deutsche-online-schule.com/kino/public/kino.php');
-  assert.equal(p.openWebsiteTrigger,'onaction');assert.equal(p.openWebsiteWidth,60);
+  assert.equal(p.openWebsiteTrigger,'onicon');assert.equal(p.openWebsiteWidth,60);
   assert.match(p.openWebsitePolicy,/autoplay/);
   assert.equal(objects.filter(o=>props(o).openWebsite).length,1);
   for(const s of layout.seats)for(const p of [{x:s.x,y:s.y},{x:s.standX,y:s.standY}])
