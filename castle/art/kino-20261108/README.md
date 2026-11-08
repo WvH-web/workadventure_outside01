@@ -26,7 +26,11 @@ Mit dem integrierten Bildgenerator erzeugt, die grosse Halle nur als Stilreferen
 `layout.json`, die Karten und die Uebersicht. Auch der gesamte Schlossbauer
 verwendet diesen Erzeuger, damit er das Kino nicht durch den Platzhalter ersetzt.
 Die Vordergrundmasken kopieren ausschliesslich vorhandene Moebelpixel und lassen
-Koepfe sowie Oberkoerper frei. Die Kerzen verwenden die vorhandenen sieben
+Koepfe sowie Oberkoerper frei.
+An den nach vorne gerichteten Tischstuehlen reicht die Freistellung bis zum
+Oberkoerper; hinter den Rueckenlehnen der Kinosessel bleibt der Kopf sichtbar.
+Die Vordergrundgrafik hat einen eigenen Versionsparameter gegen alte Bildcaches.
+Die Kerzen verwenden die vorhandenen sieben
 Animationsframes aus dem Village, ohne verschobene Kachelebenen.
 
 ## Film und Schutz

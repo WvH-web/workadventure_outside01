@@ -111,7 +111,9 @@ async function buildCinema() {
   const {data,info}=await sharp(path.join(art,'floor.png')).ensureAlpha().raw().toBuffer({resolveWithObject:true});
   const frontCells=new Set();let foregroundPixels=0;
   for(let y=0;y<info.height;y++)for(let x=0;x<info.width;x++){
-    const protectedAvatar=seats.some(s=>x>=s.x-10&&x<s.x+10&&y>=s.y-22&&y<s.y+3);
+    const h=scene.headClearance;
+    const protectedAvatar=seats.some(s=>x>=s.x-h.x&&x<s.x+h.x&&y>=s.y-h.top&&
+      y<s.y+(s.facing==='down'?h.facingDownBottom:h.bottom));
     const keep=!protectedAvatar&&frontShapes.some(s=>contains(s,x,y)&&s.alpha[((y-s.y)*s.width+x-s.x)*4+3]>127);
     if(keep){foregroundPixels++;frontCells.add(Math.floor(y/T)*W+Math.floor(x/T));}
     else data.fill(0,(y*info.width+x)*4,(y*info.width+x)*4+4);
@@ -143,7 +145,8 @@ async function buildCinema() {
     area('kino-ruhezone',scene.audience.quiet,[P('silent',true)])
   ]));
   layers.push(objects('floorLayer',[]),tile('furniture-fronts',Array.from({length:count},(_,i)=>frontCells.has(i)?frontGid+i:0)));
-  const imageSet=(firstgid,name,image,columns,tilecount,imagewidth,imageheight,extra={})=>({firstgid,name,image:artPath+image,columns,tilecount,imagewidth,imageheight,tilewidth:T,tileheight:T,margin:0,spacing:0,...extra});
+  const imageSet=(firstgid,name,image,columns,tilecount,imagewidth,imageheight,extra={})=>({firstgid,name,
+    image:artPath+image+(image==='fronts.png'?'?v='+scene.revision:''),columns,tilecount,imagewidth,imageheight,tilewidth:T,tileheight:T,margin:0,spacing:0,...extra});
   const mapdata={pixelWidth:W*T,pixelHeight:H*T,avatarSize:32,seats:seats.length,quietSeats:48,conversationSeats:16,
     chairWidth:scene.chair.width,chairHeight:scene.chair.height,blockedTiles:blocked.size,reachableFloorTiles:reachable.size,foregroundPixels,
     sourceSha256:crypto.createHash('sha256').update(fs.readFileSync(path.join(art,'room-source.png'))).digest('hex')};

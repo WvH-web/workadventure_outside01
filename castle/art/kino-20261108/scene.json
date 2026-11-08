@@ -2,8 +2,9 @@
   "width": 30,
   "height": 28,
   "tileSize": 32,
-  "revision": "20261108-kino3",
+  "revision": "20261108-kino4",
   "avatarPixels": 32,
+  "headClearance":{"x":10,"top":22,"bottom":3,"facingDownBottom":11},
   "approvedReference": "../grosse-halle-20261108-scale/layout.json",
   "chair": {"width": 32, "height": 36, "topOffset": -8},
   "audience": {

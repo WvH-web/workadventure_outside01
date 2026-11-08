@@ -3,8 +3,14 @@
     "width": 30,
     "height": 28,
     "tileSize": 32,
-    "revision": "20261108-kino3",
+    "revision": "20261108-kino4",
     "avatarPixels": 32,
+    "headClearance": {
+      "x": 10,
+      "top": 22,
+      "bottom": 3,
+      "facingDownBottom": 11
+    },
     "approvedReference": "../grosse-halle-20261108-scale/layout.json",
     "chair": {
       "width": 32,
@@ -893,7 +899,7 @@
     "chairHeight": 36,
     "blockedTiles": 312,
     "reachableFloorTiles": 522,
-    "foregroundPixels": 56220,
+    "foregroundPixels": 54940,
     "sourceSha256": "42644f71fdaf58519e2ed8bf20fc7f41858a057338281789f634ef2606df7bfb"
   }
 }

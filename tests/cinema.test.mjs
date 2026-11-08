@@ -92,7 +92,7 @@ test('furniture foreground uses matching source pixels and leaves every seated h
     opaque++;assert.equal(fronts[i+3],255);assert.deepEqual(fronts.subarray(i,i+4),floor.subarray(i,i+4));
   }
   assert.ok(opaque>30000&&opaque<90000);
-  for(const s of layout.seats)for(let y=s.y-22;y<s.y+3;y++)for(let x=s.x-10;x<s.x+10;x++)
+  for(const s of layout.seats)for(let y=s.y-22;y<s.y+(s.facing==='down'?11:3);y++)for(let x=s.x-10;x<s.x+10;x++)
     assert.equal(fronts[(y*960+x)*4+3],0,s.id);
   for(let y=240;y<848;y++)assert.equal(fronts[(y*960+480)*4+3],0,'clear centre aisle');
   assert.ok(map.layers.findIndex(l=>l.name==='furniture-fronts')>map.layers.findIndex(l=>l.name==='floorLayer'));

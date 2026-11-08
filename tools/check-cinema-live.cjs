@@ -84,7 +84,7 @@ async function join(browser,number){
   assert.ok(script,'Cinema controller loaded');
   assert.equal(await script.evaluate(()=>window.castleRoom.layout.seats.length),64);
   assert.equal(await script.evaluate(()=>window.castleRoom.layout.groups.length),4);
-  assert.equal(await script.evaluate(async()=> (await WA.room.getTiledMap()).properties.find(p=>p.name==='castleRevision')?.value),'20261108-kino3');
+  assert.equal(await script.evaluate(async()=> (await WA.room.getTiledMap()).properties.find(p=>p.name==='castleRevision')?.value),'20261108-kino4');
   await script.waitForFunction(()=>Boolean(window.castleCinema));
   await context.storageState({path:storage});
   console.log('Synthetic cinema participant '+number+' entered.');
@@ -178,7 +178,7 @@ async function main(){
     await a.page.waitForTimeout(2500);
     assert.equal(await hall.evaluate(()=>castleRoom.layout.id),'grosse-halle');
     assert.ok(!a.page.frames().some(f=>f.url().startsWith(filmUrl)),'Film iframe closes on leaving cinema');
-    const proof={participants:4,realMicrophonesUsed:false,quietFront,rearConversation,boundaryIsolation,
+    const proof={revision:'20261108-kino4',participants:4,realMicrophonesUsed:false,quietFront,rearConversation,boundaryIsolation,
       cinemaEndpoint:filmUrl,filmWasStubbed:true,filmRequests:a.filmRequests,filmIframePreservedAcrossSeats:true,
       returnToSeparateHall:true,canvas,before,after,boundaryBefore,boundaryAfter,errors:users.flatMap(u=>u.errors)};
     fs.writeFileSync(path.join(out,'result.json'),JSON.stringify(proof,null,2)+'\n');
