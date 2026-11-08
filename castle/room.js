@@ -9,6 +9,7 @@ export function readLayout(map) {
   const result = {
     id: props(map).castleMapId,
     hallUrl: props(map).castleHallUrl,
+    nativeMeetings: props(map).castleNativeMeetings === true,
     seats: [],
     groups: [],
     quiet: [],
@@ -67,10 +68,36 @@ async function bounded(promise, ms = 5000) {
     clearTimeout(timer);
   }
 }
+export function isNativeMeetingRoom(wa, layout) {
+  if (!layout.nativeMeetings || !wa.room?.id) return false;
+  try { return new URL(wa.room.id).pathname.endsWith('.wam'); }
+  catch { return false; }
+}
+export function nativeRoomUrl(roomId, map, position) {
+  if (!new URL(roomId).pathname.endsWith('.tmj')) throw Error('Castle source room must be a TMJ');
+  const url = new URL(props(map).castleNativeRoomUrl || roomId);
+  if (url.pathname.endsWith('.tmj')) url.pathname = url.pathname.slice(0, -4) + '.wam';
+  url.search = '';
+  let entry = 'start', nearest = 64 * 64;
+  if (position && Number.isFinite(position.x) && Number.isFinite(position.y)) {
+    for (const layer of map.layers || []) {
+      if (layer.type !== 'tilelayer' || (layer.name !== 'start' && props(layer).startLayer !== true)) continue;
+      for (let index = 0; index < layer.data.length; index++) {
+        if (!layer.data[index]) continue;
+        const distance = (index % map.width * 32 + 16 - position.x) ** 2 +
+          (Math.floor(index / map.width) * 32 + 16 - position.y) ** 2;
+        if (distance < nearest) { nearest = distance; entry = layer.name; }
+      }
+    }
+  }
+  url.hash = entry;
+  return url.href;
+}
 export class CastleRoom {
   constructor(wa, layout, options = {}) {
     this.wa = wa;
     this.layout = layout;
+    this.nativeMeetings = isNativeMeetingRoom(wa, layout);
     this.delay =
       options.delay || ((ms) => new Promise((r) => setTimeout(r, ms)));
     this.position = { x: 0, y: 0 };
@@ -243,6 +270,8 @@ export class CastleRoom {
     }
   }
   async routeAudio() {
+    // Native meeting areas own media and bubble isolation; do not mute their tracks.
+    if (this.nativeMeetings) { this.activeId = this.desired?.id || null; return; }
     while (!this.disposed && this.activeId !== (this.desired?.id || null)) {
       if (this.active) {
         const previous = this.active;
@@ -446,7 +475,7 @@ export class CastleRoom {
     this.wa.ui.actionBar.removeButton("castle-return-hall");
     for (const sub of this.subscriptions) sub?.unsubscribe?.();
     this.wa.controls.restorePlayerControls();
-    this.wa.controls.restorePlayerProximityMeeting();
+    if (!this.nativeMeetings) this.wa.controls.restorePlayerProximityMeeting();
     if (this.active) void Promise.resolve(this.active.leave()).catch(() => {});
     void this.wa.player.state.saveVariable(STATE, null, PUBLIC).catch(() => {});
   }
@@ -454,7 +483,13 @@ export class CastleRoom {
 export const castleRoomReady = typeof WA !== "undefined"
   ? WA.onInit()
     .then(async () => {
-      const room = new CastleRoom(WA, readLayout(await WA.room.getTiledMap()));
+      const map = await WA.room.getTiledMap(), layout = readLayout(map);
+      if (layout.nativeMeetings && !isNativeMeetingRoom(WA, layout)) {
+        const position = await bounded(WA.player.getPosition(), 1500).catch(() => null);
+        await WA.nav.goToRoom(nativeRoomUrl(WA.room.id, map, position));
+        return null;
+      }
+      const room = new CastleRoom(WA, layout);
       await room.start();
       window.castleRoom = room;
       window.addEventListener("pagehide", () => room.dispose(), { once: true });

@@ -1,4 +1,4 @@
-import { castleRoomReady } from "./room.js?v=20261107-hall1";
+import { castleRoomReady } from "./room.js?v=20261108-wam1";
 
 const noticeUrl = "https://deutsche-online-schule.com/schooltools/verwaltung/api/workadventure_museum_open.php?board=hallnotice01";
 const audioUrl = "https://together.deine-schule.com/castle-audio/";
@@ -33,8 +33,8 @@ export class GreatHall {
     if (this.closed) return this;
     try {
       const website = await this.wa.ui.website.open({url:audioUrl, allowApi:true, allowPolicy:"microphone; autoplay",
-        visible:true,position:{vertical:"bottom",horizontal:"right"},size:{width:"340px",height:"220px"},
-        margin:{right:"12px",bottom:"12px"}});
+        visible:true,position:{vertical:"bottom",horizontal:"right"},size:{width:"min(340px, calc(100vw - 76px))",height:"220px"},
+        margin:{right:"64px",bottom:"12px"}});
       if (this.closed) await website.close(); else this.audio = website;
     } catch (error) { console.warn("Hall audio panel:", error.message); }
     return this;

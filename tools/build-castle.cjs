@@ -3,6 +3,7 @@ const path = require("node:path");
 const dep = require("./castle-deps.cjs");
 const { buildMiddleCommonRoom } = require("./build-middle-common-room.cjs");
 const { buildGreatHall } = require("./build-great-hall.cjs");
+const { nativeTarget, writeWam } = require("./castle-wam.cjs");
 const { createCanvas, loadImage } = dep("@napi-rs/canvas");
 const sharp = dep("sharp");
 const root = path.resolve(__dirname, "..");
@@ -943,7 +944,7 @@ class World {
           points.push([x, y]);
       layers.push(
         tile("door-" + link.name, markers(points), [
-          P("exitUrl", link.target + (link.entry ? "#" + link.entry : "")),
+          P("exitUrl", nativeTarget(link.target + (link.entry ? "#" + link.entry : ""))),
         ]),
       );
     }
@@ -1003,9 +1004,11 @@ class World {
             kino: "Schulschloss Kino",
           }[this.id],
         ),
-        P("script", "room.js?v=20261107-hall1"),
+        P("script", "room.js?v=20261108-wam1"),
+        P("castleNativeMeetings", true),
+        P("castleNativeRoomUrl", nativeTarget(this.id + ".tmj")),
         P("castleMapId", this.id),
-        P("castleHallUrl", "https://together.deine-schule.com/_/global/wvh-web.github.io/workadventure_outside01/castle/grosse-halle.tmj"),
+        P("castleHallUrl", nativeTarget("grosse-halle.tmj")),
         P(
           "mapDescription",
           "Begehbare Grundriss-Vorschau. Bestehende Schulangebote bleiben unveraendert.",
@@ -1642,6 +1645,7 @@ async function main() {
       path.join(out, world.id + ".tmj"),
       JSON.stringify(map) + "\n",
     );
+    writeWam(map, out);
   }
   const middle = await buildMiddleCommonRoom();
   const hall = await buildGreatHall();

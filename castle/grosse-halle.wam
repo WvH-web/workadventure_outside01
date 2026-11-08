@@ -1,0 +1,101 @@
+{
+  "version": "2.1.0",
+  "mapUrl": "https://wvh-web.github.io/workadventure_outside01/castle/grosse-halle.tmj",
+  "entities": {},
+  "areas": [
+    {
+      "id": "9cf60c06-6717-4b15-bb8d-9cae8f424945",
+      "name": "Kaminrunde",
+      "x": 160,
+      "y": 336,
+      "width": 416,
+      "height": 304,
+      "visible": true,
+      "properties": [
+        {
+          "id": "df1d0a9c-b6f9-4ef9-88b7-43ab4f78f6ce",
+          "type": "livekitRoomProperty",
+          "roomName": "school-castle-v2-grosse-halle-area-kaminrunde"
+        }
+      ]
+    },
+    {
+      "id": "64ceb1c8-d797-40a4-9289-9e7e758a753e",
+      "name": "Noerdliche Tafel",
+      "x": 816,
+      "y": 368,
+      "width": 368,
+      "height": 200,
+      "visible": true,
+      "properties": [
+        {
+          "id": "c43f1b88-398b-4cd2-9cd1-c3636ae14f0f",
+          "type": "livekitRoomProperty",
+          "roomName": "school-castle-v2-grosse-halle-area-tafel-nord"
+        }
+      ]
+    },
+    {
+      "id": "fddee8f8-967c-4be9-a3b0-f393d501f6a4",
+      "name": "Suedliche Tafel",
+      "x": 816,
+      "y": 568,
+      "width": 368,
+      "height": 216,
+      "visible": true,
+      "properties": [
+        {
+          "id": "40ea9eaa-7023-4c32-b98d-abdfee53740f",
+          "type": "livekitRoomProperty",
+          "roomName": "school-castle-v2-grosse-halle-area-tafel-sued"
+        }
+      ]
+    },
+    {
+      "id": "6e178bf8-374a-4dae-b2a8-d1c469829342",
+      "name": "Lehrer- und Besucherbank",
+      "x": 192,
+      "y": 704,
+      "width": 416,
+      "height": 224,
+      "visible": true,
+      "properties": [
+        {
+          "id": "769c99d7-e755-4054-8eff-dc526c7bf494",
+          "type": "livekitRoomProperty",
+          "roomName": "school-castle-v2-grosse-halle-area-lehrerbank"
+        }
+      ]
+    },
+    {
+      "id": "14dd4cfb-993a-44b0-8959-3fd672003bd6",
+      "name": "Spieltreff",
+      "x": 1248,
+      "y": 672,
+      "width": 240,
+      "height": 240,
+      "visible": true,
+      "properties": [
+        {
+          "id": "61f547aa-f130-42df-a03f-2d139f6b8234",
+          "type": "livekitRoomProperty",
+          "roomName": "school-castle-v2-grosse-halle-area-spieltreff"
+        }
+      ]
+    }
+  ],
+  "entityCollections": [],
+  "settings": {
+    "megaphone": {
+      "enabled": false,
+      "title": "",
+      "scope": "ROOM"
+    }
+  },
+  "metadata": {
+    "name": "Grosse Halle",
+    "description": "Gemeinsame Schlosshalle mit Kaminrunde, Tafeln, Lehrerbank, Spieltreff und Podium.",
+    "copyright": "Original artwork generated for deine Schule. Original fantasy school interior; fire from the existing village tileset.",
+    "thumbnail": "https://wvh-web.github.io/workadventure_outside01/castle/art/grosse-halle-20261107/floor.png"
+  }
+}

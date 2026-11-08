@@ -5,6 +5,7 @@ import { createHash } from "node:crypto";
 import { createRequire } from "node:module";
 
 const sharp = createRequire(import.meta.url)("../tools/castle-deps.cjs")("sharp");
+const {nativeTarget} = createRequire(import.meta.url)("../tools/castle-wam.cjs");
 const castle = new URL("../castle/", import.meta.url);
 const art = new URL("art/grosse-halle-20261107/", castle);
 const readJson = (url) => JSON.parse(fs.readFileSync(url, "utf8"));
@@ -115,7 +116,7 @@ test("Great Hall is a native 48x32 map with valid grids, gids and local assets",
   assert.equal(map.orientation, "orthogonal");
   assert.equal(properties(map).castleMapId, "grosse-halle");
   assert.equal(properties(map).castleArtScale, 1);
-  assert.equal(properties(map).script, "hall.js?v=20261107-hall1");
+  assert.equal(properties(map).script, "hall.js?v=20261108-wam1");
   assert.ok(!map.properties.some((p) => /playerScale|avatarScale/i.test(p.name)));
   for (const l of tileLayers) {
     assert.equal(l.data.length, W * H, l.name);
@@ -175,7 +176,7 @@ test("six native exits have exact unobstructed portal cells and existing destina
   for (const l of exits) {
     const e = expectedExits[l.name], points = [];
     for (let y = e.y; y < e.y + e.height; y++) for (let x = e.x; x < e.x + e.width; x++) points.push(y * W + x);
-    assert.equal(properties(l).exitUrl, e.url, l.name);
+    assert.equal(properties(l).exitUrl, nativeTarget(e.url), l.name);
     assert.deepEqual(l.data.flatMap((gid, n) => gid ? [n] : []), points, l.name);
     for (const n of points) assert.ok(bodyFree(...center([n % W, Math.floor(n / W)])), l.name);
     assert.ok(fs.existsSync(new URL(e.url.split("#")[0], castle)), e.url);

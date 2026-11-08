@@ -78,7 +78,7 @@ const map={compressionlevel:-1,height:H,width:W,infinite:false,layers,nextlayeri
  tiledversion:'1.11.2',tileheight:T,tilewidth:T,type:'map',version:'1.10',
  properties:[prop('mapName','Das magische Lehrerzimmer'),prop('mapDescription','Ein geschuetzter Ort fuer das Kollegium.'),
   prop('mapImage','assets/teacher-lounge-20261107/floor.png'),prop('script','assets/teacher-lounge-20261107/room.js?v=20261107-hall1'),
-  prop('teacherLoungeHallUrl','https://together.deine-schule.com/_/global/wvh-web.github.io/workadventure_outside01/castle/grosse-halle.tmj#vom-lehrerzimmer'),
+  prop('teacherLoungeHallUrl','https://together.deine-schule.com/~/castle-preview/grosse-halle.wam#vom-lehrerzimmer'),
   prop('teacherLoungeResources',JSON.stringify(resources)),prop('mapCopyright','Original artwork generated for deine Schule. Fictional wizard-school interior.')],
  tilesets:[{firstgid:1,name:'Zauberschul-Lehrerzimmer',columns:W,image:'assets/teacher-lounge-20261107/floor.png',imageheight:H*T,imagewidth:W*T,margin:0,spacing:0,tilecount:W*H,tileheight:T,tilewidth:T},
  {firstgid:385,name:'Collision marker',columns:1,image:'assets/teacher-lounge-20261107/marker.png',imageheight:T,imagewidth:T,margin:0,spacing:0,tilecount:1,tileheight:T,tilewidth:T,tiles:[{id:0,properties:[prop('collides',true)]}]},

@@ -5188,7 +5188,7 @@
     {
       "name": "teacherLoungeHallUrl",
       "type": "string",
-      "value": "https://together.deine-schule.com/_/global/wvh-web.github.io/workadventure_outside01/castle/grosse-halle.tmj#vom-lehrerzimmer"
+      "value": "https://together.deine-schule.com/~/castle-preview/grosse-halle.wam#vom-lehrerzimmer"
     },
     {
       "name": "teacherLoungeResources",

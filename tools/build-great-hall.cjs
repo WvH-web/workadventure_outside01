@@ -1,5 +1,6 @@
 const fs = require("node:fs");
 const path = require("node:path");
+const { nativeTarget, writeWam } = require("./castle-wam.cjs");
 const sharp = require("./castle-deps.cjs")("sharp");
 const root = path.resolve(__dirname, "..");
 const art = path.join(root, "castle/art/grosse-halle-20261107");
@@ -175,7 +176,7 @@ async function buildGreatHall() {
   layers.push(tile("hearth-flames", fireData), tile("north-wall-portrait", portraitData), tile("collisions", Array.from({ length: count }, (_, i) => blocked.has(i) ? collisionGid : 0)));
   for (const p of layout.portals) layers.push(tile("door-" + p.id,
     marker(Array.from({ length: p.width * p.height }, (_, i) => [p.x + i % p.width, p.y + Math.floor(i / p.width)])),
-    [P("exitUrl", p.target + (p.entry ? "#" + p.entry : ""))]));
+    [P("exitUrl", nativeTarget(p.target + (p.entry ? "#" + p.entry : "")))]));
   layers.push(objects("seating", seats.map((s) => area("seat-" + s.id, { x: s.x - 16, y: s.y - 16, width: 32, height: 32 }, [
     P("seatId", s.id), P("seatLabel", s.label), P("seatX", s.x), P("seatY", s.y), P("standX", s.standX), P("standY", s.standY), P("facing", s.facing), P("audioGroup", s.audioGroup),
   ]))));
@@ -200,7 +201,9 @@ async function buildGreatHall() {
     compressionlevel: -1, width: W, height: H, tilewidth: T, tileheight: T, infinite: false, orientation: "orthogonal", renderorder: "right-down", tiledversion: "1.11.2", type: "map", version: "1.10", nextlayerid: lid, nextobjectid: oid, layers,
     properties: [
       P("mapName", "Grosse Halle"), P("mapDescription", "Gemeinsame Schlosshalle mit Kaminrunde, Tafeln, Lehrerbank, Spieltreff und Podium."),
-      P("mapImage", artPath + layout.render.floor), P("script", "hall.js?v=20261107-hall1"), P("castleArtScale", 1), P("castleMapId", "grosse-halle"),
+      P("mapImage", artPath + layout.render.floor), P("script", "hall.js?v=20261108-wam1"), P("castleArtScale", 1), P("castleMapId", "grosse-halle"),
+      P("castleNativeMeetings", true),
+      P("castleNativeRoomUrl", nativeTarget("grosse-halle.tmj")),
       P("hallAudioUrl", "https://together.deine-schule.com/castle-audio/"),
       P("castleSourceWidth", source.width), P("castleSourceHeight", source.height),
       P("castleMapdata", JSON.stringify(mapdata)),
@@ -223,6 +226,7 @@ async function buildGreatHall() {
     mapdata,
   };
   fs.writeFileSync(path.join(root, "castle/grosse-halle.tmj"), JSON.stringify(map) + "\n");
+  writeWam(map, path.join(root, "castle"));
   const firePreview = await sharp(path.join(art, layout.render.fire)).extract({ left: 0, top: 0, width: 64, height: 64 }).png().toBuffer();
   const portraitPreview = await sharp(path.join(art, layout.render.portrait)).extract({ left: 0, top: 0, width: 96, height: 96 }).png().toBuffer();
   await sharp(path.join(art, layout.render.floor)).composite([

@@ -1,0 +1,133 @@
+{
+  "version": "2.1.0",
+  "mapUrl": "https://wvh-web.github.io/workadventure_outside01/castle/obergeschoss.tmj",
+  "entities": {},
+  "areas": [
+    {
+      "id": "3f6a8e61-a3cd-405e-a394-d533170816fd",
+      "name": "Leseturm-Runde",
+      "x": 1408,
+      "y": 608,
+      "width": 512,
+      "height": 416,
+      "visible": true,
+      "properties": [
+        {
+          "id": "20c11f0c-f160-4a51-b845-d984ca4af402",
+          "type": "livekitRoomProperty",
+          "roomName": "school-castle-v2-obergeschoss-area-leseturm"
+        }
+      ]
+    },
+    {
+      "id": "a870974b-2f9b-454c-983b-ccfbf99acc7e",
+      "name": "Sitzplatz",
+      "x": 616,
+      "y": 680,
+      "width": 80,
+      "height": 176,
+      "visible": true,
+      "properties": [
+        {
+          "id": "f17fbf57-90be-45fe-990b-a7988e453be8",
+          "type": "livekitRoomProperty",
+          "roomName": "school-castle-v2-obergeschoss-table-og-gespraech"
+        }
+      ]
+    },
+    {
+      "id": "e15cee97-25d6-4684-80bf-75d563fa0b56",
+      "name": "Sitzplatz",
+      "x": 1000,
+      "y": 808,
+      "width": 80,
+      "height": 176,
+      "visible": true,
+      "properties": [
+        {
+          "id": "862a73cf-13a9-4a32-acf6-bcffe6c23068",
+          "type": "livekitRoomProperty",
+          "roomName": "school-castle-v2-obergeschoss-table-og-lernen"
+        }
+      ]
+    },
+    {
+      "id": "e2022bff-fb83-41c5-8710-90852dbb85a9",
+      "name": "Sitzplatz",
+      "x": 2184,
+      "y": 808,
+      "width": 80,
+      "height": 176,
+      "visible": true,
+      "properties": [
+        {
+          "id": "20737210-bf4f-4ea4-bf58-0ecb74cf8b27",
+          "type": "livekitRoomProperty",
+          "roomName": "school-castle-v2-obergeschoss-table-sterne"
+        }
+      ]
+    },
+    {
+      "id": "b4347443-d874-458c-b0e8-12e763e6df2f",
+      "name": "Sitzplatz",
+      "x": 776,
+      "y": 1608,
+      "width": 80,
+      "height": 176,
+      "visible": true,
+      "properties": [
+        {
+          "id": "30dae0ff-e44b-4a3b-b8ea-e4ecec89fb40",
+          "type": "livekitRoomProperty",
+          "roomName": "school-castle-v2-obergeschoss-table-ausstellung"
+        }
+      ]
+    },
+    {
+      "id": "4264f16a-8dfb-4cca-9356-6f912acf5fc9",
+      "name": "Sitzplatz",
+      "x": 1512,
+      "y": 1640,
+      "width": 400,
+      "height": 176,
+      "visible": true,
+      "properties": [
+        {
+          "id": "cd14424b-3055-4cfe-a25f-21956a36e149",
+          "type": "livekitRoomProperty",
+          "roomName": "school-castle-v2-obergeschoss-table-festsaal"
+        }
+      ]
+    },
+    {
+      "id": "59daa078-3469-4e09-aaa3-15dd5fce833c",
+      "name": "Sitzplatz",
+      "x": 2312,
+      "y": 1608,
+      "width": 80,
+      "height": 176,
+      "visible": true,
+      "properties": [
+        {
+          "id": "40725eda-7028-496e-95d6-201ac423bc4a",
+          "type": "livekitRoomProperty",
+          "roomName": "school-castle-v2-obergeschoss-table-werkstatt"
+        }
+      ]
+    }
+  ],
+  "entityCollections": [],
+  "settings": {
+    "megaphone": {
+      "enabled": false,
+      "title": "",
+      "scope": "ROOM"
+    }
+  },
+  "metadata": {
+    "name": "Schulschloss Obergeschoss",
+    "description": "Begehbare Grundriss-Vorschau. Bestehende Schulangebote bleiben unveraendert.",
+    "copyright": "",
+    "thumbnail": "https://wvh-web.github.io/workadventure_outside01/castle/undefined"
+  }
+}

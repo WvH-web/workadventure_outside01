@@ -23,6 +23,12 @@ Ruecklink in die neue Halle; sein bisheriger Ausgang bleibt erhalten.
   Verbindet Mittelstufe, Kino, Bibliothek, Treppe, Schulpark und Lehrerzimmer.
 
 Tiled kann jede TMJ direkt oeffnen. Tileset und Skriptpfade bleiben relativ.
+Die sechs kleinen `.wam`-Dateien ergaenzen native Besprechungsbereiche, ohne
+Grafiken zu duplizieren. Der Spieleinstieg ist
+`https://together.deine-schule.com/~/castle-preview/grosse-halle.wam`.
+Die alten Vorschau-TMJ-Links leiten vor dem Start ihrer Raumsteuerung dorthin
+weiter und erhalten den passenden Ankunftspunkt. Die alten Schlosskarten
+ausserhalb von `castle/` werden nicht umgeleitet.
 Neue Fluegel werden als weitere Karten mit eigenen IDs und eindeutigen
 Ankunftsebenen ergaenzt. Keine dreihundert einzeln gebauten Privatzimmer.
 
@@ -41,6 +47,16 @@ Diese Gruppen haben Vorrang vor einzelnen Tischgruppen. Stehende und sitzende
 Teilnehmer innerhalb einer Flaeche gehoeren zur gleichen nativen Unterhaltung.
 Beim Verlassen wird die Gruppe verlassen und normale Naehe-Kommunikation wieder
 freigegeben. Kamera- und Mikrofoneinstellungen werden nicht umgeschaltet.
+Die WAM-Besprechungsbereiche uebernehmen dabei den Ton und verhindern weitere
+Naehe-Gespraeche ueber die Tischgrenze hinweg. Die Skripte schalten deren
+Mikrofonaufnahme nicht mehr ueber `disablePlayerProximityMeeting()` ab und
+eroeffnen keine zweite, doppelte Audioverbindung.
+
+Die WAM-Dateien werden bei jedem Kartenbau aus denselben TMJ-Gruppen und
+Sitzdaten erzeugt. Nicht gruppierte Tische bekommen kleine eigene Bereiche;
+Ruheplaetze im Kino bleiben ausgenommen. `tools/castle-wam.cjs` prueft
+Ueberschneidungen. Nur diese sechs Wrapper werden nach
+`/map-storage/castle-preview/` uebertragen; die Bilder bleiben auf GitHub.
 
 Die Kinoruhezone verwendet zusaetzlich die native Silent-Eigenschaft. Dort wird
 keine Gespraechsgruppe aufgebaut. Der bestehende synchrone Player laeuft im

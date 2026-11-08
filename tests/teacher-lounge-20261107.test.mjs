@@ -53,7 +53,7 @@ test('voluntary hall return stands up first and keeps the original castle exit',
     assert.equal(f.calls.disabled,false);
     assert.equal(f.state[SEAT_KEY],null);
     assert.deepEqual(destinations,[layout.hallUrl]);
-    assert.match(layout.hallUrl,/castle\/grosse-halle\.tmj#vom-lehrerzimmer$/);
+    assert.match(layout.hallUrl,/~\/castle-preview\/grosse-halle\.wam#vom-lehrerzimmer$/);
     assert.equal(map.layers.find(l=>l.name==='exitSouth').properties[0].value,'Schloss01.tmj');
   } finally {f.controller.dispose();}
   assert.equal(f.calls.buttons.size,0);

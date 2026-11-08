@@ -1,0 +1,37 @@
+{
+  "version": "2.1.0",
+  "mapUrl": "https://wvh-web.github.io/workadventure_outside01/castle/umgebung.tmj",
+  "entities": {},
+  "areas": [
+    {
+      "id": "0ba7a978-f421-4bee-ae8f-db2697e6d6f1",
+      "name": "Gartenrunde",
+      "x": 2688,
+      "y": 1440,
+      "width": 352,
+      "height": 224,
+      "visible": true,
+      "properties": [
+        {
+          "id": "340a2ff6-8433-4520-8bee-ebb34f55b6d6",
+          "type": "livekitRoomProperty",
+          "roomName": "school-castle-v2-umgebung-area-gartenrunde"
+        }
+      ]
+    }
+  ],
+  "entityCollections": [],
+  "settings": {
+    "megaphone": {
+      "enabled": false,
+      "title": "",
+      "scope": "ROOM"
+    }
+  },
+  "metadata": {
+    "name": "Sternendorf und Schlossgarten",
+    "description": "Begehbare Grundriss-Vorschau. Bestehende Schulangebote bleiben unveraendert.",
+    "copyright": "",
+    "thumbnail": "https://wvh-web.github.io/workadventure_outside01/castle/undefined"
+  }
+}

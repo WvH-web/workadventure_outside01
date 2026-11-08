@@ -1,0 +1,85 @@
+{
+  "version": "2.1.0",
+  "mapUrl": "https://wvh-web.github.io/workadventure_outside01/castle/kino.tmj",
+  "entities": {},
+  "areas": [
+    {
+      "id": "a861b896-35b7-4229-b1d4-9f22d08943f0",
+      "name": "Sitzplatz",
+      "x": 232,
+      "y": 1000,
+      "width": 80,
+      "height": 176,
+      "visible": true,
+      "properties": [
+        {
+          "id": "1db8722b-447d-4981-a892-e58b7e56218f",
+          "type": "livekitRoomProperty",
+          "roomName": "school-castle-v2-kino-table-kino-lounge-0"
+        }
+      ]
+    },
+    {
+      "id": "e57af8f3-007c-49b2-82c3-17aa638b5d05",
+      "name": "Sitzplatz",
+      "x": 552,
+      "y": 1000,
+      "width": 80,
+      "height": 176,
+      "visible": true,
+      "properties": [
+        {
+          "id": "1e362f84-8db0-4202-a1b6-85fc84530e32",
+          "type": "livekitRoomProperty",
+          "roomName": "school-castle-v2-kino-table-kino-lounge-1"
+        }
+      ]
+    },
+    {
+      "id": "04a71739-f91c-4c7f-a593-eb3dc1897c65",
+      "name": "Sitzplatz",
+      "x": 872,
+      "y": 1000,
+      "width": 80,
+      "height": 176,
+      "visible": true,
+      "properties": [
+        {
+          "id": "9d7e7329-9b3b-47b7-8cfd-ff7bb772e662",
+          "type": "livekitRoomProperty",
+          "roomName": "school-castle-v2-kino-table-kino-lounge-2"
+        }
+      ]
+    },
+    {
+      "id": "84fb9857-4e03-4855-a739-dd8dbc08428e",
+      "name": "Sitzplatz",
+      "x": 1192,
+      "y": 1000,
+      "width": 80,
+      "height": 176,
+      "visible": true,
+      "properties": [
+        {
+          "id": "95fdf20b-5d79-4a05-8e07-becf3026cfec",
+          "type": "livekitRoomProperty",
+          "roomName": "school-castle-v2-kino-table-kino-lounge-3"
+        }
+      ]
+    }
+  ],
+  "entityCollections": [],
+  "settings": {
+    "megaphone": {
+      "enabled": false,
+      "title": "",
+      "scope": "ROOM"
+    }
+  },
+  "metadata": {
+    "name": "Schulschloss Kino",
+    "description": "Begehbare Grundriss-Vorschau. Bestehende Schulangebote bleiben unveraendert.",
+    "copyright": "",
+    "thumbnail": "https://wvh-web.github.io/workadventure_outside01/castle/undefined"
+  }
+}

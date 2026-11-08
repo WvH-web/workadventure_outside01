@@ -1,5 +1,6 @@
 const fs = require("node:fs");
 const path = require("node:path");
+const { nativeTarget, writeWam } = require("./castle-wam.cjs");
 const sharp = require("./castle-deps.cjs")("sharp");
 const root = path.resolve(__dirname, "..");
 const art = path.join(root, "castle/art/mittelstufe-20261107");
@@ -218,7 +219,7 @@ async function buildMiddleCommonRoom(source) {
         [layout.exit.x, layout.exit.y],
         [layout.exit.x + 1, layout.exit.y],
       ]),
-      [P("exitUrl", "grosse-halle.tmj#mittelstufe")],
+      [P("exitUrl", nativeTarget("grosse-halle.tmj#mittelstufe"))],
     ),
   );
   layers.push(
@@ -367,10 +368,12 @@ async function buildMiddleCommonRoom(source) {
         "Ein gemuetlicher Gemeinschaftsraum mit Kamin, Spieltisch und Kreativecke.",
       ),
       P("mapImage", artPath + floorFile),
-      P("script", "room.js?v=" + version),
+      P("script", "room.js?v=20261108-wam1"),
+      P("castleNativeMeetings", true),
+      P("castleNativeRoomUrl", nativeTarget("mittelstufe.tmj")),
       P("castleArtScale", scale),
       P("castleMapId", "mittelstufe"),
-      P("castleHallUrl", "https://together.deine-schule.com/_/global/wvh-web.github.io/workadventure_outside01/castle/grosse-halle.tmj"),
+      P("castleHallUrl", nativeTarget("grosse-halle.tmj")),
       P(
         "mapCopyright",
         "Original artwork generated for deine Schule. Original fantasy school interior.",
@@ -424,6 +427,7 @@ async function buildMiddleCommonRoom(source) {
     path.join(root, "castle/mittelstufe.tmj"),
     JSON.stringify(map) + "\n",
   );
+  writeWam(map, path.join(root, "castle"));
   const rooms = groups.map((g) => ({
     id: g.id,
     title: g.label,

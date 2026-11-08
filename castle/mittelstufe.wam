@@ -1,0 +1,69 @@
+{
+  "version": "2.1.0",
+  "mapUrl": "https://wvh-web.github.io/workadventure_outside01/castle/mittelstufe.tmj",
+  "entities": {},
+  "areas": [
+    {
+      "id": "c6dbc97c-2401-4ad6-8a48-2a3b48198aa6",
+      "name": "Kamin- und Leserunde",
+      "x": 120,
+      "y": 130,
+      "width": 425,
+      "height": 305,
+      "visible": true,
+      "properties": [
+        {
+          "id": "90b1b30a-25b0-4aec-b2cb-dfb5cf8c7a11",
+          "type": "livekitRoomProperty",
+          "roomName": "school-castle-v2-mittelstufe-area-kaminrunde"
+        }
+      ]
+    },
+    {
+      "id": "179e94fc-9788-4f88-8387-ba04f77b27f8",
+      "name": "Spieltisch",
+      "x": 620,
+      "y": 235,
+      "width": 190,
+      "height": 200,
+      "visible": true,
+      "properties": [
+        {
+          "id": "4dcd441c-b569-455a-9943-acf70b748b81",
+          "type": "livekitRoomProperty",
+          "roomName": "school-castle-v2-mittelstufe-area-spieltisch"
+        }
+      ]
+    },
+    {
+      "id": "611730c8-8a76-4f1f-ab58-4a1912575201",
+      "name": "Kreativecke",
+      "x": 693,
+      "y": 443,
+      "width": 225,
+      "height": 138,
+      "visible": true,
+      "properties": [
+        {
+          "id": "a83426ed-f75a-46ea-9d7a-01a9079fd306",
+          "type": "livekitRoomProperty",
+          "roomName": "school-castle-v2-mittelstufe-area-kreativecke"
+        }
+      ]
+    }
+  ],
+  "entityCollections": [],
+  "settings": {
+    "megaphone": {
+      "enabled": false,
+      "title": "",
+      "scope": "ROOM"
+    }
+  },
+  "metadata": {
+    "name": "Gemeinschaftsraum der Mittelstufe",
+    "description": "Ein gemuetlicher Gemeinschaftsraum mit Kamin, Spieltisch und Kreativecke.",
+    "copyright": "Original artwork generated for deine Schule. Original fantasy school interior.",
+    "thumbnail": "https://wvh-web.github.io/workadventure_outside01/castle/art/mittelstufe-20261107/floor-ms3.png"
+  }
+}

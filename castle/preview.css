@@ -391,6 +391,10 @@ iframe {
   height: 18px;
 }
 @media (max-width: 380px) {
+  body[data-overview="false"] #action {
+    /* Clear the two-row movement pad while keeping both actions available. */
+    bottom: 168px;
+  }
   header .modes button {
     font-size: 12px;
     padding: 0 8px;

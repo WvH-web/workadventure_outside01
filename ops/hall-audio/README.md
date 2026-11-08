@@ -65,7 +65,7 @@ Configuration shape, matching the current main-task generator (recheck if it cha
 ```json
 {
   "map": {
-    "id": "https://together.deine-schule.com/_/global/wvh-web.github.io/workadventure_outside01/castle/grosse-halle.tmj",
+    "id": "https://together.deine-schule.com/~/castle-preview/grosse-halle.wam",
     "url": "https://wvh-web.github.io/workadventure_outside01/castle/grosse-halle.tmj",
     "name": "Grosse Halle"
   },

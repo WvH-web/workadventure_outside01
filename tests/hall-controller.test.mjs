@@ -23,6 +23,7 @@ test('hall presents the board and a same-origin microphone-only widget without a
     assert.equal(f.calls.widget.url,'https://together.deine-schule.com/castle-audio/');
     assert.equal(f.calls.widget.allowApi,true);
     assert.equal(f.calls.widget.allowPolicy,'microphone; autoplay');
+    assert.equal(f.calls.widget.margin.right,'64px');
     assert.equal(f.calls.buttons.size,0);
     f.room.position={x:1350,y:450};f.hall.refresh();
     await f.calls.buttons.get('hall-action-noticeboard').callback();
