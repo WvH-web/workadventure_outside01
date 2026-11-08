@@ -45,7 +45,7 @@ const expectedExits = {
   "door-lehrerzimmer": { x: 5, y: 7, width: 1, height: 1, url: "../teachersmeetingground.tmj" },
   "door-mittelstufe": { x: 17, y: 7, width: 1, height: 1, url: "mittelstufe.tmj#vom-flur" },
   "door-kino": { x: 31, y: 7, width: 1, height: 1, url: "kino.tmj#foyer" },
-  "door-bibliothek": { x: 40, y: 7, width: 1, height: 1, url: "erdgeschoss.tmj#bibliothek-anreise" },
+  "door-bibliothek": { x: 40, y: 7, width: 1, height: 1, url: "bibliothek.tmj#halle" },
   "door-treppe": { x: 44, y: 7, width: 2, height: 1, url: "obergeschoss.tmj#vom-eg" },
   "door-schlosstor": { x: 23, y: 29, width: 2, height: 1, url: "umgebung.tmj#schlosstor" },
 };

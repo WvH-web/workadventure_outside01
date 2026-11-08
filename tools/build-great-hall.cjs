@@ -203,7 +203,7 @@ async function buildGreatHall() {
     properties: [
       P("mapName", "Grosse Halle"), P("mapDescription", "Gemeinsame Schlosshalle mit Kaminrunde, Tafeln, Lehrerbank, Spieltreff und Podium."),
       P("mapImage", artPath + layout.render.floor), P("script", "hall.js?v=20261108-scale1"), P("castleArtScale", 1), P("castleMapId", "grosse-halle"),
-      P("castleRevision", "20261108-scale1"), P("castleFurnitureScale", layout.measurements.furnitureScale),
+      P("castleRevision", "20261108-library1"), P("castleFurnitureScale", layout.measurements.furnitureScale),
       P("castleNativeMeetings", true),
       P("castleNativeRoomUrl", nativeTarget("grosse-halle.tmj")),
       P("hallAudioUrl", "https://together.deine-schule.com/castle-audio/"),

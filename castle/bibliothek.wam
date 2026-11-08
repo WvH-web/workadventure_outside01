@@ -1,0 +1,69 @@
+{
+  "version": "2.1.0",
+  "mapUrl": "https://wvh-web.github.io/workadventure_outside01/castle/bibliothek.tmj?v=20261108-library1",
+  "entities": {},
+  "areas": [
+    {
+      "id": "713f1d46-63b2-43e4-a2f3-5066322460b7",
+      "name": "Leserunde am Kamin",
+      "x": 64,
+      "y": 272,
+      "width": 288,
+      "height": 256,
+      "visible": true,
+      "properties": [
+        {
+          "id": "f29f6c05-3327-4576-a66e-76772b9fb6dd",
+          "type": "livekitRoomProperty",
+          "roomName": "school-castle-v2-bibliothek-area-lesekamin"
+        }
+      ]
+    },
+    {
+      "id": "0b2ba66d-6138-454b-814b-a7210c41df3d",
+      "name": "Lesenische am Fenster",
+      "x": 656,
+      "y": 176,
+      "width": 176,
+      "height": 176,
+      "visible": true,
+      "properties": [
+        {
+          "id": "a05cd857-4870-40a5-a141-f501e9483a4c",
+          "type": "livekitRoomProperty",
+          "roomName": "school-castle-v2-bibliothek-area-fensterleser"
+        }
+      ]
+    },
+    {
+      "id": "5d98ed4d-9f13-49f8-96d3-3069c7bbe84b",
+      "name": "Gemeinsamer Buchclub",
+      "x": 544,
+      "y": 400,
+      "width": 288,
+      "height": 240,
+      "visible": true,
+      "properties": [
+        {
+          "id": "933ee3ff-f2f3-49b6-80a7-d66fe4f6ebb6",
+          "type": "livekitRoomProperty",
+          "roomName": "school-castle-v2-bibliothek-area-buchclub"
+        }
+      ]
+    }
+  ],
+  "entityCollections": [],
+  "settings": {
+    "megaphone": {
+      "enabled": false,
+      "title": "",
+      "scope": "ROOM"
+    }
+  },
+  "metadata": {
+    "name": "Schlossbibliothek",
+    "description": "Gemuetliche Schlossbibliothek mit drei getrennten Lesegruppen, Fensternische und Kamin.",
+    "copyright": "Original library and book-club artwork generated for deine Schule; approved Great Hall reading furniture; existing village fire animation.",
+    "thumbnail": "https://wvh-web.github.io/workadventure_outside01/castle/art/bibliothek-20261108/floor.png"
+  }
+}

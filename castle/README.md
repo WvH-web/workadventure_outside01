@@ -1,7 +1,7 @@
 # Begehbarer Schlossgrundriss
 
 Modulare Schloss-Vorschau, ab 7. November 2026. Drei Karten zeigen noch
-die Raum- und Laufplanung. Mittelstufenraum, Grosse Halle und Kino sind bereits als
+die Raum- und Laufplanung. Mittelstufenraum, Grosse Halle, Kino und Bibliothek sind bereits als
 detailreich gemalte Einrichtungen im Stil des bestehenden Lehrerzimmers umgesetzt.
 Bestehende Karten, das Kino-Projekt und das Weihnachtsspiel werden nicht ersetzt.
 Die neuen Karten bleiben eine separate Testvorschau. Bestehende Schuelereingaenge
@@ -30,13 +30,15 @@ Die bestaetigte Einrichtung nicht ohne neuen Auftrag umskalieren. Neue Raeume
 weiterhin einzeln in der getrennten Vorschau ausbauen; das bisherige Schloss
 bleibt bis zur ausdruecklichen Freigabe unveraendert.
 
-## Sechs verbundene Karten
+## Sieben verbundene Karten
 
 - `erdgeschoss.tmj`: Grosse Halle, Grundschule, Mittelstufe, Bibliothek,
   Musikzimmer, Museum, Atelier, Wohnfluegel, Spielesaal, Lehrersalon und Kinofoyer.
 - `obergeschoss.tmj`: Oberstufe, Leseturm, Sternwarte, Wandelsaal, Festsaal und Werkstatt.
 - `kino.tmj`: Kompaktes gemaltes Schlosskino, 30 x 28 Kacheln, 48 ruhige
   Zuschauerplaetze vorne und vier Gespraechstische mit insgesamt 16 Plaetzen hinten.
+- `bibliothek.tmj`: Kleine gemalte Schlossbibliothek, 28 x 22 Kacheln, drei
+  getrennte Lesegruppen und 13 Sitzplaetze, mit Fensternische und animiertem Kamin.
 - `umgebung.tmj`: Schlossansicht, Dorfplatz, Bachbruecke, Markt, Schlossgarten,
   Rutschenturm und vorbereiteter Rundkurs.
 - `mittelstufe.tmj`: Gemalter Gemeinschaftsraum, vom Mittelstufenbereich im
@@ -46,7 +48,7 @@ bleibt bis zur ausdruecklichen Freigabe unveraendert.
   Verbindet Mittelstufe, Kino, Bibliothek, Treppe, Schulpark und Lehrerzimmer.
 
 Tiled kann jede TMJ direkt oeffnen. Tileset und Skriptpfade bleiben relativ.
-Die sechs kleinen `.wam`-Dateien ergaenzen native Besprechungsbereiche, ohne
+Die sieben kleinen `.wam`-Dateien ergaenzen native Besprechungsbereiche, ohne
 Grafiken zu duplizieren. Der Spieleinstieg ist
 `https://together.deine-schule.com/~/castle-preview/grosse-halle.wam`.
 Die alten Vorschau-TMJ-Links leiten vor dem Start ihrer Raumsteuerung dorthin
@@ -78,7 +80,7 @@ eroeffnen keine zweite, doppelte Audioverbindung.
 Die WAM-Dateien werden bei jedem Kartenbau aus denselben TMJ-Gruppen und
 Sitzdaten erzeugt. Nicht gruppierte Tische bekommen kleine eigene Bereiche;
 Ruheplaetze im Kino bleiben ausgenommen. `tools/castle-wam.cjs` prueft
-Ueberschneidungen. Nur diese sechs Wrapper werden nach
+Ueberschneidungen. Nur diese sieben Wrapper werden nach
 `/map-storage/castle-preview/` uebertragen; die Bilder bleiben auf GitHub.
 
 Die Kinoruhezone verwendet zusaetzlich die native Silent-Eigenschaft. Dort wird
@@ -131,6 +133,30 @@ Browserfehler. Das ist kein Lasttest mit 400 Teilnehmern und keine Hardware-Abna
 Wiederholbare Pruefung: `tools/hall-ops/live-check.cjs` mit kurzlebigen Testkonten
 und dem Code nur in `HALL_CODE`. Private Testdaten liegen nie im Karten-Repository.
 
+## Bibliothek
+
+Die neue Bibliothek ist ueber die entsprechende Tuer der Grossen Halle erreichbar
+und kehrt an deren Bibliotheks-Ankunftspunkt zurueck. Sie bleibt eine eigene kleine
+Karte mit 896 x 704 Pixeln. Die bisherigen Schlosskarten bleiben unveraendert.
+Am Lesesofa mit Sesseln gibt es sechs Plaetze, am Buchclub vier und auf der
+Fensterbank drei. Alle Stehenden innerhalb der jeweiligen Flaeche gehoeren zur
+gleichen nativen Unterhaltung; die drei Gruppen bleiben voneinander getrennt.
+Ausserhalb gilt wieder die normale Naehe-Kommunikation.
+
+Die grossen Regale sind Architektur, die Sitzmoebel bleiben im bestaetigten
+32-Pixel-Avatar-Massstab. Das Lesesofa und seine Sitzpunkte stammen unveraendert
+in der Groesse aus der abgenommenen Halleneinrichtung. Fensterbank, Tisch und
+Sessel haben eigene Sitzpunkte und Vordergrundmasken. Die nativen Kaminflammen
+verwenden sieben vorhandene Animationsframes, begleitet von leisem Prasseln.
+Neue Raumgrafik und Buchclub-Gruppe wurden mit dem integrierten Bildgenerator
+erstellt. Originale, Prompts und editierbare Geometrie liegen unter
+`art/bibliothek-20261108/`; Neubau: `node tools/build-library.cjs --update-world`.
+
+Alle 13 Sitzplaetze und Laufwege wurden in der lokalen Vorschau bei 1440, 390 und
+320 Pixel Breite geprueft. Die native Audio-Abnahme ist mit
+`node tools/check-library-live.cjs` wiederholbar; sie verwendet nur kurzlebige
+Testkonten und kuenstlichen Sprachton, keine echten Schueler oder Mikrofone.
+
 ## Animationen und Einrichtung
 
 Kamine, Kerzen, Brunnen, Wasser, lebendiges Portraet, Uhr, gelegentliche
@@ -142,7 +168,7 @@ damit Ebenen, Kollisionen und Spieler weiterhin kontrollierbar bleiben.
 Einige Effekte sind absichtlich selten; sie sind keine Wartezeit-Belohnungen.
 
 Alle Moebel sind am 32-Pixel-Raster und an einer normalen Spielfigur ausgerichtet.
-Die Vorschau hat 219 Sitzplaetze. Sofas und weitere Einrichtungsgegenstaende sind
+Die Vorschau hat 232 Sitzplaetze. Sofas und weitere Einrichtungsgegenstaende sind
 teilweise noch dekorative Platzhalter; nicht jede Sofagrafik ist bereits ein Sitz.
 Fuer die Endgrafik folgen eigene Raumansichten, Vordergrundteile und individuell
 ausgearbeitete Sitzecken. Der Grundriss wird vorher anhand echter Wege abgestimmt.

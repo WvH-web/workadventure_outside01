@@ -17,6 +17,8 @@ async function prepareHallFurniture(){
   const original=JSON.parse(fs.readFileSync(path.join(oldArt,'layout.json')));
   const config=JSON.parse(fs.readFileSync(path.join(art,'furniture.json')));
   const layout=structuredClone(original),scale=config.scale;
+  const library=layout.portals.find(p=>p.id==='bibliothek');
+  library.target='bibliothek.tmj';library.entry='halle';
   const oldSource=path.join(oldArt,original.render.source);
   const composites=[];
   for(const r of config.preserved)composites.push({input:await sharp(oldSource).extract({left:r.x,top:r.y,width:r.width,height:r.height}).png().toBuffer(),left:r.x,top:r.y});

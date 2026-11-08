@@ -1,4 +1,4 @@
-"""Publish only the six native meeting wrappers into an isolated preview directory."""
+"""Publish only the seven native meeting wrappers into an isolated preview directory."""
 import hashlib
 import json
 import os
@@ -10,7 +10,7 @@ import urllib.request
 import zipfile
 
 os.umask(0o077)
-ids={'erdgeschoss','obergeschoss','kino','umgebung','mittelstufe','grosse-halle'}
+ids={'erdgeschoss','obergeschoss','kino','umgebung','mittelstufe','grosse-halle','bibliothek'}
 archive=Path('/tmp/wvh-castle-preview-wams.zip')
 storage=Path('/var/lib/docker/volumes/workadventure_map-storage-data/_data').resolve()
 target=(storage/'castle-preview').resolve()
@@ -25,10 +25,13 @@ record=private/'castle-wams.manifest.json'
 hashof=lambda data:hashlib.sha256(data).hexdigest()
 expected={id+'.wam' for id in ids}
 if target.exists():
-    if set(p.name for p in target.iterdir())!=expected or not record.exists():
+    if not record.exists():
         raise RuntimeError('Preview directory has unreviewed contents; refusing to overwrite it')
     old=json.loads(record.read_text())['files']
-    if any(hashof((target/name).read_bytes())!=old[name] for name in expected):
+    existing=set(p.name for p in target.iterdir())
+    if existing!=set(old) or existing not in [expected,expected-{'bibliothek.wam'}]:
+        raise RuntimeError('Preview directory has unreviewed contents; refusing to overwrite it')
+    if any(hashof((target/name).read_bytes())!=old[name] for name in existing):
         raise RuntimeError('A preview map was edited since the last deployment')
 payload={}
 with zipfile.ZipFile(archive) as bundle:
@@ -50,7 +53,7 @@ with zipfile.ZipFile(archive) as bundle:
 backup=private/('castle-wams-before-'+hashof(archive.read_bytes())[:12])
 backup.mkdir(mode=0o700,exist_ok=False)
 if target.exists():
-    for name in expected:
+    for name in existing:
         shutil.copyfile(target/name,backup/name)
 target.mkdir(mode=0o755,exist_ok=True)
 target.chmod(0o755)

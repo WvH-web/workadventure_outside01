@@ -121,8 +121,8 @@
       "y": 7,
       "width": 1,
       "height": 1,
-      "target": "erdgeschoss.tmj",
-      "entry": "bibliothek-anreise"
+      "target": "bibliothek.tmj",
+      "entry": "halle"
     },
     {
       "id": "treppe",

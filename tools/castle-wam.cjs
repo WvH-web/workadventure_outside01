@@ -3,7 +3,7 @@ const fs = require('node:fs');
 const path = require('node:path');
 const mapBase = 'https://wvh-web.github.io/workadventure_outside01/castle/';
 const playBase = 'https://together.deine-schule.com/~/castle-preview/';
-const ids = new Set(['erdgeschoss','obergeschoss','kino','umgebung','mittelstufe','grosse-halle']);
+const ids = new Set(['erdgeschoss','obergeschoss','kino','umgebung','mittelstufe','grosse-halle','bibliothek']);
 const props = object => Object.fromEntries((object.properties || []).map(p => [p.name,p.value]));
 const inside = (point,area) => point.x >= area.x && point.y >= area.y &&
   point.x < area.x + area.width && point.y < area.y + area.height;
