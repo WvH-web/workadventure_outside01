@@ -32,3 +32,23 @@ Neubau mit `node tools/build-great-hall.cjs --update-world`. Danach die neue
 `grosse-halle.wam` nur im getrennten `castle-preview` veroeffentlichen. Der
 Versionsparameter an der TMJ-Quelle verhindert das Mischen alter Grafik und
 neuer Gespraechsbereiche. Das bisherige Schloss wird nicht ersetzt.
+
+## Gepruefter Stand
+
+Am 8. November 2026 wurden 90 Karten-, Sitz-, Audio- und Zugriffstests sowie
+sechs Widgettests bestanden. Die Browservorschau wurde bei 1440, 390 und 320
+Pixeln Breite mit allen 42 Hallensitzen geprueft.
+
+Im veroeffentlichten WorkAdventure-Client lief ein Test mit vier getrennten
+synthetischen Konten und erzeugtem Testton, ohne echte Mikrofone. Zwei parallele
+Tischgruppen blieben auch an ihrer Grenze getrennt. Beide empfingen die
+Hallendurchsage; ihr eigenes Gespraech lief weiter. Verlassen des Podests stoppte
+die Ansage. Zuhoerer konnten keinen Ton in den Ansageraum senden. Ausserhalb
+der Tischbereiche kehrte die Naehe-Kommunikation zurueck. Auch die beiden
+entferntesten Plaetze der neuen Gemeinschaftstafel empfingen gegenseitig
+decodierten, nichtstummen Ton. Keine Browserfehler wurden festgestellt.
+
+Die nativen Spielbilder fuer Sofa, Lesesessel, Besucherbank und Gemeinschaftstafel
+wurden visuell kontrolliert. Lokaler Pruefbericht und Bilder liegen ausserhalb
+des oeffentlichen Repositories unter `../output/hall-live-qa/`, bezogen auf den
+Repository-Stammordner. Dies ist kein Lasttest mit 400 Teilnehmern.
