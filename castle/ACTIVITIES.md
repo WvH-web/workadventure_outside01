@@ -105,3 +105,10 @@ dies ist keine Hardware- oder 400-Personen-Lastabnahme.
 
 Alle acht Vorschau-Wrapper wurden geprueft und ohne Server-Neustart aktualisiert.
 Das bisherige Schloss, Village, Lehrerzimmer, Kino und Bibliothek blieben unveraendert.
+
+Die endgueltige Fassung `20261108-gs2` hebt die beiden Sitzpunkte der Musikbank
+um 14 Pixel auf die Polster. Die alte Vordergrunddatei bleibt erhalten; die neue
+Fassung hat eine eigene Bildadresse. Nach dieser Anpassung wurde die komplette
+native Viererprobe erneut bestanden: alle drei Gruppen, Erzaehlkarten mit spaetem
+Beitritt und Raumtrennung, alle zwoelf Sitze, Desktop/Mobil und Hallentuer.
+Die Sitzbilder wurden anschliessend mit den echten Avataren kontrolliert.
