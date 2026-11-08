@@ -24,7 +24,7 @@ export function parseLoungeMap(map) {
     }
   }
   walk(map.layers);
-  return { seats };
+  return { seats, hallUrl: properties(map).teacherLoungeHallUrl };
 }
 
 export function bounded(promise, milliseconds = 4000) {
@@ -70,7 +70,23 @@ export class TeacherLounge {
     this.heartbeat = setInterval(() => { changed(); this.updateAudio(); }, 1000);
     this.updatePrompt();
     this.updateAudio();
+    if (this.layout.hallUrl && this.wa.nav?.goToRoom) this.wa.ui.actionBar.addButton({
+      id: 'teacher-lounge-hall', label: 'Zur Grossen Halle', callback: () => {
+        this.returnToHall().catch(error => console.warn('Lounge return failed:', error.message));
+      }
+    });
     return this;
+  }
+
+  async returnToHall() {
+    if (this.navigating || !this.layout.hallUrl || !this.wa.nav?.goToRoom) return false;
+    this.navigating = true;
+    try {
+      await this.stand();
+      if (this.audioTask) await bounded(this.audioTask, 2500).catch(() => {});
+      await this.wa.nav.goToRoom(this.layout.hallUrl);
+      return true;
+    } finally { this.navigating = false; }
   }
 
   othersAt(id) {
@@ -223,6 +239,7 @@ export class TeacherLounge {
     clearInterval(this.heartbeat);
     this.prompt?.remove(); this.prompt = null;
     this.wa.ui.actionBar.removeButton(STAND_BUTTON);
+    this.wa.ui.actionBar.removeButton('teacher-lounge-hall');
     this.wa.controls.restorePlayerControls();
     const space = this.activeSpace;
     if (space) Promise.resolve().then(() => space.leave()).catch(() => {});

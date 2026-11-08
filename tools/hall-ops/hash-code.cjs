@@ -1,0 +1,10 @@
+const crypto = require("node:crypto");
+const fs = require("node:fs");
+const path = require("node:path");
+const code = process.env.HALL_CODE;
+if (!code || code.length > 128) throw Error("Set HALL_CODE in the current process before configuring the podium");
+const destination = path.resolve(__dirname, "../../../Secrets/hall-podium.private.json");
+const salt = crypto.randomBytes(32);
+const hash = crypto.scryptSync(code, salt, 64, {N:16384,r:8,p:1,maxmem:64*1024*1024});
+fs.writeFileSync(destination, JSON.stringify({salt:salt.toString("base64"),hash:hash.toString("hex")})+"\n", {mode:0o600});
+console.log("Private podium verification material generated outside the map repository.");

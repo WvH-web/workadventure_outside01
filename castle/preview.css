@@ -373,7 +373,7 @@ iframe {
     scroll-behavior: auto !important;
   }
 }
-#cinema-open {
+#cinema-open, #hall-open {
   position: absolute;
   top: 16px;
   right: 16px;
@@ -383,10 +383,10 @@ iframe {
   padding: 9px 12px;
   background: #f8faf2ed;
 }
-#cinema-open[hidden] {
+#cinema-open[hidden], #hall-open[hidden] {
   display: none;
 }
-#cinema-open svg {
+#cinema-open svg, #hall-open svg {
   width: 18px;
   height: 18px;
 }

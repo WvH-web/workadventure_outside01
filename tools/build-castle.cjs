@@ -2,6 +2,7 @@ const fs = require("node:fs");
 const path = require("node:path");
 const dep = require("./castle-deps.cjs");
 const { buildMiddleCommonRoom } = require("./build-middle-common-room.cjs");
+const { buildGreatHall } = require("./build-great-hall.cjs");
 const { createCanvas, loadImage } = dep("@napi-rs/canvas");
 const sharp = dep("sharp");
 const root = path.resolve(__dirname, "..");
@@ -1002,8 +1003,9 @@ class World {
             kino: "Schulschloss Kino",
           }[this.id],
         ),
-        P("script", "room.js?v=20261107-1"),
+        P("script", "room.js?v=20261107-hall1"),
         P("castleMapId", this.id),
+        P("castleHallUrl", "https://together.deine-schule.com/_/global/wvh-web.github.io/workadventure_outside01/castle/grosse-halle.tmj"),
         P(
           "mapDescription",
           "Begehbare Grundriss-Vorschau. Bestehende Schulangebote bleiben unveraendert.",
@@ -1379,7 +1381,7 @@ function upstairs() {
     ["conversationGroup", "leseturm"],
     ["conversationLabel", "Leseturm-Runde"],
   ]);
-  m.portal("unten", 38, 38, 2, 1, "erdgeschoss.tmj", "vom-og");
+  m.portal("unten", 38, 38, 2, 1, "grosse-halle.tmj", "vom-og");
   m.entries = { start: [44, 38], "vom-eg": [44, 38] };
   return m;
 }
@@ -1487,7 +1489,7 @@ function cinema() {
   m.label("Foyer", 21, 39, "#ead6c0", 18);
   m.put("plant", 5, 8, "furniture", true);
   m.put("plant", 41, 8, "furniture", true);
-  m.portal("foyer", 22, 40, 4, 1, "erdgeschoss.tmj", "kino");
+  m.portal("foyer", 22, 40, 4, 1, "grosse-halle.tmj", "kino");
   m.entries = { start: [24, 38], foyer: [24, 38] };
   return m;
 }
@@ -1511,6 +1513,10 @@ function splitCampus() {
   eg.put("door", 71, 31);
   eg.portal("mittelstufenraum", 71, 33, 3, 1, "mittelstufe.tmj", "vom-flur");
   eg.entries["mittelstufe-anreise"] = [72, 36];
+  eg.entries["bibliothek-anreise"] = [15, 55];
+  eg.entries["halle"] = [44, 40];
+  eg.put("door", 42, 31);
+  eg.portal("grosse-halle", 42, 33, 3, 1, "grosse-halle.tmj", "bibliothek");
   eg.portal("hof", 42, 69, 4, 1, "umgebung.tmj", "schlosstor");
   eg.portal("garten", 87, 60, 1, 4, "umgebung.tmj", "garten");
   const exterior = all;
@@ -1550,7 +1556,7 @@ function splitCampus() {
     height: 12 * T,
     floor: "umgebung",
   });
-  exterior.portal("schloss", 62, 80, 4, 1, "erdgeschoss.tmj", "hof");
+  exterior.portal("schloss", 62, 80, 4, 1, "grosse-halle.tmj", "schlosstor");
   exterior.portal("garten", 108, 70, 1, 4, "erdgeschoss.tmj", "garten");
   for (const layer of [
     "floors",
@@ -1610,6 +1616,8 @@ function splitCampus() {
   return [eg, crop(exterior, "umgebung", 0, 40, 128, 76)];
 }
 async function main() {
+  // Animated source files are read and rebuilt in one run on Windows.
+  sharp.cache(false);
   fs.mkdirSync(out, { recursive: true });
   await createArt();
   const worlds = [...splitCampus(), upstairs(), cinema()];
@@ -1636,6 +1644,7 @@ async function main() {
     );
   }
   const middle = await buildMiddleCommonRoom();
+  const hall = await buildGreatHall();
   const manifest = {
     version: 1,
     tileSize: T,
@@ -1658,6 +1667,7 @@ async function main() {
         entries: w.entries,
       })),
       middle.world,
+      hall.world,
     ],
   };
   fs.writeFileSync(

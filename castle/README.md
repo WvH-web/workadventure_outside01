@@ -1,11 +1,14 @@
 # Begehbarer Schlossgrundriss
 
 Modulare Schloss-Vorschau, 7. November 2026. Die vier grossen Karten zeigen noch
-die Raum- und Laufplanung. Der separate Mittelstufenraum ist bereits als
-detailreich gemalte Einrichtung im Stil des bestehenden Lehrerzimmers umgesetzt.
+die Raum- und Laufplanung. Mittelstufenraum und Grosse Halle sind bereits als
+detailreich gemalte Einrichtungen im Stil des bestehenden Lehrerzimmers umgesetzt.
 Bestehende Karten, das Kino-Projekt und das Weihnachtsspiel werden nicht ersetzt.
+Die neuen Karten bleiben eine separate Testvorschau. Bestehende Schuelereingaenge
+werden nicht umgebogen. Nur das geschuetzte Lehrerzimmer bietet einen freiwilligen
+Ruecklink in die neue Halle; sein bisheriger Ausgang bleibt erhalten.
 
-## Fuenf verbundene Karten
+## Sechs verbundene Karten
 
 - `erdgeschoss.tmj`: Grosse Halle, Grundschule, Mittelstufe, Bibliothek,
   Musikzimmer, Museum, Atelier, Wohnfluegel, Spielesaal, Lehrersalon und Kinofoyer.
@@ -14,7 +17,10 @@ Bestehende Karten, das Kino-Projekt und das Weihnachtsspiel werden nicht ersetzt
 - `umgebung.tmj`: Schlossansicht, Dorfplatz, Bachbruecke, Markt, Schlossgarten,
   Rutschenturm und vorbereiteter Rundkurs.
 - `mittelstufe.tmj`: Gemalter Gemeinschaftsraum, vom Mittelstufenbereich im
-  Erdgeschoss erreichbar, mit Suedtuer zurueck zum Grundriss.
+  Erdgeschoss und aus der Grossen Halle erreichbar, mit Rueckweg zur Halle.
+- `grosse-halle.tmj`: 48 x 32 Kacheln, 30 Sitzplaetze, fuenf Gespraechsbereiche,
+  geschuetztes Rednerpult, Schlossbrett, Spielrunden, animierter Kamin und Portraet.
+  Verbindet Mittelstufe, Kino, Bibliothek, Treppe, Schulpark und Lehrerzimmer.
 
 Tiled kann jede TMJ direkt oeffnen. Tileset und Skriptpfade bleiben relativ.
 Neue Fluegel werden als weitere Karten mit eigenen IDs und eindeutigen
@@ -22,7 +28,7 @@ Ankunftsebenen ergaenzt. Keine dreihundert einzeln gebauten Privatzimmer.
 
 Die Verbindung zum vorhandenen Lehrerzimmer verwendet dessen geschuetzte
 Originaladresse. Sein bisheriger Ausgang und seine Zugangspruefung bleiben
-unveraendert; die vollstaendige Rueckweg-Anbindung ist ein spaeterer Integrationsschritt.
+unveraendert. Der freiwillige Ruecklink stellt vor dem Kartenwechsel wieder auf.
 Die Wohnraumtueren sind Platzhalter fuer die vorhandene Sternenhueter-Anwendung.
 Es werden weder deren Testguthaben noch lokale Zimmerdaten veroeffentlicht.
 
@@ -59,7 +65,7 @@ damit Ebenen, Kollisionen und Spieler weiterhin kontrollierbar bleiben.
 Einige Effekte sind absichtlich selten; sie sind keine Wartezeit-Belohnungen.
 
 Alle Moebel sind am 32-Pixel-Raster und an einer normalen Spielfigur ausgerichtet.
-Die Vorschau hat 177 Sitzplaetze. Sofas und weitere Einrichtungsgegenstaende sind
+Die Vorschau hat 207 Sitzplaetze. Sofas und weitere Einrichtungsgegenstaende sind
 teilweise noch dekorative Platzhalter; nicht jede Sofagrafik ist bereits ein Sitz.
 Fuer die Endgrafik folgen eigene Raumansichten, Vordergrundteile und individuell
 ausgearbeitete Sitzecken. Der Grundriss wird vorher anhand echter Wege abgestimmt.
@@ -87,7 +93,37 @@ Spielboden und pixelgetreue Vordergrundmaske liegen unter
 `art/mittelstufe-20261107/`. `layout.json` dort ist die editierbare Quelle fuer
 Sitze, Moebelmasken, Kollisionen und Gruppen. Neubau ueber
 `node tools/build-middle-common-room.cjs`, oder zusammen mit allen Karten ueber
-`node tools/build-castle.cjs`. Das originale Lehrerzimmer bleibt unveraendert.
+`node tools/build-castle.cjs`. Die Einrichtung des originalen Lehrerzimmers bleibt unveraendert.
+
+## Grosse Halle und Ansagen
+
+Die Halle hat getrennte Gruppen fuer Kaminrunde (6), zwei Tafeln (je 8),
+Lehrerbank (4) und Spieltreff (4). Auch Stehende in diesen Bereichen gehoeren
+zum jeweiligen Gespraech. Avatare bleiben im nativen 32-Pixel-Massstab.
+Produktionsgrafik, Prompt und editierbare Geometrie liegen unter
+`art/grosse-halle-20261107/`; Neubau: `node tools/build-great-hall.cjs`.
+
+Auf dem Podest erscheint die Codeeingabe. Nur nach serverseitiger Pruefung
+erhaelt genau eine Person die Mikrofonfreigabe fuer die Halle. Der Code ist
+weder in der Karte noch in Skripten hinterlegt. Verlassen, Abmelden, Abbruch
+oder ausbleibende Verbindung beenden die Ansage. Hintergrund-Tabs werden nicht
+allein wegen Unsichtbarkeit getrennt; Browser und Mobilgeraete koennen Audio
+dennoch unterbrechen. Ein Lautsprechersymbol entsperrt blockierte Wiedergabe.
+Die normalen Tischgespraeche bleiben getrennt; die Ansage wird zusaetzlich gehoert.
+Das Podest selbst ist nativ still, damit die Stimme nicht doppelt uebertragen wird.
+
+Der isolierte Dienst unter `/castle-audio/` nutzt die vorhandene Anmeldung,
+kurze Freigaben und getrennte LiveKit-Raeume. Berechtigungen, Bedrohungsgrenzen
+und Betrieb sind in `../ops/hall-audio/README.md` dokumentiert.
+Die Browser-Grundrissvorschau hat absichtlich keine nachgebaute Ansagefreigabe;
+diese wird nur im echten WorkAdventure-Client angeboten.
+
+Das oeffentliche Schlossbrett wird im Verwaltungsportal unter der bestehenden
+Museumsverwaltung als `hallnotice01` / Schlossbrett gepflegt. Es verwendet
+dieselben Uploads und Inhaltsarten. Ohne Eintrag bleibt es neutral leer.
+Keine vertraulichen Kollegiumsmitteilungen dort veroeffentlichen.
+Der Spieltreff oeffnet die sieben bestehenden Verwaltungs-Landeseiten; geaenderte
+Raumlinks werden damit ohne erneutes Karten-Deployment uebernommen.
 
 Die neue Portraetgrafik wurde mit dem eingebauten Bildgenerator erzeugt.
 `art/portrait-source.png` ist das unveraenderte Original. Produktionsprompt:

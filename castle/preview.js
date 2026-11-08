@@ -1,4 +1,4 @@
-import { readLayout, conversationAt } from "./room.js?v=20261107-ms4";
+import { readLayout, conversationAt } from "./room.js?v=20261107-hall1";
 const $ = (id) => document.getElementById(id);
 function showError() {
   const retry = document.createElement("button");
@@ -16,7 +16,7 @@ window.addEventListener("error", (event) => {
 });
 const canvas = $("map"),
   ctx = canvas.getContext("2d");
-const manifest = await fetch("layout.json?v=20261107-ms4").then((r) =>
+const manifest = await fetch("layout.json?v=20261107-hall1").then((r) =>
   r.json(),
 );
 const images = new Map();
@@ -142,7 +142,7 @@ async function load(id, entry = "start") {
     if (!cache.has(id))
       cache.set(
         id,
-        await fetch(id + ".tmj?v=20261107-ms4").then((r) => {
+        await fetch(id + ".tmj?v=20261107-hall1").then((r) => {
           if (!r.ok) throw Error("Karte nicht erreichbar");
           return r.json();
         }),
@@ -274,7 +274,12 @@ function focusRoom(room) {
 }
 function openCinema() {
   const url = "https://deutsche-online-schule.com/kino/public/kino.php";
+  openPanel(url,"Kino");
+}
+function openPanel(url,title) {
   $("content").hidden = false;
+  $("content-title").textContent = title;
+  $("content-frame").title = title;
   if ($("content-frame").src !== url) $("content-frame").src = url;
   $("content-external").href = url;
   resize();
@@ -314,6 +319,7 @@ function refresh() {
       obergeschoss: "Wandelgang",
       kino: "Foyer",
       mittelstufe: "Mittelstufenraum",
+      "grosse-halle": "Grosse Halle",
     }[world.id];
   const conversation = conversationAt(layout, position, seat);
   $("conversation").textContent =
@@ -326,6 +332,18 @@ function refresh() {
   const external = world.links.find(
     (l) => l.target.startsWith("../") && inArea(position, l),
   );
+  const hallAction = world.id === "grosse-halle" ? map.layers.flatMap((l) => l.objects || [])
+    .find((o) => o.properties?.some((p) => p.name === "hallAction") && inArea(position,o)) : null;
+  const podium = world.id === "grosse-halle" && map.layers.flatMap((l) => l.objects || [])
+    .some((o) => o.properties?.some((p) => p.name === "hallPodium" && p.value === true) && inArea(position,o));
+  $("hall-open").hidden = !hallAction;
+  if (hallAction) {
+    const kind=hallAction.properties.find((p)=>p.name==="hallAction").value;
+    const title=kind==="games"?"Spielrunden":"Schlossbrett";
+    $("hall-open-label").textContent=title;
+    $("hall-open").onclick=()=>openPanel(kind==="games"?new URL("hall-games.html",location.href).href:
+      "https://deutsche-online-schule.com/schooltools/verwaltung/api/workadventure_museum_open.php?board=hallnotice01",title);
+  }
   let label = "";
   currentAction = null;
   $("cinema-open").hidden = world.id !== "kino";
@@ -354,6 +372,14 @@ function refresh() {
   } else if (cinema) {
     label = "Kino oeffnen";
     currentAction = openCinema;
+  } else if (hallAction) {
+    const kind=hallAction.properties.find((p) => p.name === "hallAction").value;
+    label=kind==="games"?"Spielrunden":"Schlossbrett";
+    currentAction=()=>openPanel(kind==="games"?new URL("hall-games.html",location.href).href:
+      "https://deutsche-online-schule.com/schooltools/verwaltung/api/workadventure_museum_open.php?board=hallnotice01",label);
+  } else if (podium) {
+    label = "Podest im Spiel oeffnen";
+    currentAction=()=>window.open("https://together.deine-schule.com/_/global/wvh-web.github.io/workadventure_outside01/castle/grosse-halle.tmj","_blank","noopener");
   } else if (external) {
     label = "Lehrerzimmer oeffnen";
     currentAction = () =>
@@ -599,7 +625,7 @@ window.addEventListener("load", () => window.lucide?.createIcons());
 await load(
   manifest.worlds.some((w) => w.id === location.hash.slice(1))
     ? location.hash.slice(1)
-    : "erdgeschoss",
+    : "grosse-halle",
 );
 resize();
 setMode(true);

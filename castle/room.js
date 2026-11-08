@@ -8,6 +8,7 @@ const inside = (p, a) =>
 export function readLayout(map) {
   const result = {
     id: props(map).castleMapId,
+    hallUrl: props(map).castleHallUrl,
     seats: [],
     groups: [],
     quiet: [],
@@ -107,7 +108,21 @@ export class CastleRoom {
       void this.syncPosition();
     }, 400);
     this.refresh();
+    if (this.layout.hallUrl && this.wa.nav?.goToRoom)
+      this.wa.ui.actionBar.addButton({id:"castle-return-hall", label:"Grosse Halle", callback:()=>{
+        void this.returnToHall().catch((error)=>console.warn("Castle return:",error.message));
+      }});
     return this;
+  }
+  async returnToHall() {
+    if (!this.layout.hallUrl || !this.wa.nav?.goToRoom || this.riding || this.navigating) return false;
+    this.navigating = true;
+    try {
+      await this.stand();
+      if (this.audioTask) await bounded(this.audioTask,2500).catch(()=>{});
+      await this.wa.nav.goToRoom(this.layout.hallUrl);
+      return true;
+    } finally { this.navigating = false; }
   }
   syncPosition() {
     if (this.positionTask) return this.positionTask;
@@ -428,6 +443,7 @@ export class CastleRoom {
     this.prompt?.remove();
     this.wa.ui.actionBar.removeButton("castle-stand");
     this.wa.ui.actionBar.removeButton("castle-ride-stop");
+    this.wa.ui.actionBar.removeButton("castle-return-hall");
     for (const sub of this.subscriptions) sub?.unsubscribe?.();
     this.wa.controls.restorePlayerControls();
     this.wa.controls.restorePlayerProximityMeeting();
@@ -435,12 +451,14 @@ export class CastleRoom {
     void this.wa.player.state.saveVariable(STATE, null, PUBLIC).catch(() => {});
   }
 }
-if (typeof WA !== "undefined")
-  WA.onInit()
+export const castleRoomReady = typeof WA !== "undefined"
+  ? WA.onInit()
     .then(async () => {
       const room = new CastleRoom(WA, readLayout(await WA.room.getTiledMap()));
       await room.start();
       window.castleRoom = room;
       window.addEventListener("pagehide", () => room.dispose(), { once: true });
+      return room;
     })
-    .catch((e) => console.error("Castle room initialization:", e.message));
+    .catch((e) => { console.error("Castle room initialization:", e.message); return null; })
+  : Promise.resolve(null);

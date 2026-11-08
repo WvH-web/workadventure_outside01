@@ -47,8 +47,8 @@ function reached(map, start) {
   }
   return seen;
 }
-test("five modular maps have valid native grids, gids and local assets", () => {
-  assert.equal(maps.size, 5);
+test("six modular maps have valid native grids, gids and local assets", () => {
+  assert.equal(maps.size, 6);
   for (const map of maps.values()) {
     assert.equal(map.tilewidth, 32);
     assert.equal(map.tileheight, 32);

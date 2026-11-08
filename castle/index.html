@@ -3,16 +3,17 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Schulschloss - Grundriss</title>
-    <link rel="stylesheet" href="preview.css?v=20261107-ms4" />
+    <title>Schulschloss</title>
+    <link rel="stylesheet" href="preview.css?v=20261107-hall1" />
     <link rel="icon" href="art/portrait.gif" type="image/gif" />
     <script defer src="vendor/lucide.min.js"></script>
   </head>
   <body>
     <header>
-      <a class="brand" href="./">Schulschloss <span>Grundriss</span></a>
+      <a class="brand" href="./">Schulschloss <span>Vorschau</span></a>
       <label class="sr-only" for="floor">Karte</label>
       <select id="floor">
+        <option value="grosse-halle">Gro&szlig;e Halle</option>
         <option value="erdgeschoss">Erdgeschoss</option>
         <option value="mittelstufe">Mittelstufenraum</option>
         <option value="obergeschoss">Obergeschoss</option>
@@ -71,6 +72,7 @@
         <button id="cinema-open" hidden>
           <i data-lucide="clapperboard"></i>Kino oeffnen
         </button>
+        <button id="hall-open" hidden><i data-lucide="panel-right-open"></i><span id="hall-open-label">Schlossbrett</span></button>
         <button id="action" hidden></button>
         <div id="touch-controls" aria-label="Laufsteuerung">
           <button data-dir="up" aria-label="Nach oben">
@@ -89,7 +91,7 @@
       </section>
       <aside id="content" hidden>
         <div class="content-bar">
-          <strong>Kino</strong
+          <strong id="content-title">Kino</strong
           ><a
             id="content-external"
             target="_blank"
@@ -114,6 +116,6 @@
         ></iframe>
       </aside>
     </main>
-    <script type="module" src="preview.js?v=20261107-ms4"></script>
+    <script type="module" src="preview.js?v=20261107-hall1"></script>
   </body>
 </html>

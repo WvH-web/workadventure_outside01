@@ -1,0 +1,17 @@
+{
+  "name": "wvh-hall-audio",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Independent, lease-protected Great Hall audio gateway",
+  "engines": { "node": ">=24" },
+  "scripts": {
+    "start": "node server.cjs",
+    "test": "node --test ../../tests/hall-audio.test.cjs ../../tests/hall-widget.test.cjs",
+    "vendor": "node vendor-client.cjs"
+  },
+  "dependencies": {
+    "jose": "6.2.3",
+    "livekit-client": "2.19.2",
+    "livekit-server-sdk": "2.15.3"
+  }
+}

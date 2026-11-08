@@ -39,6 +39,26 @@ function fixture(id = 1) {
   return { wa, controller, calls, state, remotes, moved, changed };
 }
 
+test('voluntary hall return stands up first and keeps the original castle exit', async () => {
+  const f = fixture();
+  const destinations = [];
+  f.wa.nav = {goToRoom: async url => destinations.push(url)};
+  await f.controller.start();
+  try {
+    assert.ok(f.calls.buttons.has('teacher-lounge-hall'));
+    const seat = layout.seats[0];
+    f.moved.emit({x:seat.standX,y:seat.standY});
+    await f.controller.sit(seat.id);
+    assert.equal(await f.controller.returnToHall(),true);
+    assert.equal(f.calls.disabled,false);
+    assert.equal(f.state[SEAT_KEY],null);
+    assert.deepEqual(destinations,[layout.hallUrl]);
+    assert.match(layout.hallUrl,/castle\/grosse-halle\.tmj#vom-lehrerzimmer$/);
+    assert.equal(map.layers.find(l=>l.name==='exitSouth').properties[0].value,'Schloss01.tmj');
+  } finally {f.controller.dispose();}
+  assert.equal(f.calls.buttons.size,0);
+});
+
 test('native tile dimensions, gids and empty entry markers are consistent', () => {
   assert.equal(map.width, 24); assert.equal(map.height, 16); assert.equal(map.tilewidth, 32);
   for (const l of map.layers.filter((l) => l.type === 'tilelayer')) {

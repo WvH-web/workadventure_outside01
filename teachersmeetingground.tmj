@@ -5183,7 +5183,12 @@
     {
       "name": "script",
       "type": "string",
-      "value": "assets/teacher-lounge-20261107/room.js?v=20261107-3"
+      "value": "assets/teacher-lounge-20261107/room.js?v=20261107-hall1"
+    },
+    {
+      "name": "teacherLoungeHallUrl",
+      "type": "string",
+      "value": "https://together.deine-schule.com/_/global/wvh-web.github.io/workadventure_outside01/castle/grosse-halle.tmj#vom-lehrerzimmer"
     },
     {
       "name": "teacherLoungeResources",

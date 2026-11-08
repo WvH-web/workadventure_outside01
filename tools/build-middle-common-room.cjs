@@ -218,7 +218,7 @@ async function buildMiddleCommonRoom(source) {
         [layout.exit.x, layout.exit.y],
         [layout.exit.x + 1, layout.exit.y],
       ]),
-      [P("exitUrl", "erdgeschoss.tmj#mittelstufe-anreise")],
+      [P("exitUrl", "grosse-halle.tmj#mittelstufe")],
     ),
   );
   layers.push(
@@ -370,6 +370,7 @@ async function buildMiddleCommonRoom(source) {
       P("script", "room.js?v=" + version),
       P("castleArtScale", scale),
       P("castleMapId", "mittelstufe"),
+      P("castleHallUrl", "https://together.deine-schule.com/_/global/wvh-web.github.io/workadventure_outside01/castle/grosse-halle.tmj"),
       P(
         "mapCopyright",
         "Original artwork generated for deine Schule. Original fantasy school interior.",
@@ -447,8 +448,8 @@ async function buildMiddleCommonRoom(source) {
         y: layout.exit.y * T,
         width: layout.exit.width * T,
         height: layout.exit.height * T,
-        target: "erdgeschoss.tmj",
-        entry: "mittelstufe-anreise",
+        target: "grosse-halle.tmj",
+        entry: "mittelstufe",
       },
     ],
     entries,
