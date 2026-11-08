@@ -77,7 +77,8 @@ async function buildFurnishedRoom(options={}){
     if(!protectedAvatar&&polygons.some(p=>inside(x+.5,y+.5,p))){foregroundPixels++;frontCells.add(Math.floor(y/T)*W+Math.floor(x/T))}
     else data.fill(0,(y*info.width+x)*4,(y*info.width+x)*4+4);
   }
-  await sharp(data,{raw:{width:info.width,height:info.height,channels:4}}).png({compressionLevel:9}).toFile(path.join(art,'fronts.png'));
+  const frontFile=scene.frontFile||'fronts.png';
+  await sharp(data,{raw:{width:info.width,height:info.height,channels:4}}).png({compressionLevel:9}).toFile(path.join(art,frontFile));
   await sharp({create:{width:T,height:T,channels:4,background:'#00000000'}}).png().toFile(path.join(art,'marker.png'));
   const village=JSON.parse(fs.readFileSync(path.join(root,'village/wa-headquarters.tmj'))),fire=village.tilesets.find(t=>t.name==='fire');
   const animation=fire.tiles.find(t=>t.id===112).animation,frames=[],flames=[];
@@ -119,7 +120,7 @@ async function buildFurnishedRoom(options={}){
       ...(scene.storyVariable?[P('castleStoryVariable',scene.storyVariable)]:[]),
       P('castleMapdata',JSON.stringify(mapdata)),P('mapCopyright',options.copyright||'Original library and book-club artwork generated for deine Schule; approved Great Hall reading furniture; existing village fire animation.')],
     tilesets:[imageSet(1,'Schlossbibliothek','floor.png',W,count,W*T,H*T),imageSet(collisionGid,'Collision marker','marker.png',1,1,T,T,{tiles:[{id:0,properties:[P('collides',true)]}]}),
-      imageSet(entryGid,'Entry marker','marker.png',1,1,T,T),imageSet(frontGid,'Moebel-Vorderkanten','fronts.png',W,count,W*T,H*T),imageSet(fireGid,'Bibliothekskamin','fire.png',animation.length*3,animation.length*6,animation.length*96,64,{tiles:fireTiles})]};
+      imageSet(entryGid,'Entry marker','marker.png',1,1,T,T),imageSet(frontGid,'Moebel-Vorderkanten',frontFile,W,count,W*T,H*T),imageSet(fireGid,'Bibliothekskamin','fire.png',animation.length*3,animation.length*6,animation.length*96,64,{tiles:fireTiles})]};
   const world={id,width:W,height:H,illustrated:true,artScale:1,rooms:scene.groups.map(g=>({id:g.id,title:g.label,x:g.x,y:g.y,width:g.width,height:g.height,floor:id})),
     seats,rides:[],entries:scene.entries,links:[{name:'halle',x:e.x*T,y:e.y*T,width:e.width*T,height:e.height*T,target:e.target,entry:e.entry}],mapdata};
   fs.writeFileSync(path.join(root,'castle',id+'.tmj'),JSON.stringify(map)+'\n');writeWam(map,path.join(root,'castle'));

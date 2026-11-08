@@ -1,10 +1,10 @@
 {
-  "width":28,"height":20,"tileSize":32,"avatarPixels":32,"expectedSeats":12,"revision":"20261108-gs1",
+  "width":28,"height":20,"tileSize":32,"avatarPixels":32,"expectedSeats":12,"revision":"20261108-gs2","frontFile":"fronts-gs2.png",
   "entries":{"start":[13,17],"halle":[13,17]},
   "exit":{"x":13,"y":19,"width":2,"height":1,"target":"grosse-halle.tmj","entry":"grundschule"},
   "circle":{"source":"../grosse-halle-20261108-scale/kaminrunde.png","reference":"../grosse-halle-20261108-scale/layout.json","x":104,"y":288,"sourceX":208,"sourceY":368,"width":230,"height":180},
   "bookclub":{"x":592,"y":400,"width":192,"height":160,"columns":[56,136],"northY":32,"northStandY":0,"southY":130,"southStandY":160,"label":"Bau- und Spieltisch"},
-  "window":{"columns":[744,800],"y":210,"standY":272,"label":"Musikbank"},
+  "window":{"columns":[744,800],"y":196,"standY":272,"label":"Musikbank"},
   "groups":[
     {"id":"lesekamin","label":"Vorlese- und Erzaehlrunde","x":64,"y":256,"width":288,"height":272},
     {"id":"fensterleser","label":"Musiknische","x":688,"y":128,"width":144,"height":208},
@@ -12,8 +12,8 @@
   ],
   "collisions":[
     {"id":"north-main","x":0,"y":0,"width":704,"height":256,"preserve":true},
-    {"id":"north-window","x":704,"y":0,"width":128,"height":192,"preserve":true},
-    {"id":"window-bench","x":704,"y":192,"width":128,"height":64,"preserve":false},
+    {"id":"north-window","x":704,"y":0,"width":128,"height":160,"preserve":true},
+    {"id":"window-bench","x":704,"y":160,"width":128,"height":96,"preserve":false},
     {"id":"west-wall","x":0,"y":0,"width":64,"height":640,"preserve":true},
     {"id":"east-wall","x":832,"y":0,"width":64,"height":640,"preserve":true},
     {"id":"south-west","x":0,"y":592,"width":400,"height":48,"preserve":true},

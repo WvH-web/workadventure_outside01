@@ -3,7 +3,7 @@ const {chromium}=require('./castle-deps.cjs')('playwright'),sharp=require('./cas
 const {join,sit,move,stats,writeAudio,audioFixture}=require('./check-cinema-live.cjs');
 const out=path.resolve(__dirname,'../../output/primary-live-qa');fs.mkdirSync(out,{recursive:true});
 const base='https://together.deine-schule.com/~/castle-preview/';
-const options={roomId:'grundschule',roomUrl:base+'grundschule.wam',outputDir:out,label:'Grundschulprobe',seats:12,groups:3,revision:'20261108-gs1',parking:[[112,272],[592,352],[720,288],[432,560]]};
+const options={roomId:'grundschule',roomUrl:base+'grundschule.wam#start',outputDir:out,label:'Grundschulprobe',seats:12,groups:3,revision:'20261108-gs2',parking:[[112,272],[592,352],[720,288],[432,560]]};
 const storyUrl='https://wvh-web.github.io/workadventure_outside01/castle/story.html';
 async function findRoom(user,id){
   let frame;

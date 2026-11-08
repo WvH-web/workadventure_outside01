@@ -1,7 +1,7 @@
 # Begehbarer Schlossgrundriss
 
 Modulare Schloss-Vorschau, ab 7. November 2026. Drei Karten zeigen noch
-die Raum- und Laufplanung. Mittelstufenraum, Grosse Halle, Kino und Bibliothek sind bereits als
+die Raum- und Laufplanung. Mittelstufenraum, Grosse Halle, Kino, Bibliothek und Grundschulstube sind als
 detailreich gemalte Einrichtungen im Stil des bestehenden Lehrerzimmers umgesetzt.
 Bestehende Karten, das Kino-Projekt und das Weihnachtsspiel werden nicht ersetzt.
 Die neuen Karten bleiben eine separate Testvorschau. Bestehende Schuelereingaenge
@@ -64,6 +64,23 @@ Originaladresse. Sein bisheriger Ausgang und seine Zugangspruefung bleiben
 unveraendert. Der freiwillige Ruecklink stellt vor dem Kartenwechsel wieder auf.
 Die Wohnraumtueren sind Platzhalter fuer die vorhandene Sternenhueter-Anwendung.
 Es werden weder deren Testguthaben noch lokale Zimmerdaten veroeffentlicht.
+
+## Aktivitaeten und Gemeinschaftsstuben
+
+Grundschule und Mittelstufe bieten jetzt nutzbare Aktivitaeten statt nur
+dekorativer Spielmoebel. Die Grundschulstube hat Erzaehlkarten, PhET-Bausteinraetsel
+und eine Musikwerkstatt. In der Mittelstufe oeffnen sich Erzaehlkarten, eure
+vorhandenen Verwaltungs-Spielrunden und die Musikwerkstatt. Einzelheiten,
+Quellen, Datenschutzgrenzen, Grafiken und Prompts: `ACTIVITIES.md`.
+
+Die Fassung vom 8. November 2026 ist mit vier getrennten Testprofilen nativ
+abgenommen: drei Hoerbereiche mit Stehplaetzen, getrennte Parallelgespraeche,
+beidseitige Live-Kartenwechsel ohne Neuladen, spaeter Beitritt, Schliessen und
+Wiedereroeffnen, unabhaengige Runden zwischen Grundschule und Mittelstufe,
+alle zwoelf neuen Sitze und beide Richtungen der neuen Hallentuer.
+Andere offene Seitenfenster bleiben erhalten. Keine Browserfehler.
+130 Kernpruefungen sowie Desktop-/Mobilpruefungen und beide echten eingebetteten
+Experimente bestanden. Kuenstliche Konten und Sprachton, kein 400-Personen-Lasttest.
 
 ## Gruppen und Kino
 

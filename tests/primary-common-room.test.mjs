@@ -41,7 +41,7 @@ test('all seat approaches are reachable, protected fixtures stay solid and arriv
 });
 test('foreground matches the source pixels and protects all heads, torsos and the walking passage',async()=>{
   const floor=await sharp(fs.readFileSync(new URL('floor.png',art))).ensureAlpha().raw().toBuffer();
-  const fronts=await sharp(fs.readFileSync(new URL('fronts.png',art))).ensureAlpha().raw().toBuffer();
+  const fronts=await sharp(fs.readFileSync(new URL(source.scene.frontFile||'fronts.png',art))).ensureAlpha().raw().toBuffer();
   for(let i=0;i<fronts.length;i+=4)if(fronts[i+3])assert.deepEqual(fronts.subarray(i,i+4),floor.subarray(i,i+4));
   for(const s of l.seats)for(let y=s.y-22;y<s.y+(s.facing==='down'?11:3);y++)for(let x=s.x-10;x<s.x+10;x++)assert.equal(fronts[(y*896+x)*4+3],0,s.id);
   for(let y=256;y<592;y++)assert.equal(fronts[(y*896+448)*4+3],0);

@@ -70,6 +70,13 @@ privaten Schlossplaene oder versteckten Verbindungen.
 
 Neue Grafiken wurden mit dem integrierten Bildgenerator erzeugt. Originale und
 finale Prompts: `art/grundschule-20261108/` und `art/story-cards-20261108/`.
+Die Raumgrafik ist `grundschule-20261108/room-source.png`, die freigestellte
+Bautisch-Variante `grundschule-20261108/bookclub-source.png`; zugehoerige Prompts
+sind `room-prompt.txt` und `table-prompt.txt`. Die Bautisch-Variante wurde aus der
+Bibliotheks-Tischgruppe abgeleitet; das Bibliotheksoriginal blieb unveraendert.
+Der Bildkartenbogen ist `story-cards-20261108/atlas-source.png`, sein finaler
+Prompt `story-cards-20261108/prompt.txt`. Die neun kleinen WebP-Bilder werden
+deterministisch daraus abgeleitet und sparen Uebertragungsvolumen im Seitenfenster.
 Die Sofa-/Sesselgruppe stammt in unveraenderter Groesse aus der abgenommenen Halle.
 Die Bibliotheksgrafik und deren Daten bleiben unveraendert. Der gemeinsame
 Raumbauer wird auch fuer die neue Stube verwendet, ohne den Standardbau der
@@ -80,3 +87,21 @@ Tests: `tests/activities.test.mjs`, `tests/primary-common-room.test.mjs`,
 `tools/check-primary-live.cjs`. Der lokale Vorschaumodus der Erzaehlkarten
 ist ausdruecklich nicht gemeinsam; echte Synchronisation wird nur nativ geprueft.
 Private Testkonten, Tonquelle und Bildschirmbilder bleiben ausserhalb des Repositorys.
+
+## Abnahme am 8. November 2026
+
+130 Kernpruefungen bestanden. Die Vorschau mit acht Karten und allen zwoelf
+neuen Sitzplaetzen bestand bei 1440, 390 und 320 Pixel Breite ohne Layout- oder
+Browserfehler. Vier Erzaehlkarten-Ansichten und beide echten eingebetteten
+Experimente bestanden die gesonderte Darstellungspruefung.
+
+Vier getrennte native Profile bestaetigten alle drei Hoerbereiche inklusive
+Stehplaetzen, getrennte Parallelgespraeche, beidseitige Kartenwechsel ohne
+Neuladen, den spaeteren Beitritt eines dritten Lesers, Schliessen/Wiedereroeffnen,
+das Behalten anderer offener Webseiten, getrennte Grundschul-/Mittelstufenrunden,
+alle zwoelf Sitze, nichtleere Desktop-/Mobilgrafik und beide Richtungen der
+Hallentuer. Keine Browserfehler. Nur kuenstliche Konten und Sprachton verwendet;
+dies ist keine Hardware- oder 400-Personen-Lastabnahme.
+
+Alle acht Vorschau-Wrapper wurden geprueft und ohne Server-Neustart aktualisiert.
+Das bisherige Schloss, Village, Lehrerzimmer, Kino und Bibliothek blieben unveraendert.

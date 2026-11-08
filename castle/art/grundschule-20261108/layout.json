@@ -5,7 +5,8 @@
     "tileSize": 32,
     "avatarPixels": 32,
     "expectedSeats": 12,
-    "revision": "20261108-gs1",
+    "revision": "20261108-gs2",
+    "frontFile": "fronts-gs2.png",
     "entries": {
       "start": [
         13,
@@ -54,7 +55,7 @@
         744,
         800
       ],
-      "y": 210,
+      "y": 196,
       "standY": 272,
       "label": "Musikbank"
     },
@@ -98,15 +99,15 @@
         "x": 704,
         "y": 0,
         "width": 128,
-        "height": 192,
+        "height": 160,
         "preserve": true
       },
       {
         "id": "window-bench",
         "x": 704,
-        "y": 192,
+        "y": 160,
         "width": 128,
-        "height": 64,
+        "height": 96,
         "preserve": false
       },
       {
@@ -441,7 +442,7 @@
       "id": "fenster-0",
       "label": "Musikbank 1",
       "x": 744,
-      "y": 210,
+      "y": 196,
       "standX": 744,
       "standY": 272,
       "facing": "down",
@@ -451,7 +452,7 @@
       "id": "fenster-1",
       "label": "Musikbank 2",
       "x": 800,
-      "y": 210,
+      "y": 196,
       "standX": 800,
       "standY": 272,
       "facing": "down",
@@ -498,15 +499,15 @@
       "x": 704,
       "y": 0,
       "width": 128,
-      "height": 192,
+      "height": 160,
       "preserve": true
     },
     {
       "id": "window-bench",
       "x": 704,
-      "y": 192,
+      "y": 160,
       "width": 128,
-      "height": 64,
+      "height": 96,
       "preserve": false
     },
     {
@@ -954,9 +955,9 @@
     "groups": 3,
     "sofaWidthPixels": 100,
     "bookclubChairWidthPixels": 40,
-    "blockedTiles": 323,
+    "blockedTiles": 320,
     "reachableFloorTiles": 232,
-    "foregroundPixels": 19839,
+    "foregroundPixels": 19959,
     "sourceSha256": "017de2089ad35d621b8e5cc0321503b118af049cd757f763554f52b24650ffe3"
   }
 }
