@@ -16,7 +16,7 @@ export class CastleCinema {
     const active=this.isInside();
     if(!active){
       if(this.buttonLabel){this.wa.ui.actionBar.removeButton(buttonId);this.buttonLabel='';}
-      if(this.website||this.openTask)void this.close();
+      if(this.website||this.openTask)void this.close().catch(e=>console.warn('Cinema departure:',e.message));
       return;
     }
     this.updateButton();
