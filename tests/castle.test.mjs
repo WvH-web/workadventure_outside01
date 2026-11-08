@@ -92,8 +92,12 @@ test("five modular maps have valid native grids, gids and local assets", () => {
 test("illustrated common room has twelve distinct seats in three separate conversation groups", () => {
   const map = maps.get("mittelstufe"),
     layout = readLayout(map);
-  assert.equal(map.width, 24);
-  assert.equal(map.height, 16);
+  assert.equal(map.width, 30);
+  assert.equal(map.height, 20);
+  assert.equal(
+    map.properties.find((p) => p.name === "castleArtScale").value,
+    1.25,
+  );
   assert.equal(layout.seats.length, 12);
   assert.equal(new Set(layout.seats.map((s) => s.id)).size, 12);
   assert.equal(layout.groups.length, 3);
@@ -107,7 +111,7 @@ test("illustrated common room has twelve distinct seats in three separate conver
       "area-" + seat.audioGroup,
     );
   }
-  assert.equal(conversationAt(layout, { x: 384, y: 440 }, null), null);
+  assert.equal(conversationAt(layout, { x: 480, y: 560 }, null), null);
   for (const a of layout.groups)
     for (const b of layout.groups) {
       if (a === b) continue;
@@ -162,19 +166,36 @@ test("every entry and seat fits an avatar body and is reachable", () => {
 
 test("illustrated foreground copies original furniture pixels without opaque rectangular cutouts", async () => {
   const art = new URL("art/mittelstufe-20261107/", base);
+  const map = maps.get("mittelstufe");
   const source = await sharp(
-    fs.readFileSync(new URL("source.png", art)),
+    fs.readFileSync(new URL("source-ms3.png", art)),
   ).metadata();
   assert.equal(source.width, 1536);
   assert.equal(source.height, 1024);
-  const floor = await sharp(fs.readFileSync(new URL("floor.png", art)))
+  const floor = await sharp(
+    fs.readFileSync(new URL(map.tilesets[0].image, base)),
+  )
     .ensureAlpha()
     .raw()
     .toBuffer();
-  const fronts = await sharp(fs.readFileSync(new URL("fronts.png", art)))
+  const fronts = await sharp(
+    fs.readFileSync(
+      new URL(
+        map.tilesets.find((t) => t.name === "Moebel-Vorderkanten").image,
+        base,
+      ),
+    ),
+  )
     .ensureAlpha()
     .raw()
     .toBuffer();
+  for (const seat of readLayout(map).seats) {
+    let visible = 0;
+    for (let y = seat.y - 16; y < seat.y - 6; y++)
+      for (let x = seat.x - 6; x < seat.x + 6; x++)
+        if (!fronts[(y * 960 + x) * 4 + 3]) visible++;
+    assert.ok(visible >= 72, `Head covered by foreground at ${seat.id}`);
+  }
   let opaque = 0;
   for (let i = 0; i < fronts.length; i += 4) {
     if (!fronts[i + 3]) continue;
@@ -182,12 +203,35 @@ test("illustrated foreground copies original furniture pixels without opaque rec
     assert.equal(fronts[i + 3], 255);
     assert.deepEqual(fronts.subarray(i, i + 4), floor.subarray(i, i + 4));
   }
-  assert.ok(opaque > 5000 && opaque < 50000);
+  assert.ok(opaque > 5000 && opaque < 25000);
   assert.equal(
-    fronts[(440 * 768 + 384) * 4 + 3],
+    fronts[(560 * 960 + 480) * 4 + 3],
     0,
     "Main walkway must not cover avatar",
   );
+});
+
+test("common room preview and native map share the new geometry without shrinking the avatar", () => {
+  const map = maps.get("mittelstufe"),
+    world = manifest.worlds.find((w) => w.id === "mittelstufe");
+  assert.equal(world.width, map.width);
+  assert.equal(world.height, map.height);
+  assert.deepEqual(world.seats, readLayout(map).seats);
+  assert.ok(world.width * world.height > 24 * 16);
+  for (const y of [240, 336, 432, 560])
+    assert.ok(free(map, 480, y), "Central route blocked at " + y);
+  for (const [x, y] of [
+    [704, 336],
+    [256, 272],
+    [480, 208],
+    [64, 224],
+  ])
+    assert.equal(free(map, x, y), false, "Furniture or wall has no collision");
+  assert.ok(
+    !map.properties.some((p) => /playerScale|avatarScale/.test(p.name)),
+  );
+  const front = map.layers.find((l) => l.name === "furniture-fronts");
+  assert.ok(front.data.filter(Boolean).length < 100);
 });
 test("internal doors have real return destinations away from arrival triggers", () => {
   for (const world of manifest.worlds)

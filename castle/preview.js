@@ -1,4 +1,4 @@
-import { readLayout, conversationAt } from "./room.js?v=20261107-ms1";
+import { readLayout, conversationAt } from "./room.js?v=20261107-ms3";
 const $ = (id) => document.getElementById(id);
 function showError() {
   const retry = document.createElement("button");
@@ -16,7 +16,7 @@ window.addEventListener("error", (event) => {
 });
 const canvas = $("map"),
   ctx = canvas.getContext("2d");
-const manifest = await fetch("layout.json?v=20261107-ms1").then((r) =>
+const manifest = await fetch("layout.json?v=20261107-ms3").then((r) =>
   r.json(),
 );
 const images = new Map();
@@ -142,7 +142,7 @@ async function load(id, entry = "start") {
     if (!cache.has(id))
       cache.set(
         id,
-        await fetch(id + ".tmj?v=20261107-ms1").then((r) => {
+        await fetch(id + ".tmj?v=20261107-ms3").then((r) => {
           if (!r.ok) throw Error("Karte nicht erreichbar");
           return r.json();
         }),
@@ -373,12 +373,12 @@ function avatar(c, p) {
   rect(c, 2, 8, 6, 7, "#3a3e46");
   rect(c, -8, -6, 16, 17, "#3b638b");
   const facing = seat?.facing || "down";
-  rect(c, -6, -18, 13, 13, facing === "up" ? "#674c47" : "#edc298");
-  rect(c, -7, -21, 14, 7, "#674c47");
+  rect(c, -6, -16, 13, 11, facing === "up" ? "#674c47" : "#edc298");
+  rect(c, -7, -16, 14, 4, "#674c47");
   rect(c, -5, -8, 11, 3, "#c86461");
   if (facing !== "up") {
-    rect(c, facing === "left" ? -5 : 3, -13, 2, 2, "#434548");
-    if (facing === "down") rect(c, -4, -13, 2, 2, "#434548");
+    rect(c, facing === "left" ? -5 : 3, -10, 2, 2, "#434548");
+    if (facing === "down") rect(c, -4, -10, 2, 2, "#434548");
   }
   if (seat) {
     rect(c, -9, 8, 8, 4, "#3a3e46");

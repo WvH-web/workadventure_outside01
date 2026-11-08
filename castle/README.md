@@ -71,6 +71,13 @@ Der Kamin verwendet die vorhandene native Feueranimation und leises Prasseln.
 Das Schachbrett und die Kreativmaterialien sind derzeit Einrichtung, kein neuer
 Schach- oder Zeicheneditor. Die drei Gespraechsbereiche sind voneinander getrennt.
 
+Die Rot-Gold-Variante ist 30 x 20 statt 24 x 16 Kacheln gross. Die Raumflaeche ist
+damit groesser, waehrend die einzelnen Stuehle und Sessel deutlich kleiner
+gezeichnet sind. Die Spielfigur bleibt im normalen 32-Pixel-Massstab. Die
+Vorschau verwendet ebenfalls einen 32 Pixel hohen Platzhalter, keinen
+mitvergroesserten Avatar. Sitzpunkte, Masken, Hindernisse, Feuer und Gruppen
+werden aus derselben aktuellen Raumvorlage erzeugt.
+
 Die Raumgrafik wurde mit dem eingebauten Bildgenerator und dem Lehrerzimmer
 als reiner Stilreferenz erstellt. Original, Produktionsprompt, 1:2 verkleinerter
 Spielboden und pixelgetreue Vordergrundmaske liegen unter

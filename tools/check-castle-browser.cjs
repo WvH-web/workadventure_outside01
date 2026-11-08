@@ -6,10 +6,8 @@ const root = path.resolve(__dirname, ".."),
 fs.mkdirSync(out, { recursive: true });
 const base = process.argv[2] || "http://127.0.0.1:4192/";
 const commonRoom = JSON.parse(
-  fs.readFileSync(
-    path.join(root, "castle/art/mittelstufe-20261107/layout.json"),
-  ),
-);
+  fs.readFileSync(path.join(root, "castle/layout.json")),
+).worlds.find((w) => w.id === "mittelstufe");
 function assert(ok, message) {
   if (!ok) throw Error(message);
 }
@@ -234,7 +232,11 @@ function assert(ok, message) {
         );
       }
       assert(
-        await page.evaluate(() => window.castlePreview.moveTo(368, 464)),
+        await page.evaluate(
+          (link) =>
+            window.castlePreview.moveTo(link.x + link.width / 2, link.y - 16),
+          commonRoom.links[0],
+        ),
         "Return door approach blocked",
       );
       await page.keyboard.down("ArrowDown");
