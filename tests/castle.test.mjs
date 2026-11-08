@@ -274,7 +274,7 @@ test("all 48 front cinema seats are quiet; all 16 rear seats have table groups",
     assert.equal(conversationAt(layout, s, s)?.quiet, true);
   for (const s of rear) {
     assert.equal(conversationAt(layout, s, s)?.quiet, undefined);
-    assert.ok(conversationAt(layout, s, s)?.id.startsWith("table-"));
+    assert.equal(conversationAt(layout, s, s)?.id, "area-" + s.audioGroup);
   }
 });
 test("reading group joins separate tables and covers standing participants too", () => {

@@ -3,6 +3,7 @@ const path = require("node:path");
 const dep = require("./castle-deps.cjs");
 const { buildMiddleCommonRoom } = require("./build-middle-common-room.cjs");
 const { buildGreatHall } = require("./build-great-hall.cjs");
+const { buildCinema } = require("./build-cinema.cjs");
 const { nativeTarget, writeWam } = require("./castle-wam.cjs");
 const { createCanvas, loadImage } = dep("@napi-rs/canvas");
 const sharp = dep("sharp");
@@ -1459,43 +1460,6 @@ function crop(source, id, x, y, width, height) {
   m.oid = source.oid;
   return m;
 }
-function cinema() {
-  const m = new World("kino", 48, 44);
-  m.fill("floors", 3, 3, 42, 39, "stone");
-  m.room("kinosaal", "Kino", 4, 4, 40, 34, "cinema", [[22, 37, 4, 1]]);
-  m.put("cinema-screen", 17, 6, "furniture", true);
-  for (let row = 0; row < 6; row++)
-    for (let col = 0; col < 8; col++)
-      m.chair(
-        "kino-" + row + "-" + col,
-        9 + col * 4,
-        12 + row * 3,
-        "up",
-        "",
-        "chair-plum",
-      );
-  for (let i = 0; i < 4; i++)
-    m.table("kino-lounge-" + i, 7 + i * 10, 33, "chair-teal");
-  m.area("kino-film", 5, 8, 38, 29, [
-    ["openWebsite", "https://deutsche-online-schule.com/kino/public/kino.php"],
-    ["openWebsiteTrigger", "onaction"],
-    ["openWebsiteTriggerMessage", "Kino oeffnen"],
-    ["openWebsiteWidth", 60],
-    [
-      "openWebsitePolicy",
-      "fullscreen; autoplay; encrypted-media; picture-in-picture",
-    ],
-  ]);
-  m.area("kino-ruhezone", 5, 10, 38, 19, [["silent", true]]);
-  m.label("Ruhezone", 21, 10, "#ead6c0", 18);
-  m.label("Gespraechsplaetze", 19, 30, "#ead6c0", 18);
-  m.label("Foyer", 21, 39, "#ead6c0", 18);
-  m.put("plant", 5, 8, "furniture", true);
-  m.put("plant", 41, 8, "furniture", true);
-  m.portal("foyer", 22, 40, 4, 1, "grosse-halle.tmj", "kino");
-  m.entries = { start: [24, 38], foyer: [24, 38] };
-  return m;
-}
 function splitCampus() {
   const all = campus();
   const eg = crop(all, "erdgeschoss", 20, 10, 88, 70);
@@ -1623,7 +1587,7 @@ async function main() {
   sharp.cache(false);
   fs.mkdirSync(out, { recursive: true });
   await createArt();
-  const worlds = [...splitCampus(), upstairs(), cinema()];
+  const worlds = [...splitCampus(), upstairs()];
   // Collision tile 2 is deliberately transparent, separate from the visible ground.
   cells[1] = createCanvas(T, T);
   const atlas = createCanvas(
@@ -1649,6 +1613,7 @@ async function main() {
   }
   const middle = await buildMiddleCommonRoom();
   const hall = await buildGreatHall();
+  const cinema = await buildCinema();
   const manifest = {
     version: 1,
     tileSize: T,
@@ -1672,6 +1637,7 @@ async function main() {
       })),
       middle.world,
       hall.world,
+      cinema.world,
     ],
   };
   fs.writeFileSync(

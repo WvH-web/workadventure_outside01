@@ -157,7 +157,7 @@ async function checkSeats(page, world, viewport) {
     const state = await page.evaluate(() => window.castlePreview.state);
     assert(state.seat === seat.id, "Wrong illustrated seat: " + seat.id);
     assert(state.position.x === seat.x && state.position.y === seat.y, "Wrong avatar position: " + seat.id);
-    assert(state.conversation?.id === "area-" + seat.audioGroup, "Wrong conversation: " + seat.id);
+    assert(state.conversation?.id === (seat.audioGroup ? "area-" + seat.audioGroup : "quiet"), "Wrong conversation: " + seat.id);
     await layoutCheck(page, "seated " + seat.id);
     if (viewport.width > 1000) await screenshot(page, `${world.id}-seat-${seat.id}`, viewport);
     if (world.id === "grosse-halle" && seat.audioGroup === "spieltreff") { await checkGames(page, viewport, seat); gamePanels++; }
@@ -263,6 +263,10 @@ async function checkBoard(page, viewport) {
         assert(await page.evaluate(() => window.castlePreview.state.world === "grosse-halle"), "MS exit returned to EG instead of Hall");
         await walkThrough(page, hall.links.find((l) => l.target === "mittelstufe.tmj"));
         await load(page, "kino");
+        const cinemaSeats = await checkSeats(page, worlds.get("kino"), viewport);
+        await page.click("#overview");
+        await screenshot(page, "kino-overview", viewport);
+        await page.click("#explore");
         await page.click("#cinema-open");
         await page.frameLocator("#content-frame").getByText("Kinoverbindung", { exact: true }).waitFor();
         await layoutCheck(page, "cinema panel");
@@ -286,7 +290,7 @@ async function checkBoard(page, viewport) {
         await page.click("#overview");
         await layoutCheck(page, "final Hall");
         const layoutPassed = !layoutFindings.some((f) => f.viewport.width === viewport.width);
-        results.push({ viewport, pixels, maps: maps.length, defaultHall: true, hallSeats: hallSeats.seats, middleSeats: middleSeats.seats, seatedGamePanels: hallSeats.seatedGamePanels, noticeboardCmsPanel: true, gameCmsTitles: true, nativeAnimationPixelStates: animations, hallRoundTrips: hallTrips, commonRoomReturnsToHall: true, protectedTeacherLink: true, cinemaPanel: true, blurStopsMovement: true, layoutPassed });
+        results.push({ viewport, pixels, maps: maps.length, defaultHall: true, hallSeats: hallSeats.seats, middleSeats: middleSeats.seats, cinemaSeats:cinemaSeats.seats, seatedGamePanels: hallSeats.seatedGamePanels, noticeboardCmsPanel: true, gameCmsTitles: true, nativeAnimationPixelStates: animations, hallRoundTrips: hallTrips, commonRoomReturnsToHall: true, protectedTeacherLink: true, cinemaPanel: true, blurStopsMovement: true, layoutPassed });
         console.log(JSON.stringify({ viewport, status: layoutPassed ? "passed" : "functional checks passed; layout finding", hallSeats: hallSeats.seats, maps: maps.length }));
       } catch (error) {
         await screenshot(page, "failed", viewport).catch(() => {});

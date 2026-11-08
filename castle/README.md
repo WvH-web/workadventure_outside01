@@ -1,7 +1,7 @@
 # Begehbarer Schlossgrundriss
 
-Modulare Schloss-Vorschau, 7. November 2026. Die vier grossen Karten zeigen noch
-die Raum- und Laufplanung. Mittelstufenraum und Grosse Halle sind bereits als
+Modulare Schloss-Vorschau, ab 7. November 2026. Drei Karten zeigen noch
+die Raum- und Laufplanung. Mittelstufenraum, Grosse Halle und Kino sind bereits als
 detailreich gemalte Einrichtungen im Stil des bestehenden Lehrerzimmers umgesetzt.
 Bestehende Karten, das Kino-Projekt und das Weihnachtsspiel werden nicht ersetzt.
 Die neuen Karten bleiben eine separate Testvorschau. Bestehende Schuelereingaenge
@@ -35,7 +35,8 @@ bleibt bis zur ausdruecklichen Freigabe unveraendert.
 - `erdgeschoss.tmj`: Grosse Halle, Grundschule, Mittelstufe, Bibliothek,
   Musikzimmer, Museum, Atelier, Wohnfluegel, Spielesaal, Lehrersalon und Kinofoyer.
 - `obergeschoss.tmj`: Oberstufe, Leseturm, Sternwarte, Wandelsaal, Festsaal und Werkstatt.
-- `kino.tmj`: 48 ruhige Zuschauerplaetze vorne und 16 Gespraechsplaetze hinten.
+- `kino.tmj`: Kompaktes gemaltes Schlosskino, 30 x 28 Kacheln, 48 ruhige
+  Zuschauerplaetze vorne und vier Gespraechstische mit insgesamt 16 Plaetzen hinten.
 - `umgebung.tmj`: Schlossansicht, Dorfplatz, Bachbruecke, Markt, Schlossgarten,
   Rutschenturm und vorbereiteter Rundkurs.
 - `mittelstufe.tmj`: Gemalter Gemeinschaftsraum, vom Mittelstufenbereich im
@@ -84,6 +85,18 @@ Die Kinoruhezone verwendet zusaetzlich die native Silent-Eigenschaft. Dort wird
 keine Gespraechsgruppe aufgebaut. Der bestehende synchrone Player laeuft im
 Seitenfenster; dessen Anmeldung und Alterspruefung werden nicht nachgebaut.
 Ein Platzwechsel innerhalb des Saals verlaesst die gemeinsame Filmflaeche nicht.
+
+Das Kino verwendet die bestaetigte Halleneinrichtung als Massstabs- und
+Stilreferenz. Die Kinosessel sind 32 x 36 Pixel gross. Architektur, Sessel und
+die kleinen Popcorn-Tische wurden als getrennte Bildquellen mit dem integrierten
+Bildgenerator erstellt. Leinwand, Vorhaenge, Buecher, Pflanzen, Decken und
+Filmrequisiten bilden einen kleinen Kinosaal; sechs Kerzen flackern nativ.
+Die neutrale Leinwandgrafik ist kein zweiter Filmplayer. Quellen, Produktionsprompts
+und editierbare Anordnung: `art/kino-20261108/`. Neubau:
+`node tools/build-cinema.cjs --update-world`. Die vorhandene Kino-Anwendung und
+das alte Schloss werden nicht ersetzt. Alle 64 Plaetze wurden in der
+Browservorschau bei 1440, 390 und 320 Pixel Breite geprueft; der Film-Endpunkt
+wird bei automatisierten Pruefungen durch eine neutrale Testseite ersetzt.
 
 Die eigenstaendige Browservorschau simuliert Bewegung, Sitzen und Gruppenanzeige.
 Sie stellt keine echten Videokonferenzen oder andere Online-Spieler nach.

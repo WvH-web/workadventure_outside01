@@ -1,69 +1,69 @@
 {
   "version": "2.1.0",
-  "mapUrl": "https://wvh-web.github.io/workadventure_outside01/castle/kino.tmj",
+  "mapUrl": "https://wvh-web.github.io/workadventure_outside01/castle/kino.tmj?v=20261108-kino1",
   "entities": {},
   "areas": [
     {
-      "id": "a861b896-35b7-4229-b1d4-9f22d08943f0",
-      "name": "Sitzplatz",
-      "x": 232,
-      "y": 1000,
-      "width": 80,
+      "id": "ca0e4711-3b0b-4082-8f3e-76a7b901dde2",
+      "name": "Gespraechstisch 1",
+      "x": 48,
+      "y": 672,
+      "width": 176,
       "height": 176,
       "visible": true,
       "properties": [
         {
-          "id": "1db8722b-447d-4981-a892-e58b7e56218f",
+          "id": "65949d95-343e-424b-a6df-374052225472",
           "type": "livekitRoomProperty",
-          "roomName": "school-castle-v2-kino-table-kino-lounge-0"
+          "roomName": "school-castle-v2-kino-area-kino-lounge-0"
         }
       ]
     },
     {
-      "id": "e57af8f3-007c-49b2-82c3-17aa638b5d05",
-      "name": "Sitzplatz",
-      "x": 552,
-      "y": 1000,
-      "width": 80,
+      "id": "1734d7e4-1d50-4d60-9b8c-fdb4febd4c4a",
+      "name": "Gespraechstisch 2",
+      "x": 256,
+      "y": 672,
+      "width": 176,
       "height": 176,
       "visible": true,
       "properties": [
         {
-          "id": "1e362f84-8db0-4202-a1b6-85fc84530e32",
+          "id": "760a6c29-2859-48cf-8c89-855b04b1f315",
           "type": "livekitRoomProperty",
-          "roomName": "school-castle-v2-kino-table-kino-lounge-1"
+          "roomName": "school-castle-v2-kino-area-kino-lounge-1"
         }
       ]
     },
     {
-      "id": "04a71739-f91c-4c7f-a593-eb3dc1897c65",
-      "name": "Sitzplatz",
-      "x": 872,
-      "y": 1000,
-      "width": 80,
+      "id": "cedc68fd-c952-4c54-866f-6c46fd9c8931",
+      "name": "Gespraechstisch 3",
+      "x": 528,
+      "y": 672,
+      "width": 176,
       "height": 176,
       "visible": true,
       "properties": [
         {
-          "id": "9d7e7329-9b3b-47b7-8cfd-ff7bb772e662",
+          "id": "442f5968-b420-4166-82f0-3d3654615cc6",
           "type": "livekitRoomProperty",
-          "roomName": "school-castle-v2-kino-table-kino-lounge-2"
+          "roomName": "school-castle-v2-kino-area-kino-lounge-2"
         }
       ]
     },
     {
-      "id": "84fb9857-4e03-4855-a739-dd8dbc08428e",
-      "name": "Sitzplatz",
-      "x": 1192,
-      "y": 1000,
-      "width": 80,
+      "id": "228d909b-2db2-45c4-b0a1-c45f757865c9",
+      "name": "Gespraechstisch 4",
+      "x": 736,
+      "y": 672,
+      "width": 176,
       "height": 176,
       "visible": true,
       "properties": [
         {
-          "id": "95fdf20b-5d79-4a05-8e07-becf3026cfec",
+          "id": "4722e459-26b6-481e-bb5d-beeac1a0cd8f",
           "type": "livekitRoomProperty",
-          "roomName": "school-castle-v2-kino-table-kino-lounge-3"
+          "roomName": "school-castle-v2-kino-area-kino-lounge-3"
         }
       ]
     }
@@ -77,9 +77,9 @@
     }
   },
   "metadata": {
-    "name": "Schulschloss Kino",
-    "description": "Begehbare Grundriss-Vorschau. Bestehende Schulangebote bleiben unveraendert.",
-    "copyright": "",
-    "thumbnail": "https://wvh-web.github.io/workadventure_outside01/castle/undefined"
+    "name": "Schlosskino",
+    "description": "Ein kleines Schlosskino mit ruhigen Filmsesseln und vier gemuetlichen Gespraechstischen.",
+    "copyright": "Original room and cinema chair generated for deine Schule. Furniture at the approved Great Hall avatar scale; existing village flame animation.",
+    "thumbnail": "https://wvh-web.github.io/workadventure_outside01/castle/art/kino-20261108/floor.png"
   }
 }
