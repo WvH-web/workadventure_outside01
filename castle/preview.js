@@ -1,4 +1,4 @@
-import { readLayout, conversationAt } from "./room.js";
+import { readLayout, conversationAt } from "./room.js?v=20261107-ms1";
 const $ = (id) => document.getElementById(id);
 function showError() {
   const retry = document.createElement("button");
@@ -16,25 +16,42 @@ window.addEventListener("error", (event) => {
 });
 const canvas = $("map"),
   ctx = canvas.getContext("2d");
-const manifest = await fetch("layout.json").then((r) => r.json());
-const atlas = await new Promise((resolve, reject) => {
-  const img = new Image();
-  img.onload = () => resolve(img);
-  img.onerror = reject;
-  img.src = "art/castle-atlas.png";
-});
+const manifest = await fetch("layout.json?v=20261107-ms1").then((r) =>
+  r.json(),
+);
+const images = new Map();
+function loadImage(src) {
+  if (!images.has(src))
+    images.set(
+      src,
+      new Promise((resolve, reject) => {
+        const img = new Image();
+        img.onload = () => resolve(img);
+        img.onerror = () => reject(Error("Raumgrafik nicht erreichbar"));
+        img.src = src;
+      }),
+    );
+  return images.get(src);
+}
 const cache = new Map(),
   keys = new Set();
 const compactTitles = {
-  wohnen: "Wohnen", grundschule: "Grundschule", mittelstufe: "Mittelstufe",
-  schloss: "Schloss", dorf: "Dorfplatz", markt: "Markt & Garten",
-  rutsche: "Rutsche", kurs: "Rundkurs"
+  wohnen: "Wohnen",
+  grundschule: "Grundschule",
+  mittelstufe: "Mittelstufe",
+  schloss: "Schloss",
+  dorf: "Dorfplatz",
+  markt: "Markt & Garten",
+  rutsche: "Rutsche",
+  kurs: "Rundkurs",
 };
 let world,
   map,
   layout,
   background,
   front,
+  tilesets = [],
+  index = new Map(),
   animated = [],
   position = { x: 0, y: 0 },
   seat = null,
@@ -48,13 +65,14 @@ let world,
   drag = null,
   ride = null;
 const reduced = matchMedia("(prefers-reduced-motion: reduce)").matches;
-const index = new Map(manifest.animations.map((a) => [a.id + 1, a.animation]));
 function tile(c, gid, x, y) {
   if (!gid) return;
-  const i = gid - 1,
-    cols = atlas.width / 32;
+  const ts = tilesets.findLast((t) => gid >= t.firstgid);
+  if (!ts || gid >= ts.firstgid + ts.tilecount) return;
+  const i = gid - ts.firstgid,
+    cols = ts.columns;
   c.drawImage(
-    atlas,
+    ts.bitmap,
     (i % cols) * 32,
     Math.floor(i / cols) * 32,
     32,
@@ -124,12 +142,32 @@ async function load(id, entry = "start") {
     if (!cache.has(id))
       cache.set(
         id,
-        await fetch(id + ".tmj").then((r) => {
+        await fetch(id + ".tmj?v=20261107-ms1").then((r) => {
           if (!r.ok) throw Error("Karte nicht erreichbar");
           return r.json();
         }),
       );
     map = cache.get(id);
+    tilesets = await Promise.all(
+      map.tilesets.map(async (ts) => ({
+        ...ts,
+        bitmap: await loadImage(ts.image),
+      })),
+    );
+    tilesets.sort((a, b) => a.firstgid - b.firstgid);
+    index = new Map(
+      tilesets.flatMap((ts) =>
+        (ts.tiles || [])
+          .filter((t) => t.animation)
+          .map((t) => [
+            ts.firstgid + t.id,
+            t.animation.map((f) => ({
+              gid: ts.firstgid + f.tileid,
+              duration: f.duration,
+            })),
+          ]),
+      ),
+    );
     world = manifest.worlds.find((w) => w.id === id);
     layout = readLayout(map);
     $("floor").value = id;
@@ -154,8 +192,8 @@ async function load(id, entry = "start") {
       const target = layer.name === "furniture-fronts" ? f : b;
       layer.data.forEach((gid, i) => {
         if (!gid) return;
-        const x = (i % map.width) * 32,
-          y = Math.floor(i / map.width) * 32;
+        const x = (i % map.width) * 32 + (layer.offsetx || 0),
+          y = Math.floor(i / map.width) * 32 + (layer.offsety || 0);
         if (index.has(gid))
           animated.push({ gid, x, y, animation: index.get(gid) });
         else tile(target, gid, x, y);
@@ -275,9 +313,11 @@ function refresh() {
       erdgeschoss: "Wandelgang",
       obergeschoss: "Wandelgang",
       kino: "Foyer",
+      mittelstufe: "Mittelstufenraum",
     }[world.id];
   const conversation = conversationAt(layout, position, seat);
-  $("conversation").textContent = conversation?.label || "";
+  $("conversation").textContent =
+    conversation?.label === room?.title ? "" : conversation?.label || "";
   for (const b of document.querySelectorAll("#rooms button"))
     b.setAttribute("aria-current", String(b.dataset.room === room?.id));
   const candidate = nearestSeat(),
@@ -332,10 +372,14 @@ function avatar(c, p) {
   rect(c, -7, 8, 6, 7, "#3a3e46");
   rect(c, 2, 8, 6, 7, "#3a3e46");
   rect(c, -8, -6, 16, 17, "#3b638b");
-  rect(c, -6, -18, 13, 13, "#edc298");
+  const facing = seat?.facing || "down";
+  rect(c, -6, -18, 13, 13, facing === "up" ? "#674c47" : "#edc298");
   rect(c, -7, -21, 14, 7, "#674c47");
   rect(c, -5, -8, 11, 3, "#c86461");
-  rect(c, 1, -13, 2, 2, "#434548");
+  if (facing !== "up") {
+    rect(c, facing === "left" ? -5 : 3, -13, 2, 2, "#434548");
+    if (facing === "down") rect(c, -4, -13, 2, 2, "#434548");
+  }
   if (seat) {
     rect(c, -9, 8, 8, 4, "#3a3e46");
     rect(c, 2, 8, 8, 4, "#3a3e46");
@@ -397,7 +441,7 @@ function draw(now) {
     const dpr = canvas.width / canvas.clientWidth;
     ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
     ctx.clearRect(0, 0, canvas.clientWidth, canvas.clientHeight);
-    ctx.fillStyle = "#416650";
+    ctx.fillStyle = world.illustrated ? "#252b28" : "#416650";
     ctx.fillRect(0, 0, canvas.clientWidth, canvas.clientHeight);
     ctx.translate(canvas.clientWidth / 2, canvas.clientHeight / 2);
     ctx.scale(zoom, zoom);
@@ -413,7 +457,7 @@ function draw(now) {
         if (time < f.duration) break;
         time -= f.duration;
       }
-      tile(ctx, frame.tileid + 1, a.x, a.y);
+      tile(ctx, frame.gid, a.x, a.y);
     }
     if (groups) {
       for (const a of layout.groups) {
@@ -430,12 +474,13 @@ function draw(now) {
     }
     avatar(ctx, position);
     ctx.drawImage(front, 0, 0);
-    if (overview && zoom < 0.65) {
+    if (overview && zoom < 0.65 && !world.illustrated) {
       ctx.font = `500 ${12 / zoom}px "Segoe UI",sans-serif`;
       ctx.textAlign = "center";
       ctx.textBaseline = "top";
       for (const r of world.rooms) {
-        const text = canvas.clientWidth < 500 ? compactTitles[r.id] || r.title : r.title,
+        const text =
+            canvas.clientWidth < 500 ? compactTitles[r.id] || r.title : r.title,
           tw = ctx.measureText(text).width;
         ctx.fillStyle = "#f5f6efe8";
         ctx.fillRect(

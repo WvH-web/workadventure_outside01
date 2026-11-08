@@ -1,0 +1,291 @@
+{
+  "width": 24,
+  "height": 16,
+  "tileSize": 32,
+  "entries": { "start": [11, 13], "vom-flur": [11, 13] },
+  "seats": [
+    {
+      "id": "sofa-links",
+      "label": "Sofaplatz",
+      "x": 170,
+      "y": 226,
+      "standX": 128,
+      "standY": 192,
+      "facing": "down",
+      "audioGroup": "kaminrunde"
+    },
+    {
+      "id": "sofa-mitte",
+      "label": "Sofaplatz",
+      "x": 202,
+      "y": 226,
+      "standX": 288,
+      "standY": 224,
+      "facing": "down",
+      "audioGroup": "kaminrunde"
+    },
+    {
+      "id": "sofa-rechts",
+      "label": "Sofaplatz",
+      "x": 234,
+      "y": 226,
+      "standX": 288,
+      "standY": 208,
+      "facing": "down",
+      "audioGroup": "kaminrunde"
+    },
+    {
+      "id": "sessel-links",
+      "label": "Lesesessel",
+      "x": 114,
+      "y": 296,
+      "standX": 144,
+      "standY": 352,
+      "facing": "right",
+      "audioGroup": "kaminrunde"
+    },
+    {
+      "id": "sessel-rechts",
+      "label": "Lesesessel",
+      "x": 288,
+      "y": 296,
+      "standX": 352,
+      "standY": 320,
+      "facing": "left",
+      "audioGroup": "kaminrunde"
+    },
+    {
+      "id": "fenstersitz",
+      "label": "Fensterbank",
+      "x": 100,
+      "y": 145,
+      "standX": 120,
+      "standY": 176,
+      "facing": "right",
+      "audioGroup": "kaminrunde"
+    },
+    {
+      "id": "spiel-nordwest",
+      "label": "Spieltisch",
+      "x": 484,
+      "y": 212,
+      "standX": 496,
+      "standY": 176,
+      "facing": "down",
+      "audioGroup": "spieltisch"
+    },
+    {
+      "id": "spiel-nordost",
+      "label": "Spieltisch",
+      "x": 576,
+      "y": 208,
+      "standX": 608,
+      "standY": 176,
+      "facing": "down",
+      "audioGroup": "spieltisch"
+    },
+    {
+      "id": "spiel-suedwest",
+      "label": "Spieltisch",
+      "x": 480,
+      "y": 277,
+      "standX": 464,
+      "standY": 336,
+      "facing": "up",
+      "audioGroup": "spieltisch"
+    },
+    {
+      "id": "spiel-suedost",
+      "label": "Spieltisch",
+      "x": 581,
+      "y": 277,
+      "standX": 608,
+      "standY": 336,
+      "facing": "up",
+      "audioGroup": "spieltisch"
+    },
+    {
+      "id": "kreativ-links",
+      "label": "Kreativplatz",
+      "x": 617,
+      "y": 431,
+      "standX": 560,
+      "standY": 448,
+      "facing": "up",
+      "audioGroup": "kreativecke"
+    },
+    {
+      "id": "kreativ-rechts",
+      "label": "Kreativplatz",
+      "x": 684,
+      "y": 431,
+      "standX": 684,
+      "standY": 464,
+      "facing": "up",
+      "audioGroup": "kreativecke"
+    }
+  ],
+  "blockedRectangles": [
+    [0, 0, 24, 5],
+    [0, 0, 1, 16],
+    [23, 0, 1, 16],
+    [0, 15, 11, 1],
+    [13, 15, 11, 1],
+    [1, 4, 2, 2],
+    [4, 4, 4, 2],
+    [9, 4, 6, 2],
+    [16, 4, 3, 2],
+    [21, 3, 2, 4],
+    [4, 5, 5, 3],
+    [5, 8, 3, 2],
+    [2, 7, 3, 4],
+    [7, 7, 4, 4],
+    [14, 6, 5, 4],
+    [17, 11, 6, 3],
+    [1, 11, 5, 4]
+  ],
+  "frontPolygons": [
+    [
+      [144, 237],
+      [252, 237],
+      [257, 249],
+      [247, 258],
+      [148, 258],
+      [138, 249]
+    ],
+    [
+      [136, 212],
+      [144, 208],
+      [151, 217],
+      [151, 242],
+      [144, 247],
+      [137, 243]
+    ],
+    [
+      [250, 207],
+      [262, 209],
+      [265, 221],
+      [263, 248],
+      [252, 250],
+      [249, 237]
+    ],
+    [
+      [76, 281],
+      [83, 279],
+      [89, 286],
+      [92, 299],
+      [118, 307],
+      [132, 302],
+      [141, 303],
+      [142, 315],
+      [129, 329],
+      [93, 325],
+      [83, 316]
+    ],
+    [
+      [132, 274],
+      [145, 276],
+      [151, 286],
+      [150, 304],
+      [140, 309],
+      [130, 300]
+    ],
+    [
+      [252, 280],
+      [263, 279],
+      [269, 291],
+      [288, 304],
+      [307, 300],
+      [317, 283],
+      [326, 285],
+      [327, 315],
+      [310, 340],
+      [280, 334],
+      [263, 321],
+      [251, 306]
+    ],
+    [
+      [517, 205],
+      [585, 227],
+      [589, 236],
+      [526, 271],
+      [464, 240],
+      [465, 230]
+    ],
+    [
+      [464, 221],
+      [480, 226],
+      [494, 222],
+      [497, 228],
+      [478, 236],
+      [466, 231]
+    ],
+    [
+      [560, 218],
+      [578, 219],
+      [590, 211],
+      [593, 218],
+      [581, 230],
+      [562, 226]
+    ],
+    [
+      [458, 281],
+      [500, 279],
+      [502, 291],
+      [494, 312],
+      [465, 312],
+      [459, 301]
+    ],
+    [
+      [552, 278],
+      [596, 275],
+      [600, 290],
+      [588, 315],
+      [554, 311]
+    ],
+    [
+      [600, 441],
+      [638, 441],
+      [638, 458],
+      [600, 458]
+    ],
+    [
+      [665, 441],
+      [701, 441],
+      [701, 459],
+      [665, 459]
+    ],
+    [
+      [70, 150],
+      [131, 150],
+      [131, 164],
+      [70, 164]
+    ]
+  ],
+  "groups": [
+    {
+      "id": "kaminrunde",
+      "label": "Kamin- und Leserunde",
+      "x": 32,
+      "y": 128,
+      "width": 400,
+      "height": 230
+    },
+    {
+      "id": "spieltisch",
+      "label": "Spieltisch",
+      "x": 448,
+      "y": 168,
+      "width": 192,
+      "height": 184
+    },
+    {
+      "id": "kreativecke",
+      "label": "Kreativecke",
+      "x": 544,
+      "y": 352,
+      "width": 192,
+      "height": 128
+    }
+  ]
+}

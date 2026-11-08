@@ -2,8 +2,12 @@ import test from "node:test";
 import assert from "node:assert/strict";
 import fs from "node:fs";
 import path from "node:path";
+import { createRequire } from "node:module";
 import { readLayout, conversationAt, CastleRoom } from "../castle/room.js";
 const base = new URL("../castle/", import.meta.url);
+const sharp = createRequire(import.meta.url)("../tools/castle-deps.cjs")(
+  "sharp",
+);
 const manifest = JSON.parse(fs.readFileSync(new URL("layout.json", base)));
 const maps = new Map(
   manifest.worlds.map((w) => [
@@ -43,28 +47,93 @@ function reached(map, start) {
   }
   return seen;
 }
-test("four modular maps have valid native grids, gids and local assets", () => {
-  assert.equal(maps.size, 4);
+test("five modular maps have valid native grids, gids and local assets", () => {
+  assert.equal(maps.size, 5);
   for (const map of maps.values()) {
     assert.equal(map.tilewidth, 32);
     assert.equal(map.tileheight, 32);
-    const ts = map.tilesets[0];
-    assert.ok(fs.existsSync(new URL(ts.image, base)));
-    const image = fs.readFileSync(new URL(ts.image, base));
-    assert.equal(image.readUInt32BE(16), ts.imagewidth);
-    assert.equal(image.readUInt32BE(20), ts.imageheight);
-    assert.equal(ts.columns * 32, ts.imagewidth);
-    assert.ok(ts.imagewidth <= 4096 && ts.imageheight <= 4096);
-    assert.equal(ts.tiles.find((t) => t.id === 1).properties[0].value, true);
+    for (const ts of map.tilesets) {
+      assert.ok(fs.existsSync(new URL(ts.image, base)));
+      const image = fs.readFileSync(new URL(ts.image, base));
+      assert.equal(image.readUInt32BE(16), ts.imagewidth);
+      assert.equal(image.readUInt32BE(20), ts.imageheight);
+      assert.equal(ts.columns * 32, ts.imagewidth);
+      assert.ok(ts.imagewidth <= 4096 && ts.imageheight <= 4096);
+    }
+    const collisionGids = new Set(
+      map.tilesets.flatMap((ts) =>
+        (ts.tiles || [])
+          .filter((t) =>
+            t.properties?.some(
+              (p) => p.name === "collides" && p.value === true,
+            ),
+          )
+          .map((t) => ts.firstgid + t.id),
+      ),
+    );
+    assert.ok(collisionGids.size > 0);
+    assert.ok(dataOf(map).every((g) => !g || collisionGids.has(g)));
     for (const layer of map.layers.filter((l) => l.type === "tilelayer")) {
       assert.equal(layer.data.length, map.width * map.height);
       assert.ok(
         layer.data.every(
-          (g) => Number.isInteger(g) && g >= 0 && g <= ts.tilecount,
+          (g) =>
+            Number.isInteger(g) &&
+            (g === 0 ||
+              map.tilesets.some(
+                (ts) => g >= ts.firstgid && g < ts.firstgid + ts.tilecount,
+              )),
         ),
       );
     }
   }
+});
+
+test("illustrated common room has twelve distinct seats in three separate conversation groups", () => {
+  const map = maps.get("mittelstufe"),
+    layout = readLayout(map);
+  assert.equal(map.width, 24);
+  assert.equal(map.height, 16);
+  assert.equal(layout.seats.length, 12);
+  assert.equal(new Set(layout.seats.map((s) => s.id)).size, 12);
+  assert.equal(layout.groups.length, 3);
+  for (const seat of layout.seats) {
+    assert.equal(
+      conversationAt(layout, seat, seat).id,
+      "area-" + seat.audioGroup,
+    );
+    assert.equal(
+      conversationAt(layout, { x: seat.standX, y: seat.standY }, null).id,
+      "area-" + seat.audioGroup,
+    );
+  }
+  assert.equal(conversationAt(layout, { x: 384, y: 440 }, null), null);
+  for (const a of layout.groups)
+    for (const b of layout.groups) {
+      if (a === b) continue;
+      assert.ok(
+        a.x + a.width <= b.x ||
+          b.x + b.width <= a.x ||
+          a.y + a.height <= b.y ||
+          b.y + b.height <= a.y,
+      );
+    }
+  const floorIndex = map.layers.findIndex((l) => l.name === "floorLayer");
+  assert.ok(
+    map.layers.findIndex((l) => l.name === "furniture-fronts") > floorIndex,
+  );
+  const fire = map.tilesets.find((t) => t.name === "fire");
+  assert.equal(fire.tiles.length, 6);
+  assert.ok(
+    fire.tiles.every(
+      (t) =>
+        t.animation.length === 7 &&
+        t.animation.every((f) => f.tileid < fire.tilecount),
+    ),
+  );
+  const audio = map.layers.find((l) => l.name === "ambience").objects[0];
+  const audioPath = audio.properties.find((p) => p.name === "playAudio").value;
+  assert.ok(fs.existsSync(new URL(audioPath, base)));
 });
 test("every entry and seat fits an avatar body and is reachable", () => {
   const failures = [];
@@ -89,6 +158,36 @@ test("every entry and seat fits an avatar body and is reachable", () => {
     }
   }
   assert.deepEqual(failures, []);
+});
+
+test("illustrated foreground copies original furniture pixels without opaque rectangular cutouts", async () => {
+  const art = new URL("art/mittelstufe-20261107/", base);
+  const source = await sharp(
+    fs.readFileSync(new URL("source.png", art)),
+  ).metadata();
+  assert.equal(source.width, 1536);
+  assert.equal(source.height, 1024);
+  const floor = await sharp(fs.readFileSync(new URL("floor.png", art)))
+    .ensureAlpha()
+    .raw()
+    .toBuffer();
+  const fronts = await sharp(fs.readFileSync(new URL("fronts.png", art)))
+    .ensureAlpha()
+    .raw()
+    .toBuffer();
+  let opaque = 0;
+  for (let i = 0; i < fronts.length; i += 4) {
+    if (!fronts[i + 3]) continue;
+    opaque++;
+    assert.equal(fronts[i + 3], 255);
+    assert.deepEqual(fronts.subarray(i, i + 4), floor.subarray(i, i + 4));
+  }
+  assert.ok(opaque > 5000 && opaque < 50000);
+  assert.equal(
+    fronts[(440 * 768 + 384) * 4 + 3],
+    0,
+    "Main walkway must not cover avatar",
+  );
 });
 test("internal doors have real return destinations away from arrival triggers", () => {
   for (const world of manifest.worlds)
@@ -314,6 +413,37 @@ test("native seating and standing preserve the avatar and clear transient state"
     await room.stand();
     assert.equal(f.calls.controls, true);
     assert.equal(f.state.castleSeatV1, null);
+  } finally {
+    room.dispose();
+  }
+});
+
+test("all twelve illustrated seats use native sitting and restore a reachable standing position", async () => {
+  const f = fixture(),
+    map = maps.get("mittelstufe"),
+    layout = readLayout(map);
+  const room = new CastleRoom(f.wa, layout, { delay: async () => {} });
+  await room.start();
+  try {
+    for (const s of layout.seats) {
+      f.moved.emit({ x: s.standX, y: s.standY });
+      assert.equal(await room.sit(s.id), true, s.id);
+      assert.deepEqual(await f.wa.player.getPosition(), { x: s.x, y: s.y });
+      assert.equal(f.state.castleSeatV1.id, s.id);
+      assert.equal(f.calls.controls, false);
+      await settle();
+      assert.ok(f.calls.joined.at(-1).name.endsWith("area-" + s.audioGroup));
+      await room.stand();
+      assert.deepEqual(await f.wa.player.getPosition(), {
+        x: s.standX,
+        y: s.standY,
+      });
+      assert.equal(f.calls.controls, true);
+      assert.equal(f.state.castleSeatV1, null);
+    }
+    f.moved.emit({ x: 368, y: 440 });
+    await settle();
+    assert.equal(f.calls.prox, true);
   } finally {
     room.dispose();
   }

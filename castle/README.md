@@ -1,10 +1,11 @@
 # Begehbarer Schlossgrundriss
 
-Erste modulare Grundriss-Vorschau, 7. November 2026. Die Grafik beschreibt Raum-
-und Laufplanung mit ersten Einrichtungen, nicht die endgueltige gemalte Schlosswelt.
+Modulare Schloss-Vorschau, 7. November 2026. Die vier grossen Karten zeigen noch
+die Raum- und Laufplanung. Der separate Mittelstufenraum ist bereits als
+detailreich gemalte Einrichtung im Stil des bestehenden Lehrerzimmers umgesetzt.
 Bestehende Karten, das Kino-Projekt und das Weihnachtsspiel werden nicht ersetzt.
 
-## Vier verbundene Karten
+## Fuenf verbundene Karten
 
 - `erdgeschoss.tmj`: Grosse Halle, Grundschule, Mittelstufe, Bibliothek,
   Musikzimmer, Museum, Atelier, Wohnfluegel, Spielesaal, Lehrersalon und Kinofoyer.
@@ -12,6 +13,8 @@ Bestehende Karten, das Kino-Projekt und das Weihnachtsspiel werden nicht ersetzt
 - `kino.tmj`: 48 ruhige Zuschauerplaetze vorne und 16 Gespraechsplaetze hinten.
 - `umgebung.tmj`: Schlossansicht, Dorfplatz, Bachbruecke, Markt, Schlossgarten,
   Rutschenturm und vorbereiteter Rundkurs.
+- `mittelstufe.tmj`: Gemalter Gemeinschaftsraum, vom Mittelstufenbereich im
+  Erdgeschoss erreichbar, mit Suedtuer zurueck zum Grundriss.
 
 Tiled kann jede TMJ direkt oeffnen. Tileset und Skriptpfade bleiben relativ.
 Neue Fluegel werden als weitere Karten mit eigenen IDs und eindeutigen
@@ -26,7 +29,8 @@ Es werden weder deren Testguthaben noch lokale Zimmerdaten veroeffentlicht.
 ## Gruppen und Kino
 
 `conversationGroup`-Objekte definieren zusammenhaengende Gespraechsflaechen:
-Bibliotheks-Lesekreis, Grundschul-Vorlesekreis, Leseturm und Gartenrunde.
+Bibliotheks-Lesekreis, Grundschul-Vorlesekreis, Leseturm und Gartenrunde sowie
+Kaminrunde, Spieltisch und Kreativecke im neuen Mittelstufenraum.
 Diese Gruppen haben Vorrang vor einzelnen Tischgruppen. Stehende und sitzende
 Teilnehmer innerhalb einer Flaeche gehoeren zur gleichen nativen Unterhaltung.
 Beim Verlassen wird die Gruppe verlassen und normale Naehe-Kommunikation wieder
@@ -55,10 +59,25 @@ damit Ebenen, Kollisionen und Spieler weiterhin kontrollierbar bleiben.
 Einige Effekte sind absichtlich selten; sie sind keine Wartezeit-Belohnungen.
 
 Alle Moebel sind am 32-Pixel-Raster und an einer normalen Spielfigur ausgerichtet.
-Die Vorschau hat 165 Sitzplaetze. Sofas und weitere Einrichtungsgegenstaende sind
+Die Vorschau hat 177 Sitzplaetze. Sofas und weitere Einrichtungsgegenstaende sind
 teilweise noch dekorative Platzhalter; nicht jede Sofagrafik ist bereits ein Sitz.
 Fuer die Endgrafik folgen eigene Raumansichten, Vordergrundteile und individuell
 ausgearbeitete Sitzecken. Der Grundriss wird vorher anhand echter Wege abgestimmt.
+
+Im gemalten Mittelstufenraum sind alle zwoelf Sitzplaetze einzeln ausgerichtet:
+drei Sofaplaetze, zwei Lesesessel, eine Fensterbank, vier Spieltischplaetze und
+zwei Kreativplaetze. Moebelvorderkanten liegen vor den Avataren, der Boden dahinter.
+Der Kamin verwendet die vorhandene native Feueranimation und leises Prasseln.
+Das Schachbrett und die Kreativmaterialien sind derzeit Einrichtung, kein neuer
+Schach- oder Zeicheneditor. Die drei Gespraechsbereiche sind voneinander getrennt.
+
+Die Raumgrafik wurde mit dem eingebauten Bildgenerator und dem Lehrerzimmer
+als reiner Stilreferenz erstellt. Original, Produktionsprompt, 1:2 verkleinerter
+Spielboden und pixelgetreue Vordergrundmaske liegen unter
+`art/mittelstufe-20261107/`. `layout.json` dort ist die editierbare Quelle fuer
+Sitze, Moebelmasken, Kollisionen und Gruppen. Neubau ueber
+`node tools/build-middle-common-room.cjs`, oder zusammen mit allen Karten ueber
+`node tools/build-castle.cjs`. Das originale Lehrerzimmer bleibt unveraendert.
 
 Die neue Portraetgrafik wurde mit dem eingebauten Bildgenerator erzeugt.
 `art/portrait-source.png` ist das unveraenderte Original. Produktionsprompt:

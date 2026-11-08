@@ -5,6 +5,11 @@ const root = path.resolve(__dirname, ".."),
   out = path.resolve(root, "../output/schulschloss-20261107");
 fs.mkdirSync(out, { recursive: true });
 const base = process.argv[2] || "http://127.0.0.1:4192/";
+const commonRoom = JSON.parse(
+  fs.readFileSync(
+    path.join(root, "castle/art/mittelstufe-20261107/layout.json"),
+  ),
+);
 function assert(ok, message) {
   if (!ok) throw Error(message);
 }
@@ -61,7 +66,13 @@ function assert(ok, message) {
       await page.screenshot({
         path: path.join(out, `grundriss-${viewport.width}.png`),
       });
-      for (const id of ["obergeschoss", "kino", "umgebung", "erdgeschoss"]) {
+      for (const id of [
+        "obergeschoss",
+        "kino",
+        "umgebung",
+        "mittelstufe",
+        "erdgeschoss",
+      ]) {
         await page.selectOption("#floor", id);
         await page.waitForFunction(
           (id) => window.castlePreview?.state.world === id,
@@ -157,6 +168,93 @@ function assert(ok, message) {
       await page.waitForFunction(
         () => window.castlePreview.state.world === "umgebung",
       );
+      await page.selectOption("#floor", "mittelstufe");
+      await page.waitForFunction(
+        () => window.castlePreview.state.world === "mittelstufe",
+      );
+      await page.click("#overview");
+      await page.waitForTimeout(300);
+      const firstFire = await page
+        .locator("canvas")
+        .evaluate((c) => c.toDataURL());
+      await page.waitForTimeout(300);
+      assert(
+        firstFire !==
+          (await page.locator("canvas").evaluate((c) => c.toDataURL())),
+        "Illustrated fireplace is static",
+      );
+      await page.screenshot({
+        path: path.join(out, `mittelstufe-fertig-${viewport.width}.png`),
+      });
+      for (const seat of commonRoom.seats) {
+        assert(
+          await page.evaluate(
+            (s) => window.castlePreview.moveTo(s.standX, s.standY),
+            seat,
+          ),
+          "Unreachable seat approach: " + seat.id,
+        );
+        await page
+          .getByRole("button", { name: "Hinsetzen", exact: true })
+          .click();
+        assert(
+          await page.evaluate(
+            (id) => window.castlePreview.state.seat === id,
+            seat.id,
+          ),
+          "Wrong illustrated seat: " + seat.id,
+        );
+        assert(
+          await page.evaluate(
+            (group) =>
+              window.castlePreview.state.conversation?.id === "area-" + group,
+            seat.audioGroup,
+          ),
+          "Wrong conversation: " + seat.id,
+        );
+        if (viewport.width > 1000) {
+          await page.waitForTimeout(150);
+          await page.screenshot({
+            path: path.join(out, `sitz-${seat.id}.png`),
+          });
+        }
+        await page
+          .getByRole("button", { name: "Aufstehen", exact: true })
+          .click();
+        assert(
+          await page.evaluate((s) => {
+            const state = window.castlePreview.state;
+            return (
+              !state.seat &&
+              state.position.x === s.standX &&
+              state.position.y === s.standY
+            );
+          }, seat),
+          "Standing failed: " + seat.id,
+        );
+      }
+      assert(
+        await page.evaluate(() => window.castlePreview.moveTo(368, 464)),
+        "Return door approach blocked",
+      );
+      await page.keyboard.down("ArrowDown");
+      await page.waitForTimeout(450);
+      await page.keyboard.up("ArrowDown");
+      await page.waitForFunction(
+        () => window.castlePreview.state.world === "erdgeschoss",
+      );
+      assert(
+        await page.evaluate(() =>
+          window.castlePreview.moveTo(72 * 32 + 16, 34 * 32 + 16),
+        ),
+        "Common room door approach blocked",
+      );
+      await page.keyboard.down("ArrowUp");
+      await page.waitForTimeout(450);
+      await page.keyboard.up("ArrowUp");
+      await page.waitForFunction(
+        () => window.castlePreview.state.world === "mittelstufe",
+      );
       await page.selectOption("#floor", "kino");
       await page.waitForFunction(
         () => window.castlePreview.state.world === "kino",
@@ -178,7 +276,9 @@ function assert(ok, message) {
       results.push({
         viewport,
         pixels,
-        maps: 4,
+        maps: 5,
+        illustratedSeats: commonRoom.seats.length,
+        commonRoomReturnTrip: true,
         seating: true,
         cinemaPanel: true,
         blurStopsMovement: true,

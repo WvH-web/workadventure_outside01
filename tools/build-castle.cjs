@@ -1,6 +1,7 @@
 const fs = require("node:fs");
 const path = require("node:path");
 const dep = require("./castle-deps.cjs");
+const { buildMiddleCommonRoom } = require("./build-middle-common-room.cjs");
 const { createCanvas, loadImage } = dep("@napi-rs/canvas");
 const sharp = dep("sharp");
 const root = path.resolve(__dirname, "..");
@@ -1507,6 +1508,9 @@ function splitCampus() {
   eg.table("foyer-tisch", 75, 13);
   eg.put("door", 75, 5);
   eg.portal("kinosaal", 75, 7, 3, 1, "kino.tmj", "foyer");
+  eg.put("door", 71, 31);
+  eg.portal("mittelstufenraum", 71, 33, 3, 1, "mittelstufe.tmj", "vom-flur");
+  eg.entries["mittelstufe-anreise"] = [72, 36];
   eg.portal("hof", 42, 69, 4, 1, "umgebung.tmj", "schlosstor");
   eg.portal("garten", 87, 60, 1, 4, "umgebung.tmj", "garten");
   const exterior = all;
@@ -1631,6 +1635,7 @@ async function main() {
       JSON.stringify(map) + "\n",
     );
   }
+  const middle = await buildMiddleCommonRoom();
   const manifest = {
     version: 1,
     tileSize: T,
@@ -1641,16 +1646,19 @@ async function main() {
       ]),
     ),
     animations,
-    worlds: worlds.map((w) => ({
-      id: w.id,
-      width: w.w,
-      height: w.h,
-      rooms: w.rooms,
-      seats: w.seats,
-      rides: w.rides,
-      links: w.links,
-      entries: w.entries,
-    })),
+    worlds: [
+      ...worlds.map((w) => ({
+        id: w.id,
+        width: w.w,
+        height: w.h,
+        rooms: w.rooms,
+        seats: w.seats,
+        rides: w.rides,
+        links: w.links,
+        entries: w.entries,
+      })),
+      middle.world,
+    ],
   };
   fs.writeFileSync(
     path.join(out, "layout.json"),
@@ -1699,11 +1707,11 @@ async function main() {
   }
   console.log(
     JSON.stringify({
-      maps: worlds.map((w) => ({
+      maps: manifest.worlds.map((w) => ({
         id: w.id,
         rooms: w.rooms.length,
         seats: w.seats.length,
-        tiles: w.w * w.h,
+        tiles: w.width * w.height,
       })),
       tiles: cells.length,
       animations: animations.length,
