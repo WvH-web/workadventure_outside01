@@ -19,6 +19,8 @@ for(const id of [...rooms.map(r=>r.id),'erdgeschoss','obergeschoss']){
     const map=read(id+'.tmj'),layout=readLayout(map),world=manifest.worlds.find(w=>w.id===id),hub=id==='erdgeschoss'||id==='obergeschoss';
     assert.deepEqual([map.width,map.height,map.tilewidth],[hub?40:28,22,32]);assert.equal(props(map).castleRevision,revision);
     assert.equal(world.illustrated,true);assert.deepEqual(world.seats,layout.seats);assert.equal(layout.seats.length,hub?10:12);
+    assert.equal(layout.returnLabel,hub?'Grosse Halle':['oberstufe','sternwarte'].includes(id)?'Obere Galerie':'Wandelgang');
+    assert.equal(new URL(props(map).script,'https://map.invalid/').searchParams.get('room'),id);
     assert.equal(createWam(map).areas.length,hub?2:3);
     for(const seat of layout.seats){
       const group=layout.groups.find(g=>g.group===seat.audioGroup);assert.ok(group);

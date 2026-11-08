@@ -1,4 +1,4 @@
-import {castleRoomReady} from './room.js?v=20261108-activities1';
+import {castleRoomReady} from './room.js?v=20261108-navigation1';
 const props=o=>Object.fromEntries((o.properties||[]).map(p=>[p.name,p.value]));
 const inside=(p,a)=>p.x>=a.x&&p.y>=a.y&&p.x<a.x+a.width&&p.y<a.y+a.height;
 const ownBase=new URL('.',import.meta.url);

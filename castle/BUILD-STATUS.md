@@ -50,18 +50,29 @@ Village und geschuetzte Lehrerzimmer werden nicht ersetzt.
   und Besuche. Lokale Testdaten bleiben unberuehrt und unveroeffentlicht.
 - Betriebs-, Wiederanlauf- und realistische Leistungstests vor breiter Nutzung.
   Kleine synthetische Mehrteilnehmerproben ersetzen keine Lastabnahme.
+- Zusaetzlich gewuenscht: unterschiedliche Teilnehmer-Avatare und ansprechbare,
+  eindeutig gekennzeichnete Schlossfiguren. Jung und alt, verschiedene Stile,
+  Hintergruende und Persoenlichkeiten; attraktive erwachsene Figuren bleiben
+  schulgeeignet. Figuren zaehlen nicht als echte Besucher und taeuschen keine
+  wartenden Mitschueler vor. Auswahl und Dialoge brauchen dieselbe native
+  Groessen-, Mehrspieler- und Berechtigungspruefung wie der uebrige Ausbau.
 
 ## Pruefstand der Innenausbaustufe
 
-Fassung `20261108-expansion1`: vollstaendiger Bau erfolgreich, 159 Kernpruefungen
+Fassung `20261108-expansion2`: vollstaendiger Bau erfolgreich, 160 Kernpruefungen
 bestanden. Die drei Browsergroessen 1440, 390 und 320 Pixel pruefen alle
 vierzehn Karten, alle neuen Sitzplaetze, jede neue Tuer und die vorhandenen
 Hallenfunktionen ohne Layout- oder Browserfehler. Neun gesonderte Inhaltsproben
 pruefen Museum, Musik und Expeditionen inklusive Bilder, Rueckweg aus einem
 Beitrag, geaenderte Daten und eine voruebergehend nicht erreichbare Verwaltung.
 
-Die native Vierpersonenprobe dieser Erweiterung ist in Vorbereitung und wird
-erst nach tatsaechlicher Durchfuehrung als bestanden vermerkt. Testberichte,
+Die native Vierpersonenprobe hat das Museum mit allen drei Hoergruppen, spaetem
+Beitritt, zwoelf Sitzen, fuenf Verwaltungsbildern und echtem eingebettetem
+Verwaltungsbeitrag geprueft. Beim folgenden Raumwechsel trat eine verzoegerte
+Initialisierung auf, die in der Einzelprobe nicht reproduziert wurde. Fassung 2
+verwendet eindeutig raumspezifische Skriptadressen und korrekt beschriftete
+Rueckwege. Die vollstaendige Mehrpersonen-Wiederholungsprobe steht noch aus;
+kein allgemeines Bestehen aller neuen Raeume wird daraus abgeleitet. Testberichte,
 synthetische Sprachdatei und kurzlebige Testzugriffe bleiben ausserhalb des
 oeffentlichen Repositorys.
 

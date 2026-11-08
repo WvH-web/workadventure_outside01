@@ -44,3 +44,17 @@ test('native meeting mode never duplicates rooms or disables their captured audi
   assert.equal(joins,0);
   assert.equal(proximityChanges,0);
 });
+
+test('the return command names its actual destination and preserves the original default',async()=>{
+  assert.equal(readLayout(map).returnLabel,'Grosse Halle');
+  const labeled=structuredClone(map);labeled.properties.push({name:'castleReturnLabel',type:'string',value:'Wandelgang'},
+    {name:'castleHallUrl',type:'string',value:'https://together.deine-schule.com/~/castle-preview/erdgeschoss.wam'});
+  const buttons=[],observable={subscribe:()=>({unsubscribe(){}})};
+  const wa={room:{id:roomId.replace('.tmj','.wam')},nav:{goToRoom:async()=>{}},
+    players:{configureTracking:async()=>{},onVariableChange:()=>observable},
+    player:{state:{saveVariable:async()=>{}},getPosition:async()=>({x:80,y:80}),onPlayerMove:()=>({unsubscribe(){}})},
+    ui:{actionBar:{addButton:b=>buttons.push(b),removeButton(){}}},controls:{restorePlayerControls(){}}};
+  const room=new CastleRoom(wa,readLayout(labeled));room.refresh=()=>{};room.syncPosition=async()=>{};
+  try{await room.start();assert.equal(buttons.find(b=>b.id==='castle-return-hall').label,'Wandelgang');}
+  finally{room.dispose();}
+});

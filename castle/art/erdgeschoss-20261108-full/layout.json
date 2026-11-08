@@ -4,7 +4,7 @@
     "height": 22,
     "tileSize": 32,
     "avatarPixels": 32,
-    "revision": "20261108-expansion1",
+    "revision": "20261108-expansion2",
     "entries": {
       "start": [
         19,
@@ -319,6 +319,8 @@
       "facingDownBottom": 11
     },
     "expectedSeats": 10,
+    "scriptRoomId": true,
+    "returnLabel": "Grosse Halle",
     "activities": [],
     "displays": [],
     "noHearth": true,

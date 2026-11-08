@@ -9,6 +9,7 @@ export function readLayout(map) {
   const result = {
     id: props(map).castleMapId,
     hallUrl: props(map).castleHallUrl,
+    returnLabel: props(map).castleReturnLabel || 'Grosse Halle',
     nativeMeetings: props(map).castleNativeMeetings === true,
     seats: [],
     groups: [],
@@ -136,7 +137,7 @@ export class CastleRoom {
     }, 400);
     this.refresh();
     if (this.layout.hallUrl && this.wa.nav?.goToRoom)
-      this.wa.ui.actionBar.addButton({id:"castle-return-hall", label:"Grosse Halle", callback:()=>{
+      this.wa.ui.actionBar.addButton({id:"castle-return-hall", label:this.layout.returnLabel || 'Grosse Halle', callback:()=>{
         void this.returnToHall().catch((error)=>console.warn("Castle return:",error.message));
       }});
     return this;

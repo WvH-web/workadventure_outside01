@@ -1,6 +1,9 @@
 # Schulschloss Raum und Begegnungskonzept
 
-Stand: 7. November 2026. Konzept zur Abstimmung, noch keine umgebaute Karte.
+Konzeptstand: 7. November 2026. Der Ausbau wird inzwischen in der getrennten
+Schlossvorschau umgesetzt. Aktueller Bau- und Pruefstand: [BUILD-STATUS](../castle/BUILD-STATUS.md).
+Die folgenden Raum- und Sozialfunktionen bleiben das vollstaendige Zielprogramm,
+nicht eine Behauptung, dass bereits alle davon fertig sind.
 
 ## Ziel
 

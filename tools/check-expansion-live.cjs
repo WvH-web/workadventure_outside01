@@ -5,7 +5,7 @@ const {rooms,revision}=require('./build-castle-expansion.cjs');
 const out=path.resolve(__dirname,'../../output/castle-expansion-live-qa');fs.mkdirSync(out,{recursive:true});
 const base='https://together.deine-schule.com/~/castle-preview/',web='https://wvh-web.github.io/workadventure_outside01/castle/';
 async function findRoom(user,id){
-  let frame;for(let n=0;n<100&&!frame;n++){
+  let frame;for(let n=0;n<240&&!frame;n++){
     for(const f of user.page.frames())if(await f.evaluate(id=>window.castleRoom?.layout.id===id,id).catch(()=>false))frame=f;
     if(!frame)await user.page.waitForTimeout(500);
   }
@@ -13,8 +13,10 @@ async function findRoom(user,id){
   await frame.waitForFunction(revision=>window.castleRoom?.layout&&WA.room.getTiledMap().then(m=>m.properties.find(p=>p.name==='castleRevision')?.value===revision),revision,{polling:200,timeout:30000});
 }
 async function travel(user,id){
+  await user.script.evaluate(()=>castleRoom.stand());const started=Date.now();
   await user.script.evaluate(url=>WA.nav.goToRoom(url),base+id+'.wam#start').catch(e=>{if(!/Execution context was destroyed|Frame was detached/.test(e.message))throw e;});
   await findRoom(user,id);
+  console.log(JSON.stringify({id,phase:'transition',milliseconds:Date.now()-started}));
 }
 async function audio(users){
   await users[0].page.waitForTimeout(2500);const before=await Promise.all(users.map(stats));
@@ -42,7 +44,7 @@ async function verifyStory(users){
   return {bothClientsShareRound:true,lateJoiner:true,reopenNoDuplicate:true};
 }
 async function checkGallery(user,id){
-  await sit(user,'buchclub-n0');const frame=await openActivity(user,'collection.html');
+  await sit(user,'buchclub-n1');const frame=await openActivity(user,'collection.html');
   await frame.locator('.exhibit').first().waitFor({timeout:30000});
   await frame.waitForFunction(()=>{const image=document.querySelector('.exhibit img');return image?.complete&&image.naturalWidth>0;},undefined,{polling:200,timeout:30000});
   assert.equal(await frame.locator('h1').textContent(),id==='museum'?'Schlossmuseum':'Band und Chor');
@@ -84,6 +86,7 @@ async function main(){
         assert.ok(window.after.slice(0,2).every(s=>s.rooms.some(r=>r.endsWith('area-fensterleser'))));
         assert.ok(!window.after[0].rooms.some(r=>window.after[2].rooms.includes(r)));
       }
+      console.log(JSON.stringify({id,phase:'audio and shared story',passed:true}));
       if(id==='museum'){
         await a.script.waitForFunction(()=>window.castleDisplays?.websites.size===5,undefined,{polling:200,timeout:30000});
         let pictures=[];for(let n=0;n<50;n++){
@@ -102,6 +105,7 @@ async function main(){
       await a.page.setViewportSize({width:390,height:844});await a.page.waitForTimeout(700);await a.page.screenshot({path:path.join(out,id+'-mobile.png')});
       await a.page.setViewportSize({width:1440,height:1000});
       results.push({id,groups:hub?2:3,participants:4,standingIncluded:true,parallelGroupsIsolated:true,allSeats:seatIds.length,story,images:id==='museum'?5:undefined,together,separated,window});
+      fs.writeFileSync(path.join(out,'progress.json'),JSON.stringify({revision,results,complete:false},null,2)+'\n');
       console.log(JSON.stringify({id,participants:4,groups:hub?2:3,allSeats:seatIds.length,story:!!story,passed:true}));
     }
     await a.script.evaluate(()=>castleRoom.returnToHall()).catch(e=>{if(!/Execution context was destroyed|Frame was detached/.test(e.message))throw e;});
@@ -116,6 +120,10 @@ async function main(){
     let n=0;for(const context of browser.contexts())for(const page of context.pages()){
       n++;await page.screenshot({path:path.join(out,'failure-'+n+'.png')}).catch(()=>{});
       fs.writeFileSync(path.join(out,'failure-'+n+'.txt'),await page.locator('body').innerText().catch(()=>''));
+      const states=[];
+      for(const frame of page.frames())states.push(await frame.evaluate(()=>({controller:window.castleRoom?.layout.id,seated:window.castleRoom?.seat?.id,
+        path:location.pathname})).catch(e=>({error:e.message})));
+      fs.writeFileSync(path.join(out,'failure-'+n+'-state.json'),JSON.stringify({states,errors:users[n-1]?.errors},null,2)+'\n');
     }
     throw error;
   }finally{await browser.close();}

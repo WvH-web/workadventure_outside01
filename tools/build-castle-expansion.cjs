@@ -1,7 +1,7 @@
 const fs=require('node:fs'),path=require('node:path');
 const {buildFurnishedRoom}=require('./build-library.cjs');
 const {createCanvas}=require('./castle-deps.cjs')('@napi-rs/canvas');
-const root=path.resolve(__dirname,'..'),revision='20261108-expansion1';
+const root=path.resolve(__dirname,'..'),revision='20261108-expansion2';
 const own='';
 const collection='https://together.deine-schule.com/castle-content/collection.html';
 const activity=(id,group,label,url,api=false)=>({id,group,label,url,api});
@@ -24,6 +24,7 @@ const rooms=[
 function roomScene(config){
   const scene=JSON.parse(fs.readFileSync(path.join(root,'castle/art/bibliothek-20261108/scene.json')));
   scene.revision=revision;scene.expectedSeats=12;scene.storyVariable='castleStory'+config.key;
+  scene.scriptRoomId=true;
   scene.window={columns:['museum','atelier','sternwarte'].includes(config.id)?[776,816]:[752,800],y:config.id==='sternwarte'?184:config.id==='museum'?200:204,standY:272,label:config.labels[1]};
   if(config.id==='sternwarte'){
     scene.collisions.find(r=>r.id==='north-window').height=160;
@@ -33,6 +34,7 @@ function roomScene(config){
   scene.bookclub.source='../bibliothek-20261108/bookclub-source.png';scene.bookclub.label=config.labels[2];
   scene.groups[0].label=config.labels[0];scene.groups[1].label=config.labels[1];scene.groups[2].label=config.labels[2];
   scene.exit={...scene.exit,target:config.parent+'.tmj',entry:config.id};
+  scene.returnLabel=config.parent==='obergeschoss'?'Obere Galerie':'Wandelgang';
   scene.entries={start:[13,19],flur:[13,19]};scene.activities=config.activities;scene.displays=config.displays||[];
   return scene;
 }
@@ -60,6 +62,7 @@ function corridorScene(id){
     {id:'south-west',x:0,y:672,width:608,height:32,preserve:true},{id:'south-east',x:672,y:672,width:608,height:32,preserve:true},
     {id:'table',x:976,y:480,width:128,height:64,preserve:true}];
   scene.exit={x:19,y:21,width:2,height:1,target:'grosse-halle.tmj',entry:upper?'vom-og':'wandelgang'};
+  scene.returnLabel='Grosse Halle';
   scene.entries={start:[19,19],halle:[19,19]};
   scene.portals=doors.map(([id,label,x,target,entry])=>({id,label,x,y:7,width:2,height:1,target,entry}));
   for(const d of scene.portals)scene.entries[d.id]=[d.x,9];
