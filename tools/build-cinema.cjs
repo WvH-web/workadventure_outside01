@@ -74,10 +74,10 @@ async function buildSigns(scene){
   const signs=[];
   for(const sign of scene.signs){
     const base=await sharp(path.join(art,'sign-source.png')).trim()
-      .resize(sign.width,sign.height,{fit:'fill',kernel:'lanczos3'}).png().toBuffer();
+      .resize(112,80,{fit:'fill',kernel:'lanczos3'}).png().toBuffer();
     const c=createCanvas(sign.width*4,sign.height*4),ctx=c.getContext('2d');
-    ctx.scale(4,4);ctx.imageSmoothingEnabled=false;
-    ctx.drawImage(await loadImage(base),0,0,sign.width,sign.height);
+    ctx.scale(4*sign.width/112,4*sign.height/80);ctx.imageSmoothingEnabled=false;
+    ctx.drawImage(await loadImage(base),0,0,112,80);
     ctx.textAlign='center';ctx.textBaseline='middle';
     ctx.fillStyle='#e9c47a';ctx.font='bold 8px Georgia';ctx.fillText(sign.heading,51,22);
     ctx.fillStyle=sign.color;

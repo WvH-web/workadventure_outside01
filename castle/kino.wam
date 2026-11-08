@@ -1,6 +1,6 @@
 {
   "version": "2.1.0",
-  "mapUrl": "https://wvh-web.github.io/workadventure_outside01/castle/kino.tmj?v=20261108-kino5",
+  "mapUrl": "https://wvh-web.github.io/workadventure_outside01/castle/kino.tmj?v=20261108-kino6",
   "entities": {},
   "areas": [
     {
@@ -80,6 +80,6 @@
     "name": "Schlosskino",
     "description": "Ein kleines Schlosskino mit ruhigen Filmsesseln und vier gemuetlichen Gespraechstischen.",
     "copyright": "Original room and cinema chair generated for deine Schule. Furniture at the approved Great Hall avatar scale; existing village flame animation.",
-    "thumbnail": "https://wvh-web.github.io/workadventure_outside01/castle/art/kino-20261108/floor-signs-20261108.png"
+    "thumbnail": "https://wvh-web.github.io/workadventure_outside01/castle/art/kino-20261108/floor-signs-20261108-v2.png"
   }
 }

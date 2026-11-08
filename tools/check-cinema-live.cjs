@@ -84,8 +84,8 @@ async function join(browser,number){
   assert.ok(script,'Cinema controller loaded');
   assert.equal(await script.evaluate(()=>window.castleRoom.layout.seats.length),64);
   assert.equal(await script.evaluate(()=>window.castleRoom.layout.groups.length),4);
-  assert.equal(await script.evaluate(async()=> (await WA.room.getTiledMap()).properties.find(p=>p.name==='castleRevision')?.value),'20261108-kino5');
-  await script.waitForFunction(()=>Boolean(window.castleCinema));
+  assert.equal(await script.evaluate(async()=> (await WA.room.getTiledMap()).properties.find(p=>p.name==='castleRevision')?.value),'20261108-kino6');
+  await script.waitForFunction(()=>Boolean(window.castleCinema),undefined,{polling:200,timeout:30000});
   await context.storageState({path:storage});
   console.log('Synthetic cinema participant '+number+' entered.');
   return {context,page,script,errors,get filmRequests(){return filmRequests}};
@@ -155,7 +155,7 @@ async function main(){
     for(const id of ['kino-2-0','kino-5-7','kino-lounge-2-nw','kino-lounge-2-so']){
       await sit(a,id);await a.page.screenshot({path:path.join(out,'cinema-seat-'+id+'.png')});
     }
-    for(const [name,x,y]of [['quiet',192,584],['conversation',768,648]]){
+    for(const [name,x,y]of [['quiet',480,624],['conversation',480,736]]){
       await move(a,x,y);await a.page.screenshot({path:path.join(out,'cinema-sign-'+name+'.png')});
     }
     await sit(a,'kino-0-3');
@@ -172,11 +172,11 @@ async function main(){
     assert.equal(a.filmRequests,1,'Film page must not reload when changing seats');
     await a.page.screenshot({path:path.join(out,'cinema-film-panel.png')});
     await a.script.evaluate(()=>castleCinema.website.close());
-    await a.script.waitForFunction(()=>castleCinema.dismissed&&!castleCinema.website);
+    await a.script.waitForFunction(()=>castleCinema.dismissed&&!castleCinema.website,undefined,{polling:200});
     await a.page.waitForTimeout(1800);assert.equal(a.filmRequests,1,'Respect manual window closure');
     assert.ok(!a.page.frames().some(f=>f.url().startsWith(filmUrl)));
     await a.page.getByRole('button',{name:'Kino',exact:true}).click();
-    await a.script.waitForFunction(()=>Boolean(castleCinema.website));
+    await a.script.waitForFunction(()=>Boolean(castleCinema.website),undefined,{polling:200});
     await a.page.waitForTimeout(1000);assert.equal(a.filmRequests,2,'Explicit reopening remains available');
     await a.script.evaluate(()=>castleRoom.returnToHall()).catch(e=>{
       if(!/Execution context was destroyed|Frame was detached/.test(e.message))throw e;
@@ -190,7 +190,7 @@ async function main(){
     await a.page.waitForTimeout(2500);
     assert.equal(await hall.evaluate(()=>castleRoom.layout.id),'grosse-halle');
     assert.ok(!a.page.frames().some(f=>f.url().startsWith(filmUrl)),'Film iframe closes on leaving cinema');
-    const proof={revision:'20261108-kino5',participants:4,realMicrophonesUsed:false,quietFront,rearConversation,boundaryIsolation,
+    const proof={revision:'20261108-kino6',participants:4,realMicrophonesUsed:false,quietFront,rearConversation,boundaryIsolation,
       cinemaEndpoint:filmUrl,filmWasStubbed:true,filmRequests:a.filmRequests,filmIframePreservedAcrossSeats:true,
       automaticOpening:true,manualClosureRespected:true,directionalSigns:true,
       returnToSeparateHall:true,canvas,before,after,boundaryBefore,boundaryAfter,errors:users.flatMap(u=>u.errors)};

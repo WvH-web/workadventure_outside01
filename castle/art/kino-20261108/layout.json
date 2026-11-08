@@ -3,10 +3,10 @@
     "width": 30,
     "height": 28,
     "tileSize": 32,
-    "revision": "20261108-kino5",
+    "revision": "20261108-kino6",
     "render": {
-      "floor": "floor-signs-20261108.png",
-      "fronts": "fronts-signs-20261108.png"
+      "floor": "floor-signs-20261108-v2.png",
+      "fronts": "fronts-signs-20261108-v2.png"
     },
     "avatarPixels": 32,
     "headClearance": {
@@ -149,10 +149,10 @@
     "signs": [
       {
         "id": "quiet",
-        "x": 64,
-        "y": 544,
-        "width": 112,
-        "height": 80,
+        "x": 376,
+        "y": 640,
+        "width": 80,
+        "height": 64,
         "heading": "VORNE",
         "lines": [
           "Nur Film"
@@ -161,18 +161,18 @@
         "color": "#fff2d0",
         "base": {
           "id": "quiet-sign-base",
-          "x": 80,
-          "y": 608,
-          "width": 80,
+          "x": 416,
+          "y": 672,
+          "width": 32,
           "height": 32
         }
       },
       {
         "id": "conversation",
-        "x": 784,
-        "y": 544,
-        "width": 112,
-        "height": 80,
+        "x": 504,
+        "y": 640,
+        "width": 80,
+        "height": 64,
         "heading": "HINTEN",
         "lines": [
           "Film &",
@@ -182,9 +182,9 @@
         "color": "#d7f0de",
         "base": {
           "id": "conversation-sign-base",
-          "x": 800,
-          "y": 608,
-          "width": 80,
+          "x": 512,
+          "y": 672,
+          "width": 32,
           "height": 32
         }
       }
@@ -936,16 +936,16 @@
     },
     {
       "id": "quiet-sign-base",
-      "x": 80,
-      "y": 608,
-      "width": 80,
+      "x": 416,
+      "y": 672,
+      "width": 32,
       "height": 32
     },
     {
       "id": "conversation-sign-base",
-      "x": 800,
-      "y": 608,
-      "width": 80,
+      "x": 512,
+      "y": 672,
+      "width": 32,
       "height": 32
     }
   ],
@@ -958,9 +958,9 @@
     "conversationSeats": 16,
     "chairWidth": 32,
     "chairHeight": 36,
-    "blockedTiles": 317,
-    "reachableFloorTiles": 517,
-    "foregroundPixels": 68176,
+    "blockedTiles": 314,
+    "reachableFloorTiles": 520,
+    "foregroundPixels": 62606,
     "sourceSha256": "42644f71fdaf58519e2ed8bf20fc7f41858a057338281789f634ef2606df7bfb"
   }
 }

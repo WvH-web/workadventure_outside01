@@ -94,15 +94,21 @@ Filmrequisiten bilden einen kleinen Kinosaal; sechs Kerzen flackern nativ.
 Die neutrale Leinwandgrafik ist kein zweiter Filmplayer. Quellen, Produktionsprompts
 und editierbare Anordnung: `art/kino-20261108/`. Neubau:
 `node tools/build-cinema.cjs --update-world`. Die vorhandene Kino-Anwendung und
-das alte Schloss werden nicht ersetzt. Alle 64 Plaetze wurden in der
+das alte Schloss werden nicht ersetzt. Zwei kleine Aufsteller am Mittelgang zeigen
+mit Pfeilen auf die ruhige Filmzone vorne und die Gespraechsplaetze hinten.
+Ihre Grafik stammt vom integrierten Bildgenerator; die Schrift wird beim Bau gesetzt.
+Die Kinoseite oeffnet automatisch beim Betreten. Manuelles Schliessen wird bis
+zum naechsten Besuch respektiert; Platzwechsel laden den Film nicht neu.
+Alle 64 Plaetze wurden in der
 Browservorschau bei 1440, 390 und 320 Pixel Breite geprueft; der Film-Endpunkt
 wird bei automatisierten Pruefungen durch eine neutrale Testseite ersetzt.
 
 Die eigenstaendige Browservorschau simuliert Bewegung, Sitzen und Gruppenanzeige.
 Sie stellt keine echten Videokonferenzen oder andere Online-Spieler nach.
 Die Grosse Halle wurde am 8. November 2026 mit vier getrennten Browserprofilen
-im echten WorkAdventure und LiveKit abgenommen. Die funktionierende Kino-Anwendung wurde
-nicht veraendert; ihr Seitenfenster wird in der Oberflaechenpruefung ersetzt,
+im echten WorkAdventure und LiveKit abgenommen. Die Wiedergabe- und Anmeldelogik
+der Kino-Anwendung bleibt unveraendert. Die neue anthrazit-bordeaux-messingfarbene
+Darstellung ist unter `../ops/kino-ui/` dokumentiert. Das Seitenfenster wird in der Oberflaechenpruefung ersetzt,
 damit kein Film oder fremder Account unbeabsichtigt geoeffnet wird.
 
 Die Audio-Abnahme verwendet eine kuenstliche Sprach-Tonquelle, keine echten

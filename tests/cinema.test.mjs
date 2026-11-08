@@ -111,9 +111,9 @@ test('two readable directional sign sprites mark the viewing and conversation ar
   assert.match(props(markers[1]).cinemaSignText,/HINTEN: Film & Gespr\u00e4che/);
   for(const s of signs){
     const sprite=await sharp(fs.readFileSync(new URL('sign-'+s.id+'.png',art))).metadata();
-    assert.equal(sprite.width,112);assert.equal(sprite.height,80);assert.equal(sprite.hasAlpha,true);
+    assert.equal(sprite.width,80);assert.equal(sprite.height,64);assert.equal(sprite.hasAlpha,true);
     assert.ok(collision[cell(s.base.x+s.base.width/2,s.base.y+s.base.height/2)]);
-    assert.ok(s.y+s.height<layout.groups[0].y,'Signs point towards the respective front/rear areas');
+    assert.ok(s.x+s.width<=456||s.x>=504,'Signs flank the centre without covering it');
   }
   const old=await sharp(fs.readFileSync(new URL('floor.png',art))).ensureAlpha().raw().toBuffer();
   const current=await sharp(fs.readFileSync(new URL(map.tilesets[0].image,base))).ensureAlpha().raw().toBuffer();

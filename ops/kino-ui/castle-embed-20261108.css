@@ -1,0 +1,169 @@
+html[data-kino-theme="castle"] {
+  color-scheme: dark;
+  --kino-bg: #171719;
+  --kino-panel: #232124;
+  --kino-ink: #f5f0e7;
+  --kino-muted: #bcb6b0;
+  --kino-line: #494044;
+  --kino-gold: #d5b678;
+  --kino-wine: #6f2637;
+  --kino-teal: #95c6bd;
+}
+html[data-kino-theme="castle"] *,
+html[data-kino-theme="castle"] *::before,
+html[data-kino-theme="castle"] *::after { box-sizing: border-box; letter-spacing: 0; }
+html[data-kino-theme="castle"] body {
+  margin: 0; border-top: 3px solid var(--kino-wine); background: var(--kino-bg); color: var(--kino-ink);
+  font: 14px/1.5 system-ui, Arial, sans-serif; overflow-x: hidden;
+}
+html[data-kino-theme="castle"] [hidden] { display: none !important; }
+html[data-kino-theme="castle"] :is(button, input, textarea, select) { font: inherit; }
+html[data-kino-theme="castle"] :is(button, a, input, textarea, select):focus-visible {
+  outline: 2px solid var(--kino-gold); outline-offset: 3px;
+}
+html[data-kino-theme="castle"] .wrap,
+html[data-kino-theme="castle"] body.liveMode .wrap { width: 100%; max-width: 1440px; padding: 18px 20px; margin: 0 auto; }
+html[data-kino-theme="castle"] .wrap > h1 {
+  margin: 0 46px 14px 0 !important; font: 700 22px/1.3 Georgia, serif !important;
+  color: var(--kino-gold); overflow-wrap: anywhere;
+}
+html[data-kino-theme="castle"] .card,
+html[data-kino-theme="castle"] body.liveMode .card {
+  min-width: 0; padding: 0; border: 0; border-radius: 0; background: none; box-shadow: none;
+}
+html[data-kino-theme="castle"] :is(.muted, .heroSubline, .scheduleCopy, .programWhen, .programMeta, .chatPanelHint, .chatNotice, .webcamCardText) {
+  color: var(--kino-muted); opacity: 1;
+}
+html[data-kino-theme="castle"] .kino-film-meta { gap: 6px !important; margin-bottom: 10px; }
+html[data-kino-theme="castle"] .kino-film-meta > div { min-width: 0; }
+html[data-kino-theme="castle"] .kino-film-meta > div:first-child > div:first-child {
+  font-size: 16px !important; line-height: 1.35; overflow-wrap: anywhere;
+}
+html[data-kino-theme="castle"] .kino-film-meta .muted { font-size: 11px; line-height: 1.5; }
+html[data-kino-theme="castle"] .playerShell,
+html[data-kino-theme="castle"] body.liveMode .playerShell {
+  width: 100%; aspect-ratio: 16 / 9; min-height: 0; max-height: calc(100dvh - 154px);
+  border-radius: 6px; background: #080809; box-shadow: none; border: 1px solid var(--kino-line);
+}
+html[data-kino-theme="castle"] :is(.playerShell video, .playerShell iframe) { display: block; width: 100%; height: 100%; }
+html[data-kino-theme="castle"] .playerShell video { object-fit: contain; }
+html[data-kino-theme="castle"] .btn {
+  width: max-content; max-width: calc(100% - 24px); height: auto; min-height: 44px;
+  padding: 10px 22px; font-size: 14px; border-radius: 6px; background: var(--kino-wine);
+  border: 1px solid var(--kino-gold); color: #fff; box-shadow: 0 4px 16px #0005;
+}
+html[data-kino-theme="castle"] .playerEndShield { padding: 16px; font-size: 16px; line-height: 1.45; overflow-wrap: anywhere; }
+html[data-kino-theme="castle"] .reloadBtn {
+  top: 10px; right: 10px; width: 34px; height: 34px; min-height: 34px; padding: 0;
+  display: grid; place-items: center; gap: 0; font-size: 0; border-radius: 6px;
+  background: var(--kino-panel); border: 1px solid var(--kino-line); color: var(--kino-ink); backdrop-filter: none;
+}
+html[data-kino-theme="castle"] .reloadBtn::before {
+  content: ''; width: 18px; height: 18px; background: var(--kino-gold);
+  mask: url('castle-reload-20261108.svg') center / contain no-repeat;
+}
+html[data-kino-theme="castle"] .reloadBtn:hover { background: #35292f; }
+html[data-kino-theme="castle"] :is(.chatToggle, .webcamToggle) {
+  min-height: 36px; margin-top: 10px; padding: 7px 10px; gap: 7px; border-radius: 6px;
+  background: var(--kino-panel); border: 1px solid var(--kino-line); color: var(--kino-ink); font-size: 12px;
+}
+html[data-kino-theme="castle"] .chatToggle::before {
+  content: ''; width: 16px; height: 16px; background: var(--kino-gold);
+  mask: url('castle-chat-20261108.svg') center / contain no-repeat;
+}
+html[data-kino-theme="castle"] .statusLine { font-size: 12px; min-height: 0; color: var(--kino-teal); }
+html[data-kino-theme="castle"] .statusLine:empty { display: none; }
+html[data-kino-theme="castle"] :is(.statusLine.error, .chatStatus.is-error) { color: #f2a2ab; }
+html[data-kino-theme="castle"] :is(.chatPanel, .webcamPanel, .scheduleBoard, .heroMarquee, .programCard, .programBlock, .programHighlight) {
+  min-width: 0; margin-top: 14px; padding: 14px 0; border: 0; border-top: 1px solid var(--kino-line);
+  border-radius: 0; background: none; box-shadow: none;
+}
+html[data-kino-theme="castle"] .scheduleBoard::before { display: none; }
+html[data-kino-theme="castle"] .scheduleBoard .programCard,
+html[data-kino-theme="castle"] .programBlock.programBlockNext,
+html[data-kino-theme="castle"] .programBlockNext .programHighlight {
+  padding: 0; margin-top: 10px; border: 0; border-radius: 0; background: none; box-shadow: none;
+}
+html[data-kino-theme="castle"] :is(.heroEyebrow, .scheduleLabel, .programTitle, .programBlockTitle, .programBlockNext .programBlockTitle, .ageGateKicker) {
+  font-size: 11px; color: var(--kino-gold); margin-bottom: 6px;
+}
+html[data-kino-theme="castle"] :is(.heroLead, .scheduleHeadline, .ageGateTitle) {
+  font-size: 21px; line-height: 1.3; margin: 0 0 8px; overflow-wrap: anywhere; color: var(--kino-ink);
+}
+html[data-kino-theme="castle"] .heroGrid { grid-template-columns: minmax(0, 1fr); gap: 10px; }
+html[data-kino-theme="castle"] .heroFacts { display: flex; flex-wrap: wrap; gap: 8px 18px; }
+html[data-kino-theme="castle"] .heroPill {
+  padding: 0; min-height: 0; gap: 6px; border: 0; border-radius: 0; background: none; color: var(--kino-muted); font-size: 12px;
+}
+html[data-kino-theme="castle"] .heroPill strong { color: var(--kino-ink); font-size: 12px; }
+html[data-kino-theme="castle"] .heroSubline { font-size: 13px; margin-top: 6px; }
+html[data-kino-theme="castle"] .foyerLayout { grid-template-columns: minmax(0, 1fr); gap: 8px; }
+html[data-kino-theme="castle"] .foyerStage { border-radius: 6px; min-height: 200px; border: 1px solid var(--kino-line); }
+html[data-kino-theme="castle"] .foyerTitle { font-size: 20px; }
+html[data-kino-theme="castle"] .foyerCountdown { font-size: 32px; max-width: 100%; line-height: 1.15; overflow-wrap: anywhere; }
+html[data-kino-theme="castle"] .foyerSub { font-size: 12px; line-height: 1.4; }
+html[data-kino-theme="castle"] .foyerStage__grain { display: none; }
+html[data-kino-theme="castle"] .foyerStage__content:has(.foyerPosterWrap) {
+  display: grid; grid-template-columns: minmax(0, .75fr) minmax(0, 1.5fr); grid-template-rows: auto auto auto;
+  gap: 6px 16px; align-content: center; padding: 20px;
+}
+html[data-kino-theme="castle"] .foyerStage__content:has(.foyerPosterWrap) > :not(.foyerPosterWrap) { grid-column: 2; }
+html[data-kino-theme="castle"] .foyerPosterWrap {
+  position: static; grid-column: 1; grid-row: 1 / span 3; width: 100%; max-width: 120px; max-height: 100%;
+  aspect-ratio: 2 / 3; border-radius: 4px; margin: 0; justify-self: center;
+}
+html[data-kino-theme="castle"] .foyerPoster { object-fit: contain; }
+html[data-kino-theme="castle"] .programItem { grid-template-columns: 108px minmax(0, 1fr); gap: 12px; border-color: var(--kino-line); }
+html[data-kino-theme="castle"] :is(.programFilm strong, .programHighlight strong, .programBlockNext .programHighlight strong) {
+  font-size: 14px; white-space: normal; overflow: visible; overflow-wrap: anywhere; color: var(--kino-ink);
+}
+html[data-kino-theme="castle"] .programBlockNext .programWhen { color: var(--kino-gold); font-size: 12px; }
+html[data-kino-theme="castle"] .programBlockNext .programMeta { color: var(--kino-muted); }
+html[data-kino-theme="castle"] .programBlock.programBlockNext { padding-left: 12px; border-left: 2px solid var(--kino-wine); }
+html[data-kino-theme="castle"] .programMeta { font-size: 11px; }
+html[data-kino-theme="castle"] :is(.entryBanner, .ageGatePanel, .chatAuthGate) {
+  padding: 14px; border-radius: 6px; border: 1px solid #866a40; background: #2b2424; box-shadow: none; color: var(--kino-ink);
+}
+html[data-kino-theme="castle"] .ageGatePanel[data-status="denied"] { border-color: #b76772; }
+html[data-kino-theme="castle"] :is(.ageGateCopy, .chatAuthCopy) { font-size: 13px; line-height: 1.55; color: var(--kino-ink); }
+html[data-kino-theme="castle"] :is(.ageGateStatus, .ageGateMeta, .chatNotice, .chatPanelHint) { font-size: 12px; color: var(--kino-muted); }
+html[data-kino-theme="castle"] :is(.ageGatePrimary, .chatPrimaryButton, .chatButton) {
+  min-height: 38px; padding: 8px 14px; border-radius: 6px; font-size: 13px; line-height: 1.4;
+  background: var(--kino-wine); border: 1px solid #b87582; box-shadow: none; color: #fff; overflow-wrap: anywhere;
+}
+html[data-kino-theme="castle"] :is(.ageGateGhost, .chatGhostButton) {
+  min-height: 38px; padding: 8px 14px; border-radius: 6px; font-size: 13px; border: 1px solid var(--kino-line); background: var(--kino-panel); color: var(--kino-ink);
+}
+html[data-kino-theme="castle"] :is(.chatPanelTitle, .webcamPanelTitle, .webcamCardTitle) { color: var(--kino-ink); font-size: 16px; }
+html[data-kino-theme="castle"] :is(.chatTextarea, .webcamSelect) {
+  width: 100%; min-width: 0; border: 1px solid var(--kino-line); border-radius: 6px;
+  background: #1c1b1e; color: var(--kino-ink); font-size: 13px;
+}
+html[data-kino-theme="castle"] :is(.chatMessage, .webcamCard) { border-radius: 6px; border-color: var(--kino-line); background: var(--kino-panel); }
+html[data-kino-theme="castle"] .chatName { color: var(--kino-gold); }
+html[data-kino-theme="castle"] .chatTime { color: var(--kino-muted); }
+html[data-kino-theme="castle"] .chatText { color: var(--kino-ink); overflow-wrap: anywhere; }
+html[data-kino-theme="castle"] .chatStatus { font-size: 12px; color: var(--kino-teal); }
+html[data-kino-theme="castle"] .chatFields { grid-template-columns: minmax(0, 1fr) auto; gap: 8px; }
+html[data-kino-theme="castle"] .badge { border-radius: 4px; background: var(--kino-wine); }
+html[data-kino-embedded="true"] .wrap,
+html[data-kino-embedded="true"] body.liveMode .wrap { padding: 10px 12px; }
+html[data-kino-embedded="true"] .wrap > h1 { font-size: 18px !important; margin-bottom: 10px !important; }
+html[data-kino-embedded="true"] :is(.heroSubline, .scheduleCopy, .foyerBottomNote),
+html[data-kino-embedded="true"] body.liveMode .card > p.muted,
+html[data-kino-embedded="true"] .kino-film-meta > div:first-child > .muted { display: none; }
+html[data-kino-embedded="true"] .kino-waiting-meta { display: none !important; }
+html[data-kino-embedded="true"] .heroMarquee { margin-top: 8px; padding: 10px 0; }
+@media (min-width: 1100px) {
+  html[data-kino-theme="castle"] .foyerLayout { grid-template-columns: minmax(0, 1.6fr) minmax(280px, 1fr); gap: 24px; }
+}
+@media (max-width: 420px) {
+  html[data-kino-theme="castle"] .wrap,
+  html[data-kino-theme="castle"] body.liveMode .wrap { padding: 10px 8px; }
+  html[data-kino-theme="castle"] .foyerCountdown { font-size: 25px; }
+  html[data-kino-theme="castle"] .foyerTitle { font-size: 17px; }
+  html[data-kino-theme="castle"] .foyerStage__content:has(.foyerPosterWrap) { gap: 5px 10px; padding: 12px; }
+  html[data-kino-theme="castle"] .programItem { grid-template-columns: minmax(0, 1fr); gap: 4px; }
+  html[data-kino-theme="castle"] .chatFields { grid-template-columns: minmax(0, 1fr); }
+  html[data-kino-theme="castle"] :is(.ageGatePrimary, .ageGateGhost, .chatPrimaryButton, .chatGhostButton) { min-height: 44px; }
+}
