@@ -157,6 +157,16 @@ Alle 13 Sitzplaetze und Laufwege wurden in der lokalen Vorschau bei 1440, 390 un
 `node tools/check-library-live.cjs` wiederholbar; sie verwendet nur kurzlebige
 Testkonten und kuenstlichen Sprachton, keine echten Schueler oder Mikrofone.
 
+Die Fassung `20261108-library1` ist veroeffentlicht und nativ mit vier getrennten
+Profilen abgenommen: vier miteinander verbundene Leser inklusive eines weiter
+entfernt Stehenden, zwei parallele getrennte Lesegruppen, Fensternische mit
+stehendem Partner, anschliessend normale Naehe-Kommunikation ausserhalb.
+Alle 13 Sitzplaetze, Desktop- und Mobilgrafik sowie beide Richtungen der Hallentuer
+bestanden; keine Browserfehler. Auch alle 115 Schloss-Kernpruefungen bestanden.
+Dies ist keine Hardware-Abnahme mit echten Mikrofonen und kein 400-Personen-Lasttest.
+Die sieben Vorschau-Wrapper wurden ohne Server-Neustart veroeffentlicht;
+bestehende Schloss-, Village- und Lehrerzimmer-Karten blieben unveraendert.
+
 ## Animationen und Einrichtung
 
 Kamine, Kerzen, Brunnen, Wasser, lebendiges Portraet, Uhr, gelegentliche

@@ -22,3 +22,10 @@ Neubau: `node tools/build-library.cjs --update-world`.
 Tests: `node --test tests/library.test.mjs`.
 Native Viererprobe: `node tools/check-library-live.cjs`.
 Private Konten, Sprach-Testdatei und Bildschirmbilder bleiben ausserhalb des Repositorys.
+
+Abnahme am 8. November 2026: 115 Kernpruefungen bestanden. Alle sieben Karten
+und alle 13 Bibliotheksplaetze wurden bei 1440, 390 und 320 Pixel Breite geprueft.
+Vier getrennte native Testprofile bestaetigten alle drei Hoerbereiche, Stehplaetze,
+getrennte Parallelgespraeche und die Rueckkehr zur normalen Naehe-Kommunikation.
+Alle 13 Plaetze sowie Hin- und Rueckweg zur Grossen Halle funktionierten ohne
+Browserfehler. Keine echten Schueler oder Hardware-Mikrofone verwendet; kein Lasttest.
