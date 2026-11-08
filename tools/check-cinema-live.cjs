@@ -23,7 +23,7 @@ function writeAudio(){
 }
 async function join(browser,number){
   const name='Kinoprobe '+number,storage=path.join(out,`participant-${number}.private.json`);
-  const context=await browser.newContext({permissions:['microphone','camera'],viewport:{width:1440,height:1000},
+  const context=await browser.newContext({permissions:['microphone','camera'],viewport:number===1?{width:1440,height:1000}:{width:800,height:700},
     ...(fs.existsSync(storage)?{storageState:storage}:{})});
   let filmRequests=0;
   await context.route('https://deutsche-online-schule.com/kino/**',route=>{
@@ -56,8 +56,12 @@ async function join(browser,number){
     const Peer=window.RTCPeerConnection;
     if(Peer)window.RTCPeerConnection=class extends Peer{constructor(...args){super(...args);window.__qaPeers.push(this)}};
   },{token:credentials[String(number)],name});
-  const page=await context.newPage(),errors=[];page.setDefaultTimeout(15000);
+  const page=await context.newPage(),errors=[],diagnostics=[];page.setDefaultTimeout(15000);
   page.on('pageerror',e=>errors.push(e.message));
+  page.on('console',message=>{
+    if(['error','warning'].includes(message.type()))diagnostics.push({type:message.type(),message:message.text()});
+  });
+  page.on('requestfailed',r=>diagnostics.push({request:new URL(r.url()).pathname,error:r.failure()?.errorText}));
   await page.goto(url,{waitUntil:'domcontentloaded',timeout:60000});
   let ready=false;
   for(let n=0;n<40;n++){
@@ -81,11 +85,17 @@ async function join(browser,number){
     for(const frame of page.frames())if(await frame.evaluate(()=>window.castleRoom?.layout.id==='kino').catch(()=>false))script=frame;
     if(!script)await page.waitForTimeout(500);
   }
+  if(!script){
+    fs.writeFileSync(path.join(out,'bootstrap-'+number+'.private.json'),JSON.stringify({errors,diagnostics,
+      frames:page.frames().map(f=>{try{const u=new URL(f.url());return u.origin+u.pathname}catch{return 'unknown'}})},null,2));
+  }
   assert.ok(script,'Cinema controller loaded');
   assert.equal(await script.evaluate(()=>window.castleRoom.layout.seats.length),64);
   assert.equal(await script.evaluate(()=>window.castleRoom.layout.groups.length),4);
   assert.equal(await script.evaluate(async()=> (await WA.room.getTiledMap()).properties.find(p=>p.name==='castleRevision')?.value),'20261108-kino6');
   await script.waitForFunction(()=>Boolean(window.castleCinema),undefined,{polling:200,timeout:30000});
+  // Keep entrants apart while the remaining profiles load, rather than creating a four-way call at the door.
+  await script.evaluate(async number=>{await WA.player.teleport(240+number*64,400);await castleRoom.syncPosition()},number);
   await context.storageState({path:storage});
   console.log('Synthetic cinema participant '+number+' entered.');
   return {context,page,script,errors,get filmRequests(){return filmRequests}};

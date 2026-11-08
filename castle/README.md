@@ -103,6 +103,17 @@ Alle 64 Plaetze wurden in der
 Browservorschau bei 1440, 390 und 320 Pixel Breite geprueft; der Film-Endpunkt
 wird bei automatisierten Pruefungen durch eine neutrale Testseite ersetzt.
 
+Die Kino-Fassung `20261108-kino6` wurde mit vier getrennten Testprofilen im echten
+WorkAdventure geprueft: vorne keine Gespraechs-Audioenergie, hinten dekodierter Ton
+an zwei gleichzeitig getrennten Tischen, auch bei nur 48 Pixel Abstand ueber
+die Bereichsgrenze. Alle vier Seitenfenster oeffneten automatisch genau einmal.
+Sitzplatzwechsel erhielten dasselbe Fenster; manuelles Schliessen wurde respektiert,
+erneutes Oeffnen und Rueckweg zur separaten Halle funktionierten. Keine Browserfehler.
+Native Desktop- und Mobilansicht sowie die Aufsteller wurden als Bildschirmbilder
+geprueft. Wiederholbare Pruefung: `node tools/check-cinema-live.cjs`, mit kurzlebigen
+kuenstlichen Konten und Sprachton statt echter Schueler oder Mikrofone. Der Film
+bleibt dabei ersetzt; dies ist weder eine erneute Filmquellen- noch eine Lastabnahme.
+
 Die eigenstaendige Browservorschau simuliert Bewegung, Sitzen und Gruppenanzeige.
 Sie stellt keine echten Videokonferenzen oder andere Online-Spieler nach.
 Die Grosse Halle wurde am 8. November 2026 mit vier getrennten Browserprofilen

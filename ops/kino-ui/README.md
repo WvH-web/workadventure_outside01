@@ -47,3 +47,23 @@ nur aktualisiert, wenn er noch dem geprueften Ausgangsstand entspricht.
 Ein erneuter Einsatz nach erfolgreicher Veroeffentlichung braucht einen neuen
 Ausgangsstand und neue Asset-Versionen; der Helfer ueberschreibt keine alte Abnahme.
 Die alten Schlosskarten, das Portal und die Veranstaltungsdaten bleiben unberuehrt.
+
+## Veroeffentlichung am 8. November 2026
+
+Die beiden Includes und alle fuenf statischen Dateien sind veroeffentlicht,
+per HTTP und durch erneutes Herunterladen bytegenau geprueft. Die PHP-Tokens
+bleiben identisch. Der unveraenderte lokale Website-Spiegel wurde mit aktualisiert.
+Der vollstaendige private Ausgangsstand bleibt als lokale Ruecksetzmoeglichkeit erhalten.
+
+Alle 36 synthetischen Darstellungspruefungen und die 109 Schloss-Kernpruefungen
+bestanden. `node tools/check-kino-public.cjs` prueft zusaetzlich die echte Seite
+anonym bei 1280 Pixel Breite sowie eingebettet bei 680 und 390 Pixel Breite.
+Alle drei oeffentlichen Ansichten sind fehlerfrei, ohne Filmstart oder Formulareingabe.
+Zum Zeitpunkt dieser Pruefung war keine Vorstellung angesetzt; die echte
+Wiedergabesynchronisation wird dadurch nicht erneut abgenommen.
+
+Die native Kino-Abnahme mit vier getrennten Testprofilen bestand anschliessend:
+automatisches Seitenfenster, unveraendertes Fenster bei Sitzwechsel, bewusstes
+Schliessen und Wiedereroeffnen, Ruhezone vorne und zwei getrennte Tischgespraeche
+hinten. Der Film-Endpunkt war in dieser Pruefung durch eine neutrale Seite ersetzt;
+die echte veroeffentlichte Darstellung wurde separat wie oben beschrieben geprueft.

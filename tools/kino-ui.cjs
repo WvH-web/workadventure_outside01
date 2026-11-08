@@ -47,9 +47,10 @@ function fetchSource(){
 function inventory(label){
   const xml=path.join(privateDir,label+'.xml');
   ftp(['ls "/kino/public/"','ls "/kino/public/assets/"'],label,xml);
-  const result=cp.spawnSync('powershell.exe',['-NoProfile','-NonInteractive','-File',path.join(root,'ops/kino-ui/inventory.ps1'),'-XmlPath',xml],{encoding:'utf8',windowsHide:true});
+  const result=cp.spawnSync('powershell.exe',['-NoProfile','-NonInteractive','-ExecutionPolicy','Bypass','-File',path.join(root,'ops/kino-ui/inventory.ps1'),'-XmlPath',xml],{encoding:'utf8',windowsHide:true});
   if(result.status!==0)throw Error('Cinema inventory could not be parsed');
-  return new Set(JSON.parse(result.stdout).map(n=>n.toLowerCase()));
+  const names=new Set(JSON.parse(result.stdout).map(n=>n.toLowerCase()));
+  return names;
 }
 function download(remote,name,label){
   const file=path.join(privateDir,name);ftp(['get '+q(remote)+' '+q(file)],label);return file;
@@ -79,6 +80,7 @@ async function deploy(){
   const token='20261108-'+crypto.randomBytes(8).toString('hex');
   const stage='kino.ui-stage-'+token+'.php',backup='kino.ui-before-'+token+'.php',remote='/kino/public/';
   const names=inventory('inventory-'+token);
+  if(!names.has('kino.php'))throw Error('Cinema inventory did not contain its entry point');
   for(const name of [...assetNames,stage,backup])if(names.has(name.toLowerCase()))throw Error('New cinema target already exists: '+name);
   const before=download(remote+'kino.php','live-before-'+token+'.php','drift-'+token);
   if(hash(before)!==m.beforeHash)throw Error('Live cinema changed since the snapshot; no files were changed');
