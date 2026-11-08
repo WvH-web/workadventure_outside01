@@ -1,7 +1,7 @@
 const fs=require('node:fs'),path=require('node:path');
 const {buildFurnishedRoom}=require('./build-library.cjs');
 const {createCanvas}=require('./castle-deps.cjs')('@napi-rs/canvas');
-const root=path.resolve(__dirname,'..'),revision='20261108-expansion3';
+const root=path.resolve(__dirname,'..'),revision='20261108-expansion4';
 const own='';
 const collection='https://together.deine-schule.com/castle-content/collection.html';
 const activity=(id,group,label,url,api=false)=>({id,group,label,url,api});

@@ -58,9 +58,9 @@ Village und geschuetzte Lehrerzimmer werden nicht ersetzt.
 
 ## Pruefstand der Innenausbaustufe
 
-Fassung `20261108-expansion3`: Innenausbau mit Figuren erfolgreich gebaut,
-165 Kernpruefungen nach der letzten Aenderung bestanden. Die letzte vollstaendige
-Grafik-Browserprobe der Fassung 1 in den drei Groessen 1440, 390 und 320 Pixel
+Fassung `20261108-expansion4`: Innenausbau mit nativen Figuren erfolgreich gebaut.
+166 Kernpruefungen nach dem Darstellungswechsel bestanden. Die letzte vollstaendige
+Grafik-Browserprobe der Fassung 3 in den drei Groessen 1440, 390 und 320 Pixel
 pruefte alle
 vierzehn Karten, alle neuen Sitzplaetze, jede neue Tuer und die vorhandenen
 Hallenfunktionen ohne Layout- oder Browserfehler. Neun gesonderte Inhaltsproben
@@ -75,8 +75,9 @@ verwendet eindeutig raumspezifische Skriptadressen und korrekt beschriftete
 Rueckwege. In der Wiederholungsprobe trat an einer Fensterbank ein Sitz-Timeout
 auf. Als konkrete Schwachstelle wurde der bisherige Drehstart in einer gesperrten
 Wandkachel gefunden. Der neue Drehweg verwendet ein kurzes, fuer den ganzen Avatar
-freies Bodenpaar; alle ueber 200 Sitzplaetze werden darauf geprueft. Der native
-Wiederholungsnachweis nach dieser Aenderung steht noch aus.
+freies Bodenpaar; alle ueber 200 Sitzplaetze werden darauf geprueft. Eine native
+Einzelprobe nach dieser Aenderung pruefte alle 92 Sitze der acht neuen Raeume
+erfolgreich. Der Vierpersonen-Wiederholungsnachweis steht noch aus.
 Die vollstaendige Mehrpersonen-Wiederholungsprobe steht damit noch aus;
 kein allgemeines Bestehen aller neuen Raeume wird daraus abgeleitet. Testberichte,
 synthetische Sprachdatei und kurzlebige Testzugriffe bleiben ausserhalb des

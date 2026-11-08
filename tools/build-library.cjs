@@ -117,6 +117,7 @@ async function buildFurnishedRoom(options={}){
   if(scene.storyVariable)layers.push(objects('variables',[{id:oid++,name:scene.storyVariable,type:'variable',x:0,y:0,width:0,height:0,rotation:0,visible:false,properties:[P('persist',false),P('default',false)]}]));
   if(scene.displays?.length)layers.push(objects('exhibit-displays',scene.displays.map(d=>area('display-'+d.board,d,[P('castleDisplayBoard',d.board)]))));
   if(scene.npcs?.length)layers.push(objects('castle-characters',scene.npcs.map(n=>area('character-'+n.id,n,[P('castleNpcId',n.id)]))));
+  if(scene.npcs?.length)layers.push(tile('castle-npc-sprites',Array(count).fill(0)),tile('castle-npc-labels',Array(count).fill(0)));
   layers.push(objects('floorLayer',[]),tile('furniture-fronts',Array.from({length:count},(_,i)=>frontCells.has(i)?frontGid+i:0)));
   const imageSet=(firstgid,name,image,columns,tilecount,imagewidth,imageheight,extra={})=>({firstgid,name,image:artPath+image,columns,tilecount,imagewidth,imageheight,tilewidth:T,tileheight:T,margin:0,spacing:0,...extra});
   const mapdata={pixelWidth:W*T,pixelHeight:H*T,avatarSize:32,seats:seats.length,groups:scene.groups.length,sofaWidthPixels:100,bookclubChairWidthPixels:40,
