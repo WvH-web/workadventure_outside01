@@ -70,7 +70,7 @@ async function prepareHallFurniture(){
       x,y:row.y,standX:x,standY:row.standY,facing:row.facing,audioGroup:big.group.id});
   }
   layout.games={...config.clusters.find(c=>c.id==='spieltreff').group};
-  layout.render={source:'source-gs1.png',floor:'floor-gs1.png',fronts:'fronts.png',fire:'fire.png',portrait:'portrait.png'};
+  layout.render=config.render||{source:'source-gs1.png',floor:'floor-gs1.png',fronts:'fronts.png',fire:'fire.png',portrait:'portrait.png'};
   layout.measurements={...original.measurements,sourcePrompt:'floor-prompt.txt',expectedSeats:42,furnitureScale:scale,
     avatarPixels:32,sofaWidthPixels:100,chairPitchPixels:40,communalSeats:12,
     longTableChairHeightPixels:[28,36],armchairHeightPixels:[39,50],staffBenchSeatSpacingPixels:24,

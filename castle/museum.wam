@@ -1,0 +1,69 @@
+{
+  "version": "2.1.0",
+  "mapUrl": "https://wvh-web.github.io/workadventure_outside01/castle/museum.tmj?v=20261108-expansion1",
+  "entities": {},
+  "areas": [
+    {
+      "id": "0d317cc3-389f-49d8-b0bd-8ad6dd072858",
+      "name": "Geschichten der Fundstuecke",
+      "x": 64,
+      "y": 272,
+      "width": 288,
+      "height": 256,
+      "visible": true,
+      "properties": [
+        {
+          "id": "6102cdff-ef04-4e68-8e97-87527bf28289",
+          "type": "livekitRoomProperty",
+          "roomName": "school-castle-v2-museum-area-lesekamin"
+        }
+      ]
+    },
+    {
+      "id": "2c5849e6-033b-43a2-a1f6-06d7bbfdcc8d",
+      "name": "Entdeckernische",
+      "x": 656,
+      "y": 176,
+      "width": 176,
+      "height": 176,
+      "visible": true,
+      "properties": [
+        {
+          "id": "de916e7b-5bb4-429a-ac20-5b86181bd0f8",
+          "type": "livekitRoomProperty",
+          "roomName": "school-castle-v2-museum-area-fensterleser"
+        }
+      ]
+    },
+    {
+      "id": "9d6bd84a-1f8e-4eb2-88f9-b29d54baf43d",
+      "name": "Ausstellungsrunde",
+      "x": 544,
+      "y": 400,
+      "width": 288,
+      "height": 240,
+      "visible": true,
+      "properties": [
+        {
+          "id": "542818c5-ddfa-4575-a3d8-947556ed5ee7",
+          "type": "livekitRoomProperty",
+          "roomName": "school-castle-v2-museum-area-buchclub"
+        }
+      ]
+    }
+  ],
+  "entityCollections": [],
+  "settings": {
+    "megaphone": {
+      "enabled": false,
+      "title": "",
+      "scope": "ROOM"
+    }
+  },
+  "metadata": {
+    "name": "Schlossmuseum",
+    "description": "Schlossmuseum mit drei getrennten Gespraechsrunden und passenden Aktivitaeten.",
+    "copyright": "Original room artwork generated for deine Schule; approved 32px-avatar seating and book-club furniture; village fire animation.",
+    "thumbnail": "https://wvh-web.github.io/workadventure_outside01/castle/art/museum-20261108-full/floor.png"
+  }
+}

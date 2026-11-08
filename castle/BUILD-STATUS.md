@@ -1,0 +1,95 @@
+# Ausbau des neuen Schulschlosses
+
+Das Gesamtziel bleibt aktiv. Dies ist keine Freigabe als fertiggestelltes
+Schloss oder fuer eine Veranstaltung mit 400 Personen. Das bisherige Schloss,
+Village und geschuetzte Lehrerzimmer werden nicht ersetzt.
+
+## Eingerichtete Innenwelt
+
+- Grosse Halle mit 42 Sitzen, Gemeinschaftstafel, sechs Gespraechsbereichen,
+  geschuetztem Rednerpult, Schlossbrett und Rueckwegen.
+- Kino mit 48 ruhigen vorderen Plaetzen, 16 hinteren Gespraechsplaetzen und
+  automatisch geoeffnetem bestehendem synchronen Kinoplayer.
+- Bibliothek mit drei Lesegruppen und 13 Sitzen.
+- Grundschulstube und Mittelstufenraum mit vorhandenen Aktivitaeten.
+- Neu: Oberstufensalon, Spielesaal, Museum, Musiksalon, Atelier und Sternwarte.
+  Je zwoelf Sitze, drei native Hoergruppen und gemeinsame Erzaehlkarten mit
+  eigener Raumvariable. Bewaehrte Sitzmoebel bleiben im bestaetigten Massstab.
+- Neu: Erdgeschoss-Wandelgang und obere Galerie mit je acht beschrifteten
+  Tueren, zehn Sitzen und zwei nativen Hoergruppen. Eine zusaetzliche Tuer
+  unten rechts in der Halle verbindet den Wandelgang direkt mit der Halle.
+- Das Museum zeigt fuenf Bilder aus der vorhandenen Museumsverwaltung in den
+  Wandrahmen. Im Seitenfenster sind alle freigegebenen Katalogeintraege von
+  `show1` bis `show13` erreichbar. Im Musiksalon erscheinen die vorhandenen
+  Musikbeitraege. Vorhandene Medien-Endpunkte bleiben zustaendig fuer Webseite,
+  PDF, YouTube, Audio und Praesentationsinhalt.
+- Die Expeditionen bieten sieben bewusst externe Museums- und Weltraumziele.
+  Einbettungssperren werden nicht umgangen. NASA Eyes kann separat am
+  Forschergruppentisch der Sternwarte im Seitenfenster geoeffnet werden.
+
+## Noch zu vervollstaendigen
+
+- Liebevoll ausgebaute Aussenanlage und Dorf mit richtigen Laufwegen,
+  Aufenthaltsplaetzen, vorhandenen Freizeitangeboten und erweiterbaren Anschluessen.
+- Weitere im Gesamtkonzept vorgesehene Sonderraeume und Entdeckungen. Private
+  Wege und deren genaue Plaene werden nicht in dieser oeffentlichen Datei beschrieben.
+- Serverseitig frisch gepruefte Klassen-/Altersfreigaben fuer Inhalte und
+  passende Zugangspunkte aus dem Verwaltungsportal. Raumnamen allein sind
+  kein Schutz und die aktuelle Innenvorschau ist keine neue Altersfreigabe.
+- Wirkliche gemeinsame Zeichentische, ein verifiziert gemeinsam genutztes
+  Shared Piano, belastbares Schach und gegebenenfalls Billard nach Abnahme
+  einer geeigneten vorhandenen Grundlage. Keine bloss dekorativen Spielmoebel
+  als funktionierende Spiele ausgeben. Die Spielrundenliste verwendet derzeit
+  die sieben bereits vorhandenen Verwaltungsangebote und deren aktuelle Links.
+- Gemeinsame Rundenliste mit freiwilligem Mitmachstatus, Gastgeberpflege,
+  zeitlich ablaufenden externen Links und ehrlicher Anzeige nicht bekannter Spielstaende.
+- Redaktionell freigegebene Themenrotation, Aushang und freiwillige Erinnerungen
+  aus dem Portal. Die jetzt vorhandene Expeditionenliste ist noch keine
+  automatische Rotation oder Versandfunktion.
+- Abgesicherte produktive Sternenhueter-Schulbruecke fuer persoenliche Zimmer
+  und Besuche. Lokale Testdaten bleiben unberuehrt und unveroeffentlicht.
+- Betriebs-, Wiederanlauf- und realistische Leistungstests vor breiter Nutzung.
+  Kleine synthetische Mehrteilnehmerproben ersetzen keine Lastabnahme.
+
+## Pruefstand der Innenausbaustufe
+
+Fassung `20261108-expansion1`: vollstaendiger Bau erfolgreich, 159 Kernpruefungen
+bestanden. Die drei Browsergroessen 1440, 390 und 320 Pixel pruefen alle
+vierzehn Karten, alle neuen Sitzplaetze, jede neue Tuer und die vorhandenen
+Hallenfunktionen ohne Layout- oder Browserfehler. Neun gesonderte Inhaltsproben
+pruefen Museum, Musik und Expeditionen inklusive Bilder, Rueckweg aus einem
+Beitrag, geaenderte Daten und eine voruebergehend nicht erreichbare Verwaltung.
+
+Die native Vierpersonenprobe dieser Erweiterung ist in Vorbereitung und wird
+erst nach tatsaechlicher Durchfuehrung als bestanden vermerkt. Testberichte,
+synthetische Sprachdatei und kurzlebige Testzugriffe bleiben ausserhalb des
+oeffentlichen Repositorys.
+
+Die Verwaltung erlaubt per Content-Security-Policy nur WorkAdventure-Urspruenge
+als Rahmen. Deshalb werden ausschliesslich die sechs oeffentlichen Galerie-Dateien
+zusaetzlich unter `https://together.deine-schule.com/castle-content/` bereitgestellt.
+Das ist kein Proxy fuer fremde Inhalte und keine Lockerung der Verwaltungs-CSP.
+Die Galerie braucht keine Kartenschnittstelle und keinen Kamera-/Mikrofonzugriff.
+In der reinen Grafikvorschau unter einer anderen Domain oeffnen Beitraege extern.
+Die Servereinrichtung sichert die bisherige Nginx-Konfiguration, prueft deren
+Pruefsumme vor dem Ergaenzen genau dieses neuen Pfads und testet Nginx vor dem
+graceful Reload; WorkAdventure und der Ansagedienst bleiben unangetastet.
+
+## Quellen und Wiederaufbau
+
+Alle acht neuen Raumhintergruende wurden mit dem integrierten Bildgenerator
+erstellt. Originale und finale Prompts stehen in `art/*-20261108-full/` als
+`room-source.png` und `room-prompt.txt`. Der Builder `tools/build-castle-expansion.cjs`
+leitet daraus Raster, Masken, Sitzpunkte, Kollisionen und native Wrapper ab.
+Vorhandene Sitzgruppen und Tischgrafik werden wiederverwendet, nicht vergroessert.
+
+`node tools/build-castle.cjs` baut alle registrierten Karten. Die aeltere
+Atlaszeichnung laeuft in einem eigenen Prozess; Quellbilder werden vor den
+tausenden Rasterausschnitten einmal rasterisiert. Das vermeidet den nativen
+Skia-Abbruch beim Kopieren grosser Zeichnungen auf Windows.
+
+`tools/castle-map-ids.cjs` ist die gemeinsame Kartenliste fuer Generator,
+Routing und Pruefungen. Die Serververoeffentlichung prueft die bereits
+bereitgestellten Wrapper gegen deren gespeicherte Pruefsummen und akzeptiert
+nur den bekannten Wechsel von acht auf vierzehn Dateien im separaten
+`castle-preview`-Verzeichnis. Keine uebrigen Karten oder Dienste werden ersetzt.

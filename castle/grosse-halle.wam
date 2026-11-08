@@ -1,6 +1,6 @@
 {
   "version": "2.1.0",
-  "mapUrl": "https://wvh-web.github.io/workadventure_outside01/castle/grosse-halle.tmj?v=20261108-gs1",
+  "mapUrl": "https://wvh-web.github.io/workadventure_outside01/castle/grosse-halle.tmj?v=20261108-expansion1",
   "entities": {},
   "areas": [
     {
@@ -112,6 +112,6 @@
     "name": "Grosse Halle",
     "description": "Gemeinsame Schlosshalle mit Kaminrunde, Tafeln, Lehrerbank, Spieltreff und Podium.",
     "copyright": "Original artwork generated for deine Schule. Original fantasy school interior; fire from the existing village tileset.",
-    "thumbnail": "https://wvh-web.github.io/workadventure_outside01/castle/art/grosse-halle-20261108-scale/floor-gs1.png"
+    "thumbnail": "https://wvh-web.github.io/workadventure_outside01/castle/art/grosse-halle-20261108-scale/floor-expansion1.png"
   }
 }

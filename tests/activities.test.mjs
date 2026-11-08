@@ -15,8 +15,10 @@ function setup(open){
 }
 test('only the exact owned story page gets API access; external providers and the game shelf never do',()=>{
   assert.equal(activitySettings(object('story','story.html',true)).api,true);
-  for(const url of ['hall-games.html','https://musiclab.chromeexperiments.com/Song-Maker/','https://phet.colorado.edu/sims/html/area-builder/latest/area-builder_all.html?locale=de'])assert.equal(activitySettings(object('x',url,true)).api,false);
-  for(const url of ['https://example.org/story.html','javascript:alert(1)','story.html?unreviewed=1','https://musiclab.chromeexperiments.com.evil.invalid/Song-Maker/'])assert.throws(()=>activitySettings(object('x',url,true)));
+  for(const url of ['hall-games.html','https://musiclab.chromeexperiments.com/Song-Maker/','https://phet.colorado.edu/sims/html/area-builder/latest/area-builder_all.html?locale=de',
+    'https://together.deine-schule.com/castle-content/collection.html?kind=museum','https://together.deine-schule.com/castle-content/collection.html?kind=music'])assert.equal(activitySettings(object('x',url,true)).api,false);
+  for(const url of ['https://example.org/story.html','javascript:alert(1)','story.html?unreviewed=1','https://musiclab.chromeexperiments.com.evil.invalid/Song-Maker/',
+    'https://together.deine-schule.com/castle-content/collection.html?kind=museum&url=https://evil.invalid','https://together.deine-schule.com.evil.invalid/castle-content/collection.html?kind=music'])assert.throws(()=>activitySettings(object('x',url,true)));
 });
 test('entering an activity offers a separate button and never opens a panel or changes media automatically',async()=>{
   const s=setup();assert.equal(s.buttons.size,1);assert.equal(s.websites.length,0);

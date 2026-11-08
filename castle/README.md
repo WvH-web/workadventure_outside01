@@ -1,8 +1,9 @@
 # Begehbarer Schlossgrundriss
 
-Modulare Schloss-Vorschau, ab 7. November 2026. Drei Karten zeigen noch
-die Raum- und Laufplanung. Mittelstufenraum, Grosse Halle, Kino, Bibliothek und Grundschulstube sind als
-detailreich gemalte Einrichtungen im Stil des bestehenden Lehrerzimmers umgesetzt.
+Modulare Schloss-Vorschau, ab 7. November 2026. Dreizehn Innenkarten sind
+detailreich eingerichtet; die Aussenanlage zeigt noch die Raum- und Laufplanung.
+Der Gesamtausbau ist aktiv, aber noch nicht abgeschlossen. Offene Anforderungen
+und der aktuelle Pruefstand stehen in `BUILD-STATUS.md`.
 Bestehende Karten, das Kino-Projekt und das Weihnachtsspiel werden nicht ersetzt.
 Die neuen Karten bleiben eine separate Testvorschau. Bestehende Schuelereingaenge
 werden nicht umgebogen. Nur das geschuetzte Lehrerzimmer bietet einen freiwilligen
@@ -30,11 +31,15 @@ Die bestaetigte Einrichtung nicht ohne neuen Auftrag umskalieren. Neue Raeume
 weiterhin einzeln in der getrennten Vorschau ausbauen; das bisherige Schloss
 bleibt bis zur ausdruecklichen Freigabe unveraendert.
 
-## Acht verbundene Karten
+## Vierzehn verbundene Karten
 
-- `erdgeschoss.tmj`: Grosse Halle, Grundschule, Mittelstufe, Bibliothek,
-  Musikzimmer, Museum, Atelier, Wohnfluegel, Spielesaal, Lehrersalon und Kinofoyer.
-- `obergeschoss.tmj`: Oberstufe, Leseturm, Sternwarte, Wandelsaal, Festsaal und Werkstatt.
+- `erdgeschoss.tmj`: Eingerichteter Wandelgang, 40 x 22 Kacheln, acht beschriftete
+  Tueren und zwei Gespraechsgruppen mit insgesamt zehn Sitzplaetzen.
+- `obergeschoss.tmj`: Obere Galerie im selben kompakten Format, eigene Architektur,
+  acht Tueren, zwei Gespraechsgruppen und zehn Sitzplaetze.
+- `oberstufe.tmj`, `spielesaal.tmj`, `museum.tmj`, `musikzimmer.tmj`,
+  `atelier.tmj`, `sternwarte.tmj`: Je 28 x 22 Kacheln, zwoelf Sitze, drei getrennte
+  Gespraechsbereiche, individuelle Raumgrafik und passende Aktivitaetseinstiege.
 - `kino.tmj`: Kompaktes gemaltes Schlosskino, 30 x 28 Kacheln, 48 ruhige
   Zuschauerplaetze vorne und vier Gespraechstische mit insgesamt 16 Plaetzen hinten.
 - `bibliothek.tmj`: Kleine gemalte Schlossbibliothek, 28 x 22 Kacheln, drei
@@ -50,7 +55,7 @@ bleibt bis zur ausdruecklichen Freigabe unveraendert.
   Verbindet Mittelstufe, Kino, Bibliothek, Treppe, Schulpark und Lehrerzimmer.
 
 Tiled kann jede TMJ direkt oeffnen. Tileset und Skriptpfade bleiben relativ.
-Die acht kleinen `.wam`-Dateien ergaenzen native Besprechungsbereiche, ohne
+Die vierzehn kleinen `.wam`-Dateien ergaenzen native Besprechungsbereiche, ohne
 Grafiken zu duplizieren. Der Spieleinstieg ist
 `https://together.deine-schule.com/~/castle-preview/grosse-halle.wam`.
 Die alten Vorschau-TMJ-Links leiten vor dem Start ihrer Raumsteuerung dorthin
@@ -62,8 +67,9 @@ Ankunftsebenen ergaenzt. Keine dreihundert einzeln gebauten Privatzimmer.
 Die Verbindung zum vorhandenen Lehrerzimmer verwendet dessen geschuetzte
 Originaladresse. Sein bisheriger Ausgang und seine Zugangspruefung bleiben
 unveraendert. Der freiwillige Ruecklink stellt vor dem Kartenwechsel wieder auf.
-Die Wohnraumtueren sind Platzhalter fuer die vorhandene Sternenhueter-Anwendung.
-Es werden weder deren Testguthaben noch lokale Zimmerdaten veroeffentlicht.
+Persoenliche Zimmer sind noch nicht produktiv angebunden. Es werden weder
+Testguthaben noch lokale Zimmerdaten veroeffentlicht; es gibt keine Tuer,
+die stattdessen einen unsicheren Testzugang als fertiges Schuelerzimmer anbietet.
 
 ## Aktivitaeten und Gemeinschaftsstuben
 

@@ -3,8 +3,8 @@
   "height": 32,
   "tileSize": 32,
   "render": {
-    "source": "source-gs1.png",
-    "floor": "floor-gs1.png",
+    "source": "source-expansion1.png",
+    "floor": "floor-expansion1.png",
     "fronts": "fronts.png",
     "fire": "fire.png",
     "portrait": "portrait.png"
@@ -18,7 +18,7 @@
       1536,
       1024
     ],
-    "sourceSha256": "13867968fe8dfa57051e96b0234d3d9c295843c866ea67d6cf808bee1979d4ad",
+    "sourceSha256": "0e4e721f5066d6e9c3b0d2632c8c2eb5c4041ef473adf6fa2aeda2e565cf251e",
     "nativePixels": [
       1536,
       1024
@@ -90,6 +90,10 @@
     "grundschule": [
       4,
       24
+    ],
+    "wandelgang": [
+      35,
+      24
     ]
   },
   "portals": [
@@ -153,6 +157,15 @@
       "width": 1,
       "height": 1,
       "target": "grundschule.tmj",
+      "entry": "halle"
+    },
+    {
+      "id": "wandelgang",
+      "x": 35,
+      "y": 29,
+      "width": 1,
+      "height": 1,
+      "target": "erdgeschoss.tmj",
       "entry": "halle"
     }
   ],
@@ -388,6 +401,22 @@
     {
       "id": "gs-door-right",
       "x": 160,
+      "y": 832,
+      "width": 32,
+      "height": 144,
+      "preserve": true
+    },
+    {
+      "id": "eg-door-left",
+      "x": 1088,
+      "y": 832,
+      "width": 32,
+      "height": 144,
+      "preserve": true
+    },
+    {
+      "id": "eg-door-right",
+      "x": 1152,
       "y": 832,
       "width": 32,
       "height": 144,

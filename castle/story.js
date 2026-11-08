@@ -1,4 +1,4 @@
-import {storyCards,SharedStory,newStory} from './story-state.js?v=20261108-1';
+import {storyCards,SharedStory,newStory} from './story-state.js?v=20261108-expansion1';
 const $=id=>document.getElementById(id),preview=new URLSearchParams(location.search).get('preview')==='1';
 let shared,closed=false,cooldown;
 function render(value){

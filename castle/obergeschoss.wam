@@ -1,117 +1,37 @@
 {
   "version": "2.1.0",
-  "mapUrl": "https://wvh-web.github.io/workadventure_outside01/castle/obergeschoss.tmj",
+  "mapUrl": "https://wvh-web.github.io/workadventure_outside01/castle/obergeschoss.tmj?v=20261108-expansion1",
   "entities": {},
   "areas": [
     {
-      "id": "3f6a8e61-a3cd-405e-a394-d533170816fd",
-      "name": "Leseturm-Runde",
-      "x": 1408,
-      "y": 608,
-      "width": 512,
-      "height": 416,
+      "id": "39f6f30f-601a-488e-a079-7afd1968932d",
+      "name": "Galerierunde",
+      "x": 64,
+      "y": 304,
+      "width": 288,
+      "height": 256,
       "visible": true,
       "properties": [
         {
-          "id": "20c11f0c-f160-4a51-b845-d984ca4af402",
+          "id": "b837cd95-dac0-4876-8d62-eba4ce98de23",
           "type": "livekitRoomProperty",
-          "roomName": "school-castle-v2-obergeschoss-area-leseturm"
+          "roomName": "school-castle-v2-obergeschoss-area-lesekamin"
         }
       ]
     },
     {
-      "id": "a870974b-2f9b-454c-983b-ccfbf99acc7e",
-      "name": "Sitzplatz",
-      "x": 616,
-      "y": 680,
-      "width": 80,
-      "height": 176,
+      "id": "9d608168-43a7-4eeb-a5a4-31a48403e417",
+      "name": "Treffpunkttisch",
+      "x": 896,
+      "y": 400,
+      "width": 288,
+      "height": 240,
       "visible": true,
       "properties": [
         {
-          "id": "f17fbf57-90be-45fe-990b-a7988e453be8",
+          "id": "4ae1f85f-fd2b-4737-9c82-779eac125a20",
           "type": "livekitRoomProperty",
-          "roomName": "school-castle-v2-obergeschoss-table-og-gespraech"
-        }
-      ]
-    },
-    {
-      "id": "e15cee97-25d6-4684-80bf-75d563fa0b56",
-      "name": "Sitzplatz",
-      "x": 1000,
-      "y": 808,
-      "width": 80,
-      "height": 176,
-      "visible": true,
-      "properties": [
-        {
-          "id": "862a73cf-13a9-4a32-acf6-bcffe6c23068",
-          "type": "livekitRoomProperty",
-          "roomName": "school-castle-v2-obergeschoss-table-og-lernen"
-        }
-      ]
-    },
-    {
-      "id": "e2022bff-fb83-41c5-8710-90852dbb85a9",
-      "name": "Sitzplatz",
-      "x": 2184,
-      "y": 808,
-      "width": 80,
-      "height": 176,
-      "visible": true,
-      "properties": [
-        {
-          "id": "20737210-bf4f-4ea4-bf58-0ecb74cf8b27",
-          "type": "livekitRoomProperty",
-          "roomName": "school-castle-v2-obergeschoss-table-sterne"
-        }
-      ]
-    },
-    {
-      "id": "b4347443-d874-458c-b0e8-12e763e6df2f",
-      "name": "Sitzplatz",
-      "x": 776,
-      "y": 1608,
-      "width": 80,
-      "height": 176,
-      "visible": true,
-      "properties": [
-        {
-          "id": "30dae0ff-e44b-4a3b-b8ea-e4ecec89fb40",
-          "type": "livekitRoomProperty",
-          "roomName": "school-castle-v2-obergeschoss-table-ausstellung"
-        }
-      ]
-    },
-    {
-      "id": "4264f16a-8dfb-4cca-9356-6f912acf5fc9",
-      "name": "Sitzplatz",
-      "x": 1512,
-      "y": 1640,
-      "width": 400,
-      "height": 176,
-      "visible": true,
-      "properties": [
-        {
-          "id": "cd14424b-3055-4cfe-a25f-21956a36e149",
-          "type": "livekitRoomProperty",
-          "roomName": "school-castle-v2-obergeschoss-table-festsaal"
-        }
-      ]
-    },
-    {
-      "id": "59daa078-3469-4e09-aaa3-15dd5fce833c",
-      "name": "Sitzplatz",
-      "x": 2312,
-      "y": 1608,
-      "width": 80,
-      "height": 176,
-      "visible": true,
-      "properties": [
-        {
-          "id": "40725eda-7028-496e-95d6-201ac423bc4a",
-          "type": "livekitRoomProperty",
-          "roomName": "school-castle-v2-obergeschoss-table-werkstatt"
+          "roomName": "school-castle-v2-obergeschoss-area-buchclub"
         }
       ]
     }
@@ -125,9 +45,9 @@
     }
   },
   "metadata": {
-    "name": "Schulschloss Obergeschoss",
-    "description": "Begehbare Grundriss-Vorschau. Bestehende Schulangebote bleiben unveraendert.",
-    "copyright": "",
-    "thumbnail": "https://wvh-web.github.io/workadventure_outside01/castle/undefined"
+    "name": "Obere Galerie",
+    "description": "Eingerichteter Schlossgang mit acht beschrifteten Tueren und zwei getrennten Gespraechsgruppen.",
+    "copyright": "Original library and book-club artwork generated for deine Schule; approved Great Hall reading furniture; existing village fire animation.",
+    "thumbnail": "https://wvh-web.github.io/workadventure_outside01/castle/art/obergeschoss-20261108-full/floor.png"
   }
 }

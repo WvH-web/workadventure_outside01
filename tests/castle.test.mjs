@@ -9,6 +9,9 @@ const sharp = createRequire(import.meta.url)("../tools/castle-deps.cjs")(
   "sharp",
 );
 const manifest = JSON.parse(fs.readFileSync(new URL("layout.json", base)));
+const mapIds=createRequire(import.meta.url)('../tools/castle-map-ids.cjs');
+// Preserve controller regression scenarios independently of the replaced draft geometry.
+const legacyControllerMap=JSON.parse(fs.readFileSync(new URL('fixtures/castle-controller-eg.tmj',import.meta.url)));
 const maps = new Map(
   manifest.worlds.map((w) => [
     w.id,
@@ -47,8 +50,9 @@ function reached(map, start) {
   }
   return seen;
 }
-test("eight modular maps have valid native grids, gids and local assets", () => {
-  assert.equal(maps.size, 8);
+test("all registered modular maps have valid native grids, gids and local assets", () => {
+  assert.equal(maps.size, mapIds.length);
+  assert.deepEqual([...maps.keys()].sort(),[...mapIds].sort());
   for (const map of maps.values()) {
     assert.equal(map.tilewidth, 32);
     assert.equal(map.tileheight, 32);
@@ -278,7 +282,7 @@ test("all 48 front cinema seats are quiet; all 16 rear seats have table groups",
   }
 });
 test("reading group joins separate tables and covers standing participants too", () => {
-  const layout = readLayout(maps.get("erdgeschoss"));
+  const layout = readLayout(legacyControllerMap);
   const left = layout.seats.find((s) => s.id === "lesen-1-n0"),
     right = layout.seats.find((s) => s.id === "lesen-2-s0");
   assert.equal(
@@ -297,7 +301,7 @@ test("reading group joins separate tables and covers standing participants too",
 });
 test("portraits, fireplaces, water and occasional ambience use native animation frames", () => {
   assert.ok(manifest.animations.length >= 30);
-  const ts = maps.get("erdgeschoss").tilesets[0];
+  const ts = legacyControllerMap.tilesets[0];
   for (const animation of manifest.animations) {
     assert.ok(animation.animation.length > 1);
     assert.ok(
@@ -468,7 +472,7 @@ test("late position responses cannot update a disposed room", async () => {
 });
 test("group entry and departure change native conversation without changing microphone state", async () => {
   const f = fixture(),
-    layout = readLayout(maps.get("erdgeschoss")),
+    layout = readLayout(legacyControllerMap),
     room = new CastleRoom(f.wa, layout, { delay: async () => {} });
   await room.start();
   try {
@@ -509,7 +513,7 @@ test("cinema quiet mode does not create a group and restores proximity on leavin
 });
 test("native seating and standing preserve the avatar and clear transient state", async () => {
   const f = fixture(),
-    layout = readLayout(maps.get("erdgeschoss")),
+    layout = readLayout(legacyControllerMap),
     room = new CastleRoom(f.wa, layout, { delay: async () => {} });
   await room.start();
   try {
@@ -596,7 +600,7 @@ test("a failed slide transport restores controls and removes the exit action", a
 });
 test("an occupied seat is not stolen and failed movement releases controls", async () => {
   const f = fixture(),
-    layout = readLayout(maps.get("erdgeschoss")),
+    layout = readLayout(legacyControllerMap),
     room = new CastleRoom(f.wa, layout, { delay: async () => {} });
   await room.start();
   try {
@@ -620,7 +624,7 @@ test("an occupied seat is not stolen and failed movement releases controls", asy
 });
 test("late audio joins are left when the map has already been disposed", async () => {
   const f = fixture(),
-    layout = readLayout(maps.get("erdgeschoss"));
+    layout = readLayout(legacyControllerMap);
   let resolveJoin;
   f.wa.spaces.joinSpace = () =>
     new Promise((resolve) => {

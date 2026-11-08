@@ -1,245 +1,37 @@
 {
   "version": "2.1.0",
-  "mapUrl": "https://wvh-web.github.io/workadventure_outside01/castle/erdgeschoss.tmj",
+  "mapUrl": "https://wvh-web.github.io/workadventure_outside01/castle/erdgeschoss.tmj?v=20261108-expansion1",
   "entities": {},
   "areas": [
     {
-      "id": "5c5014db-3898-4726-ae64-ae161e6848bd",
-      "name": "Lesekreis",
-      "x": 160,
-      "y": 1920,
-      "width": 640,
-      "height": 192,
+      "id": "c63bf783-5ef9-4d7e-a523-7f145953f6ae",
+      "name": "Lounge im Wandelgang",
+      "x": 64,
+      "y": 304,
+      "width": 288,
+      "height": 256,
       "visible": true,
       "properties": [
         {
-          "id": "f1d710b6-a581-4ca2-a56d-1194c530e5bd",
+          "id": "74b2e7c4-1de6-434a-8dda-2f347135ffb6",
           "type": "livekitRoomProperty",
-          "roomName": "school-castle-v2-erdgeschoss-area-bibliothek-lesekreis"
+          "roomName": "school-castle-v2-erdgeschoss-area-lesekamin"
         }
       ]
     },
     {
-      "id": "d72bf11c-3cb2-44c0-879e-3526215ca99b",
-      "name": "Vorlesekreis",
-      "x": 448,
-      "y": 1088,
-      "width": 352,
-      "height": 288,
+      "id": "2cfe76a3-a92a-4d05-8e89-5c972160ea71",
+      "name": "Treffpunkttisch",
+      "x": 896,
+      "y": 400,
+      "width": 288,
+      "height": 240,
       "visible": true,
       "properties": [
         {
-          "id": "05f0baa3-489f-46f3-9139-7cea9719c382",
+          "id": "9ad0efd0-6168-4f60-877e-bbeb1a9b474b",
           "type": "livekitRoomProperty",
-          "roomName": "school-castle-v2-erdgeschoss-area-grundschule-vorlesen"
-        }
-      ]
-    },
-    {
-      "id": "f4004a2a-0966-459e-868f-85dd337c0c6f",
-      "name": "Sitzplatz",
-      "x": 232,
-      "y": 296,
-      "width": 80,
-      "height": 176,
-      "visible": true,
-      "properties": [
-        {
-          "id": "f761e6c4-b22e-4297-8ba8-5f6f814ead20",
-          "type": "livekitRoomProperty",
-          "roomName": "school-castle-v2-erdgeschoss-table-lehrersalon"
-        }
-      ]
-    },
-    {
-      "id": "202d63cb-6892-4489-b871-769c14ec16b5",
-      "name": "Sitzplatz",
-      "x": 1736,
-      "y": 360,
-      "width": 80,
-      "height": 176,
-      "visible": true,
-      "properties": [
-        {
-          "id": "99d36c0f-0cee-4f1c-9d43-05be15bc7c36",
-          "type": "livekitRoomProperty",
-          "roomName": "school-castle-v2-erdgeschoss-table-musik"
-        }
-      ]
-    },
-    {
-      "id": "e2d3a1ec-a476-4214-809f-ac6c601fbf56",
-      "name": "Sitzplatz",
-      "x": 200,
-      "y": 1032,
-      "width": 80,
-      "height": 176,
-      "visible": true,
-      "properties": [
-        {
-          "id": "b31abfb6-d620-402f-8a25-47722847b2f4",
-          "type": "livekitRoomProperty",
-          "roomName": "school-castle-v2-erdgeschoss-table-gs-malen"
-        }
-      ]
-    },
-    {
-      "id": "16731cb0-c7e0-4ec1-a401-804b4a170d42",
-      "name": "Sitzplatz",
-      "x": 1096,
-      "y": 1064,
-      "width": 80,
-      "height": 176,
-      "visible": true,
-      "properties": [
-        {
-          "id": "8da89f32-7594-4f9e-9cde-978e687b2db6",
-          "type": "livekitRoomProperty",
-          "roomName": "school-castle-v2-erdgeschoss-table-halle-west"
-        }
-      ]
-    },
-    {
-      "id": "8610fe05-ecf1-4a9a-8872-cf730517d5bc",
-      "name": "Sitzplatz",
-      "x": 1576,
-      "y": 1064,
-      "width": 80,
-      "height": 176,
-      "visible": true,
-      "properties": [
-        {
-          "id": "553156d7-3b16-4328-ae74-841feea4a5cb",
-          "type": "livekitRoomProperty",
-          "roomName": "school-castle-v2-erdgeschoss-table-halle-ost"
-        }
-      ]
-    },
-    {
-      "id": "a94ead23-f751-4a46-9921-d6986e8b0e35",
-      "name": "Sitzplatz",
-      "x": 2088,
-      "y": 1032,
-      "width": 80,
-      "height": 176,
-      "visible": true,
-      "properties": [
-        {
-          "id": "833ffc8b-6a2f-487d-acec-56a94ff63e24",
-          "type": "livekitRoomProperty",
-          "roomName": "school-castle-v2-erdgeschoss-table-ms-spiele"
-        }
-      ]
-    },
-    {
-      "id": "2cf1c889-db99-483a-bea8-e1fa2d1c0e17",
-      "name": "Sitzplatz",
-      "x": 2472,
-      "y": 1192,
-      "width": 80,
-      "height": 176,
-      "visible": true,
-      "properties": [
-        {
-          "id": "56d8dd14-6300-43e9-86dd-e2f1c4d5b5cd",
-          "type": "livekitRoomProperty",
-          "roomName": "school-castle-v2-erdgeschoss-table-ms-reden"
-        }
-      ]
-    },
-    {
-      "id": "7f5991e3-d31a-4df0-9150-047e454c4cbf",
-      "name": "Sitzplatz",
-      "x": 1096,
-      "y": 1864,
-      "width": 80,
-      "height": 176,
-      "visible": true,
-      "properties": [
-        {
-          "id": "8893cd6f-f842-47d9-bb32-0b4bbec27b0b",
-          "type": "livekitRoomProperty",
-          "roomName": "school-castle-v2-erdgeschoss-table-atelier-1"
-        }
-      ]
-    },
-    {
-      "id": "b1369f9c-52eb-47b3-87fd-36ebe69acc4d",
-      "name": "Sitzplatz",
-      "x": 1576,
-      "y": 1960,
-      "width": 80,
-      "height": 176,
-      "visible": true,
-      "properties": [
-        {
-          "id": "32ed3abd-49fc-4afa-97ed-9eff436532b7",
-          "type": "livekitRoomProperty",
-          "roomName": "school-castle-v2-erdgeschoss-table-wohnfluegel"
-        }
-      ]
-    },
-    {
-      "id": "43e54475-d59e-44e7-948d-30a27dafc5e9",
-      "name": "Sitzplatz",
-      "x": 2056,
-      "y": 1832,
-      "width": 80,
-      "height": 176,
-      "visible": true,
-      "properties": [
-        {
-          "id": "7ecc8e76-7a5a-4733-b908-126e549b7a27",
-          "type": "livekitRoomProperty",
-          "roomName": "school-castle-v2-erdgeschoss-table-schach"
-        }
-      ]
-    },
-    {
-      "id": "dbfe9970-2ada-4a0c-8abe-30a82f2233cb",
-      "name": "Sitzplatz",
-      "x": 2504,
-      "y": 1832,
-      "width": 80,
-      "height": 176,
-      "visible": true,
-      "properties": [
-        {
-          "id": "4e3e3c3a-19fe-42a1-b3ec-2632b78d19aa",
-          "type": "livekitRoomProperty",
-          "roomName": "school-castle-v2-erdgeschoss-table-zeichnen"
-        }
-      ]
-    },
-    {
-      "id": "07b46c61-32b0-46fa-b985-44c74fa47ff5",
-      "name": "Sitzplatz",
-      "x": 2280,
-      "y": 1960,
-      "width": 80,
-      "height": 176,
-      "visible": true,
-      "properties": [
-        {
-          "id": "f195c07b-6411-4a44-8995-c642b3001efc",
-          "type": "livekitRoomProperty",
-          "roomName": "school-castle-v2-erdgeschoss-table-karten"
-        }
-      ]
-    },
-    {
-      "id": "9cb1577c-ca22-4ea9-8e30-953fb262aed5",
-      "name": "Sitzplatz",
-      "x": 2408,
-      "y": 360,
-      "width": 80,
-      "height": 176,
-      "visible": true,
-      "properties": [
-        {
-          "id": "4d4f3912-8bda-41ba-a6e4-125f6d5412d7",
-          "type": "livekitRoomProperty",
-          "roomName": "school-castle-v2-erdgeschoss-table-foyer-tisch"
+          "roomName": "school-castle-v2-erdgeschoss-area-buchclub"
         }
       ]
     }
@@ -253,9 +45,9 @@
     }
   },
   "metadata": {
-    "name": "Schulschloss Erdgeschoss",
-    "description": "Begehbare Grundriss-Vorschau. Bestehende Schulangebote bleiben unveraendert.",
-    "copyright": "",
-    "thumbnail": "https://wvh-web.github.io/workadventure_outside01/castle/undefined"
+    "name": "Wandelgang",
+    "description": "Eingerichteter Schlossgang mit acht beschrifteten Tueren und zwei getrennten Gespraechsgruppen.",
+    "copyright": "Original library and book-club artwork generated for deine Schule; approved Great Hall reading furniture; existing village fire animation.",
+    "thumbnail": "https://wvh-web.github.io/workadventure_outside01/castle/art/erdgeschoss-20261108-full/floor.png"
   }
 }

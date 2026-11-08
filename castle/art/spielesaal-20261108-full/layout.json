@@ -1,0 +1,964 @@
+{
+  "scene": {
+    "width": 28,
+    "height": 22,
+    "tileSize": 32,
+    "avatarPixels": 32,
+    "revision": "20261108-expansion1",
+    "entries": {
+      "start": [
+        13,
+        19
+      ],
+      "flur": [
+        13,
+        19
+      ]
+    },
+    "exit": {
+      "x": 13,
+      "y": 21,
+      "width": 2,
+      "height": 1,
+      "target": "erdgeschoss.tmj",
+      "entry": "spielesaal"
+    },
+    "circle": {
+      "source": "../grosse-halle-20261108-scale/kaminrunde.png",
+      "reference": "../grosse-halle-20261108-scale/layout.json",
+      "x": 104,
+      "y": 304,
+      "sourceX": 208,
+      "sourceY": 368,
+      "width": 230,
+      "height": 180
+    },
+    "bookclub": {
+      "x": 592,
+      "y": 432,
+      "width": 192,
+      "height": 160,
+      "columns": [
+        56,
+        136
+      ],
+      "northY": 32,
+      "northStandY": 0,
+      "southY": 130,
+      "southStandY": 176,
+      "source": "../bibliothek-20261108/bookclub-source.png",
+      "label": "Spielrunde"
+    },
+    "window": {
+      "columns": [
+        752,
+        800
+      ],
+      "y": 204,
+      "standY": 272,
+      "label": "Zuschauernische"
+    },
+    "groups": [
+      {
+        "id": "lesekamin",
+        "label": "Spielelounge",
+        "x": 64,
+        "y": 272,
+        "width": 288,
+        "height": 256
+      },
+      {
+        "id": "fensterleser",
+        "label": "Zuschauernische",
+        "x": 656,
+        "y": 176,
+        "width": 176,
+        "height": 176
+      },
+      {
+        "id": "buchclub",
+        "label": "Spielrunde",
+        "x": 544,
+        "y": 400,
+        "width": 288,
+        "height": 240
+      }
+    ],
+    "collisions": [
+      {
+        "id": "north-main",
+        "x": 0,
+        "y": 0,
+        "width": 704,
+        "height": 256,
+        "preserve": true
+      },
+      {
+        "id": "north-window",
+        "x": 704,
+        "y": 0,
+        "width": 128,
+        "height": 192,
+        "preserve": true
+      },
+      {
+        "id": "window-bench",
+        "x": 704,
+        "y": 192,
+        "width": 128,
+        "height": 64,
+        "preserve": false
+      },
+      {
+        "id": "west-bookshelves",
+        "x": 0,
+        "y": 0,
+        "width": 64,
+        "height": 704,
+        "preserve": true
+      },
+      {
+        "id": "east-bookshelves",
+        "x": 832,
+        "y": 0,
+        "width": 64,
+        "height": 704,
+        "preserve": true
+      },
+      {
+        "id": "south-west",
+        "x": 0,
+        "y": 656,
+        "width": 400,
+        "height": 48,
+        "preserve": true
+      },
+      {
+        "id": "south-east",
+        "x": 496,
+        "y": 656,
+        "width": 400,
+        "height": 48,
+        "preserve": true
+      },
+      {
+        "id": "bookclub-table",
+        "x": 624,
+        "y": 480,
+        "width": 128,
+        "height": 64,
+        "preserve": true
+      }
+    ],
+    "hearth": {
+      "tileX": 12,
+      "tileY": 5,
+      "width": 18,
+      "height": 28,
+      "flames": [
+        {
+          "x": 30,
+          "y": 36,
+          "phase": 0
+        },
+        {
+          "x": 46,
+          "y": 30,
+          "phase": 2
+        },
+        {
+          "x": 62,
+          "y": 36,
+          "phase": 4
+        }
+      ],
+      "audio": {
+        "x": 320,
+        "y": 256,
+        "width": 256,
+        "height": 128
+      }
+    },
+    "bookclubFronts": [
+      [
+        [
+          34,
+          6
+        ],
+        [
+          68,
+          6
+        ],
+        [
+          76,
+          44
+        ],
+        [
+          34,
+          44
+        ]
+      ],
+      [
+        [
+          114,
+          6
+        ],
+        [
+          148,
+          6
+        ],
+        [
+          156,
+          44
+        ],
+        [
+          114,
+          44
+        ]
+      ],
+      [
+        [
+          30,
+          58
+        ],
+        [
+          48,
+          48
+        ],
+        [
+          146,
+          48
+        ],
+        [
+          166,
+          60
+        ],
+        [
+          166,
+          100
+        ],
+        [
+          148,
+          112
+        ],
+        [
+          48,
+          112
+        ],
+        [
+          30,
+          100
+        ]
+      ],
+      [
+        [
+          34,
+          114
+        ],
+        [
+          74,
+          114
+        ],
+        [
+          74,
+          154
+        ],
+        [
+          34,
+          154
+        ]
+      ],
+      [
+        [
+          114,
+          114
+        ],
+        [
+          154,
+          114
+        ],
+        [
+          154,
+          154
+        ],
+        [
+          114,
+          154
+        ]
+      ]
+    ],
+    "windowFront": [
+      [
+        704,
+        216
+      ],
+      [
+        824,
+        216
+      ],
+      [
+        824,
+        244
+      ],
+      [
+        704,
+        244
+      ]
+    ],
+    "headClearance": {
+      "x": 10,
+      "top": 22,
+      "bottom": 3,
+      "facingDownBottom": 11
+    },
+    "expectedSeats": 12,
+    "storyVariable": "castleStoryGames",
+    "activities": [
+      {
+        "id": "games-story",
+        "group": "lesekamin",
+        "label": "Erzaehlkarten",
+        "url": "story.html",
+        "api": true
+      },
+      {
+        "id": "games-shelf",
+        "group": "buchclub",
+        "label": "Spielrunden",
+        "url": "hall-games.html",
+        "api": false
+      },
+      {
+        "id": "games-puzzles",
+        "group": "fensterleser",
+        "label": "Bausteinraetsel",
+        "url": "https://phet.colorado.edu/sims/html/area-builder/latest/area-builder_all.html?locale=de",
+        "api": false
+      }
+    ],
+    "displays": []
+  },
+  "seats": [
+    {
+      "id": "lese-kamin-sofa-links",
+      "label": "Lesesofa links",
+      "x": 198,
+      "y": 354,
+      "standX": 198,
+      "standY": 304,
+      "facing": "down",
+      "audioGroup": "lesekamin"
+    },
+    {
+      "id": "lese-kamin-sofa-mitte",
+      "label": "Lesesofa Mitte",
+      "x": 226,
+      "y": 354,
+      "standX": 226,
+      "standY": 304,
+      "facing": "down",
+      "audioGroup": "lesekamin"
+    },
+    {
+      "id": "lese-kamin-sofa-rechts",
+      "label": "Lesesofa rechts",
+      "x": 254,
+      "y": 354,
+      "standX": 254,
+      "standY": 304,
+      "facing": "down",
+      "audioGroup": "lesekamin"
+    },
+    {
+      "id": "lese-kamin-sessel-west",
+      "label": "Lesesessel links",
+      "x": 156,
+      "y": 412,
+      "standX": 124,
+      "standY": 424,
+      "facing": "right",
+      "audioGroup": "lesekamin"
+    },
+    {
+      "id": "lese-kamin-sessel-ost",
+      "label": "Lesesessel rechts",
+      "x": 278,
+      "y": 412,
+      "standX": 324,
+      "standY": 424,
+      "facing": "left",
+      "audioGroup": "lesekamin"
+    },
+    {
+      "id": "lese-kamin-sessel-sued",
+      "label": "Lesesessel unten",
+      "x": 216,
+      "y": 442,
+      "standX": 224,
+      "standY": 484,
+      "facing": "up",
+      "audioGroup": "lesekamin"
+    },
+    {
+      "id": "buchclub-n0",
+      "label": "Spielrunde n1",
+      "x": 648,
+      "y": 464,
+      "standX": 648,
+      "standY": 432,
+      "facing": "down",
+      "audioGroup": "buchclub"
+    },
+    {
+      "id": "buchclub-n1",
+      "label": "Spielrunde n2",
+      "x": 728,
+      "y": 464,
+      "standX": 728,
+      "standY": 432,
+      "facing": "down",
+      "audioGroup": "buchclub"
+    },
+    {
+      "id": "buchclub-s0",
+      "label": "Spielrunde s1",
+      "x": 648,
+      "y": 562,
+      "standX": 648,
+      "standY": 608,
+      "facing": "up",
+      "audioGroup": "buchclub"
+    },
+    {
+      "id": "buchclub-s1",
+      "label": "Spielrunde s2",
+      "x": 728,
+      "y": 562,
+      "standX": 728,
+      "standY": 608,
+      "facing": "up",
+      "audioGroup": "buchclub"
+    },
+    {
+      "id": "fenster-0",
+      "label": "Zuschauernische 1",
+      "x": 752,
+      "y": 204,
+      "standX": 752,
+      "standY": 272,
+      "facing": "down",
+      "audioGroup": "fensterleser"
+    },
+    {
+      "id": "fenster-1",
+      "label": "Zuschauernische 2",
+      "x": 800,
+      "y": 204,
+      "standX": 800,
+      "standY": 272,
+      "facing": "down",
+      "audioGroup": "fensterleser"
+    }
+  ],
+  "groups": [
+    {
+      "id": "lesekamin",
+      "label": "Spielelounge",
+      "x": 64,
+      "y": 272,
+      "width": 288,
+      "height": 256
+    },
+    {
+      "id": "fensterleser",
+      "label": "Zuschauernische",
+      "x": 656,
+      "y": 176,
+      "width": 176,
+      "height": 176
+    },
+    {
+      "id": "buchclub",
+      "label": "Spielrunde",
+      "x": 544,
+      "y": 400,
+      "width": 288,
+      "height": 240
+    }
+  ],
+  "collisionRects": [
+    {
+      "id": "north-main",
+      "x": 0,
+      "y": 0,
+      "width": 704,
+      "height": 256,
+      "preserve": true
+    },
+    {
+      "id": "north-window",
+      "x": 704,
+      "y": 0,
+      "width": 128,
+      "height": 192,
+      "preserve": true
+    },
+    {
+      "id": "window-bench",
+      "x": 704,
+      "y": 192,
+      "width": 128,
+      "height": 64,
+      "preserve": false
+    },
+    {
+      "id": "west-bookshelves",
+      "x": 0,
+      "y": 0,
+      "width": 64,
+      "height": 704,
+      "preserve": true
+    },
+    {
+      "id": "east-bookshelves",
+      "x": 832,
+      "y": 0,
+      "width": 64,
+      "height": 704,
+      "preserve": true
+    },
+    {
+      "id": "south-west",
+      "x": 0,
+      "y": 656,
+      "width": 400,
+      "height": 48,
+      "preserve": true
+    },
+    {
+      "id": "south-east",
+      "x": 496,
+      "y": 656,
+      "width": 400,
+      "height": 48,
+      "preserve": true
+    },
+    {
+      "id": "bookclub-table",
+      "x": 624,
+      "y": 480,
+      "width": 128,
+      "height": 64,
+      "preserve": true
+    },
+    {
+      "id": "lounge-lamps",
+      "x": 114,
+      "y": 314,
+      "width": 60,
+      "height": 60,
+      "preserve": false
+    },
+    {
+      "id": "lounge-sofa",
+      "x": 174,
+      "y": 334,
+      "width": 100,
+      "height": 40,
+      "preserve": false
+    },
+    {
+      "id": "tea-table",
+      "x": 174,
+      "y": 394,
+      "width": 80,
+      "height": 40,
+      "preserve": false
+    },
+    {
+      "id": "lounge-chair-west",
+      "x": 134,
+      "y": 394,
+      "width": 40,
+      "height": 40,
+      "preserve": false
+    },
+    {
+      "id": "lounge-chair-east",
+      "x": 254,
+      "y": 394,
+      "width": 40,
+      "height": 40,
+      "preserve": false
+    },
+    {
+      "id": "lounge-chair-south",
+      "x": 194,
+      "y": 434,
+      "width": 40,
+      "height": 40,
+      "preserve": false
+    }
+  ],
+  "frontPolygons": [
+    [
+      [
+        182,
+        365
+      ],
+      [
+        270,
+        365
+      ],
+      [
+        272,
+        373
+      ],
+      [
+        265,
+        378
+      ],
+      [
+        188,
+        378
+      ],
+      [
+        180,
+        372
+      ]
+    ],
+    [
+      [
+        181,
+        350
+      ],
+      [
+        187,
+        350
+      ],
+      [
+        190,
+        365
+      ],
+      [
+        187,
+        373
+      ],
+      [
+        181,
+        370
+      ],
+      [
+        178,
+        360
+      ]
+    ],
+    [
+      [
+        267,
+        349
+      ],
+      [
+        272,
+        350
+      ],
+      [
+        275,
+        360
+      ],
+      [
+        273,
+        371
+      ],
+      [
+        267,
+        374
+      ],
+      [
+        264,
+        365
+      ]
+    ],
+    [
+      [
+        138,
+        420
+      ],
+      [
+        144,
+        422
+      ],
+      [
+        150,
+        428
+      ],
+      [
+        163,
+        428
+      ],
+      [
+        170,
+        422
+      ],
+      [
+        175,
+        419
+      ],
+      [
+        176,
+        432
+      ],
+      [
+        170,
+        439
+      ],
+      [
+        149,
+        442
+      ],
+      [
+        141,
+        433
+      ]
+    ],
+    [
+      [
+        260,
+        420
+      ],
+      [
+        266,
+        422
+      ],
+      [
+        272,
+        428
+      ],
+      [
+        285,
+        428
+      ],
+      [
+        292,
+        422
+      ],
+      [
+        298,
+        420
+      ],
+      [
+        297,
+        432
+      ],
+      [
+        292,
+        439
+      ],
+      [
+        270,
+        441
+      ],
+      [
+        262,
+        433
+      ]
+    ],
+    [
+      [
+        200,
+        451
+      ],
+      [
+        231,
+        451
+      ],
+      [
+        231,
+        460
+      ],
+      [
+        226,
+        465
+      ],
+      [
+        204,
+        464
+      ],
+      [
+        200,
+        458
+      ]
+    ],
+    [
+      [
+        183,
+        394
+      ],
+      [
+        190,
+        388
+      ],
+      [
+        242,
+        389
+      ],
+      [
+        251,
+        395
+      ],
+      [
+        253,
+        412
+      ],
+      [
+        244,
+        421
+      ],
+      [
+        192,
+        423
+      ],
+      [
+        182,
+        413
+      ]
+    ],
+    [
+      [
+        626,
+        438
+      ],
+      [
+        660,
+        438
+      ],
+      [
+        668,
+        476
+      ],
+      [
+        626,
+        476
+      ]
+    ],
+    [
+      [
+        706,
+        438
+      ],
+      [
+        740,
+        438
+      ],
+      [
+        748,
+        476
+      ],
+      [
+        706,
+        476
+      ]
+    ],
+    [
+      [
+        622,
+        490
+      ],
+      [
+        640,
+        480
+      ],
+      [
+        738,
+        480
+      ],
+      [
+        758,
+        492
+      ],
+      [
+        758,
+        532
+      ],
+      [
+        740,
+        544
+      ],
+      [
+        640,
+        544
+      ],
+      [
+        622,
+        532
+      ]
+    ],
+    [
+      [
+        626,
+        546
+      ],
+      [
+        666,
+        546
+      ],
+      [
+        666,
+        586
+      ],
+      [
+        626,
+        586
+      ]
+    ],
+    [
+      [
+        706,
+        546
+      ],
+      [
+        746,
+        546
+      ],
+      [
+        746,
+        586
+      ],
+      [
+        706,
+        586
+      ]
+    ],
+    [
+      [
+        704,
+        216
+      ],
+      [
+        824,
+        216
+      ],
+      [
+        824,
+        244
+      ],
+      [
+        704,
+        244
+      ]
+    ]
+  ],
+  "mapdata": {
+    "pixelWidth": 896,
+    "pixelHeight": 704,
+    "avatarSize": 32,
+    "seats": 12,
+    "groups": 3,
+    "sofaWidthPixels": 100,
+    "bookclubChairWidthPixels": 40,
+    "blockedTiles": 331,
+    "reachableFloorTiles": 280,
+    "foregroundPixels": 20439,
+    "sourceSha256": "f95b3cb2eb38b6a3f6231635d5c6666506e8b0b581a28c2f743c5f9bcec08305"
+  }
+}

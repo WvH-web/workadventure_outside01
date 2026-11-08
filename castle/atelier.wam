@@ -1,0 +1,69 @@
+{
+  "version": "2.1.0",
+  "mapUrl": "https://wvh-web.github.io/workadventure_outside01/castle/atelier.tmj?v=20261108-expansion1",
+  "entities": {},
+  "areas": [
+    {
+      "id": "0814ad68-3759-4f02-b776-88d84a7be34a",
+      "name": "Ideenrunde",
+      "x": 64,
+      "y": 272,
+      "width": 288,
+      "height": 256,
+      "visible": true,
+      "properties": [
+        {
+          "id": "fa5c8782-fdae-4c0a-b64d-ae1bde79f095",
+          "type": "livekitRoomProperty",
+          "roomName": "school-castle-v2-atelier-area-lesekamin"
+        }
+      ]
+    },
+    {
+      "id": "55fe65b2-c056-407e-981a-ba6ede564578",
+      "name": "Zeichen- und Klangnische",
+      "x": 656,
+      "y": 176,
+      "width": 176,
+      "height": 176,
+      "visible": true,
+      "properties": [
+        {
+          "id": "5071bade-fb15-470c-9950-905cac38b9cf",
+          "type": "livekitRoomProperty",
+          "roomName": "school-castle-v2-atelier-area-fensterleser"
+        }
+      ]
+    },
+    {
+      "id": "578ab53f-ea4f-4b90-b34b-e7af8910fbb0",
+      "name": "Werkstatttisch",
+      "x": 544,
+      "y": 400,
+      "width": 288,
+      "height": 240,
+      "visible": true,
+      "properties": [
+        {
+          "id": "317c146a-037f-4b03-a157-742cd1dfb58b",
+          "type": "livekitRoomProperty",
+          "roomName": "school-castle-v2-atelier-area-buchclub"
+        }
+      ]
+    }
+  ],
+  "entityCollections": [],
+  "settings": {
+    "megaphone": {
+      "enabled": false,
+      "title": "",
+      "scope": "ROOM"
+    }
+  },
+  "metadata": {
+    "name": "Schlossatelier",
+    "description": "Schlossatelier mit drei getrennten Gespraechsrunden und passenden Aktivitaeten.",
+    "copyright": "Original room artwork generated for deine Schule; approved 32px-avatar seating and book-club furniture; village fire animation.",
+    "thumbnail": "https://wvh-web.github.io/workadventure_outside01/castle/art/atelier-20261108-full/floor.png"
+  }
+}

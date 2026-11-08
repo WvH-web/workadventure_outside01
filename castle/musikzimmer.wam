@@ -1,0 +1,69 @@
+{
+  "version": "2.1.0",
+  "mapUrl": "https://wvh-web.github.io/workadventure_outside01/castle/musikzimmer.tmj?v=20261108-expansion1",
+  "entities": {},
+  "areas": [
+    {
+      "id": "a534bda2-f182-4bfc-abf3-a477a6e9b469",
+      "name": "Musik- und Erzaehlrunde",
+      "x": 64,
+      "y": 272,
+      "width": 288,
+      "height": 256,
+      "visible": true,
+      "properties": [
+        {
+          "id": "1dc2ec74-b710-41c5-bb95-631e2944c929",
+          "type": "livekitRoomProperty",
+          "roomName": "school-castle-v2-musikzimmer-area-lesekamin"
+        }
+      ]
+    },
+    {
+      "id": "4a160f8c-4c15-4ce3-b104-aea6f0931c10",
+      "name": "Klangnische",
+      "x": 656,
+      "y": 176,
+      "width": 176,
+      "height": 176,
+      "visible": true,
+      "properties": [
+        {
+          "id": "067919b4-37fc-415e-83a3-91bb25af073c",
+          "type": "livekitRoomProperty",
+          "roomName": "school-castle-v2-musikzimmer-area-fensterleser"
+        }
+      ]
+    },
+    {
+      "id": "6bf4a6e2-4fe9-42f4-ac36-6602d8be9e01",
+      "name": "Band- und Chortreff",
+      "x": 544,
+      "y": 400,
+      "width": 288,
+      "height": 240,
+      "visible": true,
+      "properties": [
+        {
+          "id": "6091105e-3731-478c-a08f-6f39f5b635cc",
+          "type": "livekitRoomProperty",
+          "roomName": "school-castle-v2-musikzimmer-area-buchclub"
+        }
+      ]
+    }
+  ],
+  "entityCollections": [],
+  "settings": {
+    "megaphone": {
+      "enabled": false,
+      "title": "",
+      "scope": "ROOM"
+    }
+  },
+  "metadata": {
+    "name": "Musiksalon",
+    "description": "Musiksalon mit drei getrennten Gespraechsrunden und passenden Aktivitaeten.",
+    "copyright": "Original room artwork generated for deine Schule; approved 32px-avatar seating and book-club furniture; village fire animation.",
+    "thumbnail": "https://wvh-web.github.io/workadventure_outside01/castle/art/musikzimmer-20261108-full/floor.png"
+  }
+}

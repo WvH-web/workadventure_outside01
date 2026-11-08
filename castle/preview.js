@@ -1,5 +1,5 @@
 import { readLayout, conversationAt } from "./room.js?v=20261108-gs1";
-import {activitySettings} from './activities.js?v=20261108-gs1';
+import {activitySettings} from './activities.js?v=20261108-expansion1';
 const $ = (id) => document.getElementById(id);
 function showError() {
   const retry = document.createElement("button");
@@ -17,7 +17,7 @@ window.addEventListener("error", (event) => {
 });
 const canvas = $("map"),
   ctx = canvas.getContext("2d");
-const manifest = await fetch("layout.json?v=20261108-gs1").then((r) =>
+const manifest = await fetch("layout.json?v=20261108-expansion1").then((r) =>
   r.json(),
 );
 const images = new Map();
@@ -143,7 +143,7 @@ async function load(id, entry = "start") {
     if (!cache.has(id))
       cache.set(
         id,
-        await fetch(id + ".tmj?v=20261108-gs1").then((r) => {
+        await fetch(id + ".tmj?v=20261108-expansion1").then((r) => {
           if (!r.ok) throw Error("Karte nicht erreichbar");
           return r.json();
         }),
@@ -318,13 +318,13 @@ function refresh() {
     {
       umgebung: "Sternendorf",
       erdgeschoss: "Wandelgang",
-      obergeschoss: "Wandelgang",
+      obergeschoss: "Obere Galerie",
       kino: "Foyer",
       mittelstufe: "Mittelstufenraum",
       bibliothek: "Schlossbibliothek",
       grundschule: "Grundschulstube",
       "grosse-halle": "Grosse Halle",
-    }[world.id];
+    }[world.id] || map.properties?.find(p=>p.name==='mapName')?.value || world.id;
   const conversation = conversationAt(layout, position, seat);
   $("conversation").textContent =
     conversation?.label === room?.title ? "" : conversation?.label || "";
@@ -351,6 +351,9 @@ function refresh() {
       "https://deutsche-online-schule.com/schooltools/verwaltung/api/workadventure_museum_open.php?board=hallnotice01",title);
   }else if(activity){
     const settings=activitySettings(activity),url=new URL(settings.url);
+    if(url.origin==='https://together.deine-schule.com'&&url.pathname==='/castle-content/collection.html'){
+      url.href=new URL('collection.html'+url.search,location.href).href;
+    }
     if(settings.api)url.searchParams.set('preview','1');
     $('hall-open-label').textContent=settings.label;$('hall-open').onclick=()=>openPanel(url.href,settings.label);
   }

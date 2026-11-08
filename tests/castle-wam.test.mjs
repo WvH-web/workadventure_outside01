@@ -9,7 +9,7 @@ const worlds=JSON.parse(fs.readFileSync(new URL('layout.json',base))).worlds;
 const properties=o=>Object.fromEntries((o.properties||[]).map(p=>[p.name,p.value]));
 const inside=(p,a)=>p.x>=a.x&&p.y>=a.y&&p.x<a.x+a.width&&p.y<a.y+a.height;
 const overlap=(a,b)=>a.x<b.x+b.width&&a.x+a.width>b.x&&a.y<b.y+b.height&&a.y+a.height>b.y;
-test('eight small native wrappers refer to the existing artwork and rebuild deterministically',()=>{
+test('all registered native wrappers refer to the existing artwork and rebuild deterministically',()=>{
   const ids=new Set(),rooms=new Set();
   for(const world of worlds){
     const map=JSON.parse(fs.readFileSync(new URL(world.id+'.tmj',base)));

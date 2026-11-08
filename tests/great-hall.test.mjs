@@ -39,7 +39,7 @@ const bodyFree = (x, y) => [x - 8, x + 8].every((xx) => [y - 8, y + 8].every((yy
 const center = ([x, y]) => [x * T + T / 2, y * T + T / 2];
 const groupCounts = { kaminrunde: 6, "tafel-nord": 8, "tafel-sued": 8, lehrerbank: 4, spieltreff: 4, gemeinschaftstafel: 12 };
 const expectedEntries = {
-  start: [23, 26], "vom-lehrerzimmer": [5, 9], mittelstufe: [17, 9], kino: [31, 9], bibliothek: [40, 9], "vom-og": [44, 9], schlosstor: [24, 26], grundschule:[4,24],
+  start: [23, 26], "vom-lehrerzimmer": [5, 9], mittelstufe: [17, 9], kino: [31, 9], bibliothek: [40, 9], "vom-og": [44, 9], schlosstor: [24, 26], grundschule:[4,24],wandelgang:[35,24],
 };
 const expectedExits = {
   "door-lehrerzimmer": { x: 5, y: 7, width: 1, height: 1, url: "../teachersmeetingground.tmj" },
@@ -49,6 +49,7 @@ const expectedExits = {
   "door-treppe": { x: 44, y: 7, width: 2, height: 1, url: "obergeschoss.tmj#vom-eg" },
   "door-schlosstor": { x: 23, y: 29, width: 2, height: 1, url: "umgebung.tmj#schlosstor" },
   "door-grundschule": {x:4,y:29,width:1,height:1,url:"grundschule.tmj#halle"},
+  "door-wandelgang": {x:35,y:29,width:1,height:1,url:"erdgeschoss.tmj#halle"},
 };
 const imageCache = new Map();
 function rgba(url) {
@@ -161,7 +162,7 @@ test("forty-two native seat sockets include the twelve-place communal table in s
   for (const [i, a] of groups.entries()) for (const b of groups.slice(i + 1)) assert.equal(overlaps(a, b), false, `${a.id} / ${b.id}`);
 });
 
-test("all eight return markers are clear and outside every exit trigger", () => {
+test("all return markers are clear and outside every exit trigger", () => {
   assert.deepEqual(entries, expectedEntries);
   assert.deepEqual(entries, source.entries);
   for (const [name, point] of Object.entries(entries)) {
@@ -172,9 +173,9 @@ test("all eight return markers are clear and outside every exit trigger", () => 
   }
 });
 
-test("seven native exits have exact unobstructed portal cells and existing destinations", () => {
+test("eight native exits have exact unobstructed portal cells and existing destinations", () => {
   assert.deepEqual(exits.map((l) => l.name).sort(), Object.keys(expectedExits).sort());
-  assert.equal(portalCells.size, 9);
+  assert.equal(portalCells.size, 10);
   for (const l of exits) {
     const e = expectedExits[l.name], points = [];
     for (let y = e.y; y < e.y + e.height; y++) for (let x = e.x; x < e.x + e.width; x++) points.push(y * W + x);
@@ -364,7 +365,7 @@ test("furniture is actually smaller while the architecture and 32px avatar remai
   assert.equal(seats.filter(s=>s.audioGroup==='gemeinschaftstafel').length,12);
 });
 
-test('the new primary-school doorway is the only visual change to the approved Hall artwork',async()=>{
+test('only the two added doorways change the approved Hall artwork',async()=>{
   const previous=await rgba(new URL('source.png',art)),current=await rgba(new URL(source.render.source,art));
   const config=readJson(new URL('furniture.json',art));
   for(let y=0;y<1024;y++)for(let x=0;x<1536;x++){

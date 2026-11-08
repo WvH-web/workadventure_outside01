@@ -1,6 +1,8 @@
 {
   "scale": 0.625,
-  "addedDoors":[{"id":"grundschule","crop":{"left":1248,"top":112,"width":112,"height":144},"target":{"x":96,"y":832},"portal":{"id":"grundschule","x":4,"y":29,"width":1,"height":1,"target":"grundschule.tmj","entry":"halle"},"entry":[4,24],"posts":[{"id":"gs-door-left","x":96,"y":832,"width":32,"height":144,"preserve":true},{"id":"gs-door-right","x":160,"y":832,"width":32,"height":144,"preserve":true}]}],
+  "render":{"source":"source-expansion1.png","floor":"floor-expansion1.png","fronts":"fronts.png","fire":"fire.png","portrait":"portrait.png"},
+  "addedDoors":[{"id":"grundschule","crop":{"left":1248,"top":112,"width":112,"height":144},"target":{"x":96,"y":832},"portal":{"id":"grundschule","x":4,"y":29,"width":1,"height":1,"target":"grundschule.tmj","entry":"halle"},"entry":[4,24],"posts":[{"id":"gs-door-left","x":96,"y":832,"width":32,"height":144,"preserve":true},{"id":"gs-door-right","x":160,"y":832,"width":32,"height":144,"preserve":true}]},
+    {"id":"wandelgang","crop":{"left":1248,"top":112,"width":112,"height":144},"target":{"x":1088,"y":832},"portal":{"id":"wandelgang","x":35,"y":29,"width":1,"height":1,"target":"erdgeschoss.tmj","entry":"halle"},"entry":[35,24],"posts":[{"id":"eg-door-left","x":1088,"y":832,"width":32,"height":144,"preserve":true},{"id":"eg-door-right","x":1152,"y":832,"width":32,"height":144,"preserve":true}]}],
   "preserved": [
     {"x":0,"y":0,"width":1536,"height":288},
     {"x":0,"y":288,"width":32,"height":736},

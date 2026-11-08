@@ -1,11 +1,13 @@
 const fs = require("node:fs");
 const path = require("node:path");
+const {spawnSync}=require('node:child_process');
 const dep = require("./castle-deps.cjs");
 const { buildMiddleCommonRoom } = require("./build-middle-common-room.cjs");
 const { buildGreatHall } = require("./build-great-hall.cjs");
 const { buildCinema } = require("./build-cinema.cjs");
 const { buildLibrary } = require("./build-library.cjs");
 const { buildPrimaryCommonRoom } = require("./build-primary-common-room.cjs");
+const { buildCastleExpansion } = require("./build-castle-expansion.cjs");
 const { nativeTarget, writeWam } = require("./castle-wam.cjs");
 const { createCanvas, loadImage } = dep("@napi-rs/canvas");
 const sharp = dep("sharp");
@@ -29,6 +31,7 @@ const P = (name, value) => ({
 const png = (canvas) => canvas.toBuffer("image/png");
 
 function sprite(name, width, height, draw, durations = [1000]) {
+  if(process.env.CASTLE_BUILD_TRACE)console.log('Sprite:',name,width,height);
   const frames = [];
   for (let frame = 0; frame < durations.length; frame++) {
     const canvas = createCanvas(width * T, height * T),
@@ -37,10 +40,9 @@ function sprite(name, width, height, draw, durations = [1000]) {
     const ids = [];
     for (let y = 0; y < height; y++)
       for (let x = 0; x < width; x++) {
-        const cell = createCanvas(T, T);
-        cell.getContext("2d").drawImage(canvas, x * T, y * T, T, T, 0, 0, T, T);
         ids.push(cells.length);
-        cells.push(cell);
+        // Reuse source crops instead of allocating thousands of native canvas handles.
+        cells.push({canvas,x:x*T,y:y*T});
       }
     frames.push({ canvas, ids });
   }
@@ -704,7 +706,7 @@ async function createArt() {
     [180000, 150, 150, 150, 150, 150],
   );
   const source =
-    process.argv[2] ||
+    (process.argv[2]&&!process.argv[2].startsWith('--')?process.argv[2]:undefined) ||
     process.env.CASTLE_PORTRAIT_SOURCE ||
     path.join(out, "art", "portrait-source.png");
   if (!fs.existsSync(source)) throw Error("Missing portrait source: " + source);
@@ -1588,23 +1590,30 @@ async function main() {
   // Animated source files are read and rebuilt in one run on Windows.
   sharp.cache(false);
   fs.mkdirSync(out, { recursive: true });
+  console.log('Building castle artwork');
   await createArt();
+  console.log('Building legacy outdoor grid and atlas');
   const worlds = [...splitCampus(), upstairs()];
   // Collision tile 2 is deliberately transparent, separate from the visible ground.
-  cells[1] = createCanvas(T, T);
+  cells[1] = {canvas:createCanvas(T, T),x:0,y:0};
   const atlas = createCanvas(
       columns * T,
       Math.ceil(cells.length / columns) * T,
     ),
     ctx = atlas.getContext("2d");
+  console.log('Rasterizing tile frames');
+  const bitmaps=new Map();
+  for(const cell of cells)if(!bitmaps.has(cell.canvas))bitmaps.set(cell.canvas,await loadImage(png(cell.canvas)));
   cells.forEach((cell, i) =>
-    ctx.drawImage(cell, (i % columns) * T, Math.floor(i / columns) * T),
+    ctx.drawImage(bitmaps.get(cell.canvas),cell.x,cell.y,T,T,(i % columns) * T,Math.floor(i / columns) * T,T,T),
   );
+  console.log('Writing tile atlas');
   await sharp(png(atlas))
     .png({ compressionLevel: 9 })
     .toFile(path.join(out, "art", "castle-atlas.png"));
   const maps = {};
   for (const world of worlds) {
+    if(world.id!=='umgebung')continue;
     const map = world.finish();
     maps[world.id] = map;
     fs.writeFileSync(
@@ -1613,11 +1622,6 @@ async function main() {
     );
     writeWam(map, out);
   }
-  const middle = await buildMiddleCommonRoom();
-  const hall = await buildGreatHall();
-  const cinema = await buildCinema();
-  const library = await buildLibrary();
-  const primary = await buildPrimaryCommonRoom();
   const manifest = {
     version: 1,
     tileSize: T,
@@ -1629,7 +1633,7 @@ async function main() {
     ),
     animations,
     worlds: [
-      ...worlds.map((w) => ({
+      ...worlds.filter(w=>w.id==='umgebung').map((w) => ({
         id: w.id,
         width: w.w,
         height: w.h,
@@ -1639,17 +1643,13 @@ async function main() {
         links: w.links,
         entries: w.entries,
       })),
-      middle.world,
-      hall.world,
-      cinema.world,
-      library.world,
-      primary.world,
     ],
   };
   fs.writeFileSync(
-    path.join(out, "layout.json"),
+    path.resolve(root,'../output/castle-legacy-build.json'),
     JSON.stringify(manifest) + "\n",
   );
+  console.log('Building animation previews');
   for (const name of [
     "portrait",
     "fireplace",
@@ -1658,6 +1658,7 @@ async function main() {
     "teacup",
     "clock",
   ]) {
+    console.log('Animation:',name);
     const s = sprites[name];
     await sharp(
       s.frames.map((f) => png(f.canvas)),
@@ -1672,6 +1673,10 @@ async function main() {
       .toFile(path.join(out, "art", name + ".gif"));
   }
   for (const w of worlds) {
+    if(w.id!=='umgebung')continue;
+    console.log('Overview:',w.id);
+    // Rasterize once; blitting a large vector canvas for each map tile exhausts Skia on Windows.
+    const atlasBitmap=await loadImage(path.join(out,'art/castle-atlas.png'));
     const c = createCanvas(w.w * T, w.h * T),
       g = c.getContext("2d");
     for (const layer of maps[w.id].layers.filter(
@@ -1682,8 +1687,10 @@ async function main() {
         !Object.keys(w.entries).includes(l.name),
     )) {
       layer.data.forEach((gid, i) => {
-        if (gid)
-          g.drawImage(cells[gid - 1], (i % w.w) * T, Math.floor(i / w.w) * T);
+        if (gid){
+          const index=gid-1;
+          g.drawImage(atlasBitmap,index%columns*T,Math.floor(index/columns)*T,T,T,(i%w.w)*T,Math.floor(i/w.w)*T,T,T);
+        }
       });
     }
     await sharp(png(c))
@@ -1704,7 +1711,26 @@ async function main() {
     }),
   );
 }
-main().catch((e) => {
+async function buildAll(){
+  fs.mkdirSync(path.resolve(root,'../output'),{recursive:true});
+  // Isolate the legacy Skia render pass from subsequent Sharp/NAPI room builders on Windows.
+  const args=[__filename,'--legacy-assets'];
+  const portrait=process.argv[2]&&!process.argv[2].startsWith('--')?path.resolve(process.argv[2]):process.env.CASTLE_PORTRAIT_SOURCE;
+  const env={...process.env,...(portrait?{CASTLE_PORTRAIT_SOURCE:portrait}:{})};
+  const legacy=spawnSync(process.execPath,args,{stdio:'inherit',env,windowsHide:true});
+  if(legacy.status!==0)throw Error('Legacy artwork build failed: '+(legacy.error?.message||legacy.status));
+  const manifest=JSON.parse(fs.readFileSync(path.resolve(root,'../output/castle-legacy-build.json')));
+  console.log('Building illustrated rooms');
+  for(const build of [buildMiddleCommonRoom,buildGreatHall,buildCinema,buildLibrary,buildPrimaryCommonRoom]){
+    const {world}=await build();manifest.worlds.push(world);
+  }
+  manifest.worlds.push(...(await buildCastleExpansion()).map(result=>result.world));
+  const expected=require('./castle-map-ids.cjs');
+  if(manifest.worlds.length!==expected.length||expected.some(id=>!manifest.worlds.some(w=>w.id===id)))throw Error('Incomplete castle registry');
+  fs.writeFileSync(path.join(out,'layout.json'),JSON.stringify(manifest)+'\n');
+  console.log(JSON.stringify({maps:manifest.worlds.map(w=>({id:w.id,seats:w.seats.length})),completeBuild:true}));
+}
+(process.argv.includes('--legacy-assets')?main():buildAll()).catch((e) => {
   console.error(e);
   process.exitCode = 1;
 });

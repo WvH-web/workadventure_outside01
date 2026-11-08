@@ -4,7 +4,7 @@ const root = path.resolve(__dirname, ".."), out = path.resolve(root, "../output/
 const manifest = JSON.parse(fs.readFileSync(path.join(root, "castle/layout.json"), "utf8"));
 const worlds = new Map(manifest.worlds.map((w) => [w.id, w]));
 const hall = worlds.get("grosse-halle"), commonRoom = worlds.get("mittelstufe");
-const mapIds = ["grosse-halle", "erdgeschoss", "mittelstufe", "obergeschoss", "kino", "umgebung", "bibliothek", "grundschule"];
+const mapIds = require('./castle-map-ids.cjs');
 const viewports = [{ width: 1440, height: 960 }, { width: 390, height: 844 }, { width: 320, height: 740 }];
 const base = new URL(process.argv[2] || "http://127.0.0.1:4192/");
 base.hash = "";
@@ -189,7 +189,7 @@ async function checkBoard(page, viewport) {
 }
 
 (async () => {
-  assert(worlds.size === 8 && mapIds.every((id) => worlds.has(id)), "Build the eight-map test castle before browser QA");
+  assert(worlds.size === mapIds.length && mapIds.every((id) => worlds.has(id)), "Build all registered castle maps before browser QA");
   assert(hall.seats.length === 42, "Expected 42 Hall seats including the communal table");
   assert(commonRoom.links[0].target === "grosse-halle.tmj", "Middle common room must return to Hall, not EG");
   const browser = await chromium.launch({ headless: true, ...(!fs.existsSync(chromium.executablePath()) ? { channel: "chrome" } : {}) });
@@ -215,7 +215,7 @@ async function checkBoard(page, viewport) {
         await page.goto(base.href, { waitUntil: "networkidle" });
         await ready(page, "grosse-halle");
         assert((await page.locator("#floor").inputValue()) === "grosse-halle", "Hall is not the default map");
-        assert((await page.locator("#floor option").count()) === 8, "Map selector does not contain eight maps");
+        assert((await page.locator("#floor option").count()) === mapIds.length, "Map selector does not contain all registered maps");
         assert((await page.locator("header svg").count()) >= 3, "Missing toolbar icons");
         await layoutCheck(page, "default Hall");
         const pixels = await canvasColors(page);
@@ -293,8 +293,14 @@ async function checkBoard(page, viewport) {
         await page.frameLocator('#content-frame').getByRole('button',{name:'Neue Karten'}).click();
         await layoutCheck(page,'story activity');await screenshot(page,'grundschule-story',viewport);await closePanel(page);
         await walkThrough(page,worlds.get('grundschule').links[0]);
+        const expansionChecks=[];
+        for(const id of ['erdgeschoss','obergeschoss','oberstufe','spielesaal','museum','musikzimmer','atelier','sternwarte']){
+          const world=worlds.get(id);await load(page,id);const seats=await checkSeats(page,world,viewport);
+          const links=[];for(const link of world.links){await load(page,id);await walkThrough(page,link);links.push(link.name);}
+          expansionChecks.push({id,seats:seats.seats,links});
+        }
         await load(page, "erdgeschoss");
-        const egSeat = worlds.get("erdgeschoss").seats.find((s) => s.id === "halle-west-n0");
+        const egSeat = worlds.get("erdgeschoss").seats[0];
         await move(page, egSeat.standX, egSeat.standY, egSeat.id);
         await page.getByRole("button", { name: "Hinsetzen", exact: true }).click();
         assert(await page.evaluate((id) => window.castlePreview.state.seat === id, egSeat.id), "Existing EG seat failed");
@@ -311,7 +317,7 @@ async function checkBoard(page, viewport) {
         await page.click("#overview");
         await layoutCheck(page, "final Hall");
         const layoutPassed = !layoutFindings.some((f) => f.viewport.width === viewport.width);
-        results.push({ viewport, pixels, maps: maps.length, defaultHall: true, hallSeats: hallSeats.seats, middleSeats: middleSeats.seats, cinemaSeats:cinemaSeats.seats, librarySeats:librarySeats.seats, seatedGamePanels: hallSeats.seatedGamePanels, noticeboardCmsPanel: true, gameCmsTitles: true, nativeAnimationPixelStates: animations, hallRoundTrips: hallTrips, commonRoomReturnsToHall: true, protectedTeacherLink: true, cinemaPanel: true, blurStopsMovement: true, layoutPassed });
+        results.push({ viewport, pixels, maps: maps.length, defaultHall: true, hallSeats: hallSeats.seats, middleSeats: middleSeats.seats, cinemaSeats:cinemaSeats.seats, librarySeats:librarySeats.seats, expansionChecks, seatedGamePanels: hallSeats.seatedGamePanels, noticeboardCmsPanel: true, gameCmsTitles: true, nativeAnimationPixelStates: animations, hallRoundTrips: hallTrips, commonRoomReturnsToHall: true, protectedTeacherLink: true, cinemaPanel: true, blurStopsMovement: true, layoutPassed });
         console.log(JSON.stringify({ viewport, status: layoutPassed ? "passed" : "functional checks passed; layout finding", hallSeats: hallSeats.seats, maps: maps.length }));
       } catch (error) {
         await screenshot(page, "failed", viewport).catch(() => {});

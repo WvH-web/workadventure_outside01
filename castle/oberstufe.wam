@@ -1,0 +1,69 @@
+{
+  "version": "2.1.0",
+  "mapUrl": "https://wvh-web.github.io/workadventure_outside01/castle/oberstufe.tmj?v=20261108-expansion1",
+  "entities": {},
+  "areas": [
+    {
+      "id": "0b53c2ba-3cc8-47cf-b68a-86a152e95afb",
+      "name": "Salonrunde",
+      "x": 64,
+      "y": 272,
+      "width": 288,
+      "height": 256,
+      "visible": true,
+      "properties": [
+        {
+          "id": "66ed3d35-5cec-434d-854d-b5815bccd821",
+          "type": "livekitRoomProperty",
+          "roomName": "school-castle-v2-oberstufe-area-lesekamin"
+        }
+      ]
+    },
+    {
+      "id": "4f4121c7-02cb-4ed6-845f-b00acced66f3",
+      "name": "Fensternische",
+      "x": 656,
+      "y": 176,
+      "width": 176,
+      "height": 176,
+      "visible": true,
+      "properties": [
+        {
+          "id": "60e6e2e7-4fa2-417e-a8df-015dda779440",
+          "type": "livekitRoomProperty",
+          "roomName": "school-castle-v2-oberstufe-area-fensterleser"
+        }
+      ]
+    },
+    {
+      "id": "1fb716e3-83e3-488a-be42-c6e67d8a4bfc",
+      "name": "Debatten- und Lerntisch",
+      "x": 544,
+      "y": 400,
+      "width": 288,
+      "height": 240,
+      "visible": true,
+      "properties": [
+        {
+          "id": "739874c6-b3dc-4c7b-bdcd-ef5ff0aba4bd",
+          "type": "livekitRoomProperty",
+          "roomName": "school-castle-v2-oberstufe-area-buchclub"
+        }
+      ]
+    }
+  ],
+  "entityCollections": [],
+  "settings": {
+    "megaphone": {
+      "enabled": false,
+      "title": "",
+      "scope": "ROOM"
+    }
+  },
+  "metadata": {
+    "name": "Oberstufensalon",
+    "description": "Oberstufensalon mit drei getrennten Gespraechsrunden und passenden Aktivitaeten.",
+    "copyright": "Original room artwork generated for deine Schule; approved 32px-avatar seating and book-club furniture; village fire animation.",
+    "thumbnail": "https://wvh-web.github.io/workadventure_outside01/castle/art/oberstufe-20261108-full/floor.png"
+  }
+}
