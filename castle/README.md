@@ -8,6 +8,28 @@ Die neuen Karten bleiben eine separate Testvorschau. Bestehende Schuelereingaeng
 werden nicht umgebogen. Nur das geschuetzte Lehrerzimmer bietet einen freiwilligen
 Ruecklink in die neue Halle; sein bisheriger Ausgang bleibt erhalten.
 
+## Verbindlicher Einrichtungs-Massstab
+
+Am 8. November 2026 hat der Nutzer die Groessen der Grossen Halle ausdruecklich
+als passend bestaetigt. Diese Fassung ist die Referenz fuer weitere Schlossraeume:
+`art/grosse-halle-20261108-scale/source.png` und die dortige `layout.json`.
+
+- Raster: 32 x 32 Pixel; native Spielfigur: 32 Pixel hoch, nicht vergroessern.
+- Dreiersofa: rund 100 Pixel breit; Stuehle an Tafeln: etwa 28 bis 36 Pixel hoch;
+  Lesesessel: etwa 39 bis 50 Pixel hoch, jeweils in der fertigen Spielgrafik.
+- Der neue Gemeinschaftstisch hat zwoelf einzeln nutzbare Plaetze mit etwa
+  40 Pixel Sitzabstand. Lange Tafeln erhalten mehr Plaetze, keine Riesenstuehle.
+- Sitzhoehe, Blickrichtung und Vordergrundmasken muessen zu echten Avataren
+  passen. Koepfe und Oberkoerper bleiben sichtbar; Aufstehen fuehrt auf freie Wege.
+- Die 62,5 Prozent beziehen sich nur auf die vorherige Halleneinrichtung.
+  Neue Grafiken am fertigen Referenzmassstab messen, nicht pauschal erneut skalieren.
+- Jeden neuen Raum im nativen Client mit stehenden und sitzenden Avataren sowie
+  mehreren Teilnehmern pruefen. Gespraechsbereiche aus derselben Geometrie ableiten.
+
+Die bestaetigte Einrichtung nicht ohne neuen Auftrag umskalieren. Neue Raeume
+weiterhin einzeln in der getrennten Vorschau ausbauen; das bisherige Schloss
+bleibt bis zur ausdruecklichen Freigabe unveraendert.
+
 ## Sechs verbundene Karten
 
 - `erdgeschoss.tmj`: Grosse Halle, Grundschule, Mittelstufe, Bibliothek,
