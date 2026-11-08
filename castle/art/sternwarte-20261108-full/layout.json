@@ -4,7 +4,7 @@
     "height": 22,
     "tileSize": 32,
     "avatarPixels": 32,
-    "revision": "20261108-expansion2",
+    "revision": "20261108-expansion3",
     "entries": {
       "start": [
         13,
@@ -336,9 +336,37 @@
         "label": "Weltraum-Expeditionen",
         "url": "expeditions.html",
         "api": false
+      },
+      {
+        "id": "npc-farah",
+        "group": null,
+        "label": "Farah ansprechen",
+        "url": "characters.html?npc=farah",
+        "api": false,
+        "area": {
+          "x": 448,
+          "y": 320,
+          "width": 128,
+          "height": 64
+        }
       }
     ],
-    "displays": []
+    "displays": [],
+    "npcs": [
+      {
+        "id": "farah",
+        "x": 448,
+        "y": 256,
+        "width": 96,
+        "height": 48,
+        "body": {
+          "x": 480,
+          "y": 288,
+          "width": 32,
+          "height": 32
+        }
+      }
+    ]
   },
   "seats": [
     {
@@ -600,6 +628,14 @@
       "width": 40,
       "height": 40,
       "preserve": false
+    },
+    {
+      "id": "npc-farah",
+      "x": 480,
+      "y": 288,
+      "width": 32,
+      "height": 32,
+      "preserve": true
     }
   ],
   "frontPolygons": [
@@ -958,8 +994,8 @@
     "groups": 3,
     "sofaWidthPixels": 100,
     "bookclubChairWidthPixels": 40,
-    "blockedTiles": 330,
-    "reachableFloorTiles": 280,
+    "blockedTiles": 331,
+    "reachableFloorTiles": 279,
     "foregroundPixels": 18663,
     "sourceSha256": "4ba5df21dd9e6748285f65c39102960d90d0ba05d364489abcd8b75a4c78c63a"
   }

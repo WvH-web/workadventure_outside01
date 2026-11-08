@@ -1,0 +1,78 @@
+{
+  "name": "Eventgaeste",
+  "position": 1,
+  "textures": [
+    {
+      "id": "wvh-event-mira-v1",
+      "name": "Mira",
+      "url": "resources/characters/pipoya/su1%20Student%20fmale%2003.png",
+      "position": 0
+    },
+    {
+      "id": "wvh-event-noah-v1",
+      "name": "Noah",
+      "url": "resources/characters/pipoya/su1%20Student%20male%2005.png",
+      "position": 1
+    },
+    {
+      "id": "wvh-event-lea-v1",
+      "name": "Lea",
+      "url": "resources/characters/pipoya/Female%2011-2.png",
+      "position": 2
+    },
+    {
+      "id": "wvh-event-amir-v1",
+      "name": "Amir",
+      "url": "resources/characters/pipoya/Male%2011-4.png",
+      "position": 3
+    },
+    {
+      "id": "wvh-event-elin-v1",
+      "name": "Elin",
+      "url": "resources/characters/pipoya/Teacher%20fmale%2003.png",
+      "position": 4
+    },
+    {
+      "id": "wvh-event-farah-v1",
+      "name": "Farah",
+      "url": "resources/characters/pipoya/Headmaster%20fmale.png",
+      "position": 5
+    },
+    {
+      "id": "wvh-event-otto-v1",
+      "name": "Otto",
+      "url": "resources/characters/pipoya/Headmaster%20male.png",
+      "position": 6
+    },
+    {
+      "id": "wvh-event-sam-v1",
+      "name": "Sam",
+      "url": "resources/characters/pipoya/Male%2006-3.png",
+      "position": 7
+    },
+    {
+      "id": "wvh-event-rosa-v1",
+      "name": "Rosa",
+      "url": "resources/characters/pipoya/Female%2020-2.png",
+      "position": 8
+    },
+    {
+      "id": "wvh-event-val-v1",
+      "name": "Val",
+      "url": "resources/characters/pipoya/Female%2014-4.png",
+      "position": 9
+    },
+    {
+      "id": "wvh-event-kai-v1",
+      "name": "Kai",
+      "url": "resources/characters/pipoya/Male%2014-1.png",
+      "position": 10
+    },
+    {
+      "id": "wvh-event-jan-v1",
+      "name": "Jan",
+      "url": "resources/characters/pipoya/Teacher%20male%2004.png",
+      "position": 11
+    }
+  ]
+}

@@ -31,11 +31,14 @@ async function join(browser,number,options={}){
     filmRequests++;
     return route.fulfill({contentType:'text/html',body:'<!doctype html><title>Kino-Test</title><h1>Kino-Test ohne Filmstart</h1><script>window.instance=crypto.randomUUID()</script>'});
   });
-  await context.addInitScript(({token,name})=>{
+  await context.addInitScript(({token,name,characterTextureId})=>{
     if(location.origin==='https://together.deine-schule.com'&&window.top===window){
       localStorage.setItem('authToken',token);localStorage.setItem('playerName',name);
       localStorage.setItem('requestedCameraStateKey','false');localStorage.setItem('requestedMicrophoneStateKey','true');
       localStorage.setItem('noiseSuppressionEnabled','false');localStorage.setItem('workadventure_pwa_install_prompt_shown','1');
+      if(characterTextureId&&!sessionStorage.getItem('qaAvatarSeeded')){
+        localStorage.setItem('characterTextures',JSON.stringify([characterTextureId]));sessionStorage.setItem('qaAvatarSeeded','1');
+      }
     }
     window.__qaPeers=[];window.__qaNativeRooms=[];
     const Socket=window.WebSocket;
@@ -56,7 +59,7 @@ async function join(browser,number,options={}){
     };
     const Peer=window.RTCPeerConnection;
     if(Peer)window.RTCPeerConnection=class extends Peer{constructor(...args){super(...args);window.__qaPeers.push(this)}};
-  },{token:credentials[String(number)],name});
+  },{token:credentials[String(number)],name,characterTextureId:options.characterTextureId});
   const page=await context.newPage(),errors=[],diagnostics=[];page.setDefaultTimeout(15000);
   page.on('pageerror',e=>errors.push(e.message));
   page.on('console',message=>{
@@ -100,7 +103,7 @@ async function join(browser,number,options={}){
   await script.evaluate(async p=>{await WA.player.teleport(p[0],p[1]);await castleRoom.syncPosition()},parking);
   await context.storageState({path:storage});
   console.log('Synthetic '+roomId+' participant '+number+' entered.');
-  return {context,page,script,errors,get filmRequests(){return filmRequests}};
+  return {context,page,script,errors,diagnostics,get filmRequests(){return filmRequests}};
 }
 async function move(u,x,y){
   await u.script.evaluate(async p=>{await castleRoom.stand();await WA.player.teleport(p.x,p.y)}, {x,y});

@@ -47,6 +47,10 @@ for(const id of [...rooms.map(r=>r.id),'erdgeschoss','obergeschoss']){
     for(const seat of layout.seats){assert.ok(free(seat.x,seat.y),seat.id+' body');assert.ok(seen.has(key(seat.standX,seat.standY)),seat.id+' approach');}
     for(const [name,tile]of Object.entries(world.entries)){const point=tile.map(n=>n*32+16);assert.ok(seen.has(key(...point)),name);assert.equal(portal(...point),false);}
     for(const link of world.links)assert.ok(queue.some(([x,y])=>Math.abs(x-(link.x+link.width/2))<20&&(Math.abs(y-link.y-40)<12||Math.abs(y-link.y+12)<12)),link.name+' approach');
+    const actor=map.layers.flatMap(l=>l.objects||[]).find(o=>props(o).castleNpcId);assert.ok(actor);
+    assert.ok(collision[Math.floor((actor.y+48)/32)*map.width+Math.floor((actor.x+48)/32)],'NPC body stays solid');
+    const talk=map.layers.flatMap(l=>l.objects||[]).find(o=>props(o).castleActivityId==='npc-'+props(actor).castleNpcId);
+    assert.ok(queue.some(([x,y])=>inside(talk,x,y)),'NPC conversation is reachable without walking through the character');
   });
   test(id+': foreground uses only matching furniture pixels and does not cover avatar heads',async()=>{
     const map=read(id+'.tmj'),layout=readLayout(map),art=new URL('art/'+id+'-20261108-full/',base);

@@ -1,10 +1,17 @@
 const fs=require('node:fs'),path=require('node:path');
 const {buildFurnishedRoom}=require('./build-library.cjs');
 const {createCanvas}=require('./castle-deps.cjs')('@napi-rs/canvas');
-const root=path.resolve(__dirname,'..'),revision='20261108-expansion2';
+const root=path.resolve(__dirname,'..'),revision='20261108-expansion3';
 const own='';
 const collection='https://together.deine-schule.com/castle-content/collection.html';
 const activity=(id,group,label,url,api=false)=>({id,group,label,url,api});
+const inhabitants={oberstufe:['kai','Kai'],spielesaal:['sam','Sam'],museum:['elin','Elin'],musikzimmer:['lea','Lea'],
+  atelier:['mira','Mira'],sternwarte:['farah','Farah'],erdgeschoss:['amir','Amir'],obergeschoss:['otto','Otto']};
+function addInhabitant(scene,id,wide=false){
+  const [key,name]=inhabitants[id],x=wide?720:496,footY=wide?400:304;
+  scene.npcs=[{id:key,x:x-48,y:footY-48,width:96,height:48,body:{x:x-16,y:footY-16,width:32,height:32}}];
+  scene.activities.push({...activity('npc-'+key,null,name+' ansprechen','characters.html?npc='+key),area:{x:x-48,y:footY+16,width:128,height:64}});
+}
 const rooms=[
   {id:'oberstufe',name:'Oberstufensalon',parent:'obergeschoss',key:'Os',labels:['Salonrunde','Fensternische','Debatten- und Lerntisch'],
     activities:[activity('os-story','lesekamin','Erzaehlrunde',own+'story.html',true),activity('os-games','buchclub','Spielrunden',own+'hall-games.html'),activity('os-explore','fensterleser','Expeditionen',own+'expeditions.html')]},
@@ -35,7 +42,8 @@ function roomScene(config){
   scene.groups[0].label=config.labels[0];scene.groups[1].label=config.labels[1];scene.groups[2].label=config.labels[2];
   scene.exit={...scene.exit,target:config.parent+'.tmj',entry:config.id};
   scene.returnLabel=config.parent==='obergeschoss'?'Obere Galerie':'Wandelgang';
-  scene.entries={start:[13,19],flur:[13,19]};scene.activities=config.activities;scene.displays=config.displays||[];
+  scene.entries={start:[13,19],flur:[13,19]};scene.activities=[...config.activities];scene.displays=config.displays||[];
+  addInhabitant(scene,config.id);
   return scene;
 }
 const lowerDoors=[
@@ -53,6 +61,7 @@ const upperDoors=[
 function corridorScene(id){
   const scene=roomScene(rooms[0]),upper=id==='obergeschoss',doors=upper?upperDoors:lowerDoors;
   scene.width=40;scene.noHearth=true;scene.expectedSeats=10;delete scene.storyVariable;scene.activities=[];scene.displays=[];
+  addInhabitant(scene,id,true);
   scene.window={columns:[],y:204,standY:272};scene.windowFront=[];
   scene.circle.y=336;scene.bookclub.x=944;scene.bookclub.label='Treffpunkttisch';
   scene.groups=[{id:'lesekamin',label:upper?'Galerierunde':'Lounge im Wandelgang',x:64,y:304,width:288,height:256},
@@ -84,12 +93,12 @@ async function buildCastleExpansion(){
   const results=[];
   for(const room of rooms){
     const scene=roomScene(room);
-    results.push(await buildFurnishedRoom({id:room.id,folder:room.id+'-20261108-full',name:room.name,scene,script:room.script||'activities.js',
+    results.push(await buildFurnishedRoom({id:room.id,folder:room.id+'-20261108-full',name:room.name,scene,script:'npcs.js',
       description:room.name+' mit drei getrennten Gespraechsrunden und passenden Aktivitaeten.',copyright:'Original room artwork generated for deine Schule; approved 32px-avatar seating and book-club furniture; village fire animation.'}));
   }
   for(const id of ['erdgeschoss','obergeschoss']){
     const scene=corridorScene(id);
-    results.push(await buildFurnishedRoom({id,folder:id+'-20261108-full',width:40,scene,name:id==='erdgeschoss'?'Wandelgang':'Obere Galerie',
+    results.push(await buildFurnishedRoom({id,folder:id+'-20261108-full',width:40,scene,script:'npcs.js',name:id==='erdgeschoss'?'Wandelgang':'Obere Galerie',
       description:'Eingerichteter Schlossgang mit acht beschrifteten Tueren und zwei getrennten Gespraechsgruppen.',overlays:[plaques(scene)]}));
   }
   return results;

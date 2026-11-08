@@ -2,6 +2,8 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import {CastleRoom,readLayout,isNativeMeetingRoom,nativeRoomUrl} from '../castle/room.js';
+import {createRequire} from 'node:module';
+const require=createRequire(import.meta.url),mapIds=require('../tools/castle-map-ids.cjs');
 
 const map = JSON.parse(fs.readFileSync(new URL('../castle/grosse-halle.tmj',import.meta.url)));
 const roomId='https://together.deine-schule.com/_/global/wvh-web.github.io/workadventure_outside01/castle/grosse-halle.tmj';
@@ -57,4 +59,22 @@ test('the return command names its actual destination and preserves the original
   const room=new CastleRoom(wa,readLayout(labeled));room.refresh=()=>{};room.syncPosition=async()=>{};
   try{await room.start();assert.equal(buttons.find(b=>b.id==='castle-return-hall').label,'Wandelgang');}
   finally{room.dispose();}
+});
+
+test('every seat turns on a body-clear floor pair instead of teleporting into protected furniture',()=>{
+  let seats=0;
+  for(const id of mapIds){
+    const tiled=JSON.parse(fs.readFileSync(new URL('../castle/'+id+'.tmj',import.meta.url))),layout=readLayout(tiled);
+    const grid=tiled.layers.find(l=>l.name==='collisions').data;
+    for(const seat of layout.seats){
+      seats++;const alignment=layout.facingPaths[seat.id];assert.ok(alignment,id+' '+seat.id);
+      const end={x:alignment.to.x,y:alignment.to.y-16},direction={up:[0,-32],down:[0,32],left:[-32,0],right:[32,0]}[seat.facing];
+      assert.deepEqual([end.x-alignment.from.x,end.y-alignment.from.y],direction);
+      for(const p of [alignment.from,end])for(const x of [p.x-8,p.x+8])for(const y of [p.y-8,p.y+8,p.y+24]){
+        assert.ok(x>=0&&y>=0&&x<tiled.width*32&&y<tiled.height*32,id+' alignment bounds');
+        assert.equal(grid[Math.floor(y/32)*tiled.width+Math.floor(x/32)],0,id+' '+seat.id+' alignment collision');
+      }
+    }
+  }
+  assert.ok(seats>200);
 });

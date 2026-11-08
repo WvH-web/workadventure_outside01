@@ -50,17 +50,18 @@ Village und geschuetzte Lehrerzimmer werden nicht ersetzt.
   und Besuche. Lokale Testdaten bleiben unberuehrt und unveroeffentlicht.
 - Betriebs-, Wiederanlauf- und realistische Leistungstests vor breiter Nutzung.
   Kleine synthetische Mehrteilnehmerproben ersetzen keine Lastabnahme.
-- Zusaetzlich gewuenscht: unterschiedliche Teilnehmer-Avatare und ansprechbare,
-  eindeutig gekennzeichnete Schlossfiguren. Jung und alt, verschiedene Stile,
-  Hintergruende und Persoenlichkeiten; attraktive erwachsene Figuren bleiben
-  schulgeeignet. Figuren zaehlen nicht als echte Besucher und taeuschen keine
-  wartenden Mitschueler vor. Auswahl und Dialoge brauchen dieselbe native
-  Groessen-, Mehrspieler- und Berechtigungspruefung wie der uebrige Ausbau.
+- Zusaetzlich: Zwoelf native `Eventgaeste` sind mit zwei Teilnehmern und dem
+  nativen Auswahlfenster geprueft. Acht klar bezeichnete Schlossfiguren sind
+  vorbereitet; ihre native Platzierungs- und Interaktionsprobe steht noch aus.
+  Jung und alt, unterschiedliche Stile und Persoenlichkeiten, schulgeeignet.
+  Figuren zaehlen nicht als echte Besucher. Einzelheiten: `CHARACTERS.md`.
 
 ## Pruefstand der Innenausbaustufe
 
-Fassung `20261108-expansion2`: vollstaendiger Bau erfolgreich, 160 Kernpruefungen
-bestanden. Die drei Browsergroessen 1440, 390 und 320 Pixel pruefen alle
+Fassung `20261108-expansion3`: Innenausbau mit Figuren erfolgreich gebaut,
+165 Kernpruefungen nach der letzten Aenderung bestanden. Die letzte vollstaendige
+Grafik-Browserprobe der Fassung 1 in den drei Groessen 1440, 390 und 320 Pixel
+pruefte alle
 vierzehn Karten, alle neuen Sitzplaetze, jede neue Tuer und die vorhandenen
 Hallenfunktionen ohne Layout- oder Browserfehler. Neun gesonderte Inhaltsproben
 pruefen Museum, Musik und Expeditionen inklusive Bilder, Rueckweg aus einem
@@ -71,7 +72,12 @@ Beitritt, zwoelf Sitzen, fuenf Verwaltungsbildern und echtem eingebettetem
 Verwaltungsbeitrag geprueft. Beim folgenden Raumwechsel trat eine verzoegerte
 Initialisierung auf, die in der Einzelprobe nicht reproduziert wurde. Fassung 2
 verwendet eindeutig raumspezifische Skriptadressen und korrekt beschriftete
-Rueckwege. Die vollstaendige Mehrpersonen-Wiederholungsprobe steht noch aus;
+Rueckwege. In der Wiederholungsprobe trat an einer Fensterbank ein Sitz-Timeout
+auf. Als konkrete Schwachstelle wurde der bisherige Drehstart in einer gesperrten
+Wandkachel gefunden. Der neue Drehweg verwendet ein kurzes, fuer den ganzen Avatar
+freies Bodenpaar; alle ueber 200 Sitzplaetze werden darauf geprueft. Der native
+Wiederholungsnachweis nach dieser Aenderung steht noch aus.
+Die vollstaendige Mehrpersonen-Wiederholungsprobe steht damit noch aus;
 kein allgemeines Bestehen aller neuen Raeume wird daraus abgeleitet. Testberichte,
 synthetische Sprachdatei und kurzlebige Testzugriffe bleiben ausserhalb des
 oeffentlichen Repositorys.

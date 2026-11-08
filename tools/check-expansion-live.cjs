@@ -10,7 +10,8 @@ async function findRoom(user,id){
     if(!frame)await user.page.waitForTimeout(500);
   }
   assert.ok(frame,'Room script '+id);user.script=frame;
-  await frame.waitForFunction(revision=>window.castleRoom?.layout&&WA.room.getTiledMap().then(m=>m.properties.find(p=>p.name==='castleRevision')?.value===revision),revision,{polling:200,timeout:30000});
+  const expected=JSON.parse(fs.readFileSync(path.resolve(__dirname,'../castle',id+'.tmj'))).properties.find(p=>p.name==='castleRevision')?.value;
+  await frame.waitForFunction(revision=>window.castleRoom?.layout&&WA.room.getTiledMap().then(m=>m.properties.find(p=>p.name==='castleRevision')?.value===revision),expected,{polling:200,timeout:30000});
 }
 async function travel(user,id){
   await user.script.evaluate(()=>castleRoom.stand());const started=Date.now();
@@ -75,6 +76,9 @@ async function main(){
       if(id!=='museum')for(const [i,u]of users.entries()){
         await travel(u,id);await move(u,...(hub?[[112,272],[592,352],[720,288],[624,608]][i]:[[112,272],[592,352],[720,288],[432,608]][i]));
       }
+      const label=hub?'Grosse Halle':['oberstufe','sternwarte'].includes(id)?'Obere Galerie':'Wandelgang';
+      assert.equal(await a.script.evaluate(()=>castleRoom.layout.returnLabel),label);
+      await a.page.getByRole('button',{name:label,exact:true}).waitFor();
       await sit(a,'lese-kamin-sofa-links');await sit(b,'lese-kamin-sessel-west');await move(c,80,hub?528:496);await sit(d,'lese-kamin-sessel-ost');
       const together=await audio(users);assert.ok(together.after.every(s=>s.rooms.some(r=>r.endsWith('area-lesekamin')&&together.after[0].rooms.includes(r))));
       const story=hub?null:await verifyStory(users);
@@ -123,7 +127,8 @@ async function main(){
       const states=[];
       for(const frame of page.frames())states.push(await frame.evaluate(()=>({controller:window.castleRoom?.layout.id,seated:window.castleRoom?.seat?.id,
         path:location.pathname})).catch(e=>({error:e.message})));
-      fs.writeFileSync(path.join(out,'failure-'+n+'-state.json'),JSON.stringify({states,errors:users[n-1]?.errors},null,2)+'\n');
+      const diagnostics=users[n-1]?.diagnostics?.map(d=>({...d,message:d.message?.replace(/([?&](?:access_token|token|authToken)=)[^\s'"&]+/g,'$1[redacted]').replace(/[A-Za-z0-9_-]{10,}\.[A-Za-z0-9_-]{10,}\.[A-Za-z0-9_-]{10,}/g,'[redacted]')}));
+      fs.writeFileSync(path.join(out,'failure-'+n+'-state.json'),JSON.stringify({states,errors:users[n-1]?.errors,diagnostics},null,2)+'\n');
     }
     throw error;
   }finally{await browser.close();}

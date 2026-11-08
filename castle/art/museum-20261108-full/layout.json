@@ -4,7 +4,7 @@
     "height": 22,
     "tileSize": 32,
     "avatarPixels": 32,
-    "revision": "20261108-expansion2",
+    "revision": "20261108-expansion3",
     "entries": {
       "start": [
         13,
@@ -336,6 +336,19 @@
         "label": "Expeditionen",
         "url": "expeditions.html",
         "api": false
+      },
+      {
+        "id": "npc-elin",
+        "group": null,
+        "label": "Elin ansprechen",
+        "url": "characters.html?npc=elin",
+        "api": false,
+        "area": {
+          "x": 448,
+          "y": 320,
+          "width": 128,
+          "height": 64
+        }
       }
     ],
     "displays": [
@@ -373,6 +386,21 @@
         "y": 140,
         "width": 37,
         "height": 18
+      }
+    ],
+    "npcs": [
+      {
+        "id": "elin",
+        "x": 448,
+        "y": 256,
+        "width": 96,
+        "height": 48,
+        "body": {
+          "x": 480,
+          "y": 288,
+          "width": 32,
+          "height": 32
+        }
       }
     ]
   },
@@ -636,6 +664,14 @@
       "width": 40,
       "height": 40,
       "preserve": false
+    },
+    {
+      "id": "npc-elin",
+      "x": 480,
+      "y": 288,
+      "width": 32,
+      "height": 32,
+      "preserve": true
     }
   ],
   "frontPolygons": [
@@ -994,8 +1030,8 @@
     "groups": 3,
     "sofaWidthPixels": 100,
     "bookclubChairWidthPixels": 40,
-    "blockedTiles": 332,
-    "reachableFloorTiles": 280,
+    "blockedTiles": 333,
+    "reachableFloorTiles": 279,
     "foregroundPixels": 20439,
     "sourceSha256": "b4dda2f3ff22308c8f002d7227459a66c2910383eb77de2b866e8d588bc94edd"
   }

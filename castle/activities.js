@@ -1,4 +1,5 @@
-import {castleRoomReady} from './room.js?v=20261108-navigation1';
+import {castleRoomReady} from './room.js?v=20261108-navigation2';
+import {characters} from './characters-data.js?v=20261108-characters1';
 const props=o=>Object.fromEntries((o.properties||[]).map(p=>[p.name,p.value]));
 const inside=(p,a)=>p.x>=a.x&&p.y>=a.y&&p.x<a.x+a.width&&p.y<a.y+a.height;
 const ownBase=new URL('.',import.meta.url);
@@ -14,7 +15,8 @@ export function activitySettings(object){
   const story=url.href===new URL('story.html',ownBase).href;
   const games=url.href===new URL('hall-games.html',ownBase).href;
   const collection=['collection.html?kind=museum','collection.html?kind=music','expeditions.html'].some(page=>url.href===new URL(page,ownBase).href);
-  if(!story&&!games&&!collection&&!allowedExternal.has(url.href))throw Error('Unknown castle activity destination');
+  const character=characters.some(c=>url.href===new URL('characters.html?npc='+c.id,ownBase).href);
+  if(!story&&!games&&!collection&&!character&&!allowedExternal.has(url.href))throw Error('Unknown castle activity destination');
   return {id:p.castleActivityId,label:p.castleActivityLabel,url:url.href,api:story&&p.castleActivityApi===true};
 }
 export class CastleActivities{

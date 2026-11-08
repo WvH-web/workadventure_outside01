@@ -5,6 +5,23 @@ const props = (object) =>
   Object.fromEntries((object.properties || []).map((p) => [p.name, p.value]));
 const inside = (p, a) =>
   p.x >= a.x && p.y >= a.y && p.x < a.x + a.width && p.y < a.y + a.height;
+export function seatingFacingPath(map, seat) {
+  const grid=map.layers?.find(l=>l.type==='tilelayer'&&l.name==='collisions')?.data;
+  if(!grid||map.tilewidth!==32||map.tileheight!==32)return null;
+  const direction={up:[0,-1],down:[0,1],left:[-1,0],right:[1,0]}[seat.facing];
+  if(!direction)return null;
+  const free=p=>[p.x-8,p.x+8].every(x=>[p.y-8,p.y+8,p.y+24].every(y=>
+    x>=0&&y>=0&&x<map.width*32&&y<map.height*32&&!grid[Math.floor(y/32)*map.width+Math.floor(x/32)]));
+  let best=null,distance=Infinity;
+  const cx=Math.floor(seat.standX/32),cy=Math.floor(seat.standY/32);
+  for(let y=Math.max(1,cy-5);y<Math.min(map.height-1,cy+6);y++)for(let x=Math.max(1,cx-5);x<Math.min(map.width-1,cx+6);x++){
+    const from={x:x*32+16,y:y*32},end={x:from.x+direction[0]*32,y:from.y+direction[1]*32};
+    if(!free(from)||!free(end))continue;
+    const score=Math.hypot(from.x-seat.standX,from.y-seat.standY)+Math.hypot(end.x-seat.standX,end.y-seat.standY);
+    if(score<distance){distance=score;best={from,to:{x:end.x,y:end.y+16}};}
+  }
+  return best;
+}
 export function readLayout(map) {
   const result = {
     id: props(map).castleMapId,
@@ -45,6 +62,7 @@ export function readLayout(map) {
     }
   }
   walk(map.layers);
+  result.facingPaths=Object.fromEntries(result.seats.map(s=>[s.id,seatingFacingPath(map,s)]));
   return result;
 }
 export function conversationAt(layout, position, seat) {
@@ -56,13 +74,13 @@ export function conversationAt(layout, position, seat) {
     ? { id: "table-" + seat.audioGroup, label: seat.label, area: false }
     : null;
 }
-async function bounded(promise, ms = 5000) {
+async function bounded(promise, ms = 5000, operation = 'Castle action') {
   let timer;
   try {
     return await Promise.race([
       promise,
       new Promise((_, reject) => {
-        timer = setTimeout(() => reject(Error("Castle action timed out")), ms);
+        timer = setTimeout(() => reject(Error(operation+" timed out")), ms);
       }),
     ]);
   } finally {
@@ -342,6 +360,7 @@ export class CastleRoom {
           { id, stage: "claiming" },
           PUBLIC,
         ),
+        5000,'Seat reservation',
       );
       await this.delay(260);
       if (
@@ -367,15 +386,15 @@ export class CastleRoom {
         x: Math.floor(seat.x / 32) * 32 + 16,
         y: Math.floor(seat.y / 32) * 32 + 16,
       };
+      const alignment=this.layout.facingPaths?.[seat.id]||{
+        from:{x:centre.x-d[0]*32,y:centre.y-16-d[1]*32},to:centre,
+      };
       await bounded(
-        this.wa.player.teleport(
-          centre.x - d[0] * 32,
-          centre.y - 16 - d[1] * 32,
-        ),
+        this.wa.player.teleport(alignment.from.x,alignment.from.y),5000,'Seat alignment position',
       );
       if (this.disposed || this.seat !== seat) return false;
       try {
-        await bounded(this.wa.player.moveTo(centre.x, centre.y, 4), 2500);
+        await bounded(this.wa.player.moveTo(alignment.to.x, alignment.to.y, 4), 2500,'Seat orientation');
       } catch (e) {
         if (!/No path found/.test(e.message)) throw e;
       }

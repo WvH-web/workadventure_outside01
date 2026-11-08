@@ -64,7 +64,8 @@ async function buildFurnishedRoom(options={}){
     for(const [i,x]of b.columns.entries())seats.push({id:'buchclub-'+side+i,label:(b.label||'Buchclub')+' '+side+(i+1),x:b.x+x,y:b.y+y,standX:b.x+x,standY:b.y+standY,facing,audioGroup:'buchclub'});
   for(const [i,x]of scene.window.columns.entries())seats.push({id:'fenster-'+i,label:(scene.window.label||'Fensterbank')+' '+(i+1),x,y:scene.window.y,standX:x,standY:scene.window.standY,facing:'down',audioGroup:'fensterleser'});
   const circleIds=['lounge-lamps','lounge-sofa','tea-table','lounge-chair-west','lounge-chair-east','lounge-chair-south'];
-  const rects=[...scene.collisions,...ref.collisionRects.filter(r=>circleIds.includes(r.id)).map(r=>({...r,x:r.x+dx,y:r.y+dy}))];
+  const rects=[...scene.collisions,...ref.collisionRects.filter(r=>circleIds.includes(r.id)).map(r=>({...r,x:r.x+dx,y:r.y+dy})),
+    ...(scene.npcs||[]).map(n=>({id:'npc-'+n.id,...n.body,preserve:true}))];
   const {blocked,reachable}=geometry(scene,seats,rects);
   await sharp(path.join(art,'room-source.png')).resize(W*T,H*T,{fit:'fill',kernel:'lanczos3'}).png({compressionLevel:9}).toFile(path.join(art,'room.png'));
   await sharp(path.resolve(art,b.source||'bookclub-source.png')).trim().resize(b.width,b.height,{fit:'fill',kernel:'lanczos3'}).png({compressionLevel:9}).toFile(path.join(art,'bookclub.png'));
@@ -111,10 +112,11 @@ async function buildFurnishedRoom(options={}){
     ['id','label','x','y','standX','standY','facing','audioGroup'].map((key,i)=>P(['seatId','seatLabel','seatX','seatY','standX','standY','facing','audioGroup'][i],s[key]))))));
   layers.push(objects('conversationAreas',scene.groups.map(g=>area('group-'+g.id,g,[P('conversationGroup',g.id),P('conversationLabel',g.label)]))));
   if(!scene.noHearth)layers.push(objects('ambience',[area('kamin-prasseln',scene.hearth.audio,[P('playAudio','../village/fire.mp3'),P('audioLoop',true),P('audioVolume',.06)])]));
-  if(scene.activities)layers.push(objects('activities',scene.activities.map(a=>area('activity-'+a.id,scene.groups.find(g=>g.id===a.group),[
+  if(scene.activities)layers.push(objects('activities',scene.activities.map(a=>area('activity-'+a.id,a.area||scene.groups.find(g=>g.id===a.group),[
     P('castleActivityId',a.id),P('castleActivityLabel',a.label),P('castleActivityUrl',a.url),P('castleActivityApi',a.api)]))));
   if(scene.storyVariable)layers.push(objects('variables',[{id:oid++,name:scene.storyVariable,type:'variable',x:0,y:0,width:0,height:0,rotation:0,visible:false,properties:[P('persist',false),P('default',false)]}]));
   if(scene.displays?.length)layers.push(objects('exhibit-displays',scene.displays.map(d=>area('display-'+d.board,d,[P('castleDisplayBoard',d.board)]))));
+  if(scene.npcs?.length)layers.push(objects('castle-characters',scene.npcs.map(n=>area('character-'+n.id,n,[P('castleNpcId',n.id)]))));
   layers.push(objects('floorLayer',[]),tile('furniture-fronts',Array.from({length:count},(_,i)=>frontCells.has(i)?frontGid+i:0)));
   const imageSet=(firstgid,name,image,columns,tilecount,imagewidth,imageheight,extra={})=>({firstgid,name,image:artPath+image,columns,tilecount,imagewidth,imageheight,tilewidth:T,tileheight:T,margin:0,spacing:0,...extra});
   const mapdata={pixelWidth:W*T,pixelHeight:H*T,avatarSize:32,seats:seats.length,groups:scene.groups.length,sofaWidthPixels:100,bookclubChairWidthPixels:40,

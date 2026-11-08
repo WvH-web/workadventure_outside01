@@ -4,7 +4,7 @@
     "height": 22,
     "tileSize": 32,
     "avatarPixels": 32,
-    "revision": "20261108-expansion2",
+    "revision": "20261108-expansion3",
     "entries": {
       "start": [
         19,
@@ -305,8 +305,37 @@
     "expectedSeats": 10,
     "scriptRoomId": true,
     "returnLabel": "Grosse Halle",
-    "activities": [],
+    "activities": [
+      {
+        "id": "npc-otto",
+        "group": null,
+        "label": "Otto ansprechen",
+        "url": "characters.html?npc=otto",
+        "api": false,
+        "area": {
+          "x": 672,
+          "y": 416,
+          "width": 128,
+          "height": 64
+        }
+      }
+    ],
     "displays": [],
+    "npcs": [
+      {
+        "id": "otto",
+        "x": 672,
+        "y": 352,
+        "width": 96,
+        "height": 48,
+        "body": {
+          "x": 704,
+          "y": 384,
+          "width": 32,
+          "height": 32
+        }
+      }
+    ],
     "noHearth": true,
     "portals": [
       {
@@ -607,6 +636,14 @@
       "width": 40,
       "height": 40,
       "preserve": false
+    },
+    {
+      "id": "npc-otto",
+      "x": 704,
+      "y": 384,
+      "width": 32,
+      "height": 32,
+      "preserve": true
     }
   ],
   "frontPolygons": [
@@ -948,8 +985,8 @@
     "groups": 2,
     "sofaWidthPixels": 100,
     "bookclubChairWidthPixels": 40,
-    "blockedTiles": 358,
-    "reachableFloorTiles": 504,
+    "blockedTiles": 359,
+    "reachableFloorTiles": 503,
     "foregroundPixels": 17079,
     "sourceSha256": "4e7ad4fb7ae578c0e3d0423e4a58899c4033c04de9937101269c37f980d0f9a9"
   }
