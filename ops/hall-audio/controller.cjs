@@ -16,7 +16,8 @@ class AttemptLimiter {
   consume(identifier, ip) {
     const now = this.clock();
     for (const [key, bucket] of this.buckets) if (bucket.until <= now) this.buckets.delete(key);
-    const keys = [['id:' + identifier, this.config.identityAttempts], ['ip:' + ip, this.config.ipAttempts]];
+    const keys = [['id:' + identifier, this.config.identityAttempts]];
+    if (Number.isFinite(this.config.ipAttempts)) keys.push(['ip:' + ip, this.config.ipAttempts]);
     for (const [key, limit] of keys) {
       const bucket = this.buckets.get(key);
       if (bucket && bucket.count >= limit) {
@@ -38,6 +39,8 @@ class HallAudioController {
     this.config = config; this.media = media; this.verifyCode = verifyCode;
     this.clock = clock; this.randomId = randomId;
     this.sessions = new Map(); this.limiter = new AttemptLimiter(config, clock);
+    this.sessionLimiter = new AttemptLimiter({ ...config,
+      identityAttempts: config.sessionCreationAttempts, ipAttempts: Infinity }, clock);
     this.lease = null; this.pending = null; this.room = null; this.epoch = null;
     this.roomSpeaker = null; this.ready = false; this.revision = 0;
     this.gatewayId = this.randomId();
@@ -82,6 +85,12 @@ class HallAudioController {
     if (mapId !== this.config.map.id) throw new GatewayError(403, 'wrong_map');
     const now = this.clock();
     for (const [id, session] of this.sessions) if (session.until <= now) this.sessions.delete(id);
+    this.sessionLimiter.consume(auth.identifier);
+    const ownSessions = [...this.sessions.values()].filter(s => s.identifier === auth.identifier);
+    if (ownSessions.length >= this.config.identitySessionLimit) {
+      throw new GatewayError(429, 'session_limit', Math.max(1,
+        Math.ceil((Math.min(...ownSessions.map(s => s.until)) - now) / 1000)));
+    }
     if (this.sessions.size >= this.config.maxSessions) throw new GatewayError(503, 'unavailable');
     const id = this.randomId();
     this.sessions.set(id, { id, identifier: auth.identifier, name: auth.name, until: now + this.config.sessionMs });

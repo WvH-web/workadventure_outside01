@@ -44,6 +44,7 @@ function loadConfig(env = process.env) {
     freshnessMs: 4500, pollMs: 2000, heartbeatMs: 1000,
     sessionMs: 60000, mediaTimeoutMs: 3500,
     rateWindowMs: 60000, identityAttempts: 5, ipAttempts: 15, maxSessions: 1000,
+    identitySessionLimit: 8, sessionCreationAttempts: 20,
   };
 }
 

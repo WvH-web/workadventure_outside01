@@ -12,6 +12,7 @@
   let claimCancelled = false;
   let validUntil = 0, closed = false, fatal = false, statePending = false, heartbeatPending = false;
   let positionPending = false, resizing = false, lastHeight = 0, failure = '';
+  let authRevision = 0;
   const now = () => performance.now();
   const messages = {
     unauthorized: 'Bitte erneut anmelden.', session_expired: 'Die Verbindung ist abgelaufen. Karte erneut betreten.',
@@ -19,13 +20,14 @@
     occupied: 'Das Pult ist bereits belegt.', wrong_map: 'Diese Hallenverbindung passt nicht zur Karte.',
     off_podium: 'Das Pult wurde verlassen.', role_required: 'F\u00fcr diese Ansage fehlt die Berechtigung.',
     unavailable: 'Hallenansagen sind gerade nicht erreichbar.', lease_expired: 'Die Ansage wurde beendet.',
+    session_limit: 'Zu viele offene Hallenverbindungen. Bitte eine andere Verbindung schlie\u00dfen.',
     epoch_changed: 'Die Hallenverbindung wird erneuert.', cancelled: 'Ansage abgebrochen.',
     wrong_origin: 'Die Hallenverbindung wurde nicht freigegeben.',
   };
 
   function showError(message) { failure = message || ''; render(); }
   function fresh() { return state && now() < validUntil && !fatal && !closed; }
-  function positionFresh() { return position && now() - positionAt <= 1000; }
+  function positionFresh() { return position && now() - positionAt <= 3000; }
   function wantsMicrophone() { return ownLease || (claiming && !claimCancelled); }
   function inside(p, r) { return p && p.x >= r.x && p.y >= r.y && p.x < r.x + r.width && p.y < r.y + r.height; }
 
@@ -116,12 +118,13 @@
         (listener && listenerEpoch === state.epoch)) return;
     disconnectListener();
     const generation = listenGeneration;
+    const revision = authRevision;
     listenerPending = true;
     let room;
     try {
       const started = now();
       const grant = await api('listen', {});
-      if (generation !== listenGeneration || !applyState(grant, started) || grant.suppressed || !grant.speaker || !fresh() ||
+      if (revision !== authRevision || generation !== listenGeneration || !applyState(grant, started) || grant.suppressed || !grant.speaker || !fresh() ||
           grant.epoch !== state.epoch || !grant.available || state.speaker?.sameAccount || ownLease || claiming) return;
       room = makeRoom(); listener = room; listenerEpoch = grant.epoch;
       room.on(LK.RoomEvent.TrackSubscribed, (track, publication, participant) => {
@@ -153,18 +156,42 @@
     if (closed || fatal || !sessionId || statePending) return;
     statePending = true;
     const started = now();
+    const revision = authRevision;
     try {
       const next = await api('state', undefined);
-      if (closed) return;
+      if (closed || revision !== authRevision) return;
       if (applyState(next, started)) {
         if (!ownLease && !claiming && failure === messages.unavailable) failure = '';
-        await ensureListener();
+        void ensureListener();
       }
     } catch (error) {
+      if (closed || revision !== authRevision) return;
       validUntil = 0; disconnectListener();
       stopPublishing(messages[error.code] || messages.unavailable);
       if (['unauthorized', 'session_expired'].includes(error.code)) fatal = true;
     } finally { statePending = false; render(); }
+  }
+
+  async function revalidateAuth() {
+    const revision = ++authRevision;
+    fatal = true; validUntil = 0;
+    stopPublishing('Anmeldung wird gepr\u00fcft.');
+    disconnectListener();
+    if (closed || !sessionId) { failure = messages.unauthorized; render(); return; }
+    const started = now();
+    try {
+      const next = await api('state', undefined);
+      if (closed || revision !== authRevision) return;
+      if (!next || typeof next.epoch !== 'string' || typeof next.gatewayId !== 'string') throw new Error('state');
+      // The server has verified the replacement JWT against the existing session's identity.
+      fatal = false; failure = '';
+      applyState(next, started);
+      void pollPosition();
+      void ensureListener();
+    } catch (error) {
+      if (closed || revision !== authRevision) return;
+      fatal = true; failure = messages[error.code] || messages.unavailable;
+    } finally { render(); }
   }
 
   async function pollPosition() {
@@ -180,15 +207,16 @@
       if (onPodium && !previous) { failure = ''; render(); }
       render();
     } catch {
-      positionAt = 0; onPodium = false;
-      if (wantsMicrophone()) stopPublishing('Die Pultposition ist nicht erreichbar.');
+      if (!positionFresh() && wantsMicrophone()) stopPublishing('Die Pultposition ist nicht erreichbar.');
       render();
     } finally { positionPending = false; }
   }
 
   async function heartbeat() {
     if (!ownLease || heartbeatPending || closed) return;
-    if (!onPodium || !positionFresh() || !fresh()) { stopPublishing(messages.off_podium); return; }
+    if (!positionFresh()) { stopPublishing('Die Pultposition ist nicht erreichbar.'); return; }
+    if (!onPodium) { stopPublishing(messages.off_podium); return; }
+    if (!fresh()) { stopPublishing(messages.unavailable); return; }
     heartbeatPending = true;
     const lease = ownLease, started = now();
     try {
@@ -250,7 +278,7 @@
   async function resize(height) {
     if (!widget || resizing || height === lastHeight) return;
     resizing = true;
-    try { widget.size.width = '340px'; widget.size.height = height + 'px'; lastHeight = height; }
+    try { widget.size.width = 'min(340px, calc(100vw - 76px))'; widget.size.height = height + 'px'; lastHeight = height; }
     catch { widget = null; }
     finally { resizing = false; }
   }
@@ -294,7 +322,9 @@
   window.addEventListener('pagehide', close, { once: true });
   window.addEventListener('beforeunload', close, { once: true });
   window.addEventListener('storage', event => {
-    if (event.key === 'authToken') { fatal = true; stopPublishing(messages.unauthorized); disconnectListener(); }
+    if ((event.key === 'authToken' || event.key === null) && (!event.storageArea || event.storageArea === localStorage)) {
+      void revalidateAuth();
+    }
   });
   document.addEventListener('visibilitychange', () => {
     void pollPosition(); void pollState();
@@ -318,6 +348,7 @@
       if (own) widget = await WA.ui.website.getById(own.id);
     } catch {}
     sessionId = (await api('session', { mapId: WA.room.id })).sessionId;
+    if (fatal) await revalidateAuth();
     await pollPosition();
     await pollState();
     timers.push(setInterval(() => { void pollPosition(); }, 500));

@@ -31,6 +31,12 @@ release_id = '20261107-' + digest(archive)[:12]
 release = base/'releases'/release_id
 release.mkdir(parents=True, exist_ok=False)
 with zipfile.ZipFile(archive) as bundle:
+    allowed = {'auth.cjs','config.cjs','controller.cjs','errors.cjs','media.cjs','server.cjs',
+               'package.json','package-lock.json','README.md','public/index.html','public/widget.css',
+               'public/widget.js','public/vendor/livekit-client.umd.js','public/vendor/livekit-client.LICENSE',
+               'public/vendor/lucide.min.js','public/vendor/lucide.LICENSE'}
+    if set(bundle.namelist()) != allowed:
+        raise RuntimeError('Release archive differs from the explicit file allowlist')
     for item in bundle.infolist():
         target = (release/item.filename).resolve()
         if not target.is_relative_to(release.resolve()) or item.filename.startswith(('/', '\\')):
@@ -74,6 +80,7 @@ location ^~ /castle-audio/ {
 }
 '''
 created = False
+installed_hash = None
 try:
     run('docker','run','-d','--name',container,'--restart','unless-stopped',
         '--network','workadventure_default','-p','127.0.0.1:3210:3210',
@@ -95,9 +102,12 @@ try:
         time.sleep(1)
     if not healthy:
         raise RuntimeError('Isolated hall gateway did not become ready')
+    if digest(nginx) != expected_nginx:
+        raise RuntimeError('Gateway routing changed while the container was starting')
     mode = nginx.stat().st_mode & 0o777
     nginx.write_bytes(backup.read_bytes()+location.encode())
     nginx.chmod(mode)
+    installed_hash = digest(nginx)
     run('nginx','-t')
     run('systemctl','reload','nginx')
     after = json.loads(run('docker','inspect','workadventure-play-1'))[0]
@@ -110,11 +120,12 @@ try:
     (private/'deployment.json').write_text(json.dumps(report,indent=2)+'\n')
     print(json.dumps(report,indent=2))
 except Exception:
-    shutil.copyfile(backup,nginx)
-    try:
-        run('nginx','-t');run('systemctl','reload','nginx')
-    except Exception:
-        pass
+    if installed_hash is not None and digest(nginx) == installed_hash:
+        shutil.copyfile(backup,nginx)
+        try:
+            run('nginx','-t');run('systemctl','reload','nginx')
+        except Exception:
+            pass
     if created:
         subprocess.run(['docker','rm','-f',container],stdout=subprocess.DEVNULL,stderr=subprocess.DEVNULL)
-    raise RuntimeError('Hall gateway deployment failed; original routing restored') from None
+    raise RuntimeError('Hall gateway deployment failed; concurrent routing changes were not overwritten') from None

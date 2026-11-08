@@ -130,9 +130,12 @@ same transparent 340x220 widget remains usable. The main hall closes it on unloa
 
 - Position queries every 500 ms, independent of stale movement notifications.
 - Authenticated state polling every 2 seconds; control freshness at most 4.5 seconds.
+- LiveKit connection work runs independently of control polling, including slow
+  initial connections; it cannot hold the state-poll lock or timer setup.
 - Idle widgets have no LiveKit connection. Listeners connect only when a speaker
   is arming or active and disconnect when no lease is present.
-- Position freshness at most 1 second; active heartbeat every second; active lease
+- Position freshness at most 3 seconds; a transient query error preserves the last
+  valid position only within that deadline. Active heartbeat every second; active lease
   expires after 8 seconds without a successful heartbeat. Server expiry sweeps every 250 ms.
 - Microphone permission phase lasts at most 30 seconds. Arming heartbeats renew
   the eight-second soft deadline but never its 30-second hard deadline; loss of
@@ -145,6 +148,11 @@ same transparent 340x220 widget remains usable. The main hall closes it on unloa
   in the background; genuine browser suspension/loss of freshness fails closed.
 - Unload release uses authenticated `fetch(..., { keepalive: true })`; delivery is
   best effort, so server expiry is authoritative. No bearer tokens appear in URLs.
+- A cross-tab auth-token change immediately stops microphone capture and detaches
+  listener audio. The replacement token is verified by `GET state` against the
+  existing opaque session. Only server-confirmed same-identity replacements clear
+  the fatal auth state; account changes, invalid tokens and logout stay stopped.
+  Successful renewal may resume listening, but never automatically captures a mic.
 - No changes to WA microphone/camera state, native groups, or native media streams.
   The gateway has separate mic controls; WA's mute button is not a gateway mute button.
 - Same-account speaker monitoring is suppressed across widget sessions. Publisher
@@ -173,6 +181,9 @@ An atomic in-memory reservation precedes asynchronous scrypt and SDK calls.
 Five code attempts per signed identity and fifteen per trusted IP are allowed
 per minute. New sessions do not reset these buckets. No submitted email/name/ID
 is used to establish identity.
+Each verified identity is limited to eight live sessions and twenty session-creation
+attempts per minute, using a limiter separate from the PIN-attempt buckets.
+Expired sessions free slots; exhausting one account's quota does not block others.
 
 Every claim, release, expiry and restart uses a fresh raw
 `castle-audio-<128-bit random epoch>` room, outside the native `${world}.name`

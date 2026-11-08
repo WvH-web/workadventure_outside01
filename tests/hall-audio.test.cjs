@@ -212,6 +212,38 @@ test('code holders are not role-limited unless configured', async () => {
   await rejectCode(f.controller.claim(auth, f.session(), { code: syntheticCode, position: point }, 'ip-one'), 'role_required', 403);
 });
 
+test('one identity cannot flood the global session pool or block another account', async () => {
+  const f = await fixture();
+  for (let n = 0; n < 8; n++) f.session();
+  for (let n = 0; n < 1000; n++) {
+    assert.throws(() => f.session(), error => error.status === 429 &&
+      ['session_limit', 'rate_limited'].includes(error.code));
+  }
+  assert.equal(f.controller.sessions.size, 8);
+  assert.ok(f.session(other));
+  f.advance(60001);
+  assert.ok(f.session());
+  assert.equal(f.controller.sessions.size, 1);
+});
+
+test('session creation is limited to twenty attempts per identity per minute across expired sessions', async () => {
+  const f = await fixture({ config: { sessionMs: 100 } });
+  for (let n = 0; n < 20; n++) { f.session(); f.advance(101); }
+  assert.throws(() => f.session(), error => error.status === 429 && error.code === 'rate_limited');
+  assert.ok(f.session(other));
+  f.advance(60000);
+  assert.ok(f.session());
+});
+
+test('session creation and PIN checking use independent rate buckets', async () => {
+  const f = await fixture({ config: { identityAttempts: 1 } });
+  const id = f.session();
+  for (let n = 0; n < 6; n++) f.session();
+  await rejectCode(f.controller.claim(auth, id, { code: 'incorrect', position: point }, 'ip-one'), 'wrong_code');
+  assert.ok(f.session());
+  await rejectCode(f.controller.claim(auth, id, { code: syntheticCode, position: point }, 'ip-one'), 'rate_limited', 429);
+});
+
 test('SDK grants forbid audience publishing and speaker camera, screen, data and admin privileges', async () => {
   const cfg = config();
   const media = new LiveKitMedia(cfg.livekit, {});

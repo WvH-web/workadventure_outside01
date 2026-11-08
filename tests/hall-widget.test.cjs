@@ -6,6 +6,7 @@ const crypto = require('node:crypto');
 const fs = require('node:fs');
 const path = require('node:path');
 const { createRequire } = require('node:module');
+const vm = require('node:vm');
 const root = path.resolve(__dirname, '../ops/hall-audio');
 const dependency = createRequire(path.join(root, 'package.json'));
 const { SignJWT, jwtVerify } = dependency('jose');
@@ -54,6 +55,198 @@ async function fixture(options = {}) {
   return { controller, calls, rooms, tokens, config: cfg, session,
     advance: ms => { time += ms; }, clock: () => time };
 }
+
+async function widgetHarness({ remoteSpeaker = false, slowConnect = false, onPodium = false } = {}) {
+  const f = await fixture();
+  if (remoteSpeaker) await f.controller.claim(other, f.session(other), { code: syntheticCode, position: point }, 'other-ip');
+  const sign = (actor, renewal) => new SignJWT({ identifier: actor.identifier, username: actor.name, renewal })
+    .setProtectedHeader({ alg: 'HS256' }).setExpirationTime(f.clock() / 1000 + 3600).sign(key);
+  const verify = createVerifier(testSecret, { clock: f.clock });
+  let token = await sign(auth, 'initial'), clock = 0, positionError = false;
+  const connectionStarted = Promise.withResolvers(), connectionCompleted = Promise.withResolvers();
+  const timers = [], requests = [], pendingConnections = [], events = new Map(), elements = new Map();
+  const media = { captures: 0, stops: 0, disconnects: 0, connected: 0, published: 0, nativeControls: 0 };
+  const element = id => {
+    if (!elements.has(id)) elements.set(id, { dataset: {}, value: '', hidden: false, handlers: {},
+      addEventListener(name, handler) { this.handlers[name] = handler; }, querySelectorAll() { return []; }, append() {} });
+    return elements.get(id);
+  };
+  class Room {
+    constructor() { this.handlers = {}; this.closed = false; this.canPlaybackAudio = true;
+      this.localParticipant = { publishTrack: async () => { media.published++; } }; }
+    on(name, handler) { (this.handlers[name] ||= []).push(handler); }
+    async connect() {
+      connectionStarted.resolve();
+      if (slowConnect) await new Promise(resolve => pendingConnections.push(resolve));
+      media.connected++;
+      connectionCompleted.resolve();
+    }
+    async disconnect() {
+      media.disconnects++;
+      if (!this.closed) { this.closed = true; for (const handler of this.handlers.disconnected || []) handler(); }
+    }
+  }
+  const storage = { getItem: () => token };
+  const context = { URL, AbortController, setTimeout, clearTimeout,
+    performance: { now: () => clock },
+    setInterval(fn, ms) { timers.push({ fn, ms }); return timers.length; }, clearInterval() {},
+    localStorage: storage, location: { href: 'https://together.example.test/castle-audio/',
+      origin: 'https://together.example.test', pathname: '/castle-audio/' },
+    document: { getElementById: element, addEventListener() {} },
+    addEventListener(name, handler) { events.set(name, handler); },
+    LivekitClient: { Room, setLogLevel() {},
+      RoomEvent: { TrackSubscribed: 'track', TrackUnsubscribed: 'untrack', AudioPlaybackStatusChanged: 'audio',
+        Reconnecting: 'retry', Disconnected: 'disconnected' },
+      Track: { Kind: { Audio: 'audio' }, Source: { Microphone: 'microphone' } },
+      async createLocalAudioTrack() { media.captures++; return {
+        mediaStreamTrack: { stop() { media.stops++; }, addEventListener() {} }, stop() {},
+      }; } },
+    WA: { onInit: async () => {}, room: { id: f.config.map.id },
+      player: { getPosition: async () => {
+        if (positionError) throw new Error('synthetic position timeout');
+        return onPodium ? point : { x: 0, y: 0 };
+      } },
+      controls: new Proxy({}, { get() { return () => { media.nativeControls++; }; } }),
+      ui: { website: { getAll: async () => [] } } },
+    async fetch(url, options = {}) {
+      const route = url.split('/').at(-1);
+      requests.push({ route, sessionId: options.headers?.['X-Hall-Session'] });
+      try {
+        if (route === 'config') return { ok: true, json: async () => publicConfig(f.config) };
+        const actor = await verify(options.headers?.Authorization);
+        const body = options.body ? JSON.parse(options.body) : {};
+        const id = options.headers?.['X-Hall-Session'];
+        let data;
+        if (route === 'session') data = f.controller.newSession(actor, body.mapId);
+        else if (route === 'state') data = await f.controller.state(actor, id);
+        else if (route === 'listen') data = await f.controller.listen(actor, id);
+        else if (route === 'claim') data = await f.controller.claim(actor, id, body, 'widget-ip');
+        else if (route === 'heartbeat') data = await f.controller.heartbeat(actor, id, body);
+        else if (route === 'release') data = await f.controller.release(actor, id, body.leaseId);
+        else throw new Error('route');
+        return { ok: true, json: async () => data };
+      } catch (error) { return { ok: false, json: async () => ({ error: error.code || 'unavailable' }) }; }
+    },
+  };
+  context.window = context;
+  const source = fs.readFileSync(path.join(root, 'public/widget.js'), 'utf8');
+  const marker = '  void initialize().catch(error => {';
+  assert.equal(source.split(marker).length, 2, 'widget initialization hook must be unique');
+  // Instrument only the in-memory test copy; slow media work is deliberately not part of control settling.
+  const instrumented = source.replace(marker, `
+    window.__test = { controlTasks: new Set() };
+    const trackControl = fn => (...args) => {
+      const task = fn(...args);
+      window.__test.controlTasks.add(task);
+      task.finally(() => window.__test.controlTasks.delete(task)).catch(() => {});
+      return task;
+    };
+    api = trackControl(api);
+    pollState = trackControl(pollState);
+    pollPosition = trackControl(pollPosition);
+    heartbeat = trackControl(heartbeat);
+    revalidateAuth = trackControl(revalidateAuth);
+    window.__test.ready = initialize().catch(error => {`);
+  vm.runInNewContext(instrumented, context);
+  const flush = async () => {
+    while (context.__test.controlTasks.size) await Promise.all([...context.__test.controlTasks].map(task => task.catch(() => {})));
+  };
+  await context.__test.ready;
+  await flush();
+  if (remoteSpeaker) await connectionStarted.promise;
+  return { f, timers, requests, pendingConnections, media, element, flush, sign,
+    connected: connectionCompleted.promise,
+    advance(ms) { clock += ms; },
+    positionError(value) { positionError = value; },
+    async interval(ms) { const timer = timers.find(item => item.ms === ms); assert.ok(timer, 'interval ' + ms); timer.fn(); await flush(); },
+    replaceToken(value) { token = value; events.get('storage')({ key: 'authToken', storageArea: storage }); },
+    close() { events.get('pagehide')(); },
+  };
+}
+
+test('slow LiveKit connect does not block polling, timer initialization or the freshness watchdog', { timeout: 15000 }, async () => {
+  const h = await widgetHarness({ remoteSpeaker: true, slowConnect: true });
+  assert.equal(h.timers.length, 4);
+  assert.equal(h.pendingConnections.length, 1);
+  const initial = h.requests.filter(r => r.route === 'state').length;
+  for (let n = 0; n < 3; n++) { h.advance(2000); await h.interval(2000); await h.interval(100); }
+  assert.equal(h.requests.filter(r => r.route === 'state').length, initial + 3);
+  assert.equal(h.media.disconnects, 0, 'healthy control state must not abort a slow connection');
+  h.pendingConnections.shift()(); await h.connected; await h.flush();
+  assert.equal(h.media.connected, 1);
+  h.advance(4501); await h.interval(100);
+  assert.ok(h.media.disconnects > 0, 'actual stale control state still disconnects');
+  h.close();
+});
+
+test('same-identity token renewal verifies the existing session and never resumes microphone capture', { timeout: 15000 }, async () => {
+  const h = await widgetHarness({ onPodium: true });
+  h.element('code').value = syntheticCode;
+  await h.element('claim').handlers.submit({ preventDefault() {} });
+  assert.equal(h.media.captures, 1); assert.equal(h.media.published, 1);
+  const sessions = h.requests.filter(r => r.route === 'session').length;
+  const existing = h.requests.find(r => r.route === 'heartbeat').sessionId;
+  const stops = h.media.stops;
+  h.replaceToken(await h.sign(auth, 'renewed'));
+  assert.ok(h.media.stops > stops, 'microphone stops before asynchronous revalidation');
+  await h.flush(); await h.interval(2000);
+  assert.equal(h.requests.filter(r => r.route === 'session').length, sessions);
+  assert.equal(h.requests.filter(r => r.route === 'state').at(-1).sessionId, existing);
+  assert.equal(h.element('claim').hidden, false, 'successful server verification clears fatal state');
+  assert.equal(h.element('start').disabled, false);
+  assert.equal(h.media.captures, 1); assert.equal(h.media.published, 1);
+  assert.equal(h.media.nativeControls, 0);
+  h.close();
+});
+
+test('different-identity, invalid and removed tokens cannot revalidate or create replacement sessions', { timeout: 15000 }, async () => {
+  const h = await widgetHarness({ remoteSpeaker: true, onPodium: true });
+  const sessions = h.requests.filter(r => r.route === 'session').length;
+  h.replaceToken(await h.sign(other, 'other-account'));
+  assert.ok(h.media.disconnects > 0, 'listener disconnects synchronously');
+  await h.flush();
+  assert.equal(h.element('claim').hidden, true);
+  assert.match(h.element('error').textContent, /abgelaufen/);
+  const count = h.requests.filter(r => r.route === 'state').length;
+  await h.interval(2000);
+  assert.equal(h.requests.filter(r => r.route === 'state').length, count, 'identity mismatch stays fatal');
+  h.replaceToken('invalid-synthetic-token'); await h.flush();
+  assert.match(h.element('error').textContent, /erneut anmelden/);
+  h.replaceToken(null); await h.flush();
+  assert.match(h.element('error').textContent, /erneut anmelden/);
+  assert.equal(h.requests.filter(r => r.route === 'session').length, sessions);
+  assert.equal(h.media.captures, 0); assert.equal(h.media.nativeControls, 0);
+  h.close();
+});
+
+test('two-second position delay and transient API failure preserve audio; stale position stops after three seconds', { timeout: 15000 }, async () => {
+  const h = await widgetHarness({ onPodium: true });
+  h.element('code').value = syntheticCode;
+  await h.element('claim').handlers.submit({ preventDefault() {} });
+  assert.equal(h.media.published, 1);
+  const stopped = h.media.stops;
+  h.positionError(true); h.advance(2000);
+  await h.interval(500); await h.interval(1000); await h.interval(100);
+  assert.equal(h.media.stops, stopped, 'a two-second gap is not a podium exit');
+  assert.equal(h.element('error').hidden, true);
+  h.advance(1001); await h.interval(100);
+  assert.ok(h.media.stops > stopped);
+  assert.match(h.element('error').textContent, /Pultposition/);
+  assert.doesNotMatch(h.element('error').textContent, /verlassen/);
+  assert.equal(h.f.controller.lease, null);
+  h.close();
+});
+
+test('heartbeat reports stale control state separately from a fresh on-podium position', { timeout: 15000 }, async () => {
+  const h = await widgetHarness({ onPodium: true });
+  h.element('code').value = syntheticCode;
+  await h.element('claim').handlers.submit({ preventDefault() {} });
+  h.advance(4501); await h.interval(500); await h.interval(1000);
+  assert.ok(h.media.stops > 0);
+  assert.match(h.element('error').textContent, /nicht erreichbar/);
+  assert.doesNotMatch(h.element('error').textContent, /Pultposition|verlassen/);
+  h.close();
+});
 
 test('widget browser lifecycle and compact/podium layouts', {
   skip: process.env.HALL_AUDIO_BROWSER_TEST !== '1', timeout: 60000,
@@ -171,6 +364,31 @@ test('widget browser lifecycle and compact/podium layouts', {
   assert.equal(await page.locator('#audio audio').count(), 0);
   assert.equal(await page.evaluate(() => mediaEvents.captures), 0, 'audience never captures a microphone');
   await page.screenshot({ path: path.join(out, 'widget-offline.png') });
+  await page.unroute('**/castle-audio/state');
+  await f.controller.release(other, remoteSession, f.controller.lease.id);
+  await page.setViewportSize({ width: 320, height: 740 });
+  await page.route('**/widget-width-harness', route => route.fulfill({ contentType: 'text/html', body: `
+    <!doctype html><html><head><meta name="viewport" content="width=device-width,initial-scale=1"></head>
+    <body style="margin:0"><iframe id="audio-widget" src="/castle-audio/" allow="microphone; autoplay"
+      style="position:fixed;right:64px;bottom:12px;border:0;width:min(340px, calc(100vw - 76px));height:220px"></iframe></body></html>
+  ` }));
+  await page.goto(origin + '/widget-width-harness');
+  const mobile = page.frameLocator('#audio-widget');
+  await mobile.locator('#status').filter({ hasText: 'Keine Ansage' }).waitFor();
+  const frame = page.frames().find(frame => frame.url().endsWith('/castle-audio/'));
+  await frame.evaluate(p => { window.mockPosition = p; }, point);
+  await mobile.locator('#claim').waitFor({ state: 'visible' });
+  assert.ok(await frame.evaluate(() => widgetSizes.some(([key, value]) =>
+    key === 'width' && value === 'min(340px, calc(100vw - 76px))')));
+  const iframeBox = await page.locator('#audio-widget').boundingBox();
+  assert.equal(iframeBox.width, 244);
+  assert.ok(iframeBox.x >= 0 && iframeBox.x + iframeBox.width <= 320);
+  assert.equal(await mobile.locator('#panel').evaluate(panel => {
+    const box = panel.getBoundingClientRect();
+    return box.left < 0 || box.right > innerWidth || panel.scrollWidth > panel.clientWidth ||
+      document.documentElement.scrollWidth > innerWidth;
+  }), false, '320px parent viewport must not overflow the iframe or panel');
+  await page.screenshot({ path: path.join(out, 'widget-mobile-320.png') });
   assert.deepEqual(errors, []);
   await context.close();
 });
