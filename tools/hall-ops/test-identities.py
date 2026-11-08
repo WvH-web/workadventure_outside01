@@ -7,6 +7,7 @@ import os
 from pathlib import Path
 import pwd
 import subprocess
+import tempfile
 import time
 
 play = json.loads(subprocess.check_output(['docker','inspect','workadventure-play-1'],text=True))[0]
@@ -21,8 +22,14 @@ for number in range(1,5):
     tokens[str(number)] = (payload+b'.'+base64.urlsafe_b64encode(
         hmac.new(env['SECRET_KEY'].encode(),payload,hashlib.sha256).digest()).rstrip(b'=')).decode()
 path = Path('/tmp/wvh-hall-qa.private.json')
-path.write_text(json.dumps(tokens))
-path.chmod(0o600)
 account = pwd.getpwnam('wilhelm')
-os.chown(path,account.pw_uid,account.pw_gid)
+fd, temporary = tempfile.mkstemp(prefix='.wvh-hall-qa-',suffix='.private.json',dir='/tmp')
+try:
+    with os.fdopen(fd,'w') as output:
+        json.dump(tokens,output)
+    os.chown(temporary,account.pw_uid,account.pw_gid)
+    os.replace(temporary,path)
+finally:
+    if os.path.exists(temporary):
+        os.unlink(temporary)
 print('Four unique one-hour test identities prepared privately; no real accounts changed.')

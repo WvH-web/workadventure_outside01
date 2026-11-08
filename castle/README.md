@@ -65,10 +65,19 @@ Ein Platzwechsel innerhalb des Saals verlaesst die gemeinsame Filmflaeche nicht.
 
 Die eigenstaendige Browservorschau simuliert Bewegung, Sitzen und Gruppenanzeige.
 Sie stellt keine echten Videokonferenzen oder andere Online-Spieler nach.
-Der native WorkAdventure-Betrieb und insbesondere Audio brauchen noch eine
-Mehrpersonenabnahme im echten Client. Die funktionierende Kino-Anwendung wurde
+Die Grosse Halle wurde am 8. November 2026 mit vier getrennten Browserprofilen
+im echten WorkAdventure und LiveKit abgenommen. Die funktionierende Kino-Anwendung wurde
 nicht veraendert; ihr Seitenfenster wird in der Oberflaechenpruefung ersetzt,
 damit kein Film oder fremder Account unbeabsichtigt geoeffnet wird.
+
+Die Audio-Abnahme verwendet eine kuenstliche Sprach-Tonquelle, keine echten
+Schuelerkonten oder Hardware-Mikrofone. Geprueft wurden dekodierte Audioenergie,
+zwei gleichzeitige getrennte Zweiergespraeche, die Trennung bei 48 Pixel Abstand
+ueber eine Tischgrenze, normale Naehe-Gespraeche nach Verlassen der Bereiche und
+die zusaetzliche codegeschuetzte Hallenansage. Alle Pruefungen bestanden; keine
+Browserfehler. Das ist kein Lasttest mit 400 Teilnehmern und keine Hardware-Abnahme.
+Wiederholbare Pruefung: `tools/hall-ops/live-check.cjs` mit kurzlebigen Testkonten
+und dem Code nur in `HALL_CODE`. Private Testdaten liegen nie im Karten-Repository.
 
 ## Animationen und Einrichtung
 

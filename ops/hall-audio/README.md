@@ -203,7 +203,7 @@ stale listeners have a bounded transition window; this is not instantaneous
 cryptographic revocation of a self-hosted LiveKit token. Active connections can
 outlive token expiry, which is why the lease and epoch watchdog are separate.
 
-## Remaining Acceptance Checks
+## Verification And Device Checks
 
 Run `npm test` here. Browser harness: set `HALL_AUDIO_BROWSER_TEST=1` and
 `HALL_AUDIO_PLAYWRIGHT` to the installed Playwright module directory, then run
@@ -216,6 +216,13 @@ browser microphone permissions/autoplay, background-tab behavior on supported
 devices, speaker shutdown while navigating, microphone-only enforcement against
 direct SDK publishing, and two table groups hearing the speaker independently.
 Do not print or record the chosen code or real bearer tokens during those checks.
+
+On 2026-11-08 the native WAM preview passed a four-profile live test using a
+generated audio fixture: both table conversations carried non-silent decoded
+audio, separate rooms remained isolated at the boundary, the podium reached both
+groups, leaving stopped publishing, and an audience token could not publish.
+Ordinary proximity audio resumed outside meeting areas. Real microphones,
+interactive Microsoft sign-in and a 400-user load test were not part of this run.
 
 Same-origin widget code has normal access to the WA origin's storage. Treat all
 gateway HTML/JS and dependencies as trusted; the service's HS256 verification
