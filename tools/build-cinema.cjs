@@ -138,8 +138,8 @@ async function buildCinema() {
     ['id','label','x','y','standX','standY','facing','audioGroup'].map((key,i)=>P(['seatId','seatLabel','seatX','seatY','standX','standY','facing','audioGroup'][i],s[key]))))));
   layers.push(objects('conversationAreas',groups.map(g=>area('group-'+g.id,g,[P('conversationGroup',g.id),P('conversationLabel',g.label)]))));
   layers.push(objects('cinema',[
-    area('kino-film',scene.film,[P('openWebsite',scene.film.url),P('openWebsiteTrigger','onicon'),P('openWebsiteTriggerMessage','Kino oeffnen'),
-      P('openWebsiteWidth',scene.film.panelWidth),P('openWebsitePolicy','fullscreen; autoplay; encrypted-media; picture-in-picture')]),
+    area('kino-film',scene.film,[P('castleCinemaUrl',scene.film.url),P('castleCinemaWidth',scene.film.panelWidth),
+      P('castleCinemaPolicy','fullscreen; autoplay; encrypted-media; picture-in-picture')]),
     area('kino-ruhezone',scene.audience.quiet,[P('silent',true)])
   ]));
   layers.push(objects('floorLayer',[]),tile('furniture-fronts',Array.from({length:count},(_,i)=>frontCells.has(i)?frontGid+i:0)));
@@ -149,7 +149,7 @@ async function buildCinema() {
     sourceSha256:crypto.createHash('sha256').update(fs.readFileSync(path.join(art,'room-source.png'))).digest('hex')};
   const map={compressionlevel:-1,width:W,height:H,tilewidth:T,tileheight:T,infinite:false,orientation:'orthogonal',renderorder:'right-down',tiledversion:'1.11.2',type:'map',version:'1.10',nextlayerid:lid,nextobjectid:oid,layers,
     properties:[P('mapName','Schlosskino'),P('mapDescription','Ein kleines Schlosskino mit ruhigen Filmsesseln und vier gemuetlichen Gespraechstischen.'),
-      P('mapImage',artPath+'floor.png'),P('script','room.js?v='+scene.revision),P('castleMapId','kino'),P('castleRevision',scene.revision),
+      P('mapImage',artPath+'floor.png'),P('script','cinema.js?v='+scene.revision),P('castleMapId','kino'),P('castleRevision',scene.revision),
       P('castleArtScale',1),P('castleNativeMeetings',true),P('castleNativeRoomUrl',nativeTarget('kino.tmj')),P('castleHallUrl',nativeTarget('grosse-halle.tmj#kino')),
       P('castleMapdata',JSON.stringify(mapdata)),P('mapCopyright','Original room and cinema chair generated for deine Schule. Furniture at the approved Great Hall avatar scale; existing village flame animation.')],
     tilesets:[imageSet(1,'Schlosskino','floor.png',W,count,W*T,H*T),imageSet(collisionGid,'Collision marker','marker.png',1,1,T,T,{tiles:[{id:0,properties:[P('collides',true)]}]}),

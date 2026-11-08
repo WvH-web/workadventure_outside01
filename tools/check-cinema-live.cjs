@@ -84,7 +84,8 @@ async function join(browser,number){
   assert.ok(script,'Cinema controller loaded');
   assert.equal(await script.evaluate(()=>window.castleRoom.layout.seats.length),64);
   assert.equal(await script.evaluate(()=>window.castleRoom.layout.groups.length),4);
-  assert.equal(await script.evaluate(async()=> (await WA.room.getTiledMap()).properties.find(p=>p.name==='castleRevision')?.value),'20261108-kino2');
+  assert.equal(await script.evaluate(async()=> (await WA.room.getTiledMap()).properties.find(p=>p.name==='castleRevision')?.value),'20261108-kino3');
+  await script.waitForFunction(()=>Boolean(window.castleCinema));
   await context.storageState({path:storage});
   console.log('Synthetic cinema participant '+number+' entered.');
   return {context,page,script,errors,get filmRequests(){return filmRequests}};
@@ -152,7 +153,7 @@ async function main(){
       await sit(a,id);await a.page.screenshot({path:path.join(out,'cinema-seat-'+id+'.png')});
     }
     await sit(a,'kino-0-3');
-    await a.page.getByRole('button',{name:'Open Website',exact:true}).click({timeout:15000});
+    await a.page.getByRole('button',{name:'Kino',exact:true}).click({timeout:15000});
     let player;
     for(let n=0;n<30&&!player;n++){
       player=a.page.frames().find(f=>f.url().startsWith(filmUrl));if(!player)await a.page.waitForTimeout(500);

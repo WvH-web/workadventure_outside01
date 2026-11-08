@@ -32,9 +32,12 @@ Animationsframes aus dem Village, ohne verschobene Kachelebenen.
 ## Film und Schutz
 
 Eine durchgehende, erst auf Knopfdruck geoeffnete Filmflaeche verbindet alle
-64 Plaetze. Der native Symbolausloeser `onicon` vermeidet eine Ueberlagerung
-mit der Sitzaktion und verwendet nicht deren Leertasten-Hinweis. Siehe die
-[WorkAdventure-Dokumentation](https://docs.workadventu.re/map-building/tiled-editor/opening-a-website/).
+64 Plaetze. `castle/cinema.js` zeigt einen eigenen Kino-Knopf in der Aktionsleiste,
+damit sich der Filmzugang nicht mit der Sitzaktion und deren Leertasten-Hinweis
+ueberlagert. Es wird erst nach einem Klick genau ein Fenster ueber die
+[offizielle Co-Website-API](https://docs.workadventu.re/developer/map-scripting/references/api-nav)
+geoeffnet. Fremde Fenster bleiben unangetastet. Manuelles Schliessen und spaete
+Antworten nach Verlassen werden ebenfalls beruecksichtigt.
 Ein Wechsel zwischen Ruhe- und Gespraechsplaetzen soll das
 Seitenfenster nicht neu laden. Der Link bleibt der bewaehrte Kino-Endpunkt;
 dessen Anmeldung, Alterspruefung und Film-Synchronisation werden nicht kopiert

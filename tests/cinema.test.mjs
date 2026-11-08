@@ -50,12 +50,13 @@ test('all four native rear groups are disjoint and include four seats, while the
   }
   assert.equal(props(layout.quiet[0]).silent,true);
 });
-test('one continuous icon-triggered film area reuses the existing player without sharing the seat action key',()=>{
+test('one continuous explicitly opened film area reuses the existing player without sharing the seat action key',()=>{
   const p=props(film);
-  assert.equal(p.openWebsite,'https://deutsche-online-schule.com/kino/public/kino.php');
-  assert.equal(p.openWebsiteTrigger,'onicon');assert.equal(p.openWebsiteWidth,60);
-  assert.match(p.openWebsitePolicy,/autoplay/);
-  assert.equal(objects.filter(o=>props(o).openWebsite).length,1);
+  assert.equal(p.castleCinemaUrl,'https://deutsche-online-schule.com/kino/public/kino.php');
+  assert.equal(p.castleCinemaWidth,60);assert.match(p.castleCinemaPolicy,/autoplay/);
+  assert.equal(objects.filter(o=>props(o).castleCinemaUrl).length,1);
+  assert.equal(objects.filter(o=>props(o).openWebsite).length,0,'No native automatic or conflicting seat action');
+  assert.match(props(map).script,/^cinema\.js\?v=/);
   for(const s of layout.seats)for(const p of [{x:s.x,y:s.y},{x:s.standX,y:s.standY}])
     for(const dy of [0,16])assert.ok(inside(film,p.x,p.y+dy),s.id);
 });

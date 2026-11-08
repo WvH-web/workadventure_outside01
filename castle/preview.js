@@ -1,4 +1,4 @@
-import { readLayout, conversationAt } from "./room.js?v=20261108-kino1";
+import { readLayout, conversationAt } from "./room.js?v=20261108-kino3";
 const $ = (id) => document.getElementById(id);
 function showError() {
   const retry = document.createElement("button");
@@ -16,7 +16,7 @@ window.addEventListener("error", (event) => {
 });
 const canvas = $("map"),
   ctx = canvas.getContext("2d");
-const manifest = await fetch("layout.json?v=20261108-kino1").then((r) =>
+const manifest = await fetch("layout.json?v=20261108-kino3").then((r) =>
   r.json(),
 );
 const images = new Map();
@@ -142,7 +142,7 @@ async function load(id, entry = "start") {
     if (!cache.has(id))
       cache.set(
         id,
-        await fetch(id + ".tmj?v=20261108-kino1").then((r) => {
+        await fetch(id + ".tmj?v=20261108-kino3").then((r) => {
           if (!r.ok) throw Error("Karte nicht erreichbar");
           return r.json();
         }),
@@ -328,7 +328,7 @@ function refresh() {
     b.setAttribute("aria-current", String(b.dataset.room === room?.id));
   const candidate = nearestSeat(),
     cinema = world.id === "kino" && map.layers.flatMap((l) => l.objects || [])
-      .some((o) => o.properties?.some((p) => p.name === "openWebsite" && p.value.includes("/kino/")) && inArea(position,o)),
+      .some((o) => o.properties?.some((p) => p.name === "castleCinemaUrl" || (p.name === "openWebsite" && p.value.includes("/kino/"))) && inArea(position,o)),
     slide = world.rides?.find((a) => inArea(position, a));
   const external = world.links.find(
     (l) => l.target.startsWith("../") && inArea(position, l),
