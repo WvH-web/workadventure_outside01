@@ -1,3 +1,5 @@
 # Preserve reviewed upstream bytes and their integrity hashes on every platform.
 ops/castle-chess/vendor/** -text
 ops/castle-chess/public/vendor/** -text
+ops/castle-art/vendor/** -text
+ops/castle-art/upstream/** -text

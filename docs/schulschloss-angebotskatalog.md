@@ -306,6 +306,18 @@ Lehrkraftklassen und [Kontobedingungen](https://lichess.org/terms-of-service)
 mitpruefen. Turniere benoetigen mehr Organisation als eine einzelne Partie;
 der bestehende lokale Prototyp wird nicht als gemeinsames Schach wieder aktiviert.
 
+Inzwischen umgesetzt: Die Schlossvorschau besitzt ein eigenes geschuetztes
+Schachangebot mit drei servergefuehrten Tischen auf Basis von chess.js und
+cm-chessboard, unabhaengig vom damaligen Prototyp. Zwei normale Microsoft-
+Schueler-Testkonten haben gemeinsame Partien, Wiederbeitritt und Farbwechsel
+auf dem VPS bestanden. Einzelheiten und verbleibende Grenzen stehen in
+[Gemeinsames Schloss-Schach](schulschloss-schach.md).
+
+Das eigene WBO-Atelier mit drei gemeinsamen Zeichenflaechen ist lokal mit
+mehreren Browsern und Touch geprueft; die Quellen sind versionsgebunden.
+Es ist noch nicht live freigeschaltet. Siehe
+[Geschuetztes Schlossatelier](schulschloss-atelier.md).
+
 Fuer Billard ist [tailuge/billiards](https://github.com/tailuge/billiards) ein
 konkreter neuer Pruefkandidat: Browserdarstellung, vorhandene Physik, Regelarten
 und Zweispieler-Onlinebetrieb sind dokumentiert; Quellcode unter GPL-3.0 und
