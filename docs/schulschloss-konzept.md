@@ -247,6 +247,12 @@ gemeinsamem Spielstand, Wiederverbindung und bewaehrter Regellogik vorgesehen.
 Ein Turnier baut spaeter auf funktionierenden Einzelpartien auf. Bis dahin darf
 kein dekorativer Schachtisch eine bereits funktionierende Partie vortaeuschen.
 
+Ausbaustand 9. November: Der Spielesaal erhaelt nun einen eigenen gemeinsamen
+Schachdienst mit getrennt geprueftem Brett und Serverregeln. Einzelheiten,
+durchgefuehrte Proben und noch offene Live-Schuelerpruefung stehen im
+[Schach-Betriebsstand](schulschloss-schach.md). Der alte Village-Prototyp bleibt
+unveraendert; ein automatisches Turnier ist weiterhin nicht fertig.
+
 Billard bekommt einen vorgesehenen Platz im Spielesaal, ist aber kein
 Startversprechen: Eine wiederverwendbare, getestete Mehrspielerbasis muss zuerst
 gefunden oder entwickelt werden. Alle Spieler brauchen dieselbe verbindliche

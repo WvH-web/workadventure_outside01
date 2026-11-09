@@ -1,0 +1,93 @@
+# Gemeinsames Schloss-Schach
+
+Stand: 9. November 2026. Separater Ausbau der Schlossvorschau, kein Ersatz des
+alten Schlosses und keine Wiederaktivierung des lokalen Village-Prototyps.
+
+## Angebot
+
+- Drei gemeinsame, serverseitig gefuehrte Schachbretter mit zwei Spielern und
+  Zuschauern. Freie und belegte Plaetze werden aus echten Verbindungen ermittelt.
+- Legale Zuege, Rochade, en passant, ausdrueckliche Bauernumwandlung, Schachmatt
+  und Remis werden mit der eingebundenen Schachbibliothek geprueft.
+- Remisangebot, Aufgabe, gemeinsame Zustimmung zur naechsten Partie mit
+  Farbwechsel, neutrale PGN-Datei und Zuruecksetzen durch eine Lehrkraft.
+- Nach Verbindungsabbruch bleibt ein Platz kurz reserviert. Wiederuebernahme
+  ist ausdruecklich; ein zweites Fenster uebernimmt nicht heimlich die Partie.
+- Der Ersteller ist kein Host. Nach Freigabe seines Platzes bleibt die Stellung
+  fuer den anderen Spieler und einen neuen Mitspieler bestehen.
+- Freies Spiel ist lokales Ueben beider Seiten, kein KI-Gegner. Drei kleine
+  Matt-in-einem-Zug-Aufgaben sind ebenfalls enthalten. Kein Turnier und keine Uhr.
+
+Im Spielesaal oeffnet die Aktion `Schach spielen` am bisherigen Spieltisch die
+eigene Seite rechts. Deren Kopfzeile fuehrt weiterhin zu den externen Spielrunden.
+Halle und Oberstufensalon behalten ihren bisherigen Spielrunden-Zugang.
+Die vorhandenen drei Gespraechsgruppen bleiben unveraendert: Die Wahl eines
+Schachbretts erzeugt keine weitere Sprachgruppe und schaltet kein Mikrofon um.
+
+## Zugang Und Daten
+
+Die eigene Seite liegt unter
+[Schloss-Schach](https://together.deine-schule.com/castle-chess/).
+Ohne bestehende WorkAdventure-Anmeldung und aktuellen Schulnachweis ist keine
+Teilnahme moeglich. Jede Anfrage prueft den echten, aktuellen Schulstatus;
+aktive Schueler und Lehrkraefte sind zugelassen, Eltern und unbekannte Konten
+nicht. Behauptete Rollen im Browser oder in Token-Tags genuegen nicht.
+Externe Spielanbieter und deren gesonderte Freigaben bleiben unberuehrt.
+
+Verbindungen verwenden kurzlebige, kontogebundene Sitzungen und autorisierte
+Server-Ereignisse. Keine Anmeldedaten in URLs. Konto- oder Berechtigungswechsel
+sperren auch die lokale Uebungsansicht. Sitzungen werden alle 15 Sekunden
+erneuert, serverseitig spaetestens nach 45 Sekunden ohne Erneuerung gesperrt und
+nie ueber das Ablaufdatum der Anmeldung verlaengert. Ein verlassener Platz kann
+anschliessend bis zu zwei Minuten reserviert bleiben.
+
+Gespeichert werden nur Zuege, Ergebnis, Aenderungsnummer und Zeitpunkt. Keine
+Konten, Namen, Klassen, Geburtsdaten oder Sitzbelegungen in der Spielstandsdatei.
+Nach Neustart ist die Stellung wiederherstellbar, aber kein Platz scheinbesetzt.
+Unbenutzte, unbelegte Bretter werden nach zwoelf Stunden zurueckgesetzt.
+Es gibt keine Rangliste, privaten Nachrichten oder frei eingegebenen Spielnamen.
+
+## Betrieb
+
+Eigener Dienst `wvh-castle-chess`, intern Port 3221, nur hinter dem bestehenden
+Webserver erreichbar. Schreibgeschuetzt, Benutzer 1000, begrenzter Speicher,
+begrenzte Protokolle; nur das eigene Datenverzeichnis ist beschreibbar.
+Spielstaende werden atomar und vor der Zugbestaetigung geschrieben. Ein
+Speicherfehler bestaetigt keinen Zug und ueberschreibt nicht die vorige Stellung.
+
+Private Bereitstellungsnachweise und Konfiguration liegen auf dem VPS unter
+`/opt/wvh-castle-chess/private`, der kleine Spielstand unter
+`/opt/wvh-castle-chess/data/state.json`. Keine Zugangsdaten im Repository.
+Der erste veroeffentlichte Stand ist `b15d76ad9a28ec63`. Die bestehende
+WorkAdventure-Instanz, Anmeldung, Audiodienste und andere Karten wurden nicht
+neu gestartet. Nur ein eigener Webpfad wurde angehaengt.
+
+Die Spielstandsdatei ist ein laufender Stand, keine unabhaengige Sicherung.
+Fuer eine spaetere dauerhafte Turnierhistorie braucht es eine gesonderte
+Aufbewahrung; jetzt gibt es ausdruecklich keine solche Historie.
+
+## Pruefungen Und Grenzen
+
+- 25 Regel-, Wiederbeitritts- und Speicherpruefungen sowie sieben echte
+  HTTP-/Ereignisstrom- und Zugangspruefungen mit synthetischen Testprofilen.
+- Getrennte Browser fuer zwei Spieler, Zuschauer und eine Testlehrkraft:
+  gemeinsame Zuege, Platzwechsel, Wiederuebernahme nach Neuladen, Remis,
+  Farbwechsel, Lehrer-Reset, Ueben, Unterumwandlung und echte Mattaufgaben.
+- Desktop sowie 390 und 320 Pixel: 64 Felder, geladene Figurengrafiken, kein
+  Verschieben oder Neuaufbauen des Bretts beim Anklicken eines Bauern,
+  keine abgeschnittenen Beschriftungen und keine Browserfehler.
+- VPS: eigener Gesundheitscheck, echter frisch gepruefter Lehrkraft-Zugang
+  ausschliesslich als Seiten-Zuschauer, Ereignisstrom und Ablehnung unbekannter
+  Konten. Keine Schuelerkonten angelegt, veraendert oder nachgeahmt.
+
+Eine positive Live-Partie mit zwei ausdruecklich freigegebenen Schueler-Testkonten
+steht noch aus. Lokale Mehrspielerproben beweisen nicht den Live-Schuelerzugang.
+Ebenso ist das keine Freigabe fuer 400 gleichzeitige Teilnehmer. Dafuer muessen
+insbesondere die Schulstatus-Abfragen und die gesamte Schlossinstanz gemeinsam
+unter Last geprueft werden.
+
+Die Abhaengigkeiten sind lokal, versionsgebunden und per Integritaetspruefung
+bezogen: chess.js 1.4.0, cm-chessboard 8.15.4 und eventsource-parser 4.1.3.
+Urheber und Lizenzen sind auf der Schachseite verlinkt. Es wird nur der
+Standard-Figurensatz unter CC BY-SA verwendet, nicht der nichtkommerzielle
+alternative Figurensatz.

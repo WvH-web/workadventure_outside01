@@ -4,7 +4,7 @@
     "height": 22,
     "tileSize": 32,
     "avatarPixels": 32,
-    "revision": "20261109-games1",
+    "revision": "20261109-chess1",
     "entries": {
       "start": [
         13,
@@ -326,8 +326,8 @@
       {
         "id": "games-shelf",
         "group": "buchclub",
-        "label": "Spielrunden",
-        "url": "https://together.deine-schule.com/castle-school/games",
+        "label": "Schach spielen",
+        "url": "https://together.deine-schule.com/castle-chess/",
         "api": false
       },
       {

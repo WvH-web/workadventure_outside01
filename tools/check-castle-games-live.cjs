@@ -3,6 +3,7 @@ const fs=require('node:fs'),path=require('node:path'),assert=require('node:asser
 const {chromium}=require('./castle-deps.cjs')('playwright'),sharp=require('./castle-deps.cjs')('sharp');
 const {join,sit,move,stats,writeAudio,audioFixture}=require('./check-cinema-live.cjs');
 const {findRoom,travel}=require('./check-expansion-live.cjs');
+const {revision}=require('./build-castle-expansion.cjs');
 const output=path.resolve(__dirname,'../../output/castle-games-live');fs.mkdirSync(output,{recursive:true});
 const gameUrl='https://together.deine-schule.com/castle-school/games',base='https://together.deine-schule.com/~/castle-preview/';
 async function gameFrame(user){
@@ -40,8 +41,8 @@ async function main(){
   await staffPage.screenshot({path:path.join(output,'staff-ui-mobile.private.png'),fullPage:true});
   results.push({id:'staff-ui-only',freshStaffRoleRecognized:true,realCurrentRoomResolved:true,previewExplicit:true,waParticipantCreated:false});await staffContext.close();
   console.log('Real staff UI-only probe passed.');
-  for(let number=1;number<=4;number++)users.push(await join(browser,number,{roomId:'spielesaal',roomUrl:base+'spielesaal.wam#start',outputDir:output,
-    label:'Spielesaalprobe',seats:12,groups:3,revision:'20261109-games1',characterTextureId:['wvh-event-mira-v1','wvh-event-amir-v1','wvh-event-otto-v1','wvh-event-val-v1'][number-1],
+  for(let number=1;number<=4;number++)users.push(await join(browser,number,{roomId:'oberstufe',roomUrl:base+'oberstufe.wam#start',outputDir:output,
+    label:'Spielrundenprobe',seats:12,groups:3,revision,characterTextureId:['wvh-event-mira-v1','wvh-event-amir-v1','wvh-event-otto-v1','wvh-event-val-v1'][number-1],
     parking:[[112,272],[432,608],[720,288],[800,352]]}));
   const [a,b,c,d]=users;
   await sit(a,'buchclub-n0');await sit(b,'buchclub-s1');await sit(c,'lese-kamin-sofa-links');await sit(d,'lese-kamin-sessel-west');
@@ -67,17 +68,17 @@ async function main(){
   await move(a,432,608);await a.page.waitForTimeout(600);assert.equal(a.page.frames().filter(frame=>frame.url()===gameUrl).length,0);
   const position=await a.script.evaluate(()=>WA.player.getPosition());await a.page.keyboard.down('ArrowRight');await a.page.waitForTimeout(240);await a.page.keyboard.up('ArrowRight');
   const afterKey=await a.script.evaluate(()=>WA.player.getPosition());assert.ok(afterKey.x>position.x+2,'Movement resumes after the panel closes');
-  results.push({id:'spielesaal',participants:4,bothUnknownAccountsDenied:true,directLaunchDenied:true,separateTableAudioBeforeAndDuringPanel:true,
+  results.push({id:'oberstufe',participants:4,bothUnknownAccountsDenied:true,directLaunchDenied:true,separateTableAudioBeforeAndDuringPanel:true,
     noDuplicatePanel:true,reopenWorks:true,departureClosesOwnedPanel:true,keyboardMovementResumes:true,desktopAndMobileCanvasNonblank:true,before,during});
-  await travel(a,'oberstufe');await sit(a,'buchclub-n0');await open(a);await travel(a,'grosse-halle');await a.page.waitForTimeout(500);
+  await travel(a,'grosse-halle');await a.page.waitForTimeout(500);
   assert.equal(a.page.frames().filter(frame=>frame.url()===gameUrl).length,0);
   const area=await a.script.evaluate(async()=>{const map=await WA.room.getTiledMap();return map.layers.flatMap(layer=>layer.objects||[]).find(object=>object.properties?.some(property=>property.name==='hallAction'&&property.value==='games'));});
   assert.ok(area);await move(a,area.x+area.width/2,area.y+area.height/2);await open(a);
   results.push({id:'native-routing',upperCommonRoomUsesGate:true,roomChangeCleansOldPanel:true,hallUsesSameGate:true});
   const errors=users.flatMap(user=>user.errors);assert.deepEqual(errors,[]);
-  const evidence={passed:true,revision:'20261109-games1',participants:4,unknownSyntheticNativeAccountsOnly:true,
+  const evidence={passed:true,revision,participants:4,unknownSyntheticNativeAccountsOnly:true,
     staffProbeCreatedNoWaParticipant:true,noRealPupilsUsed:true,noRealMicrophoneUsed:true,productionLinksChanged:false,loadApprovalFor400:false,results,errors};
-  fs.writeFileSync(path.join(output,'result.json'),JSON.stringify(evidence,null,2));console.log(JSON.stringify({passed:true,participants:4,tableAudioPreserved:true,nativeGateRoutes:3,staffUiOnly:true,errors},null,2));
+  fs.writeFileSync(path.join(output,'result.json'),JSON.stringify(evidence,null,2));console.log(JSON.stringify({passed:true,participants:4,tableAudioPreserved:true,nativeGateRoutes:2,staffUiOnly:true,errors},null,2));
  }catch(error){
   const states=[];for(const user of users)states.push(await user.script.evaluate(async()=>({map:castleRoom.layout.id,seat:castleRoom.seat?.id,
     position:castleRoom.position,actual:await WA.player.getPosition(),activity:window.castleActivities?{active:castleActivities.active?.settings.id,button:castleActivities.button,epoch:castleActivities.epoch,closed:castleActivities.closed,website:castleActivities.website?.id}:null})).catch(()=>({detached:true})));

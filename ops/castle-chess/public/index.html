@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Schloss-Schach</title>
+  <link rel="stylesheet" href="/castle-chess/vendor/cm-chessboard/assets/chessboard.css">
+  <link rel="stylesheet" href="/castle-chess/vendor/cm-chessboard/assets/extensions/markers/markers.css">
+  <link rel="stylesheet" href="/castle-chess/vendor/cm-chessboard/assets/extensions/promotion-dialog/promotion-dialog.css">
+  <link rel="stylesheet" href="/castle-chess/chess.css">
+  <script defer src="/castle-content/vendor/lucide.min.js"></script>
+  <script type="module" src="/castle-chess/chess.js"></script>
+</head>
+<body>
+  <header class="topbar"><h1>Schach</h1><span id="connection" role="status">Schulzugang wird gepr&uuml;ft &hellip;</span><a href="/castle-school/games" title="Weitere Spiele"><i data-lucide="gamepad-2" aria-hidden="true"></i><span>Spielrunden</span></a></header>
+  <nav class="modes" aria-label="Spielart">
+    <button type="button" data-mode="online" aria-pressed="true">Tischpartie</button>
+    <button type="button" data-mode="practice" aria-pressed="false">Freies Spiel</button>
+    <button type="button" data-mode="puzzle" aria-pressed="false">R&auml;tsel</button>
+  </nav>
+  <div id="message" role="status" hidden></div>
+  <main>
+    <section class="play">
+      <div class="table-bar" id="table-bar"><label for="table">Tisch</label><select id="table" disabled></select><span id="presence"></span></div>
+      <div class="puzzle-bar" id="puzzle-bar" hidden><label for="puzzle">Matt in einem Zug</label><select id="puzzle"></select></div>
+      <div class="opponent"><span id="top-seat">Schwarz</span><span id="your-color"></span></div>
+      <div id="board" role="group" aria-label="Schachbrett"></div>
+      <div class="board-status"><strong id="position-status" role="status">Keine Partie ge&ouml;ffnet</strong><button id="flip" class="icon" title="Brett drehen" aria-label="Brett drehen" disabled><i data-lucide="rotate-3d" aria-hidden="true"></i></button></div>
+      <div id="seat-actions" class="seat-actions"><button id="white" disabled>Wei&szlig; spielen</button><button id="black" disabled>Schwarz spielen</button><button id="resume" hidden disabled>Platz &uuml;bernehmen</button><button id="leave-seat" hidden disabled>Platz freigeben</button></div>
+      <form id="move-form"><label>Zug <select id="move-from" aria-label="Startfeld" disabled><option value="">Von</option></select></label><select id="move-to" aria-label="Zielfeld" disabled><option value="">Nach</option></select><select id="move-promotion" aria-label="Bauernumwandlung" disabled><option value="q">Dame</option><option value="r">Turm</option><option value="b">L&auml;ufer</option><option value="n">Springer</option></select><button id="submit-move" type="submit" disabled>Ziehen</button></form>
+    </section>
+    <aside>
+      <h2 id="game-title">Tischpartie</h2>
+      <div id="result" role="status" hidden></div>
+      <div class="toolbar"><button id="undo" class="icon" title="Zug zur&uuml;cknehmen" aria-label="Zug zur&uuml;cknehmen" hidden disabled><i data-lucide="undo-2" aria-hidden="true"></i></button><button id="restart" class="icon" title="Neu beginnen" aria-label="Neu beginnen" hidden disabled><i data-lucide="rotate-ccw" aria-hidden="true"></i></button><button id="pgn" class="icon" title="Partie als PGN herunterladen" aria-label="Partie als PGN herunterladen" disabled><i data-lucide="download" aria-hidden="true"></i></button></div>
+      <ol id="moves" aria-label="Zugliste"></ol>
+      <div id="online-actions" class="actions"><button id="offer-draw" disabled>Remis anbieten</button><div id="draw-offer" hidden><span>Remis angeboten</span><button id="accept-draw" disabled>Annehmen</button><button id="decline-draw" disabled>Ablehnen</button></div><button id="resign" disabled>Aufgeben</button><button id="rematch" hidden disabled>Neue Partie</button><button id="reset" hidden disabled>Tisch zur&uuml;cksetzen</button></div>
+      <footer><a href="/castle-chess/credits.html" target="_blank" rel="noopener">Mitwirkende &amp; Lizenzen</a></footer>
+    </aside>
+  </main>
+  <dialog id="confirm"><form method="dialog"><h2 id="confirm-title"></h2><div class="confirm-actions"><button value="cancel">Abbrechen</button><button id="confirm-yes" value="yes">Best&auml;tigen</button></div></form></dialog>
+</body>
+</html>

@@ -1,0 +1,204 @@
+{
+  "version": 1,
+  "packages": [
+    {
+      "name": "chess.js",
+      "version": "1.4.0",
+      "integrity": "sha512-BBJgrrtKQOzFLonR0l+k64A98NLemPwNsCskwb+29bRwobUa4iTm51E1kwGPbWXAcfdDa18nad6vpPPKPWarqw=="
+    },
+    {
+      "name": "cm-chessboard",
+      "version": "8.15.4",
+      "integrity": "sha512-ydJBZkIntEQnyxe3VztWVQbQ79FU1kSyafCF5XhaVy1lPkRH4Y2Hbqrv5W5oPletKIXGus2MNHH3qVuUGbuzsQ=="
+    },
+    {
+      "name": "eventsource-parser",
+      "version": "4.1.3",
+      "integrity": "sha512-jZVIVilXZfAx6H20ZKKEj5dabbpD9ETmMj3uHsjMmgBzBHB6tsHrmdWB4mAiy3amtN6MOoVkfXRQu4wf1n88Rw=="
+    }
+  ],
+  "files": [
+    {
+      "path": "vendor/chess.cjs",
+      "source": "https://registry.npmjs.org/chess.js/-/chess.js-1.4.0.tgz#package/dist/cjs/chess.js",
+      "sha256": "ccf63ba6a6023ccebc8c110361361b8e14f85d40b556eff387baa8ede4fdd21f",
+      "package": "chess.js",
+      "version": "1.4.0"
+    },
+    {
+      "path": "vendor/chess-LICENSE",
+      "source": "https://registry.npmjs.org/chess.js/-/chess.js-1.4.0.tgz#package/LICENSE",
+      "sha256": "0b3a3c2b4432a26bb18f9d06f5bba4de015bcc980306b7db28b06025495e2186",
+      "package": "chess.js",
+      "version": "1.4.0"
+    },
+    {
+      "path": "public/vendor/chess/chess.mjs",
+      "source": "https://registry.npmjs.org/chess.js/-/chess.js-1.4.0.tgz#package/dist/esm/chess.js",
+      "sha256": "76c7c34f0e2e9ab076521a5d6fe786a9cce537bb1b6f29d32a9c9970b5b232d2",
+      "package": "chess.js",
+      "version": "1.4.0"
+    },
+    {
+      "path": "public/vendor/chess/LICENSE",
+      "source": "https://registry.npmjs.org/chess.js/-/chess.js-1.4.0.tgz#package/LICENSE",
+      "sha256": "0b3a3c2b4432a26bb18f9d06f5bba4de015bcc980306b7db28b06025495e2186",
+      "package": "chess.js",
+      "version": "1.4.0"
+    },
+    {
+      "path": "public/vendor/cm-chessboard/LICENSE",
+      "source": "https://registry.npmjs.org/cm-chessboard/-/cm-chessboard-8.15.4.tgz#package/LICENSE",
+      "sha256": "ccf51777fa25224a3548f958a35e4e8ad06db976bd7e56d39bc4baf91fc2fa8e",
+      "package": "cm-chessboard",
+      "version": "8.15.4"
+    },
+    {
+      "path": "public/vendor/cm-chessboard/assets/chessboard.css",
+      "source": "https://registry.npmjs.org/cm-chessboard/-/cm-chessboard-8.15.4.tgz#package/assets/chessboard.css",
+      "sha256": "4e65b608f0f4e475fb0c8c98b4d1cc370d2ab05156448b135a9f026ef03be887",
+      "package": "cm-chessboard",
+      "version": "8.15.4"
+    },
+    {
+      "path": "public/vendor/cm-chessboard/assets/extensions/markers/markers.css",
+      "source": "https://registry.npmjs.org/cm-chessboard/-/cm-chessboard-8.15.4.tgz#package/assets/extensions/markers/markers.css",
+      "sha256": "4b1cdb03bb8a46d2692d6d930aee2907931492d87043eaa118fb8faae8953d79",
+      "package": "cm-chessboard",
+      "version": "8.15.4"
+    },
+    {
+      "path": "public/vendor/cm-chessboard/assets/extensions/promotion-dialog/promotion-dialog.css",
+      "source": "https://registry.npmjs.org/cm-chessboard/-/cm-chessboard-8.15.4.tgz#package/assets/extensions/promotion-dialog/promotion-dialog.css",
+      "sha256": "fb328e9b71d2aa83f016a68a63ddb5bd41c6aae0ebc6df91a124ce429c8d2234",
+      "package": "cm-chessboard",
+      "version": "8.15.4"
+    },
+    {
+      "path": "public/vendor/cm-chessboard/src/Chessboard.js",
+      "source": "https://registry.npmjs.org/cm-chessboard/-/cm-chessboard-8.15.4.tgz#package/src/Chessboard.js",
+      "sha256": "6582efba87300738ab2ac48286162900c368ed12ce069c2713946dc019f82cd0",
+      "package": "cm-chessboard",
+      "version": "8.15.4"
+    },
+    {
+      "path": "public/vendor/cm-chessboard/src/model/ChessboardState.js",
+      "source": "https://registry.npmjs.org/cm-chessboard/-/cm-chessboard-8.15.4.tgz#package/src/model/ChessboardState.js",
+      "sha256": "b3d7cde7663f6b5432110015bf1bdce5ca4b4ccdd8c7bc2d49eb87fa95a14f1d",
+      "package": "cm-chessboard",
+      "version": "8.15.4"
+    },
+    {
+      "path": "public/vendor/cm-chessboard/src/view/ChessboardView.js",
+      "source": "https://registry.npmjs.org/cm-chessboard/-/cm-chessboard-8.15.4.tgz#package/src/view/ChessboardView.js",
+      "sha256": "cdbbd0f63bd4be43c31c2b5bad118843772a19fe3c907b2e1186caf2665e19bb",
+      "package": "cm-chessboard",
+      "version": "8.15.4"
+    },
+    {
+      "path": "public/vendor/cm-chessboard/src/model/Extension.js",
+      "source": "https://registry.npmjs.org/cm-chessboard/-/cm-chessboard-8.15.4.tgz#package/src/model/Extension.js",
+      "sha256": "2657c0e59148eef29aed16e2672f6cc650ed2abcf6846838cfbb85b4bea01357",
+      "package": "cm-chessboard",
+      "version": "8.15.4"
+    },
+    {
+      "path": "public/vendor/cm-chessboard/src/extensions/markers/Markers.js",
+      "source": "https://registry.npmjs.org/cm-chessboard/-/cm-chessboard-8.15.4.tgz#package/src/extensions/markers/Markers.js",
+      "sha256": "6ed60c5a7a8aab25debaab309049f05432539387b5ab1100878eed4d92abc177",
+      "package": "cm-chessboard",
+      "version": "8.15.4"
+    },
+    {
+      "path": "public/vendor/cm-chessboard/src/model/Position.js",
+      "source": "https://registry.npmjs.org/cm-chessboard/-/cm-chessboard-8.15.4.tgz#package/src/model/Position.js",
+      "sha256": "65d8bfcb879f16c3aadd6a6e5514f90e9f161ea2028cc2d46427e5b08de7677d",
+      "package": "cm-chessboard",
+      "version": "8.15.4"
+    },
+    {
+      "path": "public/vendor/cm-chessboard/src/view/PositionAnimationsQueue.js",
+      "source": "https://registry.npmjs.org/cm-chessboard/-/cm-chessboard-8.15.4.tgz#package/src/view/PositionAnimationsQueue.js",
+      "sha256": "fddb37f73ef1f8fb5f100dc461308415fdf00787c6ab839c811a8abfc5b1bbe1",
+      "package": "cm-chessboard",
+      "version": "8.15.4"
+    },
+    {
+      "path": "public/vendor/cm-chessboard/src/extensions/promotion-dialog/PromotionDialog.js",
+      "source": "https://registry.npmjs.org/cm-chessboard/-/cm-chessboard-8.15.4.tgz#package/src/extensions/promotion-dialog/PromotionDialog.js",
+      "sha256": "6e38a91c40249b63a05a4179470afc7008e51349866beb17b598177b79e79813",
+      "package": "cm-chessboard",
+      "version": "8.15.4"
+    },
+    {
+      "path": "public/vendor/cm-chessboard/src/lib/Svg.js",
+      "source": "https://registry.npmjs.org/cm-chessboard/-/cm-chessboard-8.15.4.tgz#package/src/lib/Svg.js",
+      "sha256": "bacbf9de8ee6b782e5f237204d848018d484802e9b9e77ad36df5fc6547ab754",
+      "package": "cm-chessboard",
+      "version": "8.15.4"
+    },
+    {
+      "path": "public/vendor/cm-chessboard/src/lib/Utils.js",
+      "source": "https://registry.npmjs.org/cm-chessboard/-/cm-chessboard-8.15.4.tgz#package/src/lib/Utils.js",
+      "sha256": "971a1695cfc198e80a9f2dbc7ee188b3e5e82069093c1c218ce8dd8210c25597",
+      "package": "cm-chessboard",
+      "version": "8.15.4"
+    },
+    {
+      "path": "public/vendor/cm-chessboard/src/view/VisualMoveInput.js",
+      "source": "https://registry.npmjs.org/cm-chessboard/-/cm-chessboard-8.15.4.tgz#package/src/view/VisualMoveInput.js",
+      "sha256": "90f655dc317b704e6738a47a147f861f1075ea9256c516acb2a84a3128c5f615",
+      "package": "cm-chessboard",
+      "version": "8.15.4"
+    },
+    {
+      "path": "public/vendor/cm-chessboard/assets/extensions/markers/markers.svg",
+      "source": "https://registry.npmjs.org/cm-chessboard/-/cm-chessboard-8.15.4.tgz#package/assets/extensions/markers/markers.svg",
+      "sha256": "3b01fbeecc578d61da3d4904ac35fb80a45f29113615fe655fbad86556d4dd46",
+      "package": "cm-chessboard",
+      "version": "8.15.4"
+    },
+    {
+      "path": "public/vendor/cm-chessboard/assets/pieces/standard.svg",
+      "source": "https://registry.npmjs.org/cm-chessboard/-/cm-chessboard-8.15.4.tgz#package/assets/pieces/standard.svg",
+      "sha256": "b85bba95342a9483420999cedeb1c503e6db16cdd7a0da1f3a228549a13134c5",
+      "package": "cm-chessboard",
+      "version": "8.15.4"
+    },
+    {
+      "path": "public/vendor/eventsource-parser/dist/index.js",
+      "source": "https://registry.npmjs.org/eventsource-parser/-/eventsource-parser-4.1.3.tgz#package/dist/index.js",
+      "sha256": "2c04c758a5f07079b20e6e972608fbe9e61ee043c984b55425eb4b290faec717",
+      "package": "eventsource-parser",
+      "version": "4.1.3"
+    },
+    {
+      "path": "public/vendor/eventsource-parser/dist/errors.js",
+      "source": "https://registry.npmjs.org/eventsource-parser/-/eventsource-parser-4.1.3.tgz#package/dist/errors.js",
+      "sha256": "c41fbafe9095c484c8aca86509adb3a8174284f0a6df65ec5347414856546fa4",
+      "package": "eventsource-parser",
+      "version": "4.1.3"
+    },
+    {
+      "path": "public/vendor/eventsource-parser/dist/parse.js",
+      "source": "https://registry.npmjs.org/eventsource-parser/-/eventsource-parser-4.1.3.tgz#package/dist/parse.js",
+      "sha256": "4b246ad5755b7fafbea26f5494a8f57d336f4d5b8a559ff20fb02241038b14e2",
+      "package": "eventsource-parser",
+      "version": "4.1.3"
+    },
+    {
+      "path": "public/vendor/eventsource-parser/dist/types.js",
+      "source": "https://registry.npmjs.org/eventsource-parser/-/eventsource-parser-4.1.3.tgz#package/dist/types.js",
+      "sha256": "f44aa358fe8dac67c4d5394af5e1f83dd1edee79405f2f53f1575bf3b90bc56a",
+      "package": "eventsource-parser",
+      "version": "4.1.3"
+    },
+    {
+      "path": "public/vendor/eventsource-parser/LICENSE",
+      "source": "https://registry.npmjs.org/eventsource-parser/-/eventsource-parser-4.1.3.tgz#package/LICENSE",
+      "sha256": "835eb611a23301b27115ca1be9f754c876e643ceb7fe63049c6b50609a1cafeb",
+      "package": "eventsource-parser",
+      "version": "4.1.3"
+    }
+  ]
+}
