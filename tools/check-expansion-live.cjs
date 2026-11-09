@@ -6,7 +6,7 @@ const out=path.resolve(__dirname,'../../output/castle-expansion-live-qa');fs.mkd
 const base='https://together.deine-schule.com/~/castle-preview/',web='https://wvh-web.github.io/workadventure_outside01/castle/';
 async function findRoom(user,id){
   let frame;for(let n=0;n<240&&!frame;n++){
-    for(const f of user.page.frames())if(await f.evaluate(id=>window.castleRoom?.layout.id===id,id).catch(()=>false))frame=f;
+    for(const f of user.page.frames())if(await f.evaluate(id=>window.castleRoom?.layout.id===id&&!window.castleRoom.disposed,id).catch(()=>false))frame=f;
     if(!frame)await user.page.waitForTimeout(500);
   }
   assert.ok(frame,'Room script '+id);user.script=frame;

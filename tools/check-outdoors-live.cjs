@@ -50,11 +50,13 @@ async function main(){
       await profile.locator('#questions button').first().click();assert.notEqual(await profile.locator('#speech').textContent(),before);assert.equal(await profile.evaluate(()=>typeof WA),'undefined');
       await a.page.screenshot({path:path.join(out,scene.id+'-character.png')});await a.script.evaluate(()=>castleActivities.website.close());
       await move(a,talk.x,talk.y);const sprite=a.page.locator('iframe[src*="/npc-sprite.html?npc='+actor+'"]').first(),box=await sprite.boundingBox();assert.ok(box);
-      assert.equal(await sprite.contentFrame().evaluate(()=>window.castleImagePassive),true);
-      assert.deepEqual(await sprite.evaluate(e=>[getComputedStyle(e).pointerEvents,e.inert]),['none',true]);
+      const spriteFrame=await (await sprite.elementHandle()).contentFrame();assert.ok(spriteFrame);
+      assert.equal(await spriteFrame.evaluate(()=>window.castleImagePassive),true);
+      assert.deepEqual(await sprite.evaluate(e=>[e.inert,e.tabIndex]),[true,-1]);
       await a.page.mouse.click(box.x+box.width/2,box.y+box.height*.75);await a.page.waitForTimeout(300);
       const beforeKey=await a.script.evaluate(()=>WA.player.getPosition());await a.page.keyboard.down('ArrowDown');await a.page.waitForTimeout(350);await a.page.keyboard.up('ArrowDown');
       const afterKey=await a.script.evaluate(()=>WA.player.getPosition());assert.ok(afterKey.y-beforeKey.y>10,'Clicking the decorative character must not swallow movement keys');
+      assert.notEqual(await a.page.evaluate(()=>document.activeElement?.tagName),'IFRAME');
       results.push({id:scene.id,participants:4,seats:seatIds.length,groups:scene.groups.length,standingIncluded:true,shared,together,separated,third,actor,actorDialogue:true,characterClickPreservesMovement:true,mobileCanvas:true});
       fs.writeFileSync(path.join(out,'progress.json'),JSON.stringify({revision,results},null,2)+'\n');console.log(JSON.stringify({id:scene.id,participants:4,seats:seatIds.length,groups:scene.groups.length,passed:true}));
     }
@@ -80,8 +82,14 @@ async function main(){
     await move(a,520,288);await a.page.getByRole('button',{name:'Go-Kart fahren',exact:true}).click();await a.script.waitForFunction(()=>castlePark.active,undefined,{polling:200});
     await a.script.evaluate(()=>{const go=WA.nav.goToRoom.bind(WA.nav);WA.nav.goToRoom=url=>{if(castlePark.active||castlePark.needsRestore)throw Error('Kart was not restored before navigation');return go(url)}});
     await a.script.evaluate(()=>castleRoom.returnToHall()).catch(e=>{if(!/detached|destroyed/.test(e.message))throw e});await findRoom(a,'umgebung');
-    for(const [id,entry]of [['umgebung','garten'],['dorf','schloss'],['park','dorf']]){
+    console.log(JSON.stringify({phase:'vehicles',completedRide:true,cancelledRide:true,nativeShiftDistances:distances,kartRestoredBeforeReturn:true,passed:true}));
+    fs.writeFileSync(path.join(out,'progress.json'),JSON.stringify({revision,results,vehicles:{completedRide:true,cancelledRide:true,nativeShiftDistances:distances,kartRestoredBeforeReturn:true}},null,2)+'\n');
+    // Each target differs from the current map; a same-map reload can briefly expose its old script.
+    for(const [id,entry]of [['dorf','schloss'],['park','dorf'],['umgebung','garten']]){
       await a.script.evaluate(url=>WA.nav.goToRoom(url),base+id+'.wam#'+entry).catch(e=>{if(!/detached|destroyed/.test(e.message))throw e});await findRoom(a,id);
+      const [x,y]=scenes.find(s=>s.id===id).entries[entry];
+      await a.script.waitForFunction(async p=>{const actual=await WA.player.getPosition();return Math.hypot(actual.x-p.x,actual.y-p.y)<24},{x:x*32+16,y:y*32+16},{polling:200,timeout:15000});
+      console.log(JSON.stringify({phase:'arrival',id,entry,passed:true}));
     }
     assert.equal(a.page.frames().filter(f=>f.url().includes('/npc-sprite.html?')).length,1);
     const errors=users.flatMap(u=>u.errors);assert.deepEqual(errors,[]);

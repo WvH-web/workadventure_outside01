@@ -62,8 +62,7 @@ Keine fremden Spiel- oder Weihnachtsprojekt-Assets wurden kopiert.
 
 Der komplette Neubau aller sechzehn registrierten Karten ist bestanden.
 189 Kernpruefungen einschliesslich Rueckweg-Absicherung, Kart-Anbindung und
-passiver Bildfenster
-sind nach dem kompletten Neubau bestanden.
+passiver Bildfenster sind nach dem kompletten Neubau bestanden.
 Die erweiterte Grafik-Browserprobe pruefte alle sechzehn Karten, alle 32 neuen
 Sitze, alle neuen Uebergaenge und den Rutschenabbruch in 1440, 390 und 320 Pixel
 Breite ohne Layout- oder Browserfehler.
@@ -86,6 +85,17 @@ Inhaltsursprung bereit. Der kleine Helfer setzt ausschliesslich das eigene
 enthaltende Iframe auf `pointer-events: none`, `tabIndex=-1` und `inert`.
 Keine globalen Tastaturereignisse, keine neuen Karten-API- oder Medienrechte;
 Dialoge und Galerien bleiben interaktiv. Das bestehende strenge CSP bleibt erhalten.
+
+Die aktuelle native Einzelprobe ist bestanden: 69 Pixel normale Bewegung und
+72 nach dem Figurenklick, ohne Fokuswechsel ins Bildfenster. Alle fuenf geladenen
+Museumsbilder sind ebenfalls passiv; nach einem Bildklick wurden 72 Pixel echte
+Bewegung gemessen. Keine JavaScript-Fehler. WorkAdventure schreibt die eigene
+`pointer-events`-Darstellung beim Positionieren teilweise auf `auto` zurueck.
+Deshalb prueft die Abnahme die bleibende `inert`-Sperre, den Tab-Ausschluss und
+wirkliches Weiterlaufen statt eines fluechtigen CSS-Werts. Keine wiederholten
+DOM-Beobachter und keine globalen Tastatur-Umleitungen sind notwendig.
+Die Bedeutung der browserseitigen Sperre beschreibt die
+[HTML-Dokumentation](https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Global_attributes/inert).
 
 Der vollstaendige native Wiederholungsnachweis der Fassung 3 fuer Fokus, Kart,
 Shift und Rueckweg steht noch aus. Der vorhandene Ansage- und Filmdienst wird nicht neu

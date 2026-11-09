@@ -41,8 +41,9 @@ async function main(){
         return {id,label:area.settings.label,area:{x:area.x,y:area.y,width:area.width,height:area.height}};});
       const sprite=user.page.locator('iframe[src*="/npc-sprite.html?npc='+actor.id+'"]').first();await sprite.waitFor();
       await sprite.contentFrame().locator('#label').waitFor();
-      await sprite.contentFrame().waitForFunction(()=>window.castleImagePassive===true,undefined,{polling:200,timeout:10000});
-      assert.deepEqual(await sprite.evaluate(e=>[getComputedStyle(e).pointerEvents,e.inert]),['none',true]);
+      const spriteFrame=await (await sprite.elementHandle()).contentFrame();assert.ok(spriteFrame);
+      await spriteFrame.waitForFunction(()=>window.castleImagePassive===true,undefined,{polling:200,timeout:10000});
+      assert.deepEqual(await sprite.evaluate(e=>[e.inert,e.tabIndex]),[true,-1]);
       assert.equal(await sprite.contentFrame().locator('html').evaluate(e=>getComputedStyle(e).colorScheme),'dark');
       assert.deepEqual(await sprite.contentFrame().locator('#sprite').evaluate(e=>[e.clientWidth,e.clientHeight]),[32,32]);
       await move(user,actor.area.x+actor.area.width/2,actor.area.y+actor.area.height/2);

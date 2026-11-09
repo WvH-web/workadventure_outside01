@@ -8,6 +8,7 @@ test('decoration configures only its own iframe and never traverses parent docum
   assert.equal(makeMapImagePassive(view),true);assert.deepEqual(frame.style,{transform:'scale(2)',pointerEvents:'none'});
   assert.equal(frame.tabIndex,-1);assert.equal(frame.inert,true);assert.deepEqual(attrs,{'aria-hidden':'true'});
   assert.equal(makeMapImagePassive(view),true);
+  frame.style.pointerEvents='auto';assert.equal(frame.inert,true);assert.equal(frame.tabIndex,-1);
 });
 test('standalone and cross-origin pages fail closed instead of touching unrelated windows',()=>{
   assert.equal(makeMapImagePassive({frameElement:null}),false);
