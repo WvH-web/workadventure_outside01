@@ -110,3 +110,14 @@ test('generated ownership covers each mapped activity and never assigns one comm
     }
   }
 });
+
+test('departure waits for registered cleanup, supports unsubscription and never traps navigation after a failed cleanup',async()=>{
+  const order=[],wa={room:{id:roomId.replace('.tmj','.wam')},nav:{goToRoom:async()=>order.push('navigate')},
+    ui:{actionBar:{removeButton(){}}},controls:{restorePlayerControls(){}},player:{state:{saveVariable:async()=>{}}}};
+  const room=new CastleRoom(wa,{...readLayout(map),hallUrl:'https://together.deine-schule.com/~/castle-preview/erdgeschoss.wam'});
+  room.stand=async()=>order.push('stand');const remove=room.onBeforeTravel(async()=>{await Promise.resolve();order.push('clean')});
+  try{
+    await room.returnToHall();assert.deepEqual(order,['stand','clean','navigate']);remove();order.length=0;
+    room.onBeforeTravel(async()=>{throw Error('unavailable')});await room.returnToHall();assert.deepEqual(order,['stand','navigate']);
+  }finally{room.dispose()}
+});

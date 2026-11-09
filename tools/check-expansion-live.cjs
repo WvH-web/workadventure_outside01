@@ -134,4 +134,5 @@ async function main(){
     throw error;
   }finally{await browser.close();}
 }
-main().catch(error=>{console.error(error.stack);process.exitCode=1;});
+module.exports={findRoom,travel,audio,openActivity};
+if(require.main===module)main().catch(error=>{console.error(error.stack);process.exitCode=1;});

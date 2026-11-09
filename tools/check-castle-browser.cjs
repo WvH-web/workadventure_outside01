@@ -294,11 +294,16 @@ async function checkBoard(page, viewport) {
         await layoutCheck(page,'story activity');await screenshot(page,'grundschule-story',viewport);await closePanel(page);
         await walkThrough(page,worlds.get('grundschule').links[0]);
         const expansionChecks=[];
-        for(const id of ['erdgeschoss','obergeschoss','oberstufe','spielesaal','museum','musikzimmer','atelier','sternwarte']){
+        for(const id of ['erdgeschoss','obergeschoss','oberstufe','spielesaal','museum','musikzimmer','atelier','sternwarte','umgebung','dorf','park']){
           const world=worlds.get(id);await load(page,id);const seats=await checkSeats(page,world,viewport);
           const links=[];for(const link of world.links){await load(page,id);await walkThrough(page,link);links.push(link.name);}
           expansionChecks.push({id,seats:seats.seats,links});
         }
+        await load(page,'park');await move(page,1012,160,'water slide');
+        await page.getByRole('button',{name:'Rutschen',exact:true}).click();
+        await page.waitForFunction(()=>window.castlePreview.state.ride);await page.waitForTimeout(250);
+        await page.getByRole('button',{name:'Rutsche verlassen',exact:true}).click();
+        assert(!await page.evaluate(()=>window.castlePreview.state.ride),'Preview ride cancellation');
         await load(page, "erdgeschoss");
         const egSeat = worlds.get("erdgeschoss").seats[0];
         await move(page, egSeat.standX, egSeat.standY, egSeat.id);

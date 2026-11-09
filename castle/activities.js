@@ -1,4 +1,4 @@
-import {castleRoomReady} from './room.js?v=20261108-ui1';
+import {castleRoomReady} from './room.js?v=20261108-outdoors1';
 import {characters} from './characters-data.js?v=20261108-characters1';
 const props=o=>Object.fromEntries((o.properties||[]).map(p=>[p.name,p.value]));
 const inside=(p,a)=>p.x>=a.x&&p.y>=a.y&&p.x<a.x+a.width&&p.y<a.y+a.height;
@@ -12,7 +12,7 @@ const allowedExternal=new Set([
 ]);
 export function activitySettings(object){
   const p=props(object),url=new URL(p.castleActivityUrl,ownBase);
-  const story=url.href===new URL('story.html',ownBase).href;
+  const story=['story.html','story.html?v=20261108-outdoors1'].some(page=>url.href===new URL(page,ownBase).href);
   const games=url.href===new URL('hall-games.html',ownBase).href;
   const collection=['collection.html?kind=museum','collection.html?kind=music','expeditions.html'].some(page=>url.href===new URL(page,ownBase).href);
   const character=characters.some(c=>url.href===new URL('characters.html?npc='+c.id,ownBase).href);

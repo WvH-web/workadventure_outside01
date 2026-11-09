@@ -11,7 +11,8 @@ import zipfile
 
 os.umask(0o077)
 legacy_ids={'erdgeschoss','obergeschoss','kino','umgebung','mittelstufe','grosse-halle','bibliothek','grundschule'}
-ids=legacy_ids|{'oberstufe','spielesaal','museum','musikzimmer','atelier','sternwarte'}
+previous_ids=legacy_ids|{'oberstufe','spielesaal','museum','musikzimmer','atelier','sternwarte'}
+ids=previous_ids|{'dorf','park'}
 archive=Path('/tmp/wvh-castle-preview-wams.zip')
 storage=Path('/var/lib/docker/volumes/workadventure_map-storage-data/_data').resolve()
 target=(storage/'castle-preview').resolve()
@@ -30,7 +31,7 @@ if target.exists():
         raise RuntimeError('Preview directory has unreviewed contents; refusing to overwrite it')
     old=json.loads(record.read_text())['files']
     existing=set(p.name for p in target.iterdir())
-    if existing!=set(old) or existing not in [expected,{id+'.wam' for id in legacy_ids}]:
+    if existing!=set(old) or existing not in [expected,{id+'.wam' for id in previous_ids},{id+'.wam' for id in legacy_ids}]:
         raise RuntimeError('Preview directory has unreviewed contents; refusing to overwrite it')
     if any(hashof((target/name).read_bytes())!=old[name] for name in existing):
         raise RuntimeError('A preview map was edited since the last deployment')

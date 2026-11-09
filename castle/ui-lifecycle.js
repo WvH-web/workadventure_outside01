@@ -1,4 +1,4 @@
-import {ownedUi,legacyUi} from './ui-ids.js?v=20261108-ui1';
+import {ownedUi,legacyUi} from './ui-ids.js?v=20261108-outdoors1';
 export function clearPreviousCastleUi(wa,current){
   if(!ownedUi[current])return;
   for(const id of legacyUi)wa.ui.actionBar.removeButton(id);

@@ -8,6 +8,7 @@ const { buildCinema } = require("./build-cinema.cjs");
 const { buildLibrary } = require("./build-library.cjs");
 const { buildPrimaryCommonRoom } = require("./build-primary-common-room.cjs");
 const { buildCastleExpansion } = require("./build-castle-expansion.cjs");
+const { buildCastleOutdoors } = require("./build-castle-outdoors.cjs");
 const { nativeTarget, writeWam } = require("./castle-wam.cjs");
 const { createCanvas, loadImage } = dep("@napi-rs/canvas");
 const sharp = dep("sharp");
@@ -1720,10 +1721,12 @@ async function buildAll(){
   const legacy=spawnSync(process.execPath,args,{stdio:'inherit',env,windowsHide:true});
   if(legacy.status!==0)throw Error('Legacy artwork build failed: '+(legacy.error?.message||legacy.status));
   const manifest=JSON.parse(fs.readFileSync(path.resolve(root,'../output/castle-legacy-build.json')));
+  manifest.worlds=manifest.worlds.filter(w=>w.id!=='umgebung');
   console.log('Building illustrated rooms');
   for(const build of [buildMiddleCommonRoom,buildGreatHall,buildCinema,buildLibrary,buildPrimaryCommonRoom]){
     const {world}=await build();manifest.worlds.push(world);
   }
+  manifest.worlds.push(...(await buildCastleOutdoors()).map(result=>result.world));
   manifest.worlds.push(...(await buildCastleExpansion()).map(result=>result.world));
   const expected=require('./castle-map-ids.cjs');
   if(manifest.worlds.length!==expected.length||expected.some(id=>!manifest.worlds.some(w=>w.id===id)))throw Error('Incomplete castle registry');

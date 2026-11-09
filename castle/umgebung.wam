@@ -1,15 +1,47 @@
 {
   "version": "2.1.0",
-  "mapUrl": "https://wvh-web.github.io/workadventure_outside01/castle/umgebung.tmj",
+  "mapUrl": "https://wvh-web.github.io/workadventure_outside01/castle/umgebung.tmj?v=20261108-outdoors1",
   "entities": {},
   "areas": [
     {
+      "id": "eec8d4ee-ccde-49d9-a3ee-2c019dd4e8cd",
+      "name": "Hofrunde",
+      "x": 96,
+      "y": 256,
+      "width": 288,
+      "height": 192,
+      "visible": true,
+      "properties": [
+        {
+          "id": "0828e000-848d-4270-be0d-b652a2e2803b",
+          "type": "livekitRoomProperty",
+          "roomName": "school-castle-v2-umgebung-area-hofrunde"
+        }
+      ]
+    },
+    {
+      "id": "375974f2-5beb-424f-879d-4ebd064153b7",
+      "name": "Rosentisch",
+      "x": 96,
+      "y": 512,
+      "width": 320,
+      "height": 208,
+      "visible": true,
+      "properties": [
+        {
+          "id": "cce53a21-bb7a-4185-9f24-de7045549cde",
+          "type": "livekitRoomProperty",
+          "roomName": "school-castle-v2-umgebung-area-rosenrunde"
+        }
+      ]
+    },
+    {
       "id": "0ba7a978-f421-4bee-ae8f-db2697e6d6f1",
-      "name": "Gartenrunde",
-      "x": 2688,
-      "y": 1440,
-      "width": 352,
-      "height": 224,
+      "name": "Gartentisch",
+      "x": 736,
+      "y": 512,
+      "width": 320,
+      "height": 208,
       "visible": true,
       "properties": [
         {
@@ -29,9 +61,9 @@
     }
   },
   "metadata": {
-    "name": "Sternendorf und Schlossgarten",
-    "description": "Begehbare Grundriss-Vorschau. Bestehende Schulangebote bleiben unveraendert.",
-    "copyright": "",
-    "thumbnail": "https://wvh-web.github.io/workadventure_outside01/castle/undefined"
+    "name": "Schlosshof",
+    "description": "Schlosshof mit kleinen Picknickrunden, begehbaren Wegen und Schlossbewohnern.",
+    "copyright": "Original outdoor and picnic artwork generated for deine Schule; existing school go-cart artwork.",
+    "thumbnail": "https://wvh-web.github.io/workadventure_outside01/castle/art/umgebung-20261108-full/floor.png"
   }
 }

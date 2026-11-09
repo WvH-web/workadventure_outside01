@@ -47,6 +47,10 @@ Bildfenster ohne Kartenschnittstelle und alle 92 Sitze. Beim Raumwechsel bleiben
 keine fremden Raumknopfe oder alten Figurenbilder zurueck. Browserfehler: keine.
 Die reine Grafikvorschau bildet diese nativen Zusatzfiguren nicht ab.
 
+Die Aussenfassung `20261108-outdoors1` ergaenzt Noah im Schlosshof, Val im Dorf
+und Rosa im Garten. Ihre native Dialog- und Mehrpersonenprobe steht noch aus;
+die fruehere Abnahme der acht Innenfiguren gilt nicht als Nachweis dafuer.
+
 ## Quelle und Betrieb
 
 Die Grafiken stammen aus der bereits in WorkAdventure enthaltenen

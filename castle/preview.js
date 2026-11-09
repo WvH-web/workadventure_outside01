@@ -1,5 +1,5 @@
-import { readLayout, conversationAt } from "./room.js?v=20261108-gs1";
-import {activitySettings} from './activities.js?v=20261108-characters1';
+import { readLayout, conversationAt } from "./room.js?v=20261108-outdoors1";
+import {activitySettings} from './activities.js?v=20261108-outdoors1';
 const $ = (id) => document.getElementById(id);
 function showError() {
   const retry = document.createElement("button");
@@ -17,7 +17,7 @@ window.addEventListener("error", (event) => {
 });
 const canvas = $("map"),
   ctx = canvas.getContext("2d");
-const manifest = await fetch("layout.json?v=20261108-expansion6").then((r) =>
+const manifest = await fetch("layout.json?v=20261108-outdoors1").then((r) =>
   r.json(),
 );
 const images = new Map();
@@ -143,7 +143,7 @@ async function load(id, entry = "start") {
     if (!cache.has(id))
       cache.set(
         id,
-        await fetch(id + ".tmj?v=20261108-expansion6").then((r) => {
+        await fetch(id + ".tmj?v=20261108-outdoors1").then((r) => {
           if (!r.ok) throw Error("Karte nicht erreichbar");
           return r.json();
         }),
@@ -316,7 +316,9 @@ function refresh() {
   $("location").textContent =
     room?.title ||
     {
-      umgebung: "Sternendorf",
+      umgebung: "Schlosshof",
+      dorf: "Sternendorf",
+      park: "Schlossgarten",
       erdgeschoss: "Wandelgang",
       obergeschoss: "Obere Galerie",
       kino: "Foyer",

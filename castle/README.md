@@ -1,7 +1,8 @@
 # Begehbarer Schlossgrundriss
 
 Modulare Schloss-Vorschau, ab 7. November 2026. Dreizehn Innenkarten sind
-detailreich eingerichtet; die Aussenanlage zeigt noch die Raum- und Laufplanung.
+detailreich eingerichtet. Schlosshof, Sternendorf und Schlossgarten ergaenzen
+sie jetzt als drei kompakte Aussenkarten. Pruefstand: `OUTDOORS.md`.
 Der Gesamtausbau ist aktiv, aber noch nicht abgeschlossen. Offene Anforderungen
 und der aktuelle Pruefstand stehen in `BUILD-STATUS.md`.
 Bestehende Karten, das Kino-Projekt und das Weihnachtsspiel werden nicht ersetzt.
@@ -31,7 +32,7 @@ Die bestaetigte Einrichtung nicht ohne neuen Auftrag umskalieren. Neue Raeume
 weiterhin einzeln in der getrennten Vorschau ausbauen; das bisherige Schloss
 bleibt bis zur ausdruecklichen Freigabe unveraendert.
 
-## Vierzehn verbundene Karten
+## Sechzehn verbundene Karten
 
 - `erdgeschoss.tmj`: Eingerichteter Wandelgang, 40 x 22 Kacheln, acht beschriftete
   Tueren und zwei Gespraechsgruppen mit insgesamt zehn Sitzplaetzen.
@@ -46,8 +47,11 @@ bleibt bis zur ausdruecklichen Freigabe unveraendert.
   getrennte Lesegruppen und 13 Sitzplaetze, mit Fensternische und animiertem Kamin.
 - `grundschule.tmj`: Kleine gemalte Gemeinschaftsstube, 28 x 20 Kacheln,
   zwoelf Sitzplaetze, drei Hoerbereiche, Erzaehlkarten, Bausteinraetsel und Musik.
-- `umgebung.tmj`: Schlossansicht, Dorfplatz, Bachbruecke, Markt, Schlossgarten,
-  Rutschenturm und vorbereiteter Rundkurs.
+- `umgebung.tmj`: Schlosshof mit zwoelf Picknickplaetzen in drei Gruppen;
+  normale Wege in Halle, Dorf und Garten. `dorf.tmj`: Sternendorf mit Markt,
+  Bachbruecke und drei weiteren Picknickgruppen. `park.tmj`: Schlossgarten
+  mit zwei Picknickgruppen, Rutsche und Go-Kart-Rundkurs. Jede Karte hat
+  36 x 24 Kacheln; Avatare bleiben 32 Pixel hoch.
 - `mittelstufe.tmj`: Gemalter Gemeinschaftsraum, vom Mittelstufenbereich im
   Erdgeschoss und aus der Grossen Halle erreichbar, mit Rueckweg zur Halle.
 - `grosse-halle.tmj`: 48 x 32 Kacheln, 42 Sitzplaetze, sechs Gespraechsbereiche,
@@ -55,7 +59,7 @@ bleibt bis zur ausdruecklichen Freigabe unveraendert.
   Verbindet Mittelstufe, Kino, Bibliothek, Treppe, Schulpark und Lehrerzimmer.
 
 Tiled kann jede TMJ direkt oeffnen. Tileset und Skriptpfade bleiben relativ.
-Die vierzehn kleinen `.wam`-Dateien ergaenzen native Besprechungsbereiche, ohne
+Die sechzehn kleinen `.wam`-Dateien ergaenzen native Besprechungsbereiche, ohne
 Grafiken zu duplizieren. Der Spieleinstieg ist
 `https://together.deine-schule.com/~/castle-preview/grosse-halle.wam`.
 Die alten Vorschau-TMJ-Links leiten vor dem Start ihrer Raumsteuerung dorthin

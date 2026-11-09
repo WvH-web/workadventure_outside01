@@ -1,0 +1,457 @@
+{
+  "scene": {
+    "id": "park",
+    "name": "Schlossgarten",
+    "key": "Park",
+    "actor": [
+      "rosa",
+      "Rosa",
+      656,
+      576
+    ],
+    "entries": {
+      "start": [
+        17,
+        19
+      ],
+      "hof": [
+        3,
+        14
+      ],
+      "dorf": [
+        17,
+        20
+      ]
+    },
+    "portals": [
+      {
+        "id": "hof",
+        "x": 0,
+        "y": 14,
+        "width": 1,
+        "height": 2,
+        "target": "umgebung.tmj",
+        "entry": "garten"
+      },
+      {
+        "id": "dorfpfad",
+        "x": 17,
+        "y": 23,
+        "width": 2,
+        "height": 1,
+        "target": "dorf.tmj",
+        "entry": "park"
+      }
+    ],
+    "tables": [
+      {
+        "id": "picknick",
+        "label": "Picknickrunde",
+        "x": 176,
+        "y": 552
+      },
+      {
+        "id": "blumenrunde",
+        "label": "Blumengarten",
+        "x": 800,
+        "y": 552
+      }
+    ],
+    "groups": [
+      {
+        "id": "picknick",
+        "x": 112,
+        "y": 512,
+        "width": 320,
+        "height": 208,
+        "preserve": false
+      },
+      {
+        "id": "blumenrunde",
+        "x": 736,
+        "y": 512,
+        "width": 320,
+        "height": 208,
+        "preserve": false
+      }
+    ],
+    "collisions": [
+      {
+        "id": "north",
+        "x": 0,
+        "y": 0,
+        "width": 1152,
+        "height": 96,
+        "preserve": false
+      },
+      {
+        "id": "shed",
+        "x": 504,
+        "y": 96,
+        "width": 144,
+        "height": 96,
+        "preserve": true
+      },
+      {
+        "id": "island",
+        "x": 128,
+        "y": 208,
+        "width": 320,
+        "height": 96,
+        "preserve": true
+      },
+      {
+        "id": "north-fence",
+        "x": 32,
+        "y": 128,
+        "width": 448,
+        "height": 32,
+        "preserve": false
+      },
+      {
+        "id": "south-fence",
+        "x": 32,
+        "y": 368,
+        "width": 448,
+        "height": 32,
+        "preserve": false
+      },
+      {
+        "id": "arbor-tree",
+        "x": 576,
+        "y": 192,
+        "width": 160,
+        "height": 160,
+        "preserve": false
+      },
+      {
+        "id": "tower-body",
+        "x": 928,
+        "y": 192,
+        "width": 128,
+        "height": 112,
+        "preserve": false
+      },
+      {
+        "id": "pool",
+        "x": 832,
+        "y": 352,
+        "width": 144,
+        "height": 80,
+        "preserve": true
+      },
+      {
+        "id": "slide-body",
+        "x": 992,
+        "y": 192,
+        "width": 64,
+        "height": 160,
+        "preserve": true
+      }
+    ],
+    "activities": [
+      [
+        "picknick",
+        "Gartengeschichten",
+        "story.html?v=20261108-outdoors1",
+        true
+      ],
+      [
+        "blumenrunde",
+        "Band und Chor",
+        "https://together.deine-schule.com/castle-content/collection.html?kind=music"
+      ]
+    ],
+    "ride": {
+      "id": "wasserrutsche",
+      "x": 992,
+      "y": 144,
+      "width": 48,
+      "height": 32,
+      "waypoints": [
+        {
+          "x": 1012,
+          "y": 160
+        },
+        {
+          "x": 1012,
+          "y": 208
+        },
+        {
+          "x": 1010,
+          "y": 272
+        },
+        {
+          "x": 1000,
+          "y": 312
+        },
+        {
+          "x": 968,
+          "y": 344
+        },
+        {
+          "x": 928,
+          "y": 360
+        },
+        {
+          "x": 912,
+          "y": 388
+        },
+        {
+          "x": 896,
+          "y": 448
+        }
+      ]
+    },
+    "kart": {
+      "parking": {
+        "x": 488,
+        "y": 256,
+        "width": 96,
+        "height": 96
+      },
+      "bounds": {
+        "x": 32,
+        "y": 128,
+        "width": 544,
+        "height": 272
+      }
+    }
+  },
+  "seats": [
+    {
+      "id": "picknick-n0",
+      "label": "Picknickrunde Nord 1",
+      "x": 226,
+      "y": 562,
+      "standX": 226,
+      "standY": 532,
+      "facing": "down",
+      "audioGroup": "picknick"
+    },
+    {
+      "id": "picknick-n1",
+      "label": "Picknickrunde Nord 2",
+      "x": 286,
+      "y": 562,
+      "standX": 286,
+      "standY": 532,
+      "facing": "down",
+      "audioGroup": "picknick"
+    },
+    {
+      "id": "picknick-s0",
+      "label": "Picknickrunde Sued 1",
+      "x": 226,
+      "y": 638,
+      "standX": 226,
+      "standY": 688,
+      "facing": "up",
+      "audioGroup": "picknick"
+    },
+    {
+      "id": "picknick-s1",
+      "label": "Picknickrunde Sued 2",
+      "x": 286,
+      "y": 638,
+      "standX": 286,
+      "standY": 688,
+      "facing": "up",
+      "audioGroup": "picknick"
+    },
+    {
+      "id": "blumenrunde-n0",
+      "label": "Blumengarten Nord 1",
+      "x": 850,
+      "y": 562,
+      "standX": 850,
+      "standY": 532,
+      "facing": "down",
+      "audioGroup": "blumenrunde"
+    },
+    {
+      "id": "blumenrunde-n1",
+      "label": "Blumengarten Nord 2",
+      "x": 910,
+      "y": 562,
+      "standX": 910,
+      "standY": 532,
+      "facing": "down",
+      "audioGroup": "blumenrunde"
+    },
+    {
+      "id": "blumenrunde-s0",
+      "label": "Blumengarten Sued 1",
+      "x": 850,
+      "y": 638,
+      "standX": 850,
+      "standY": 688,
+      "facing": "up",
+      "audioGroup": "blumenrunde"
+    },
+    {
+      "id": "blumenrunde-s1",
+      "label": "Blumengarten Sued 2",
+      "x": 910,
+      "y": 638,
+      "standX": 910,
+      "standY": 688,
+      "facing": "up",
+      "audioGroup": "blumenrunde"
+    }
+  ],
+  "groups": [
+    {
+      "id": "picknick",
+      "x": 112,
+      "y": 512,
+      "width": 320,
+      "height": 208,
+      "preserve": false,
+      "label": "Picknickrunde"
+    },
+    {
+      "id": "blumenrunde",
+      "x": 736,
+      "y": 512,
+      "width": 320,
+      "height": 208,
+      "preserve": false,
+      "label": "Blumengarten"
+    }
+  ],
+  "collisionRects": [
+    {
+      "id": "west",
+      "x": 0,
+      "y": 0,
+      "width": 32,
+      "height": 768,
+      "preserve": false
+    },
+    {
+      "id": "east",
+      "x": 1120,
+      "y": 0,
+      "width": 32,
+      "height": 768,
+      "preserve": false
+    },
+    {
+      "id": "south",
+      "x": 0,
+      "y": 736,
+      "width": 1152,
+      "height": 32,
+      "preserve": false
+    },
+    {
+      "id": "north",
+      "x": 0,
+      "y": 0,
+      "width": 1152,
+      "height": 96,
+      "preserve": false
+    },
+    {
+      "id": "shed",
+      "x": 504,
+      "y": 96,
+      "width": 144,
+      "height": 96,
+      "preserve": true
+    },
+    {
+      "id": "island",
+      "x": 128,
+      "y": 208,
+      "width": 320,
+      "height": 96,
+      "preserve": true
+    },
+    {
+      "id": "north-fence",
+      "x": 32,
+      "y": 128,
+      "width": 448,
+      "height": 32,
+      "preserve": false
+    },
+    {
+      "id": "south-fence",
+      "x": 32,
+      "y": 368,
+      "width": 448,
+      "height": 32,
+      "preserve": false
+    },
+    {
+      "id": "arbor-tree",
+      "x": 576,
+      "y": 192,
+      "width": 160,
+      "height": 160,
+      "preserve": false
+    },
+    {
+      "id": "tower-body",
+      "x": 928,
+      "y": 192,
+      "width": 128,
+      "height": 112,
+      "preserve": false
+    },
+    {
+      "id": "pool",
+      "x": 832,
+      "y": 352,
+      "width": 144,
+      "height": 80,
+      "preserve": true
+    },
+    {
+      "id": "slide-body",
+      "x": 992,
+      "y": 192,
+      "width": 64,
+      "height": 160,
+      "preserve": true
+    },
+    {
+      "id": "picknick-table",
+      "x": 196,
+      "y": 576,
+      "width": 120,
+      "height": 48,
+      "preserve": true
+    },
+    {
+      "id": "blumenrunde-table",
+      "x": 820,
+      "y": 576,
+      "width": 120,
+      "height": 48,
+      "preserve": true
+    },
+    {
+      "id": "npc-rosa",
+      "x": 640,
+      "y": 560,
+      "width": 32,
+      "height": 32,
+      "preserve": true
+    }
+  ],
+  "mapdata": {
+    "pixelWidth": 1152,
+    "pixelHeight": 768,
+    "avatarSize": 32,
+    "picnicWidthPixels": 160,
+    "seats": 8,
+    "groups": 2,
+    "blockedTiles": 307,
+    "reachableFloorTiles": 553,
+    "foregroundPixels": 17292,
+    "sourceSha256": "45b3bd55ec812c91824cf8e5f5be5c50fb78293c566726065b46f4f3f71eb761"
+  }
+}

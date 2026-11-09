@@ -139,7 +139,7 @@ async function buildFurnishedRoom(options={}){
   return {map,world};
 }
 const buildLibrary=()=>buildFurnishedRoom();
-module.exports={buildLibrary,buildFurnishedRoom};
+module.exports={buildLibrary,buildFurnishedRoom,geometry};
 if(require.main===module)buildLibrary().then(({world})=>{
   if(process.argv.includes('--update-world')){
     const file=path.join(root,'castle/layout.json'),m=JSON.parse(fs.readFileSync(file)),i=m.worlds.findIndex(w=>w.id===world.id);

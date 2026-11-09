@@ -1,0 +1,69 @@
+{
+  "version": "2.1.0",
+  "mapUrl": "https://wvh-web.github.io/workadventure_outside01/castle/dorf.tmj?v=20261108-outdoors1",
+  "entities": {},
+  "areas": [
+    {
+      "id": "b1c4a921-bfef-4e32-91e6-3a624143da50",
+      "name": "Marktrunde",
+      "x": 192,
+      "y": 288,
+      "width": 288,
+      "height": 192,
+      "visible": true,
+      "properties": [
+        {
+          "id": "9ccc178a-6c51-406f-9ead-f291d92be85f",
+          "type": "livekitRoomProperty",
+          "roomName": "school-castle-v2-dorf-area-marktrunde"
+        }
+      ]
+    },
+    {
+      "id": "588154ae-9d93-4405-b8a8-24a584d1d0d3",
+      "name": "Buechertreff",
+      "x": 160,
+      "y": 512,
+      "width": 320,
+      "height": 208,
+      "visible": true,
+      "properties": [
+        {
+          "id": "4fbd214d-7e05-4b63-bcfa-6e35e5a8dc10",
+          "type": "livekitRoomProperty",
+          "roomName": "school-castle-v2-dorf-area-buchrunde"
+        }
+      ]
+    },
+    {
+      "id": "d7c6d56f-80b2-4f73-85f3-a5cf31240107",
+      "name": "Musiktreff",
+      "x": 736,
+      "y": 512,
+      "width": 320,
+      "height": 208,
+      "visible": true,
+      "properties": [
+        {
+          "id": "b683dfee-6a45-405d-9652-733059366e22",
+          "type": "livekitRoomProperty",
+          "roomName": "school-castle-v2-dorf-area-musikbank"
+        }
+      ]
+    }
+  ],
+  "entityCollections": [],
+  "settings": {
+    "megaphone": {
+      "enabled": false,
+      "title": "",
+      "scope": "ROOM"
+    }
+  },
+  "metadata": {
+    "name": "Sternendorf",
+    "description": "Sternendorf mit kleinen Picknickrunden, begehbaren Wegen und Schlossbewohnern.",
+    "copyright": "Original outdoor and picnic artwork generated for deine Schule; existing school go-cart artwork.",
+    "thumbnail": "https://wvh-web.github.io/workadventure_outside01/castle/art/dorf-20261108-full/floor.png"
+  }
+}

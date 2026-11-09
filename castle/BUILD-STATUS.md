@@ -31,11 +31,15 @@ Village und geschuetzte Lehrerzimmer werden nicht ersetzt.
   Dialogen, 32-Pixel-Massstab und transparentem Hintergrund live geprueft.
   Jung und alt, unterschiedliche Stile und Persoenlichkeiten, schulgeeignet.
   Figuren zaehlen nicht als echte Besucher. Einzelheiten: `CHARACTERS.md`.
+- Neu: Schlosshof, Sternendorf und Schlossgarten als drei kompakte Aussenkarten
+  mit insgesamt 32 Picknickplaetzen in acht Gespraechsgruppen. Neue Figuren:
+  Noah, Val und Rosa. Gemeinsame Erzaehlkarten, bestehende Museums-/Musikbeitraege,
+  Rutsche und native Go-Kart-Darstellung. Aktuelle Abnahme und Grenzen: `OUTDOORS.md`.
 
 ## Noch zu vervollstaendigen
 
-- Liebevoll ausgebaute Aussenanlage und Dorf mit richtigen Laufwegen,
-  Aufenthaltsplaetzen, vorhandenen Freizeitangeboten und erweiterbaren Anschluessen.
+- Weitere bestehende Aussenangebote anbinden und die neuen Fahrten nativ abnehmen.
+  Die drei neuen Aussenkarten sind gebaut; ihre Vierpersonenprobe steht noch aus.
 - Weitere im Gesamtkonzept vorgesehene Sonderraeume und Entdeckungen. Private
   Wege und deren genaue Plaene werden nicht in dieser oeffentlichen Datei beschrieben.
 - Serverseitig frisch gepruefte Klassen-/Altersfreigaben fuer Inhalte und
@@ -127,5 +131,5 @@ Skia-Abbruch beim Kopieren grosser Zeichnungen auf Windows.
 `tools/castle-map-ids.cjs` ist die gemeinsame Kartenliste fuer Generator,
 Routing und Pruefungen. Die Serververoeffentlichung prueft die bereits
 bereitgestellten Wrapper gegen deren gespeicherte Pruefsummen und akzeptiert
-nur den bekannten Wechsel von acht auf vierzehn Dateien im separaten
+nur die bekannten Erweiterungen von acht auf vierzehn und sechzehn Dateien im separaten
 `castle-preview`-Verzeichnis. Keine uebrigen Karten oder Dienste werden ersetzt.

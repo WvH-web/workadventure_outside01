@@ -1,0 +1,434 @@
+{
+  "scene": {
+    "id": "dorf",
+    "name": "Sternendorf",
+    "key": "Village",
+    "actor": [
+      "val",
+      "Val",
+      704,
+      352
+    ],
+    "entries": {
+      "start": [
+        17,
+        19
+      ],
+      "schloss": [
+        32,
+        14
+      ],
+      "schlossweg": [
+        17,
+        20
+      ],
+      "park": [
+        17,
+        20
+      ]
+    },
+    "portals": [
+      {
+        "id": "schloss",
+        "x": 35,
+        "y": 13,
+        "width": 1,
+        "height": 2,
+        "target": "umgebung.tmj",
+        "entry": "dorf"
+      },
+      {
+        "id": "gartenpfad",
+        "x": 17,
+        "y": 23,
+        "width": 2,
+        "height": 1,
+        "target": "park.tmj",
+        "entry": "dorf"
+      }
+    ],
+    "tables": [
+      {
+        "id": "marktrunde",
+        "label": "Marktrunde",
+        "x": 240,
+        "y": 320
+      },
+      {
+        "id": "buchrunde",
+        "label": "Buechertreff",
+        "x": 224,
+        "y": 552
+      },
+      {
+        "id": "musikbank",
+        "label": "Musiktreff",
+        "x": 800,
+        "y": 552
+      }
+    ],
+    "groups": [
+      {
+        "id": "marktrunde",
+        "x": 192,
+        "y": 288,
+        "width": 288,
+        "height": 192,
+        "preserve": false
+      },
+      {
+        "id": "buchrunde",
+        "x": 160,
+        "y": 512,
+        "width": 320,
+        "height": 208,
+        "preserve": false
+      },
+      {
+        "id": "musikbank",
+        "x": 736,
+        "y": 512,
+        "width": 320,
+        "height": 208,
+        "preserve": false
+      }
+    ],
+    "collisions": [
+      {
+        "id": "shops",
+        "x": 0,
+        "y": 0,
+        "width": 1152,
+        "height": 208,
+        "preserve": false
+      },
+      {
+        "id": "west-houses",
+        "x": 0,
+        "y": 192,
+        "width": 144,
+        "height": 448,
+        "preserve": false
+      },
+      {
+        "id": "east-house",
+        "x": 864,
+        "y": 192,
+        "width": 224,
+        "height": 208,
+        "preserve": false
+      },
+      {
+        "id": "river",
+        "x": 1088,
+        "y": 0,
+        "width": 64,
+        "height": 416,
+        "preserve": false
+      },
+      {
+        "id": "river-south",
+        "x": 1056,
+        "y": 480,
+        "width": 96,
+        "height": 288,
+        "preserve": false
+      },
+      {
+        "id": "fountain",
+        "x": 544,
+        "y": 304,
+        "width": 112,
+        "height": 112,
+        "preserve": true
+      }
+    ],
+    "activities": [
+      [
+        "marktrunde",
+        "Dorfgeschichten",
+        "story.html?v=20261108-outdoors1",
+        true
+      ],
+      [
+        "buchrunde",
+        "Unsere Ausstellung",
+        "https://together.deine-schule.com/castle-content/collection.html?kind=museum"
+      ],
+      [
+        "musikbank",
+        "Band und Chor",
+        "https://together.deine-schule.com/castle-content/collection.html?kind=music"
+      ]
+    ]
+  },
+  "seats": [
+    {
+      "id": "marktrunde-n0",
+      "label": "Marktrunde Nord 1",
+      "x": 290,
+      "y": 330,
+      "standX": 290,
+      "standY": 300,
+      "facing": "down",
+      "audioGroup": "marktrunde"
+    },
+    {
+      "id": "marktrunde-n1",
+      "label": "Marktrunde Nord 2",
+      "x": 350,
+      "y": 330,
+      "standX": 350,
+      "standY": 300,
+      "facing": "down",
+      "audioGroup": "marktrunde"
+    },
+    {
+      "id": "marktrunde-s0",
+      "label": "Marktrunde Sued 1",
+      "x": 290,
+      "y": 406,
+      "standX": 290,
+      "standY": 456,
+      "facing": "up",
+      "audioGroup": "marktrunde"
+    },
+    {
+      "id": "marktrunde-s1",
+      "label": "Marktrunde Sued 2",
+      "x": 350,
+      "y": 406,
+      "standX": 350,
+      "standY": 456,
+      "facing": "up",
+      "audioGroup": "marktrunde"
+    },
+    {
+      "id": "buchrunde-n0",
+      "label": "Buechertreff Nord 1",
+      "x": 274,
+      "y": 562,
+      "standX": 274,
+      "standY": 532,
+      "facing": "down",
+      "audioGroup": "buchrunde"
+    },
+    {
+      "id": "buchrunde-n1",
+      "label": "Buechertreff Nord 2",
+      "x": 334,
+      "y": 562,
+      "standX": 334,
+      "standY": 532,
+      "facing": "down",
+      "audioGroup": "buchrunde"
+    },
+    {
+      "id": "buchrunde-s0",
+      "label": "Buechertreff Sued 1",
+      "x": 274,
+      "y": 638,
+      "standX": 274,
+      "standY": 688,
+      "facing": "up",
+      "audioGroup": "buchrunde"
+    },
+    {
+      "id": "buchrunde-s1",
+      "label": "Buechertreff Sued 2",
+      "x": 334,
+      "y": 638,
+      "standX": 334,
+      "standY": 688,
+      "facing": "up",
+      "audioGroup": "buchrunde"
+    },
+    {
+      "id": "musikbank-n0",
+      "label": "Musiktreff Nord 1",
+      "x": 850,
+      "y": 562,
+      "standX": 850,
+      "standY": 532,
+      "facing": "down",
+      "audioGroup": "musikbank"
+    },
+    {
+      "id": "musikbank-n1",
+      "label": "Musiktreff Nord 2",
+      "x": 910,
+      "y": 562,
+      "standX": 910,
+      "standY": 532,
+      "facing": "down",
+      "audioGroup": "musikbank"
+    },
+    {
+      "id": "musikbank-s0",
+      "label": "Musiktreff Sued 1",
+      "x": 850,
+      "y": 638,
+      "standX": 850,
+      "standY": 688,
+      "facing": "up",
+      "audioGroup": "musikbank"
+    },
+    {
+      "id": "musikbank-s1",
+      "label": "Musiktreff Sued 2",
+      "x": 910,
+      "y": 638,
+      "standX": 910,
+      "standY": 688,
+      "facing": "up",
+      "audioGroup": "musikbank"
+    }
+  ],
+  "groups": [
+    {
+      "id": "marktrunde",
+      "x": 192,
+      "y": 288,
+      "width": 288,
+      "height": 192,
+      "preserve": false,
+      "label": "Marktrunde"
+    },
+    {
+      "id": "buchrunde",
+      "x": 160,
+      "y": 512,
+      "width": 320,
+      "height": 208,
+      "preserve": false,
+      "label": "Buechertreff"
+    },
+    {
+      "id": "musikbank",
+      "x": 736,
+      "y": 512,
+      "width": 320,
+      "height": 208,
+      "preserve": false,
+      "label": "Musiktreff"
+    }
+  ],
+  "collisionRects": [
+    {
+      "id": "west",
+      "x": 0,
+      "y": 0,
+      "width": 32,
+      "height": 768,
+      "preserve": false
+    },
+    {
+      "id": "east",
+      "x": 1120,
+      "y": 0,
+      "width": 32,
+      "height": 768,
+      "preserve": false
+    },
+    {
+      "id": "south",
+      "x": 0,
+      "y": 736,
+      "width": 1152,
+      "height": 32,
+      "preserve": false
+    },
+    {
+      "id": "shops",
+      "x": 0,
+      "y": 0,
+      "width": 1152,
+      "height": 208,
+      "preserve": false
+    },
+    {
+      "id": "west-houses",
+      "x": 0,
+      "y": 192,
+      "width": 144,
+      "height": 448,
+      "preserve": false
+    },
+    {
+      "id": "east-house",
+      "x": 864,
+      "y": 192,
+      "width": 224,
+      "height": 208,
+      "preserve": false
+    },
+    {
+      "id": "river",
+      "x": 1088,
+      "y": 0,
+      "width": 64,
+      "height": 416,
+      "preserve": false
+    },
+    {
+      "id": "river-south",
+      "x": 1056,
+      "y": 480,
+      "width": 96,
+      "height": 288,
+      "preserve": false
+    },
+    {
+      "id": "fountain",
+      "x": 544,
+      "y": 304,
+      "width": 112,
+      "height": 112,
+      "preserve": true
+    },
+    {
+      "id": "marktrunde-table",
+      "x": 260,
+      "y": 344,
+      "width": 120,
+      "height": 48,
+      "preserve": true
+    },
+    {
+      "id": "buchrunde-table",
+      "x": 244,
+      "y": 576,
+      "width": 120,
+      "height": 48,
+      "preserve": true
+    },
+    {
+      "id": "musikbank-table",
+      "x": 820,
+      "y": 576,
+      "width": 120,
+      "height": 48,
+      "preserve": true
+    },
+    {
+      "id": "npc-val",
+      "x": 688,
+      "y": 336,
+      "width": 32,
+      "height": 32,
+      "preserve": true
+    }
+  ],
+  "mapdata": {
+    "pixelWidth": 1152,
+    "pixelHeight": 768,
+    "avatarSize": 32,
+    "picnicWidthPixels": 160,
+    "seats": 12,
+    "groups": 3,
+    "blockedTiles": 412,
+    "reachableFloorTiles": 448,
+    "foregroundPixels": 25938,
+    "sourceSha256": "9c783591496cf0d7d8c960de58b26efb4cf765a55d642fd0217245b521887ebb"
+  }
+}

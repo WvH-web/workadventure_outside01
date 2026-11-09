@@ -1,5 +1,5 @@
-import './activities.js?v=20261108-ui1';
-import {castleRoomReady} from './room.js?v=20261108-ui1';
+import './activities.js?v=20261108-outdoors1';
+import {castleRoomReady} from './room.js?v=20261108-outdoors1';
 import {fetchCatalog,validBoard} from './catalog.js?v=20261108-expansion1';
 export class CastleDisplays{
   constructor(wa,map){

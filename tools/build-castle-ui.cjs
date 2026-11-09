@@ -9,6 +9,7 @@ function buildCastleUi(){
     for(const a of activities)legacy.add('castle-activity-'+a);
   }
   owned['grosse-halle'].push('hall-action-noticeboard','hall-action-games');owned.kino.push('castle-cinema');
+  owned.park.push('castle-kart-start-park','castle-kart-stop-park');
   fs.writeFileSync(path.join(root,'castle/ui-ids.js'),'export const ownedUi='+JSON.stringify(owned)+';\nexport const legacyUi='+JSON.stringify([...legacy].sort())+';\n');
   return {maps:ids.length,legacy:legacy.size};
 }

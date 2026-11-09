@@ -1,0 +1,424 @@
+{
+  "scene": {
+    "id": "umgebung",
+    "name": "Schlosshof",
+    "key": "Courtyard",
+    "actor": [
+      "noah",
+      "Noah",
+      680,
+      528
+    ],
+    "entries": {
+      "start": [
+        17,
+        11
+      ],
+      "schlosstor": [
+        17,
+        10
+      ],
+      "garten": [
+        32,
+        14
+      ],
+      "dorf": [
+        3,
+        14
+      ],
+      "dorfweg": [
+        17,
+        20
+      ]
+    },
+    "portals": [
+      {
+        "id": "schloss",
+        "x": 17,
+        "y": 7,
+        "width": 2,
+        "height": 1,
+        "target": "grosse-halle.tmj",
+        "entry": "schlosstor"
+      },
+      {
+        "id": "garten",
+        "x": 35,
+        "y": 14,
+        "width": 1,
+        "height": 2,
+        "target": "park.tmj",
+        "entry": "hof"
+      },
+      {
+        "id": "dorf",
+        "x": 0,
+        "y": 14,
+        "width": 1,
+        "height": 2,
+        "target": "dorf.tmj",
+        "entry": "schloss"
+      },
+      {
+        "id": "dorfweg",
+        "x": 17,
+        "y": 23,
+        "width": 2,
+        "height": 1,
+        "target": "dorf.tmj",
+        "entry": "schlossweg"
+      }
+    ],
+    "tables": [
+      {
+        "id": "hofrunde",
+        "label": "Hofrunde",
+        "x": 144,
+        "y": 288
+      },
+      {
+        "id": "rosenrunde",
+        "label": "Rosentisch",
+        "x": 160,
+        "y": 552
+      },
+      {
+        "id": "gartenrunde",
+        "label": "Gartentisch",
+        "x": 800,
+        "y": 552
+      }
+    ],
+    "groups": [
+      {
+        "id": "hofrunde",
+        "x": 96,
+        "y": 256,
+        "width": 288,
+        "height": 192,
+        "preserve": false
+      },
+      {
+        "id": "rosenrunde",
+        "x": 96,
+        "y": 512,
+        "width": 320,
+        "height": 208,
+        "preserve": false
+      },
+      {
+        "id": "gartenrunde",
+        "x": 736,
+        "y": 512,
+        "width": 320,
+        "height": 208,
+        "preserve": false
+      }
+    ],
+    "collisions": [
+      {
+        "id": "castle",
+        "x": 0,
+        "y": 0,
+        "width": 1152,
+        "height": 256,
+        "preserve": false
+      },
+      {
+        "id": "fountain",
+        "x": 768,
+        "y": 320,
+        "width": 144,
+        "height": 112,
+        "preserve": true
+      },
+      {
+        "id": "west-trees",
+        "x": 0,
+        "y": 256,
+        "width": 64,
+        "height": 160,
+        "preserve": false
+      },
+      {
+        "id": "east-trees",
+        "x": 1088,
+        "y": 256,
+        "width": 64,
+        "height": 160,
+        "preserve": false
+      }
+    ],
+    "activities": [
+      [
+        "hofrunde",
+        "Hofgeschichten",
+        "story.html?v=20261108-outdoors1",
+        true
+      ],
+      [
+        "rosenrunde",
+        "Unsere Ausstellung",
+        "https://together.deine-schule.com/castle-content/collection.html?kind=museum"
+      ],
+      [
+        "gartenrunde",
+        "Expeditionen",
+        "expeditions.html"
+      ]
+    ]
+  },
+  "seats": [
+    {
+      "id": "hofrunde-n0",
+      "label": "Hofrunde Nord 1",
+      "x": 194,
+      "y": 298,
+      "standX": 194,
+      "standY": 268,
+      "facing": "down",
+      "audioGroup": "hofrunde"
+    },
+    {
+      "id": "hofrunde-n1",
+      "label": "Hofrunde Nord 2",
+      "x": 254,
+      "y": 298,
+      "standX": 254,
+      "standY": 268,
+      "facing": "down",
+      "audioGroup": "hofrunde"
+    },
+    {
+      "id": "hofrunde-s0",
+      "label": "Hofrunde Sued 1",
+      "x": 194,
+      "y": 374,
+      "standX": 194,
+      "standY": 424,
+      "facing": "up",
+      "audioGroup": "hofrunde"
+    },
+    {
+      "id": "hofrunde-s1",
+      "label": "Hofrunde Sued 2",
+      "x": 254,
+      "y": 374,
+      "standX": 254,
+      "standY": 424,
+      "facing": "up",
+      "audioGroup": "hofrunde"
+    },
+    {
+      "id": "rosenrunde-n0",
+      "label": "Rosentisch Nord 1",
+      "x": 210,
+      "y": 562,
+      "standX": 210,
+      "standY": 532,
+      "facing": "down",
+      "audioGroup": "rosenrunde"
+    },
+    {
+      "id": "rosenrunde-n1",
+      "label": "Rosentisch Nord 2",
+      "x": 270,
+      "y": 562,
+      "standX": 270,
+      "standY": 532,
+      "facing": "down",
+      "audioGroup": "rosenrunde"
+    },
+    {
+      "id": "rosenrunde-s0",
+      "label": "Rosentisch Sued 1",
+      "x": 210,
+      "y": 638,
+      "standX": 210,
+      "standY": 688,
+      "facing": "up",
+      "audioGroup": "rosenrunde"
+    },
+    {
+      "id": "rosenrunde-s1",
+      "label": "Rosentisch Sued 2",
+      "x": 270,
+      "y": 638,
+      "standX": 270,
+      "standY": 688,
+      "facing": "up",
+      "audioGroup": "rosenrunde"
+    },
+    {
+      "id": "gartenrunde-n0",
+      "label": "Gartentisch Nord 1",
+      "x": 850,
+      "y": 562,
+      "standX": 850,
+      "standY": 532,
+      "facing": "down",
+      "audioGroup": "gartenrunde"
+    },
+    {
+      "id": "gartenrunde-n1",
+      "label": "Gartentisch Nord 2",
+      "x": 910,
+      "y": 562,
+      "standX": 910,
+      "standY": 532,
+      "facing": "down",
+      "audioGroup": "gartenrunde"
+    },
+    {
+      "id": "gartenrunde-s0",
+      "label": "Gartentisch Sued 1",
+      "x": 850,
+      "y": 638,
+      "standX": 850,
+      "standY": 688,
+      "facing": "up",
+      "audioGroup": "gartenrunde"
+    },
+    {
+      "id": "gartenrunde-s1",
+      "label": "Gartentisch Sued 2",
+      "x": 910,
+      "y": 638,
+      "standX": 910,
+      "standY": 688,
+      "facing": "up",
+      "audioGroup": "gartenrunde"
+    }
+  ],
+  "groups": [
+    {
+      "id": "hofrunde",
+      "x": 96,
+      "y": 256,
+      "width": 288,
+      "height": 192,
+      "preserve": false,
+      "label": "Hofrunde"
+    },
+    {
+      "id": "rosenrunde",
+      "x": 96,
+      "y": 512,
+      "width": 320,
+      "height": 208,
+      "preserve": false,
+      "label": "Rosentisch"
+    },
+    {
+      "id": "gartenrunde",
+      "x": 736,
+      "y": 512,
+      "width": 320,
+      "height": 208,
+      "preserve": false,
+      "label": "Gartentisch"
+    }
+  ],
+  "collisionRects": [
+    {
+      "id": "west",
+      "x": 0,
+      "y": 0,
+      "width": 32,
+      "height": 768,
+      "preserve": false
+    },
+    {
+      "id": "east",
+      "x": 1120,
+      "y": 0,
+      "width": 32,
+      "height": 768,
+      "preserve": false
+    },
+    {
+      "id": "south",
+      "x": 0,
+      "y": 736,
+      "width": 1152,
+      "height": 32,
+      "preserve": false
+    },
+    {
+      "id": "castle",
+      "x": 0,
+      "y": 0,
+      "width": 1152,
+      "height": 256,
+      "preserve": false
+    },
+    {
+      "id": "fountain",
+      "x": 768,
+      "y": 320,
+      "width": 144,
+      "height": 112,
+      "preserve": true
+    },
+    {
+      "id": "west-trees",
+      "x": 0,
+      "y": 256,
+      "width": 64,
+      "height": 160,
+      "preserve": false
+    },
+    {
+      "id": "east-trees",
+      "x": 1088,
+      "y": 256,
+      "width": 64,
+      "height": 160,
+      "preserve": false
+    },
+    {
+      "id": "hofrunde-table",
+      "x": 164,
+      "y": 312,
+      "width": 120,
+      "height": 48,
+      "preserve": true
+    },
+    {
+      "id": "rosenrunde-table",
+      "x": 180,
+      "y": 576,
+      "width": 120,
+      "height": 48,
+      "preserve": true
+    },
+    {
+      "id": "gartenrunde-table",
+      "x": 820,
+      "y": 576,
+      "width": 120,
+      "height": 48,
+      "preserve": true
+    },
+    {
+      "id": "npc-noah",
+      "x": 664,
+      "y": 512,
+      "width": 32,
+      "height": 32,
+      "preserve": true
+    }
+  ],
+  "mapdata": {
+    "pixelWidth": 1152,
+    "pixelHeight": 768,
+    "avatarSize": 32,
+    "picnicWidthPixels": 160,
+    "seats": 12,
+    "groups": 3,
+    "blockedTiles": 379,
+    "reachableFloorTiles": 477,
+    "foregroundPixels": 25938,
+    "sourceSha256": "5c19d40c543360a49a52624e9b005b83001e564fdc97d052c2ab264140e60a39"
+  }
+}

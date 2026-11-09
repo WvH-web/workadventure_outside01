@@ -1,4 +1,4 @@
-import {clearPreviousCastleUi} from './ui-lifecycle.js?v=20261108-ui1';
+import {clearPreviousCastleUi} from './ui-lifecycle.js?v=20261108-outdoors1';
 const STATE = "castleSeatV1";
 const PUBLIC = { public: true, persist: false };
 const SYNC = ["cameraState", "microphoneState", "screenSharingState"];
@@ -119,6 +119,7 @@ export class CastleRoom {
     this.layout = layout;
     this.uiIds={stand:'castle-stand-'+layout.id,ride:'castle-ride-stop-'+layout.id,back:'castle-return-hall-'+layout.id};
     this.uiCleanupTimers=[];
+    this.beforeTravel=new Set();
     this.nativeMeetings = isNativeMeetingRoom(wa, layout);
     this.delay =
       options.delay || ((ms) => new Promise((r) => setTimeout(r, ms)));
@@ -170,11 +171,16 @@ export class CastleRoom {
     },delay));
     return this;
   }
+  onBeforeTravel(callback) {
+    this.beforeTravel.add(callback);
+    return ()=>this.beforeTravel.delete(callback);
+  }
   async returnToHall() {
     if (!this.layout.hallUrl || !this.wa.nav?.goToRoom || this.riding || this.navigating) return false;
     this.navigating = true;
     try {
       await this.stand();
+      await Promise.allSettled([...this.beforeTravel].map(callback=>bounded(Promise.resolve().then(callback),2500,'Castle departure')));
       if (this.audioTask) await bounded(this.audioTask,2500).catch(()=>{});
       await this.wa.nav.goToRoom(this.layout.hallUrl);
       return true;
@@ -500,6 +506,8 @@ export class CastleRoom {
     this.riding = false;
     clearInterval(this.timer);
     for(const timer of this.uiCleanupTimers)clearTimeout(timer);
+    for(const callback of this.beforeTravel)void bounded(Promise.resolve().then(callback),2500,'Castle departure').catch(()=>{});
+    this.beforeTravel.clear();
     this.prompt?.remove();
     this.wa.ui.actionBar.removeButton(this.uiIds.stand);
     this.wa.ui.actionBar.removeButton(this.uiIds.ride);

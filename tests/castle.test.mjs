@@ -562,7 +562,7 @@ test("all twelve illustrated seats use native sitting and restore a reachable st
 });
 test("slide cancellation and exceptions always restore player controls", async () => {
   const f = fixture(),
-    layout = readLayout(maps.get("umgebung")),
+    layout = readLayout(maps.get("park")),
     room = new CastleRoom(f.wa, layout, {
       delay: async () => {
         room.cancelRide();
@@ -582,7 +582,7 @@ test("slide cancellation and exceptions always restore player controls", async (
 });
 test("a failed slide transport restores controls and removes the exit action", async () => {
   const f = fixture(),
-    layout = readLayout(maps.get("umgebung")),
+    layout = readLayout(maps.get("park")),
     room = new CastleRoom(f.wa, layout, { delay: async () => {} });
   await room.start();
   try {

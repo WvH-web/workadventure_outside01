@@ -17,7 +17,7 @@ export function newStory(random=Math.random,id=()=>crypto.randomUUID()){
 }
 export class SharedStory{
   constructor(state,key,onChange){
-    if(!/^castleStory(?:Gs|Ms|Os|Games|Museum|Music|Atelier|Stars)$/.test(key))throw Error('Story variable not configured');
+    if(!/^castleStory(?:Gs|Ms|Os|Games|Museum|Music|Atelier|Stars|Courtyard|Village|Park)$/.test(key))throw Error('Story variable not configured');
     this.state=state;this.key=key;this.onChange=onChange;this.closed=false;this.busy=false;
   }
   start(){
