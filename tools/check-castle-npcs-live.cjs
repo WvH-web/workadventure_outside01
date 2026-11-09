@@ -1,5 +1,6 @@
 const fs=require('node:fs'),path=require('node:path'),assert=require('node:assert/strict');
 const {chromium}=require('./castle-deps.cjs')('playwright');
+const sharp=require('./castle-deps.cjs')('sharp');
 const {join,sit,move,writeAudio,audioFixture}=require('./check-cinema-live.cjs');
 const {revision}=require('./build-castle-expansion.cjs');
 const out=path.resolve(__dirname,'../../output/castle-npcs-live-qa');fs.mkdirSync(out,{recursive:true});
@@ -10,7 +11,7 @@ async function findRoom(user,id){
     if(!frame)await user.page.waitForTimeout(500);
   }
   assert.ok(frame,'Room controller '+id);user.script=frame;
-  await frame.waitForFunction(()=>window.castleActivities,undefined,{polling:200,timeout:30000});
+  await frame.waitForFunction(()=>window.castleNpcs?.websites.length===1&&window.castleActivities,undefined,{polling:200,timeout:30000});
 }
 async function main(){
   writeAudio();const browser=await chromium.launch({channel:'chrome',headless:true,args:['--use-fake-ui-for-media-stream','--use-fake-device-for-media-stream',
@@ -27,9 +28,16 @@ async function main(){
       const actor=await user.script.evaluate(async()=>{const p=o=>Object.fromEntries((o.properties||[]).map(p=>[p.name,p.value]));
         const map=await WA.room.getTiledMap(),slot=map.layers.flatMap(l=>l.objects||[]).find(o=>p(o).castleNpcId),id=p(slot).castleNpcId,area=castleActivities.areas.find(a=>a.settings.id==='npc-'+id);
         return {id,label:area.settings.label,area:{x:area.x,y:area.y,width:area.width,height:area.height}};});
-      assert.ok(!user.page.frames().some(f=>f.url().startsWith(web+'npc-sprite.html')),'NPCs have no floating website frames');
-      assert.ok(await user.script.evaluate(async()=>{const map=await WA.room.getTiledMap();return map.layers.find(l=>l.name==='castle-npc-sprites').data.filter(Boolean).length===1;}));
+      const sprite=user.page.locator('iframe[src*="/npc-sprite.html?npc='+actor.id+'"]').first();await sprite.waitFor();
+      await sprite.contentFrame().locator('#label').waitFor();
+      assert.equal(await sprite.contentFrame().locator('html').evaluate(e=>getComputedStyle(e).colorScheme),'dark');
+      assert.deepEqual(await sprite.contentFrame().locator('#sprite').evaluate(e=>[e.clientWidth,e.clientHeight]),[32,32]);
       await move(user,actor.area.x+actor.area.width/2,actor.area.y+actor.area.height/2);
+      const box=await sprite.boundingBox(),pixels=await sharp(await user.page.screenshot()).ensureAlpha().raw().toBuffer({resolveWithObject:true});
+      for(const [x,y]of [[box.x+3,box.y+3],[box.x+box.width-4,box.y+3],[box.x+3,box.y+box.height-4],[box.x+box.width-4,box.y+box.height-4]]){
+        const offset=(Math.floor(y)*pixels.info.width+Math.floor(x))*4;
+        assert.ok(![0,1,2].every(n=>pixels.data[offset+n]>245),'Character corners show the floor, not an opaque white canvas');
+      }
       await user.page.getByRole('button',{name:actor.label,exact:true}).click();
       let profile;for(let n=0;n<60&&!profile;n++){profile=user.page.frames().find(f=>f.url().startsWith(web+'characters.html?npc='+actor.id));if(!profile)await user.page.waitForTimeout(500);}
       assert.ok(profile,'Character conversation opens');await profile.locator('#questions button').first().waitFor();
@@ -39,7 +47,7 @@ async function main(){
       const seatIds=await user.script.evaluate(()=>castleRoom.layout.seats.map(s=>s.id));
       for(const seatId of seatIds)await sit(user,seatId);
       await user.page.screenshot({path:path.join(out,id+'-seated.png')});
-      results.push({id,character:actor.id,nativeSprite32:true,noFloatingFrame:true,dialogue:true,noMapApi:true,seats:seatIds.length});
+      results.push({id,character:actor.id,avatarScale32:true,matchingColorScheme:true,noWhiteBoxPixels:true,dialogue:true,noMapApi:true,seats:seatIds.length});
       fs.writeFileSync(path.join(out,'progress.json'),JSON.stringify({revision,results},null,2)+'\n');console.log(JSON.stringify(results.at(-1)));
     }
     assert.deepEqual(user.errors,[]);fs.writeFileSync(path.join(out,'result.json'),JSON.stringify({revision,results,errors:user.errors},null,2)+'\n');

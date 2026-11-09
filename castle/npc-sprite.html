@@ -1,5 +1,5 @@
 <!doctype html><html lang="de"><head><meta charset="utf-8"><meta name="referrer" content="no-referrer"><title>Schlossfigur</title>
-<style>*{box-sizing:border-box}html,body{margin:0;width:96px;height:48px;overflow:hidden;background:transparent;pointer-events:none}#label{height:15px;width:96px;text-align:center;font:10px/14px system-ui,sans-serif;color:#fff;white-space:nowrap;text-shadow:0 1px 2px #000,0 0 3px #000}#sprite{width:32px;height:32px;margin:0 auto;background-position:-32px 0;background-repeat:no-repeat;image-rendering:pixelated}</style></head>
+<style>*{box-sizing:border-box}html{color-scheme:dark}html,body{margin:0;width:96px;height:64px;overflow:hidden;background:transparent;pointer-events:none}#label{height:31px;padding-top:15px;width:96px;text-align:center;font:10px/14px system-ui,sans-serif;color:#fff;white-space:nowrap;text-shadow:0 1px 2px #000,0 0 3px #000}#sprite{width:32px;height:32px;margin:0 auto;background-position:-32px 0;background-repeat:no-repeat;image-rendering:pixelated}</style></head>
 <body><div id="label"></div><div id="sprite"></div><script type="module">
 import {characterById} from './characters-data.js?v=20261108-characters1';
 const character=characterById(new URLSearchParams(location.search).get('npc'));

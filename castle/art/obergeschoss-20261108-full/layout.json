@@ -4,7 +4,7 @@
     "height": 22,
     "tileSize": 32,
     "avatarPixels": 32,
-    "revision": "20261108-expansion5",
+    "revision": "20261108-expansion6",
     "entries": {
       "start": [
         19,
@@ -327,7 +327,7 @@
         "x": 672,
         "y": 352,
         "width": 96,
-        "height": 48,
+        "height": 64,
         "body": {
           "x": 704,
           "y": 384,

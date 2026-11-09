@@ -2,6 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import {characters,characterById} from '../castle/characters-data.js';
+import {CastleNpcs} from '../castle/npcs.js';
 import {activitySettings} from '../castle/activities.js';
 test('twelve distinct fictional guests cover different ages and use existing native sprites',()=>{
   assert.equal(characters.length,12);assert.equal(new Set(characters.map(c=>c.id)).size,12);
@@ -20,24 +21,20 @@ test('generated event collection adds unique native IDs without replacing existi
   for(const [i,c]of characters.entries())assert.deepEqual(collection.textures[i],{
     id:'wvh-event-'+c.id+'-v1',name:c.name,url:new URL(c.sprite).pathname.slice(1),position:i});
 });
-test('eight native inhabitants are static 32px map tiles using exact approved avatar URLs',()=>{
-  for(const id of ['erdgeschoss','obergeschoss','museum','musikzimmer','oberstufe','spielesaal','atelier','sternwarte']){
-    const map=JSON.parse(fs.readFileSync(new URL('../castle/'+id+'.tmj',import.meta.url)));
-    const slot=map.layers.flatMap(l=>l.objects||[]).find(o=>o.properties?.some(p=>p.name==='castleNpcId'));
-    const key=slot.properties.find(p=>p.name==='castleNpcId').value,c=characterById(key);assert.ok(c);
-    const sheet=map.tilesets.find(t=>t.name==='Castle NPC '+key),layer=map.layers.find(l=>l.name==='castle-npc-sprites');
-    assert.equal(sheet.image,c.sprite);assert.deepEqual([sheet.tilewidth,sheet.tileheight,sheet.tilecount],[32,32,12]);
-    assert.equal(layer.data[Math.floor((slot.y+48)/32)*map.width+Math.floor((slot.x+48)/32)],sheet.firstgid+1);
-    assert.equal(layer.data.filter(Boolean).length,1);
-  }
+test('native-scale characters create only their own transparent map images, without media or API grants',()=>{
+  const created=[],removed=[],map=JSON.parse(fs.readFileSync(new URL('../castle/erdgeschoss.tmj',import.meta.url)));
+  const wa={room:{website:{create:c=>{created.push(c);return {name:c.name};},delete:async name=>{removed.push(name);}}}};
+  const npcs=new CastleNpcs(wa,map);npcs.start();npcs.start();assert.equal(created.length,1);
+  assert.equal(created[0].name,'castle-npc-erdgeschoss-amir');assert.equal(created[0].allowApi,false);assert.equal(created[0].allow,'');
+  assert.deepEqual([created[0].position.width,created[0].position.height],[96,64]);
+  assert.equal(new URL(created[0].url).searchParams.get('npc'),'amir');
+  npcs.dispose();npcs.dispose();npcs.start();assert.deepEqual(removed,['castle-npc-erdgeschoss-amir']);
 });
-test('NPC labels and sprites load with their map below the avatar plane, without asynchronous render scripts',()=>{
+test('NPC images match the host dark color scheme and are not created after disposal',()=>{
   const map=JSON.parse(fs.readFileSync(new URL('../castle/erdgeschoss.tmj',import.meta.url)));
-  const labels=map.layers.find(l=>l.name==='castle-npc-labels');assert.equal(labels.data.filter(Boolean).length,3);
-  assert.ok(map.layers.indexOf(labels)<map.layers.findIndex(l=>l.name==='floorLayer'));
-  assert.match(map.properties.find(p=>p.name==='script').value,/^displays\.js\?/);
-  const image=fs.readFileSync(new URL('../castle/art/characters-20261108/labels.png',import.meta.url));
-  assert.deepEqual([image.readUInt32BE(16),image.readUInt32BE(20)],[96,384]);
+  const npcs=new CastleNpcs({room:{website:{create:()=>{throw Error('Late character');}}}},map);npcs.dispose();npcs.start();
+  const html=fs.readFileSync(new URL('../castle/npc-sprite.html',import.meta.url),'utf8');
+  assert.match(html,/color-scheme:dark/);assert.match(html,/background:transparent/);assert.doesNotMatch(html,/iframe_api|camera|microphone/);
 });
 test('character dialogues accept only known exact owned URLs and never get map access',()=>{
   const object=url=>({properties:[{name:'castleActivityUrl',value:url},{name:'castleActivityApi',value:true}]});
