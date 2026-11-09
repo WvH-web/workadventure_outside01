@@ -1,5 +1,6 @@
 """Guarded frontend-only tutorial rollout, only when no game connection is active."""
 import hashlib
+import copy
 import json
 import os
 from pathlib import Path
@@ -8,6 +9,7 @@ import subprocess
 import time
 import urllib.parse
 import urllib.request
+import yaml
 
 os.umask(0o077)
 ROOT=Path('/root/togetherWorkadventure/upgrades/20261109-onboarding')
@@ -23,6 +25,20 @@ def inspect(name):return json.loads(run('docker','inspect',name))[0]
 def get(path):
     with urllib.request.urlopen(ORIGIN+path,timeout=20) as response:return response.status,response.read()
 def config():return json.loads(run('docker','compose','config','--format','json',cwd=RUNTIME))
+def image_override(raw,before,after):
+    text=raw.decode('utf-8');parsed=yaml.safe_load(text)
+    assert parsed['services']['play']['image']==before,'Play image changed since the approved baseline'
+    node=yaml.compose(text,Loader=yaml.SafeLoader)
+    for key in ['services','play','image']:
+        assert isinstance(node,yaml.nodes.MappingNode),'Expected an explicit image mapping'
+        matches=[value for name,value in node.value if name.value==key]
+        assert len(matches)==1,'Ambiguous or inherited image mapping'
+        node=matches[0]
+    assert isinstance(node,yaml.nodes.ScalarNode) and node.value==before
+    updated=text[:node.start_mark.index]+json.dumps(after)+text[node.end_mark.index:]
+    expected=copy.deepcopy(parsed);expected['services']['play']['image']=after
+    assert yaml.safe_load(updated)==expected,'Only the play image scalar may change'
+    return updated.encode('utf-8')
 def atomically_replace(raw,metadata):
     path=OVERRIDE.with_name(OVERRIDE.name+'.onboarding-staging');assert not path.exists()
     path.write_bytes(raw);path.chmod(stat.S_IMODE(metadata.st_mode));os.chown(path,metadata.st_uid,metadata.st_gid);path.replace(OVERRIDE)
@@ -44,8 +60,8 @@ assert sha((ROOT/'browser-stage/compose.private.json').read_bytes())==stage['com
 assert inspect('wvh-castle-client-20261109-play-1')['Image']==EXPECTED
 assert not (ROOT/'live-deployment.json').exists(),'Review the existing deployment record before retrying'
 assert OVERRIDE.resolve()==OVERRIDE and not OVERRIDE.is_symlink()
-old_raw=OVERRIDE.read_bytes();metadata=OVERRIDE.stat();override=json.loads(old_raw)
-assert override['services']['play']['image']=='wvh-workadventure-play:1.34.5-school-v3'
+old_raw=OVERRIDE.read_bytes();metadata=OVERRIDE.stat()
+new_raw=image_override(old_raw,'wvh-workadventure-play:1.34.5-school-v3',IMAGE)
 before_config=config();old=inspect('workadventure-play-1');assert old['Image']==BASE
 candidate=json.loads(run('docker','image','inspect',IMAGE))[0]
 base=json.loads(run('docker','image','inspect',BASE))[0]
@@ -73,7 +89,6 @@ for _ in range(2):
 assert OVERRIDE.read_bytes()==old_raw
 (ROOT/'override-before-onboarding.private.json').write_bytes(old_raw)
 (ROOT/'browser-gate.json').write_text(json.dumps(gate,indent=2)+'\n')
-override['services']['play']['image']=IMAGE;new_raw=(json.dumps(override,indent=2)+'\n').encode()
 swapped=False
 try:
     atomically_replace(new_raw,metadata);swapped=True;restart_play('live-start.log')
