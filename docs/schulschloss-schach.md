@@ -87,9 +87,24 @@ Aufbewahrung; jetzt gibt es ausdruecklich keine solche Historie.
 - VPS: eigener Gesundheitscheck, echter frisch gepruefter Lehrkraft-Zugang
   ausschliesslich als Seiten-Zuschauer, Ereignisstrom und Ablehnung unbekannter
   Konten. Keine Schuelerkonten angelegt, veraendert oder nachgeahmt.
+- Aktuelle native Schlossvorschau `20261109-chess2`: vier getrennte, unbekannte
+  QA-Teilnehmer in zwei Gespraechsgruppen. Zwei oeffnen die Schachseite,
+  einschliesslich des Apps-Eintrags in der kompakten Gespraechsansicht.
+  Empfangene Audioenergie steigt bei allen vier weiter; die Gruppen bleiben
+  getrennt. Direkte API und Uebungsmodus sind fuer diese Nicht-Schulkonten
+  gesperrt. Schliessen, erneutes Oeffnen und Verlassen raeumen das eigene Fenster
+  auf; die Pfeiltasten bewegen anschliessend wieder den Avatar. Keine
+  Browserfehler. Die echte Lehrkraft-Probe blieb ein eigenes Seitenfenster ohne
+  zusaetzlichen Lehrkraft-Avatar oder Zug auf einem gemeinsamen Schulbrett.
+
+Der vollstaendige zugehoerige Regressionstest umfasst inzwischen 262 bestandene
+Pruefungen. Die getrennte Browserprobe prueft auch die mobile Touch-Bedienung.
 
 Eine positive Live-Partie mit zwei ausdruecklich freigegebenen Schueler-Testkonten
 steht noch aus. Lokale Mehrspielerproben beweisen nicht den Live-Schuelerzugang.
+Zwei eigens dafuer vorgesehene, kuenstliche Schueleridentitaeten werden auf
+Saschas Auftrag separat mit dem Verwaltungs-Chat abgestimmt; es werden dafuer
+keine echten Schueler verwendet und keine Anbieterfreigaben gelockert.
 Ebenso ist das keine Freigabe fuer 400 gleichzeitige Teilnehmer. Dafuer muessen
 insbesondere die Schulstatus-Abfragen und die gesamte Schlossinstanz gemeinsam
 unter Last geprueft werden.
