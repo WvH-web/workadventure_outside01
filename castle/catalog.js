@@ -8,7 +8,9 @@ export function catalogItem(item){
     if(url.origin!==new URL(catalogBase).origin||url.pathname!==new URL('museum_asset.php',catalogBase).pathname||url.username||url.password)return null;
     image=url.href;
   }catch{return null}
-  return {board:item.board,title:typeof item.title==='string'?item.title.slice(0,200):item.board,image,
+  // Comparison-only metadata: never use the submitted target as a navigation destination.
+  const revision=JSON.stringify([typeof item.updated_at==='string'?item.updated_at.slice(0,80):'',typeof item.target_url==='string'?item.target_url.slice(0,8192):'']);
+  return {board:item.board,title:typeof item.title==='string'?item.title.slice(0,200):item.board,image,revision,
     open:new URL('workadventure_museum_open.php?board='+item.board,catalogBase).href};
 }
 export async function fetchCatalog(signal){

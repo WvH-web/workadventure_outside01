@@ -23,6 +23,9 @@ Village und geschuetzte Lehrerzimmer werden nicht ersetzt.
   `show1` bis `show13` erreichbar. Im Musiksalon erscheinen die vorhandenen
   Musikbeitraege. Vorhandene Medien-Endpunkte bleiben zustaendig fuer Webseite,
   PDF, YouTube, Audio und Praesentationsinhalt.
+  Bereits geoeffnete Beitraege uebernehmen jetzt Aenderungen bei der naechsten
+  Aktualisierung. Deaktivierte Beitraege werden geschlossen; unveraenderte
+  Musik-/Videoinhalte werden durch die Pruefung nicht neu gestartet.
 - Die Expeditionen bieten sieben bewusst externe Museums- und Weltraumziele.
   Einbettungssperren werden nicht umgangen. NASA Eyes kann separat am
   Forschergruppentisch der Sternwarte im Seitenfenster geoeffnet werden.
@@ -83,8 +86,9 @@ Village und geschuetzte Lehrerzimmer werden nicht ersetzt.
 
 ## Pruefstand der Innenausbaustufe
 
-Aktuelle Interaktionsfassung: `20261109-actions2`. 306 automatische
-Kernpruefungen bestehen. Native Mehrteilnehmerproben bestaetigen automatisches
+Aktuelle Interaktionsfassung: `20261109-actions2`. 312 automatische
+Kernpruefungen bestehen; die zusaetzliche Widget-Browserpruefung ist separat
+aktiviert und ebenfalls bestanden. Native Mehrteilnehmerproben bestaetigen automatisches
 Schach beim Hinsetzen, feste physische Schachzuordnung und eine gemeinsame
 Tischauswahl mit spaeterem Beitritt und Zuruecksetzen erst beim letzten
 Verlassen. Die Vierpersonenprobe im Atelier prueft gemeinsames Zeichnen
@@ -98,6 +102,12 @@ einschliesslich vollstaendig sichtbarem mobilen Schachbrett und Platzwahl.
 Die Live-Tutorialprobe mit zwei normal angemeldeten Microsoft-Schueler-
 Testkonten besteht auf Desktop und Mobil: erster Einstieg, Raumwechsel,
 Neuladen, Hilfe-Wiederholung und anschliessend freie Steuerung.
+Die Museums-/Musikaktualisierung ist separat als statische Fassung
+`f2c8ce521afb19ac` veroeffentlicht, ohne weiteren Client- oder Dienstneustart.
+Neun lokale und sechs Inhaltsproben der veroeffentlichten Dateien bestehen.
+Die anschliessende native Zweipersonenprobe besteht in beiden Raeumen mit
+echten Verwaltungsbeitraegen und parallel weiterlaufendem Tischton, darunter
+eine 390-Pixel-Touchansicht. Keine Browserfehler oder veraenderten Schuldaten.
 Nachweise und konkrete Grenzen: [Interaktionen](../docs/schulschloss-interaktionen.md),
 [Schach](../docs/schulschloss-schach.md), [Atelier](../docs/schulschloss-atelier.md).
 Keiner dieser Nachweise ersetzt den noch erforderlichen Lasttest.

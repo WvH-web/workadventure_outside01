@@ -98,3 +98,51 @@ Externe Angebote bleiben bis zur administrativen Freigabe gesperrt. Eine
 korrekte Ablehnung wegen Alter/Klasse/fehlender Freigabe ist kein Anlass, diese
 Schutzregeln bei der Aktionspruefung zu umgehen. Alle Testnachweise mit
 Anmeldesitzungen oder detaillierten Bildern bleiben ausserhalb des Repositorys.
+
+## Museums- und Musikbeitraege
+
+Die vorhandene Verwaltung bleibt die Datenquelle. Der Katalog erkennt jetzt
+auch eine reine Ziel-Link-Aenderung ohne anderen Titel oder neues Bild und
+ohne vorhandenen Aenderungszeitpunkt. Der eingetragene Ziel-Link wird dabei
+nur verglichen, nicht als direkter Aufruf vertraut: Geoeffnet wird weiterhin
+ausschliesslich der vorhandene Portal-Endpunkt mit geprueftem Tafelkennzeichen.
+
+Ein geaenderter ausgewaehlter Beitrag wird bei der naechsten Aktualisierung
+wirklich neu geladen, nicht nur sein URL-Fragment veraendert. Die automatische
+Pruefung erfolgt einmal pro Minute sowie beim Zurueckkehren in das Fenster;
+der sichtbare Aktualisieren-Knopf bleibt erhalten. Ein deaktivierter Beitrag
+schliesst sein Medienfenster und kehrt zur uebrigen Ausstellung zurueck.
+Unveraenderte Beitraege und eine voruebergehend nicht erreichbare Verwaltung
+unterbrechen dagegen keinen bereits laufenden Inhalt.
+
+Statische Fassung `f2c8ce521afb19ac`: ausschliesslich `collection.html`,
+`collection.js` und `catalog.js` ersetzt. Vierzehn Dateien und ihre unveraenderten
+Sicherheitsheader wurden vor und nach dem Austausch geprueft; alle laufenden
+Container, Karten und die gesamte Webserverdatei bleiben byte- beziehungsweise
+startzeitgleich. Die historische Webserver-Pruefsumme wurde nicht still auf
+die zwischenzeitliche fremde Konfigurationsaenderung umgeschrieben. Der erste
+Versuch scheiterte an Verzeichnisrechten und setzte die eigene Verknuepfung
+zurueck; nach Korrektur besteht die Auslieferungspruefung ohne Dienstneustart.
+
+Neun lokale Inhalts-/Layoutfaelle und sechs weitere Faelle gegen die wirklich
+veroeffentlichten Dateien bestehen bei 320, 390 und 780 Pixeln. Letztere verwenden
+absichtlich eine kontrollierte Katalog-/Medienantwort: echte Schuldaten werden
+nicht geaendert. Geprueft sind Ziel- und Versionsaenderung, neuer Titel,
+unveraenderter laufender Inhalt, voruebergehender Ausfall, deaktivierter Beitrag,
+weitere verfuegbare Tafeln und ein bereinigter Rueckweg. Keine Browserfehler.
+Das ist keine neue Altersfreigabe, keine Lastabnahme und kein Beleg fuer die
+Wiedergabefaehigkeit aller fremden Medienanbieter.
+
+Die anschliessende native Zweipersonenprobe besteht in Museum und Musiksalon:
+realer unveraenderter Katalog, echter Portal-Endpunkt mit HTTP 200 trotz neuem
+Versionsparameter, stabiler Medienlink beim unveraenderten Aktualisieren,
+steigende dekodierte Tisch-Audioenergie vor und waehrend des Seitenfensters,
+bereinigter Rueckweg und freie Pfeiltastenbewegung nach dem Schliessen.
+Eine Ansicht verwendet echtes emuliertes Touch bei 390 Pixeln. Beide Personen
+sind getrennte kuenstliche QA-Identitaeten mit synthetischem Mikrofonton, keine
+neuen Schulkonten. Keine Browserfehler; die fremden Videos wurden nicht als
+vollstaendig abgespielt oder gemeinsam synchronisiert ausgegeben. Fruehere
+Pruefversuche hatten das mobile Hauptmenue beziehungsweise seine zwei
+gleichnamigen Aktionszugaenge falsch angesprochen; die Kartensteuerung blieb
+unveraendert. Der aktuelle Nachweis liegt ausserhalb des Repositorys unter
+`output/castle-gallery-native-qa/result.json`.

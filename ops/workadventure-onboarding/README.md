@@ -80,8 +80,11 @@ ebenfalls dort ohne Anmeldedaten gesichert. Die unabhaengige Nachpruefung vermer
 vor dem Neustart bestehende Webserver-Manifestabweichung: Webkonfiguration
 zuletzt um 19:22 UTC geaendert, Client erst um 21:33 UTC gestartet. Weder die
 Webkonfiguration noch fremde Nachweise wurden dafuer ueberschrieben oder auf
-einen alten Stand zurueckgesetzt. Ein spaeterer Inhalts-Rollout muss diese
-Abweichung gezielt abgleichen; sie wird nicht als passende Pruefsumme ausgegeben.
+einen alten Stand zurueckgesetzt. Die nachfolgende reine Galerie-Aktualisierung
+prueft deshalb den tatsaechlich bedienten Inhalt und die exakten Sicherheitsheader
+vor und nach dem Verknuepfungswechsel, ohne eine Webserverdatei neu zu schreiben.
+Historische Routing-Pruefsumme und aktuelle Beobachtung bleiben getrennt;
+die Abweichung wird nicht als passende alte Pruefsumme ausgegeben.
 
 ## Bau-Cache
 

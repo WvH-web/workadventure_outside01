@@ -103,6 +103,17 @@ test('catalog only reads the existing public endpoint and checks response shape'
     globalThis.fetch=async()=>({ok:true,json:async()=>({})});await assert.rejects(fetchCatalog());
   }finally{globalThis.fetch=saved;}
 });
+
+test('catalog detects target-only and revision-only edits without trusting their destinations',()=>{
+  const input={board:'show1',image_url:catalogBase+'museum_asset.php?f=a',target_url:'https://example.invalid/first'};
+  const original=catalogItem(input),changed=catalogItem({...input,target_url:'javascript:alert(1)'});
+  assert.notEqual(original.revision,changed.revision);assert.equal(original.open,changed.open);
+  assert.equal(changed.open,catalogBase+'workadventure_museum_open.php?board=show1');
+  assert.notEqual(original.revision,catalogItem({...input,updated_at:'2026-11-09 13:00:00'}).revision);
+  assert.equal(original.revision,catalogItem({...input,open_url:'https://evil.invalid/'}).revision);
+  assert.equal(catalogItem({...input,target_url:{bad:true},updated_at:[]}).revision,'["",""]');
+  assert.ok(catalogItem({...input,target_url:'x'.repeat(20000),updated_at:'y'.repeat(1000)}).revision.length<8400);
+});
 test('wall displays update, remove withdrawn content and clean up only their own websites',async()=>{
   const saved=globalThis.fetch,created=[],deleted=[];let items=[{board:'show1',image_url:catalogBase+'museum_asset.php?f=a'}];
   globalThis.fetch=async()=>({ok:true,json:async()=>({items})});
