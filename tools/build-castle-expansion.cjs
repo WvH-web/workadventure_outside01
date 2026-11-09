@@ -1,7 +1,7 @@
 const fs=require('node:fs'),path=require('node:path');
 const {buildFurnishedRoom}=require('./build-library.cjs');
 const {createCanvas}=require('./castle-deps.cjs')('@napi-rs/canvas');
-const root=path.resolve(__dirname,'..'),revision='20261109-chess2';
+const root=path.resolve(__dirname,'..'),revision='20261109-atelier1';
 const own='';
 const games='https://together.deine-schule.com/castle-school/games';
 const collection='https://together.deine-schule.com/castle-content/collection.html';
@@ -25,7 +25,7 @@ const rooms=[
   {id:'musikzimmer',name:'Musiksalon',parent:'erdgeschoss',key:'Music',labels:['Musik- und Erzaehlrunde','Klangnische','Band- und Chortreff'],
     activities:[activity('music-story','lesekamin','Erzaehlkarten',own+'story.html',true),activity('music-band','buchclub','Band und Chor',collection+'?kind=music'),activity('music-compose','fensterleser','Song Maker','https://musiclab.chromeexperiments.com/Song-Maker/')]},
   {id:'atelier',name:'Schlossatelier',parent:'erdgeschoss',key:'Atelier',labels:['Ideenrunde','Zeichen- und Klangnische','Werkstatttisch'],
-    activities:[activity('atelier-story','lesekamin','Ideenkarten',own+'story.html',true),activity('atelier-build','buchclub','Bausteinraetsel','https://phet.colorado.edu/sims/html/area-builder/latest/area-builder_all.html?locale=de'),activity('atelier-music','fensterleser','Klangentwurf','https://musiclab.chromeexperiments.com/Song-Maker/')]},
+    activities:[activity('atelier-story','lesekamin','Ideenkarten',own+'story.html',true),activity('atelier-draw','buchclub','Gemeinsam zeichnen','https://together.deine-schule.com/castle-art/'),activity('atelier-music','fensterleser','Klangentwurf','https://musiclab.chromeexperiments.com/Song-Maker/')]},
   {id:'sternwarte',name:'Sternwarte',parent:'obergeschoss',key:'Stars',labels:['Sternengeschichten','Fenster zum All','Forschergruppe'],
     activities:[activity('stars-story','lesekamin','Sternengeschichten',own+'story.html',true),activity('stars-solar','buchclub','Sonnensystem','https://eyes.nasa.gov/apps/solar-system/'),activity('stars-tours','fensterleser','Weltraum-Expeditionen',own+'expeditions.html')]},
 ];

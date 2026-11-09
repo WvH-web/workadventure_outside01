@@ -43,18 +43,40 @@ unabhaengig davon erhalten; das Whiteboard fordert weder Kamera noch Mikrofon an
 - Produktionsabhaengigkeiten nach Paket-Lock installiert; die lokale npm-Pruefung
   meldete zum Pruefzeitpunkt keine bekannten Schwachstellen.
 
-Die Whiteboard-Browserproben verwenden isolierte kuenstliche Schulprofile. Sie
-belegen weder einen echten Microsoft-Schuelerlogin im Whiteboard noch eine
-Freigabe fuer 400 gleichzeitige Personen. Die normale Microsoft-Anmeldung und
-Schulzuordnung ist inzwischen separat fuer Schach und Schulangebote bestanden.
+Die lokalen Browserproben verwenden isolierte kuenstliche Schulprofile.
+Zusaetzlich ist jetzt der echte VPS-Betrieb mit beiden eigens eingerichteten
+Microsoft-Schueler-Testkonten bestanden: normale Anmeldung, frisch gepruefter
+Schulstatus, gemeinsame Maus- und Touch-Striche, Text, Neuladen, spaeteres
+Beitreten und Weiterzeichnen nach Verlassen des ersten Teilnehmers.
+Geschlossene Zweittabs melden andere offene Tabs nicht ab. Die Probe entfernt
+nur die durch ihre eigenen ausgehenden Erstellnachrichten erfassten Objekte;
+keine fremden Bilder und keine komplette Zeichenflaeche werden geloescht.
+Keine Browserfehler oder Anmeldeschluessel in Browser-URLs.
 
-Live-Inbetriebnahme und Karteneinbindung des Ateliers sind noch nicht erfolgt.
-Eine vorzeitig angehaltene Vorbereitung hinterlaesst unter `/opt/wvh-castle-art`
-nur die isolierten Quellen, Abhaengigkeiten und privaten Testnachweise; keine
-laufenden Atelier-Container, keine neue Webroute und keine Schuelerzeichnungen.
-Der gepruefte neue Identitaetspruefer muss vor der eigenen Live-Abnahme auch dort
-bereitgestellt werden. Das vorhandene Atelier und die alte Schlosswelt bleiben
-unveraendert nutzbar.
+## Live-Betrieb und Schlossvorschau
+
+Die eigene Seite liegt unter `/castle-art/`. Der Zugang braucht eine bestehende
+WorkAdventure-Anmeldung und den aktuellen Portal-Schulnachweis. Der interne
+Whiteboard-Dienst hat keinen eigenen oeffentlichen Port. Gateway und WBO laufen
+getrennt als Benutzer 1000, mit schreibgeschuetztem Programm, begrenztem Speicher
+und begrenzten Protokollen. Nur WBOs eigenes Datenverzeichnis ist beschreibbar.
+
+Veroeffentlichter Dienststand: `bf7276dd326ee8d8` unter `/opt/wvh-castle-art`.
+Die alte unbenutzte Vorbereitung bleibt als gepruefter Quellstand erhalten.
+Die bereits laufenden Schloss-, Audio- und WorkAdventure-Dienste wurden nicht
+neu gestartet. Nur der eigene Webpfad kam hinzu; die privaten gemeinsamen
+Webserver-Nachweise wurden auf den neuen Konfigurationshash abgestimmt.
+
+Schlossvorschau `20261109-atelier1`: Am Werkstatttisch im Atelier steht
+`Gemeinsam zeichnen` bereit, einschliesslich des nativen Apps-Eintrags. Es
+oeffnet genau ein Seitenfenster ohne Zugriff auf die Karten-API. Die drei
+Gespraechsbereiche und zwoelf Sitzplaetze bleiben gleich. Alle acht neu
+versionierten Karten behalten dieselben Kollisions-/Sitzgeometrien und exakt
+dieselben PNG-Dateien. Kein Ersatz des alten Schlosses.
+
+Die Live-Seitenprobe ist noch kein Nachweis fuer gemeinsame native
+Schloss-Sprachgespraeche bei geoeffnetem Atelier. Diese kombinierte Probe folgt
+separat. Eine Freigabe fuer 400 gleichzeitige Personen ist damit nicht erteilt.
 
 ## Lizenzen
 

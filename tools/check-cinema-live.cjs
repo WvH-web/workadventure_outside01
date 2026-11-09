@@ -2,7 +2,6 @@ const fs=require('node:fs'),path=require('node:path'),assert=require('node:asser
 const {chromium}=require('./castle-deps.cjs')('playwright');
 const sharp=require('./castle-deps.cjs')('sharp');
 const out=path.resolve(__dirname,'../../output/cinema-live-qa');
-const credentials=JSON.parse(fs.readFileSync(path.resolve(out,'../hall-qa.private.json')));
 const url='https://together.deine-schule.com/~/castle-preview/kino.wam';
 const filmUrl='https://deutsche-online-schule.com/kino/public/kino.php';
 fs.mkdirSync(out,{recursive:true});
@@ -24,8 +23,15 @@ function writeAudio(){
 async function join(browser,number,options={}){
   const roomId=options.roomId||'kino',directory=options.outputDir||out;
   const name=(options.label||'Kinoprobe')+' '+number,storage=path.join(directory,`participant-${number}.private.json`);
+  const schoolStorage=options.schoolStorageState;
+  if(schoolStorage){
+    const privateRoot=path.join(process.env.USERPROFILE,'.codex/private/workadventure-school-test-accounts');
+    assert.ok(path.resolve(schoolStorage).startsWith(path.resolve(privateRoot)+path.sep));
+    assert.equal(JSON.parse(fs.readFileSync(path.join(privateRoot,'handoff.json'),'utf8')).contains_real_pupil_data,false);
+  }
+  const qaToken=schoolStorage?null:JSON.parse(fs.readFileSync(path.resolve(out,'../hall-qa.private.json')))[String(number)];
   const context=await browser.newContext({permissions:['microphone','camera'],viewport:number===1?{width:1440,height:1000}:{width:800,height:700},
-    ...(fs.existsSync(storage)?{storageState:storage}:{})});
+    ...(schoolStorage?{storageState:schoolStorage}:fs.existsSync(storage)?{storageState:storage}:{})});
   let filmRequests=0;
   await context.route('https://deutsche-online-schule.com/kino/**',route=>{
     filmRequests++;
@@ -33,7 +39,7 @@ async function join(browser,number,options={}){
   });
   await context.addInitScript(({token,name,characterTextureId})=>{
     if(location.origin==='https://together.deine-schule.com'&&window.top===window){
-      localStorage.setItem('authToken',token);localStorage.setItem('playerName',name);
+      if(token)localStorage.setItem('authToken',token);localStorage.setItem('playerName',name);
       localStorage.setItem('requestedCameraStateKey','false');localStorage.setItem('requestedMicrophoneStateKey','true');
       localStorage.setItem('noiseSuppressionEnabled','false');localStorage.setItem('workadventure_pwa_install_prompt_shown','1');
       if(characterTextureId&&!sessionStorage.getItem('qaAvatarSeeded')){
@@ -59,7 +65,7 @@ async function join(browser,number,options={}){
     };
     const Peer=window.RTCPeerConnection;
     if(Peer)window.RTCPeerConnection=class extends Peer{constructor(...args){super(...args);window.__qaPeers.push(this)}};
-  },{token:credentials[String(number)],name,characterTextureId:options.characterTextureId});
+  },{token:qaToken,name,characterTextureId:options.characterTextureId});
   const page=await context.newPage(),errors=[],diagnostics=[];page.setDefaultTimeout(15000);
   page.on('pageerror',e=>errors.push(e.message));
   page.on('console',message=>{
@@ -102,7 +108,7 @@ async function join(browser,number,options={}){
   const parking=options.parking?.[number-1]||[240+number*64,400];
   await script.evaluate(async p=>{await WA.player.teleport(p[0],p[1]);await castleRoom.syncPosition()},parking);
   await context.storageState({path:storage});
-  console.log('Synthetic '+roomId+' participant '+number+' entered.');
+  console.log((schoolStorage?'Authorized school test':'Synthetic')+' '+roomId+' participant '+number+' entered.');
   return {context,page,script,errors,diagnostics,get filmRequests(){return filmRequests}};
 }
 async function move(u,x,y){

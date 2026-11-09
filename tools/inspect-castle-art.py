@@ -9,12 +9,15 @@ def inspect(name):return json.loads(run('docker','inspect',name))[0]
 nginx=Path('/var/www/vhosts/system/together.deine-schule.com/conf/vhost_nginx.conf')
 digest=hashlib.sha256(nginx.read_bytes()).hexdigest()
 manifests=[('/opt/wvh-castle-content/private/deployment.json','nginx_sha256'),('/opt/wvh-castle-school/private/deployment.json','nginx_after_sha256'),('/opt/wvh-castle-chess/private/deployment.json','nginx_after_sha256')]
+art_record=Path('/opt/wvh-castle-art/private/deployment.json')
+if art_record.exists():manifests.append((str(art_record),'nginx_after_sha256'))
 print(json.dumps({'nginxSha256':digest,'manifestsMatch':all(json.loads(Path(file).read_text())[field]==digest for file,field in manifests),
  'newPrefixPresent':b'/castle-art/' in nginx.read_bytes(),'newBaseExists':Path('/opt/wvh-castle-art').exists(),
  'portsInUse':{str(port):bool(run('ss','-ltnH','sport = :'+str(port)).strip()) for port in [3231,3232]},
  'existingRuntimeNode':run('docker','exec','workadventure-play-1','node','--version').strip(),
  'chessHealthy':inspect('wvh-castle-chess')['State'].get('Health',{}).get('Status')=='healthy',
  'schoolHealthy':inspect('wvh-castle-school')['State'].get('Health',{}).get('Status')=='healthy',
+ 'artHealthy':all(inspect(name)['State'].get('Health',{}).get('Status')=='healthy' for name in ['wvh-castle-art','wvh-castle-art-board']) if art_record.exists() else False,
  'stagingPrivateFiles':[path.name for path in Path('/opt/wvh-castle-art/private').glob('*')],
  'stagingDataFiles':[{ 'name':path.name,'bytes':path.stat().st_size} for path in Path('/opt/wvh-castle-art/data').glob('*')],
  'linuxTestsTail':Path('/opt/wvh-castle-art/private/upstream-linux-tests.log').read_text()[-650:] if Path('/opt/wvh-castle-art/private/upstream-linux-tests.log').exists() else None},indent=2))

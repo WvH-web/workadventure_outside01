@@ -74,6 +74,13 @@ test('the game room table opens first-party school chess without map API access 
   const config=activitySettings(table);assert.equal(config.url,'https://together.deine-schule.com/castle-chess/');assert.equal(config.label,'Schach spielen');assert.equal(config.api,false);
   assert.equal(readLayout(map).seats.length,12);assert.equal(createWam(map).areas.length,3);
 });
+test('the atelier table opens only the protected first-party drawing page without map API access',()=>{
+  const map=read('atelier.tmj'),table=map.layers.flatMap(layer=>layer.objects||[]).find(object=>props(object).castleActivityId==='atelier-draw');
+  const config=activitySettings(table);assert.equal(config.url,'https://together.deine-schule.com/castle-art/');assert.equal(config.label,'Gemeinsam zeichnen');assert.equal(config.api,false);
+  assert.equal(readLayout(map).seats.length,12);assert.equal(createWam(map).areas.length,3);
+  for(const bad of ['https://evil.invalid/castle-art/','https://together.deine-schule.com/castle-art/?token=bad','https://together.deine-schule.com/castle-art/wbo/boards/arbitrary'])
+    assert.throws(()=>activitySettings({properties:table.properties.map(property=>property.name==='castleActivityUrl'?{...property,value:bad}:property)}));
+});
 test('catalog rejects arbitrary boards and image hosts, never trusting target or open URLs',()=>{
   const input={board:'show1',title:'<img onerror=alert(1)>',image_url:catalogBase+'museum_asset.php?f=abc',open_url:'javascript:alert(1)'};
   const item=catalogItem(input);assert.equal(item.open,catalogBase+'workadventure_museum_open.php?board=show1');assert.equal(item.title,input.title);

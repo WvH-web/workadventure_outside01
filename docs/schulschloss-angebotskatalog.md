@@ -313,9 +313,10 @@ Schueler-Testkonten haben gemeinsame Partien, Wiederbeitritt und Farbwechsel
 auf dem VPS bestanden. Einzelheiten und verbleibende Grenzen stehen in
 [Gemeinsames Schloss-Schach](schulschloss-schach.md).
 
-Das eigene WBO-Atelier mit drei gemeinsamen Zeichenflaechen ist lokal mit
-mehreren Browsern und Touch geprueft; die Quellen sind versionsgebunden.
-Es ist noch nicht live freigeschaltet. Siehe
+Das eigene WBO-Atelier mit drei gemeinsamen Zeichenflaechen ist auf dem VPS
+mit zwei normal angemeldeten Microsoft-Schueler-Testkonten und Touch geprueft.
+Am Werkstatttisch der separaten Schlossvorschau wird es als Seitenfenster
+angeboten. Die Quellen sind versionsgebunden. Siehe
 [Geschuetztes Schlossatelier](schulschloss-atelier.md).
 
 Fuer Billard ist [tailuge/billiards](https://github.com/tailuge/billiards) ein
