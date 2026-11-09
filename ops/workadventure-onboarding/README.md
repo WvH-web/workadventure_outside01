@@ -37,3 +37,37 @@ Das ist noch keine Veroeffentlichung des Clients: Laufende WorkAdventure-,
 Anmelde-, Audio- und Karten-Dienste wurden nicht ersetzt oder neu gestartet.
 Browserprobe, Ruecksetzstand und kontrollierte Client-Auslieferung folgen
 separat. Der Compiler ist kein Grund, einen laufenden Teilnehmer zu trennen.
+
+Die native Browserprobe in der Loopback-Testinstanz besteht jetzt ebenfalls:
+erstes Angebot in zwei getrennten Browsern, Raumwechsel und Neuladen ohne
+Wiederholung, ausdruecklicher Neustart im Profilmenue sowie ein mobiler
+Raumwechsel mitten im Tutorial. Danach funktionieren Bewegung und der
+vorhandene temporaere Avatarwechsel samt Rueckkehr. Die Probe verwendet
+kuenstliche Gastidentitaeten, keine echte Microsoft-Anmeldung. Ein einfacher
+JWT-Tausch im selben anonymen Browser ist kein gueltiger Microsoft-Kontowechsel:
+WorkAdventure speichert anonyme Weltvariablen browserbezogen. Diese Grenze
+wird nicht als bestandene Microsoft-Kontenprobe ausgegeben.
+
+## Bau-Cache
+
+`tools/build-castle-onboarding.py` legt kuenftig fuer jeden Lauf einen neuen
+eindeutigen Buildx-Builder an. Nach normalem Ende, Fehler oder kontrolliertem
+Abbruch beendet der gleiche Prozess seinen eigenen Build-Client und entfernt
+im `finally` nur diesen Builder mitsamt Cache. Ein noch laufender Build-Client
+mit demselben Buildernamen verhindert die Entfernung. Fremde, alte oder
+Standard-Builder werden nicht uebernommen; es gibt weder globales Prune noch
+erzwungene Entfernung. Bilder, Quellen, Logs und Pruefnachweise bleiben erhalten.
+Neun lokale Steuerungspruefungen verwenden ausschliesslich simulierte
+Prozess-/Dockeraufrufe; fuer diese Helfer-Aenderung wurde kein Compiler gestartet.
+
+Die Serverbereinigung vom 9. November entfernte den bisherigen gestoppten
+Builder samt rund 3,56 GiB Cache. Kandidat, Pruefimage, V3 und vollstaendiger
+alter Rollback wurden erhalten. Fuer die Tutorialkorrektur wird deshalb der
+schon gepruefte Kandidat wiederverwendet, nicht erneut gebaut.
+
+Eine frische schlanke Laufzeitbasis bleibt ein eigener abnahmepflichtiger
+Umbau: sechs laufende Dienste und Ruecksetzcontainer teilen derzeit V3s grosse
+Layer. Ein zusaetzliches nur nominell kleineres Play-Image koennte auf dem
+Host zunaechst mehr Speicher belegen. Anmelde-/Rollen-Patches, benoetigte
+Node-Abhaengigkeiten, native Binaerdateien und saemtliche Browser-/Avatarassets
+muessen vor einer gemeinsamen Umstellung vollstaendig nachgewiesen werden.
