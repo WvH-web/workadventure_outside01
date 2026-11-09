@@ -22,10 +22,19 @@ test('only the exact owned story page gets API access; external providers and th
   assert.equal(activitySettings(object('games','hall-games.html',true)).url,'https://together.deine-schule.com/castle-school/games');
 });
 test('entering an activity offers a separate button and never opens a panel or changes media automatically',async()=>{
-  const s=setup();assert.equal(s.buttons.size,1);assert.equal(s.websites.length,0);
+  const s=setup();assert.equal(s.buttons.size,2);assert.equal(s.websites.length,0);
   assert.ok(s.buttons.has('castle-activity-activity-story'));
+  assert.equal(s.buttons.get('castle-activity-activity-story-apps').location,'appsMenu');
   await s.c.open();await s.c.open();assert.equal(s.websites.length,1);assert.equal(s.websites[0].api,true);
   s.websites[0].closed=true;await s.c.open();assert.equal(s.websites.length,2);s.c.dispose();
+});
+
+test('the current activity has an independent Apps entry and both commands share one owned panel',async()=>{
+  const s=setup(),main=s.buttons.get('castle-activity-activity-story'),apps=s.buttons.get('castle-activity-activity-story-apps');
+  assert.equal(main.label,apps.label);assert.equal(main.callback,apps.callback);apps.callback();await new Promise(resolve=>setTimeout(resolve));
+  assert.equal(s.websites.length,1);main.callback();await new Promise(resolve=>setTimeout(resolve));assert.equal(s.websites.length,1);
+  s.room.position={x:140,y:20};s.c.refresh();assert.equal(s.buttons.has('castle-activity-activity-story-apps'),false);
+  assert.equal(s.buttons.get('castle-activity-activity-music-apps').location,'appsMenu');s.c.dispose();assert.equal(s.buttons.size,0);
 });
 test('departure closes only the owned panel and removes its own command',async()=>{
   const s=setup();await s.c.open();s.room.position={x:500,y:500};s.c.refresh();

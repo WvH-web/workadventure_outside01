@@ -18,8 +18,9 @@ async function open(user){
   const button=user.page.getByRole('button',{name:'Spielrunden',exact:true});
   const ignore=user.page.getByRole('button',{name:'Ignore',exact:true});if(await ignore.count()===1&&await ignore.isVisible())await ignore.click();
   if(!await button.isVisible()){
-    // The observed native compact header places these actions behind its top-right menu.
-    const viewport=user.page.viewportSize();await user.page.mouse.click(viewport.width-32,35);
+    const apps=user.page.getByTestId('apps-button');
+    if(!await apps.isVisible()){const viewport=user.page.viewportSize();await user.page.mouse.click(viewport.width-32,35);await apps.waitFor({state:'visible',timeout:5000});}
+    await apps.click();
     await button.waitFor({state:'visible',timeout:5000});
   }
   await button.click();return gameFrame(user);

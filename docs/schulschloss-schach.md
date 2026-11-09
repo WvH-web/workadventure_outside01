@@ -20,6 +20,13 @@ alten Schlosses und keine Wiederaktivierung des lokalen Village-Prototyps.
 
 Im Spielesaal oeffnet die Aktion `Schach spielen` am bisherigen Spieltisch die
 eigene Seite rechts. Deren Kopfzeile fuehrt weiterhin zu den externen Spielrunden.
+Zusaetzlich steht die gerade erreichbare Aktivitaet im nativen Apps-Menue.
+Dieser getrennte Zugang umgeht einen beobachteten Fehler der kompakten nativen
+Leiste: Nach Hinzufuegen eines weiteren Knopfs konnte eine zuvor verborgene
+Aktivitaet sowohl aus der Leiste als auch aus deren Ueberlauf verschwinden.
+Es wurde dafuer nur das neue Schloss erweitert, nicht der laufende
+WorkAdventure-Client fuer alle Karten ersetzt. Beide Zugaenge teilen dasselbe
+Fenster und werden beim Verlassen der Aktivitaet gemeinsam entfernt.
 Halle und Oberstufensalon behalten ihren bisherigen Spielrunden-Zugang.
 Die vorhandenen drei Gespraechsgruppen bleiben unveraendert: Die Wahl eines
 Schachbretts erzeugt keine weitere Sprachgruppe und schaltet kein Mikrofon um.
@@ -68,14 +75,15 @@ Aufbewahrung; jetzt gibt es ausdruecklich keine solche Historie.
 
 ## Pruefungen Und Grenzen
 
-- 25 Regel-, Wiederbeitritts- und Speicherpruefungen sowie sieben echte
+- 25 Regel-, Wiederbeitritts- und Speicherpruefungen sowie acht echte
   HTTP-/Ereignisstrom- und Zugangspruefungen mit synthetischen Testprofilen.
 - Getrennte Browser fuer zwei Spieler, Zuschauer und eine Testlehrkraft:
   gemeinsame Zuege, Platzwechsel, Wiederuebernahme nach Neuladen, Remis,
   Farbwechsel, Lehrer-Reset, Ueben, Unterumwandlung und echte Mattaufgaben.
 - Desktop sowie 390 und 320 Pixel: 64 Felder, geladene Figurengrafiken, kein
   Verschieben oder Neuaufbauen des Bretts beim Anklicken eines Bauern,
-  keine abgeschnittenen Beschriftungen und keine Browserfehler.
+  keine abgeschnittenen Beschriftungen und keine Browserfehler. Die mobilen
+  Proben verwenden echte emulierte Touch-Ereignisse, nicht nur kleine Fenster.
 - VPS: eigener Gesundheitscheck, echter frisch gepruefter Lehrkraft-Zugang
   ausschliesslich als Seiten-Zuschauer, Ereignisstrom und Ablehnung unbekannter
   Konten. Keine Schuelerkonten angelegt, veraendert oder nachgeahmt.

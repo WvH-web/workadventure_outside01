@@ -24,7 +24,7 @@ export function activitySettings(object){
 export class CastleActivities{
   constructor(wa,room,map){
     this.wa=wa;this.room=room;this.mapId=props(map).castleMapId||'activity';this.areas=map.layers.flatMap(l=>l.objects||[]).filter(o=>props(o).castleActivityId)
-      .map(o=>({...o,settings:activitySettings(o)}));this.epoch=0;this.closed=false;this.button='';
+      .map(o=>({...o,settings:activitySettings(o)}));this.epoch=0;this.closed=false;this.button='';this.appsButton='';
   }
   start(){this.refresh();this.timer=setInterval(()=>this.refresh(),400);return this}
   refresh(){
@@ -34,12 +34,17 @@ export class CastleActivities{
     this.active=next;
     void this.close().catch(e=>console.warn('Activity departure:',e.message));
     if(this.button)this.wa.ui.actionBar.removeButton(this.button);
-    this.button='';
+    if(this.appsButton)this.wa.ui.actionBar.removeButton(this.appsButton);
+    this.button='';this.appsButton='';
     if(next){
       this.button='castle-activity-'+this.mapId+'-'+next.settings.id;
-      this.wa.ui.actionBar.addButton({id:this.button,label:next.settings.label,callback:()=>{
+      const callback=()=>{
         void this.open().catch(e=>console.warn('Activity window:',e.message));
-      }});
+      };
+      this.wa.ui.actionBar.addButton({id:this.button,label:next.settings.label,callback});
+      // Apps remain reachable when the native meeting toolbar loses an overflow action.
+      this.appsButton=this.button+'-apps';
+      this.wa.ui.actionBar.addButton({id:this.appsButton,label:next.settings.label,location:'appsMenu',callback});
     }
   }
   async open(){
@@ -71,6 +76,7 @@ export class CastleActivities{
   dispose(){
     if(this.closed)return;this.closed=true;clearInterval(this.timer);
     if(this.button)this.wa.ui.actionBar.removeButton(this.button);
+    if(this.appsButton)this.wa.ui.actionBar.removeButton(this.appsButton);
     void this.close().catch(e=>console.warn('Activity departure:',e.message));
   }
 }

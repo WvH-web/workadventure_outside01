@@ -7,7 +7,11 @@ const output=path.resolve(__dirname,'../../output/castle-chess-live'),url='https
 async function open(user){
   const ignore=user.page.getByRole('button',{name:'Ignore',exact:true});if(await ignore.count()===1&&await ignore.isVisible())await ignore.click();
   const button=user.page.getByRole('button',{name:'Schach spielen',exact:true});
-  if(!await button.isVisible()){const viewport=user.page.viewportSize();await user.page.mouse.click(viewport.width-32,35);await button.waitFor({state:'visible',timeout:5000});}
+  await user.script.waitForFunction(()=>window.castleActivities?.active?.settings.id==='games-shelf',undefined,{timeout:15000});
+  if(!await button.isVisible()){
+    const apps=user.page.getByTestId('apps-button');if(!await apps.isVisible()){const viewport=user.page.viewportSize();await user.page.mouse.click(viewport.width-32,35);await apps.waitFor({state:'visible',timeout:5000});}
+    await apps.click();await button.waitFor({state:'visible',timeout:5000});
+  }
   await button.click();for(let n=0;n<80;n++){
     const frame=user.page.frames().find(frame=>frame.url()===url);if(frame){await frame.locator('#message').filter({hasText:'Für dieses Konto besteht kein Schulzugang.'}).waitFor({timeout:30000});return frame;}await user.page.waitForTimeout(250);
   }throw Error('Native chess panel did not open');
@@ -47,7 +51,10 @@ async function main(){
     const errors=[...uiErrors,...users.flatMap(user=>user.errors)];assert.deepEqual(errors,[]);
     const evidence={passed:true,revision,results,errors,nativeParticipantsAreUnknownSyntheticQa:true,realStaffProbeWasUiOnly:true,realPupilMultiplayerTested:false,loadApprovalFor400:false};
     fs.writeFileSync(path.join(output,'result.json'),JSON.stringify(evidence,null,2)+'\n');console.log(JSON.stringify({passed:true,nativeParticipants:4,tableAudioPreserved:true,realStaffUiOnly:true,realPupilMultiplayerTested:false,errors}));
-  }catch(error){let index=0;for(const context of browser.contexts())for(const page of context.pages())await page.screenshot({path:path.join(output,'failure-'+(++index)+'.private.png')}).catch(()=>{});throw error;}
+  }catch(error){
+    const states=[];for(const user of users)states.push(await user.script.evaluate(async()=>({map:castleRoom.layout.id,seat:castleRoom.seat?.id,position:castleRoom.position,actual:await WA.player.getPosition(),activity:window.castleActivities?{active:castleActivities.active?.settings,button:castleActivities.button,closed:castleActivities.closed}:null})).catch(()=>({detached:true})));
+    fs.writeFileSync(path.join(output,'failure-state.private.json'),JSON.stringify(states,null,2));let index=0;for(const context of browser.contexts())for(const page of context.pages())await page.screenshot({path:path.join(output,'failure-'+(++index)+'.private.png')}).catch(()=>{});throw error;
+  }
   finally{await browser.close();}
 }
 main().catch(error=>{console.error(error.stack);process.exitCode=1;});

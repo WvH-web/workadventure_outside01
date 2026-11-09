@@ -1,4 +1,4 @@
-import './displays.js?v=20261109-chess1';
+import './displays.js?v=20261109-chess2';
 import {castleRoomReady} from './room.js?v=20261108-outdoors1';
 import {characterById} from './characters-data.js?v=20261108-characters1';
 const props=o=>Object.fromEntries((o.properties||[]).map(p=>[p.name,p.value]));

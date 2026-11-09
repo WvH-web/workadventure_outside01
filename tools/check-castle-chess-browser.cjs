@@ -14,7 +14,7 @@ async function main(){
   const student={kind:'student',eligible:true,age:9,gradeLevel:4,classId:17};let browser;
   async function token(id,profile=student){profiles.set(id,profile);return new SignJWT({identifier:id,username:'Synthetic participant',tags:['teacher']}).setProtectedHeader({alg:'HS256'}).setExpirationTime('15m').sign(new TextEncoder().encode(secret));}
   async function participant(id,profile=student,width=1100){
-    const auth=await token(id,profile),context=await browser.newContext({viewport:{width,height:940}});contexts.push(context);
+    const auth=await token(id,profile),context=await browser.newContext({viewport:{width,height:940},...(width<700?{isMobile:true,hasTouch:true}:{})});contexts.push(context);
     await context.addInitScript(value=>localStorage.setItem('authToken',value),auth);
     await context.route('**/castle-content/vendor/lucide.min.js',route=>route.fulfill({path:path.resolve(__dirname,'../castle/vendor/lucide.min.js'),contentType:'text/javascript'}));
     const page=await context.newPage();page.on('pageerror',error=>errors.push(error.message));page.on('console',msg=>{if(msg.type()==='error'&&/Content Security|Refused to|Uncaught/.test(msg.text()))errors.push(msg.text());});
@@ -22,7 +22,7 @@ async function main(){
     return {id,auth,context,page};
   }
   async function waitMove(page,text){await page.locator('#moves').getByText(text,{exact:true}).waitFor();}
-  async function square(page,name){await page.locator('#board').scrollIntoViewIfNeeded();const rect=await page.locator(`#board rect.square[data-square="${name}"]`).boundingBox();assert.ok(rect);await page.mouse.click(rect.x+rect.width/2,rect.y+rect.height/2);}
+  async function square(page,name){await page.locator('#board').scrollIntoViewIfNeeded();const rect=await page.locator(`#board rect.square[data-square="${name}"]`).boundingBox();assert.ok(rect);const point=[rect.x+rect.width/2,rect.y+rect.height/2];if(await page.evaluate(()=>matchMedia('(pointer:coarse)').matches))await page.touchscreen.tap(...point);else await page.mouse.click(...point);}
   async function move(page,from,to,san){await square(page,from);await square(page,to);await waitMove(page,san);}
   async function action(page,id){await page.locator('#'+id).click();if(await page.locator('#confirm').isVisible()){await page.locator('#confirm-yes').click();}}
   async function layout(page,label){
