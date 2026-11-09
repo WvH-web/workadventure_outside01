@@ -49,6 +49,9 @@ class ChessPage {
     window.addEventListener('storage',event=>{if(event.key==='authToken'||event.key===null){this.syncAuth();void this.connect();}});
     window.addEventListener('online',()=>void this.connect());document.addEventListener('visibilitychange',()=>{if(!document.hidden)void this.connect();});
     window.addEventListener('pagehide',()=>this.dispose(),{once:true});icons();window.addEventListener('load',icons,{once:true});
+    this.fitHandler=()=>this.fitBoard();this.fitObserver=new ResizeObserver(this.fitHandler);
+    for(const element of document.querySelectorAll('.topbar,.modes,#message,.table-bar,.puzzle-bar,.opponent,.board-status,.seat-actions'))this.fitObserver.observe(element);
+    window.addEventListener('resize',this.fitHandler);
     this.syncAuth();this.render();void this.connect();this.timer=setInterval(()=>void this.heartbeat(),15000);
   }
   token(){try{return localStorage.getItem('authToken');}catch{return null;}}
@@ -212,13 +215,23 @@ class ChessPage {
     this.ui.reset.hidden=!state?.self.staff;this.ui.reset.disabled=!active;this.ui.undo.hidden=online;this.ui.undo.disabled=!active||!this.local.history().length;
     this.ui.restart.hidden=online;this.ui.restart.disabled=!active;this.ui.pgn.disabled=!active;
     const moves=online?state?.board.moves||[]:game.history(),key=JSON.stringify(moves);if(this.movesKey!==key){this.movesKey=key;const rows=[];for(let index=0;index<moves.length;index+=2){const li=document.createElement('li');for(const text of [String(index/2+1)+'.',moves[index],moves[index+1]||'']){const span=document.createElement('span');span.textContent=text;li.append(span);}rows.push(li);}this.ui.moves.replaceChildren(...rows);this.ui.moves.scrollTop=this.ui.moves.scrollHeight;}
-    this.renderBoard();this.renderMoveOptions();
+    this.renderBoard();this.renderMoveOptions();this.fitBoard();
+  }
+  fitBoard(){
+    if(this.closed||this.fitFrame)return;
+    this.fitFrame=requestAnimationFrame(()=>{
+      this.fitFrame=null;if(this.closed)return;
+      const board=document.getElementById('board'),rect=board.getBoundingClientRect();
+      const top=rect.top+scrollY,reserve=Math.max(0,this.ui['move-form'].getBoundingClientRect().top-rect.bottom);
+      const width=Math.floor(Math.min(board.parentElement.clientWidth,Math.max(128,innerHeight-top-reserve-12)));
+      const value=width+'px';if(board.style.maxWidth!==value)board.style.maxWidth=value;
+    });
   }
   async download(){
     try{let pgn;if(this.mode==='online')pgn=await this.api('pgn');else{this.local.setHeader('Event',this.mode==='puzzle'?'Schloss-Schach: Raetsel':'Schloss-Schach: Freies Spiel');pgn=this.local.pgn();}
       const url=URL.createObjectURL(new Blob([pgn],{type:'application/x-chess-pgn'})),link=document.createElement('a');link.href=url;link.download='schloss-schach.pgn';link.click();setTimeout(()=>URL.revokeObjectURL(url),1000);
     }catch(error){this.failure(error);}
   }
-  dispose(){this.closed=true;this.epoch++;clearInterval(this.timer);clearTimeout(this.retry);this.stream?.abort();for(const controller of this.requests)controller.abort();this.requests.clear();this.board.destroy();}
+  dispose(){this.closed=true;this.epoch++;clearInterval(this.timer);clearTimeout(this.retry);cancelAnimationFrame(this.fitFrame);this.fitObserver?.disconnect();window.removeEventListener('resize',this.fitHandler);this.stream?.abort();for(const controller of this.requests)controller.abort();this.requests.clear();this.board.destroy();}
 }
 new ChessPage();

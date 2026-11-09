@@ -52,10 +52,13 @@ Ergaenzung vom 9. November 2026. Das alte Schloss bleibt bestehen.
   ohne passend konfigurierten Tisch bleiben bewusst ausdruecklich oeffnbar.
   Die wiederholte Probe umfasst jetzt ein natives 390-Pixel-Touchgeraet.
   Die Schachseite hat keinen waagerechten Ueberlauf und weiterhin 64 Felder.
-  Das mobile WorkAdventure-Seitenfenster ist jedoch niedriger als die gesamte
-  Schachseite: fuer Brettunterkante und weitere Befehle ist momentan Scrollen
-  oder Vergroessern des Fensters noetig. Eine kompaktere Hoehenaufteilung
-  bleibt eine konkrete offene Verbesserung, nicht durch den DOM-Test erledigt.
+  Die danach gefundene abgeschnittene Brettunterkante ist im Schachdienst
+  `745b263bbd6c4af4` korrigiert: Die Brettgroesse beruecksichtigt die echte
+  verfuegbare Fensterhoehe und die benoetigte Platzwahl. Lokale echte
+  Maus-/Touch-Zuege und Sichtbarkeitsgrenzen bestehen bei 390x468, 320x440
+  und 760x480 Pixeln. Die erneute native Pruefung verlangt jetzt die tatsaechlich
+  sichtbaren Brett- und Platzwahlgrenzen; ein blosses Zaehlen von 64
+  DOM-Feldern gilt dafuer nicht als Beleg. Diese erneute Liveprobe steht aus.
 - Sichtbarer Go-Kart-Einstieg, native Fahrt, Ausstieg und wiederhergestellter
   Avatar sind mit einem normal angemeldeten Schueler-Testkonto live geprueft.
 - Die Rutsche verwendet jetzt zeitbasierte Bewegung mit 480 Pixeln/Sekunde

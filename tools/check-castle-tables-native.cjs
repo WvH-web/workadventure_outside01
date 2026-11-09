@@ -32,12 +32,15 @@ async function main(){
     assert.equal(await left.locator('#moves').innerText(),await right.locator('#moves').innerText());
     assert.equal(await left.locator('#reset').isVisible(),false);assert.equal(await right.locator('#reset').isVisible(),false);
     assert.equal(await right.evaluate(()=>document.documentElement.scrollWidth>innerWidth+1),false);
-    assert.equal(await right.locator('#board rect.square').count(),64);await b.page.screenshot({path:path.join(output,'chess-mobile-native.private.png')});
+    assert.equal(await right.locator('#board rect.square').count(),64);
+    await right.waitForFunction(()=>{const board=document.getElementById('board').getBoundingClientRect(),seats=document.getElementById('seat-actions').getBoundingClientRect();return board.top>=0&&board.bottom<=innerHeight&&seats.bottom<=innerHeight;},undefined,{polling:200,timeout:10000});
+    const mobileBounds=await right.evaluate(()=>{const b=document.getElementById('board').getBoundingClientRect(),s=document.getElementById('seat-actions').getBoundingClientRect();return {height:innerHeight,boardTop:b.top,boardBottom:b.bottom,seatActionsBottom:s.bottom};});
+    await b.page.screenshot({path:path.join(output,'chess-mobile-native.private.png')});
     stage='standing-one';await stand(a);assert.equal(b.page.frames().some(frame=>frame.url()===chess),true);assert.deepEqual(await b.script.evaluate(()=>castleActivities.rounds.value.round),round);
     await sit(a,chairs[0]);await panel(a,chess);await wait(a,id=>castleActivities.rounds.value?.round?.id===id,round.id);
     stage='last-standing';await stand(a);await stand(b);await sit(a,chairs[0]);await wait(a,id=>castleActivities.rounds.value?.round?.id&&castleActivities.rounds.value.round.id!==id,round.id);await panel(a,chess);
     await a.page.screenshot({path:path.join(output,'chess-auto-native.private.png')});
-    evidence.chess={normalMicrosoftPupils:2,automaticOnSitting:true,physicalBoardBound:true,lateJoinSameRound:true,oneStandingKeepsPeerRound:true,allStandingCreatesNewRound:true,mobile390NativePanel:true,mobileBoardHas64Squares:true,noUnrelatedGameMovesOrSeatsChanged:true};
+    evidence.chess={normalMicrosoftPupils:2,automaticOnSitting:true,physicalBoardBound:true,lateJoinSameRound:true,oneStandingKeepsPeerRound:true,allStandingCreatesNewRound:true,mobile390NativePanel:true,mobileBoardHas64Squares:true,entireMobileBoardAndSeatActionsVisible:true,mobileBounds,noUnrelatedGameMovesOrSeatsChanged:true};
     for(const user of [a,b])await user.context.close();
     stage='choice-entry';const one=await enter(1,'oberstufe'),two=await enter(2,'oberstufe');
     const seats=await one.script.evaluate(()=>castleRoom.layout.seats.filter(s=>s.audioGroup==='buchclub').map(s=>s.id));
@@ -45,7 +48,9 @@ async function main(){
     const story='https://wvh-web.github.io/workadventure_outside01/castle/story.html#table',first=await panel(one,story);await first.locator('#roll:not(:disabled)').waitFor();
     const choice=await one.script.evaluate(()=>castleActivities.rounds.value.round);assert.equal(choice.choice,'story');
     stage='shared-choice-late';await sit(two,seats[1]);const second=await panel(two,story);await second.locator('#roll:not(:disabled)').waitFor();assert.deepEqual(await two.script.evaluate(()=>castleActivities.rounds.value.round),choice);
-    await first.locator('#roll').click();const cards=await first.locator('body').getAttribute('data-round');assert.ok(cards);await second.waitForFunction(id=>document.body.dataset.round===id,cards);
+    const previous=await first.locator('body').getAttribute('data-round');await first.locator('#roll').click();
+    await first.waitForFunction(previous=>document.body.dataset.round&&document.body.dataset.round!==previous,previous);
+    const cards=await first.locator('body').getAttribute('data-round');await second.waitForFunction(id=>document.body.dataset.round===id,cards);
     stage='creator-departure';await one.context.close();await wait(two,id=>castleActivities.rounds.value?.round?.id===id,choice.id);
     const late=await enter(3,'oberstufe');await sit(late,seats[2]);await panel(late,story);await wait(late,id=>castleActivities.rounds.value?.round?.id===id,choice.id);
     stage='all-leave-reset';await stand(two);await stand(late);await sit(two,seats[1]);await two.page.getByRole('button',{name:'Erzaehlkarten',exact:true}).waitFor();

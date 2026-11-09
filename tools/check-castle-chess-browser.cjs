@@ -13,8 +13,8 @@ async function main(){
   const server=createChessServer({config,lookup,rooms});await new Promise(resolve=>server.listen(0,'127.0.0.1',resolve));config.origin+=':'+server.address().port;
   const student={kind:'student',eligible:true,age:9,gradeLevel:4,classId:17};let browser;
   async function token(id,profile=student){profiles.set(id,profile);return new SignJWT({identifier:id,username:'Synthetic participant',tags:['teacher']}).setProtectedHeader({alg:'HS256'}).setExpirationTime('15m').sign(new TextEncoder().encode(secret));}
-  async function participant(id,profile=student,width=1100){
-    const auth=await token(id,profile),context=await browser.newContext({viewport:{width,height:940},...(width<700?{isMobile:true,hasTouch:true}:{})});contexts.push(context);
+  async function participant(id,profile=student,width=1100,height=940){
+    const auth=await token(id,profile),context=await browser.newContext({viewport:{width,height},...(width<700?{isMobile:true,hasTouch:true}:{})});contexts.push(context);
     await context.addInitScript(value=>localStorage.setItem('authToken',value),auth);
     await context.route('**/castle-content/vendor/lucide.min.js',route=>route.fulfill({path:path.resolve(__dirname,'../castle/vendor/lucide.min.js'),contentType:'text/javascript'}));
     const page=await context.newPage();page.on('pageerror',error=>errors.push(error.message));page.on('console',msg=>{if(msg.type()==='error'&&/Content Security|Refused to|Uncaught/.test(msg.text()))errors.push(msg.text());});
@@ -73,6 +73,15 @@ async function main(){
       await square(mobile.page,'e2');const box=await mobile.page.locator('#board').boundingBox();assert.equal(await mobile.page.locator('#board rect.square').count(),64);assert.equal(await mobile.page.locator('#board .pieces g[data-square]').count(),32);assert.ok(box.width<=width);
       await square(mobile.page,'e4');await waitMove(mobile.page,'e4');await layout(mobile.page,'mobile-moved-'+width);
       await mobile.page.locator('#move-from').selectOption('e7');await mobile.page.locator('#move-to').selectOption('e5');await mobile.page.locator('#submit-move').click();await waitMove(mobile.page,'e5');await mobile.context.close();
+    }
+    for(const [width,height]of [[390,468],[320,440],[760,480]]){
+      const short=await participant('chess-browser-short-'+width+'@invalid.local',student,width,height);
+      await short.page.waitForTimeout(500);await short.page.evaluate(()=>scrollTo(0,0));
+      const bounds=await short.page.evaluate(()=>{const b=document.getElementById('board').getBoundingClientRect(),s=document.getElementById('seat-actions').getBoundingClientRect();return {top:b.top,bottom:b.bottom,seats:s.bottom,height:innerHeight};});
+      assert.ok(bounds.top>=0&&bounds.bottom<=bounds.height,'All eight ranks must fit the first viewport');assert.ok(bounds.seats<=bounds.height,'Seat controls must remain visible');
+      await layout(short.page,'short-panel-'+width+'x'+height);await short.page.locator('[data-mode=practice]').click();
+      await move(short.page,'e2','e4','e4');await move(short.page,'e7','e5','e5');
+      const after=await short.page.locator('#board').boundingBox();assert.ok(after.y+after.height<=height);results.push({label:'short-panel-play-'+width,height,entireBoardVisible:true,realPointerMoves:true});await short.context.close();
     }
     assert.deepEqual(errors,[]);const evidence={passed:true,syntheticProfilesOnly:true,realPupilAccountsUsed:false,productionServerTested:false,results,errors};fs.writeFileSync(path.join(output,'result.json'),JSON.stringify(evidence,null,2)+'\n');console.log(JSON.stringify(evidence,null,2));
   }catch(error){console.error(JSON.stringify({browserErrors:[...new Set(errors)]}));for(const [index,context]of contexts.entries())for(const page of context.pages())if(!page.isClosed())await page.screenshot({path:path.join(output,'failure-'+index+'.png'),fullPage:true}).catch(()=>{});throw error;}
