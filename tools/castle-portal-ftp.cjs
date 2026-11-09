@@ -5,7 +5,8 @@ const quote=value=>'"'+value.replaceAll('"','""')+'"';
 function ftp(commands,label,allowFailure=false){
   if(!/^[a-z0-9-]+$/.test(label))throw Error('Invalid operation label');
   const script=path.join(output,label+'.txt');
-  fs.writeFileSync(script,'\uFEFFoption batch '+(allowFailure?'continue':'abort')+'\noption confirm off\noption transfer binary\nopen dos@deutsche-online-schule.com\n'+commands.join('\n')+'\nexit\n');
+  // Do not downgrade or accept an unverified certificate. The legacy saved IP needs hosting certificate setup first.
+  fs.writeFileSync(script,'\uFEFFoption batch '+(allowFailure?'continue':'abort')+'\noption confirm off\noption transfer binary\nopen dos@deutsche-online-schule.com -explicit -rawsettings MinTlsVersion=12\n'+commands.join('\n')+'\nexit\n');
   const run=cp.spawnSync('C:/Program Files (x86)/WinSCP/WinSCP.com',['/script='+script],{encoding:'utf8',windowsHide:true});
   fs.writeFileSync(path.join(output,label+'.log'),((run.stdout||'')+(run.stderr||'')).replace(/(\w+:\/\/)[^\s]+@/gi,'$1[redacted]@'));
   if(run.status!==0&&!allowFailure)throw Error('Portal transfer failed: '+label);
