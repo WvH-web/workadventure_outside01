@@ -40,6 +40,12 @@ Village und geschuetzte Lehrerzimmer werden nicht ersetzt.
   SQL-Faelle und eine Livepruefung bestanden. Keine Schuelerprofile werden an
   die Karte ausgegeben. Das ist noch keine angeschlossene Inhaltssperre; der
   genaue Stand steht in `SCHOOL-ACCESS.md`.
+- Neu: Portalverwaltung der Schlossangebote mit Klassen-/Altersfiltern,
+  Gueltigkeitsdaten und Anbieterpruefung ist bereitgestellt. 59 isolierte
+  PHP-/MySQL-Faelle und neun Desktop-/Mobil-Formularansichten bestanden.
+  Die vorhandenen Raumlinks bleiben dieselbe Datenquelle. Diese Portalregeln
+  sind noch nicht an den tatsaechlichen Start der neuen Schloss-Spielseiten
+  angeschlossen; sieben Regelplaetze bleiben zunaechst Entwuerfe.
 
 ## Noch zu vervollstaendigen
 
@@ -48,8 +54,9 @@ Village und geschuetzte Lehrerzimmer werden nicht ersetzt.
   Testteilnehmern abgenommen; Kartdarstellung bleibt lokal. Siehe `OUTDOORS.md`.
 - Weitere im Gesamtkonzept vorgesehene Sonderraeume und Entdeckungen. Private
   Wege und deren genaue Plaene werden nicht in dieser oeffentlichen Datei beschrieben.
-- Serverseitige Klassen-/Altersentscheidungen sind als Grundlage vorhanden.
-  Noch noetig: Portalpflege samt Anbieterfreigabe, frische Regelkonfiguration,
+- Serverseitige Klassen-/Altersentscheidungen und die Portalpflege samt
+  Anbieterfreigabe sind als Grundlage vorhanden.
+  Noch noetig: Anschluss der frischen Regelkonfiguration,
   Bindung an gepruefte Zieladressen und die Pruefung beim tatsaechlichen
   Inhaltsaufruf, Beitritt und Besuch. Die jetzigen Karten verwenden den neuen
   Dienst noch nicht; Raumnamen sind kein Schutz und die Vorschau ist keine
