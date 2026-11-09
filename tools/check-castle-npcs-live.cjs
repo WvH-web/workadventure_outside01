@@ -12,11 +12,11 @@ const knownLabels=new Set(mapIds.flatMap(id=>{
 }));
 async function findRoom(user,id){
   let frame;for(let n=0;n<160&&!frame;n++){
-    for(const f of user.page.frames())if(await f.evaluate(id=>window.castleRoom?.layout.id===id,id).catch(()=>false))frame=f;
+    for(const f of user.page.frames())if(await f.evaluate(id=>window.castleRoom?.layout.id===id&&!window.castleRoom.disposed,id).catch(()=>false))frame=f;
     if(!frame)await user.page.waitForTimeout(500);
   }
   assert.ok(frame,'Room controller '+id);user.script=frame;
-  await frame.waitForFunction(()=>window.castleNpcs?.websites.length===1&&window.castleActivities,undefined,{polling:200,timeout:30000});
+  await frame.waitForFunction(async revision=>window.castleNpcs?.websites.length===1&&window.castleActivities&&(await WA.room.getTiledMap()).properties.find(p=>p.name==='castleRevision')?.value===revision,revision,{polling:200,timeout:30000});
 }
 async function main(){
   writeAudio();const browser=await chromium.launch({channel:'chrome',headless:true,args:['--use-fake-ui-for-media-stream','--use-fake-device-for-media-stream',
@@ -61,7 +61,7 @@ async function main(){
       const seatIds=await user.script.evaluate(()=>castleRoom.layout.seats.map(s=>s.id));
       for(const seatId of seatIds)await sit(user,seatId);
       await user.page.screenshot({path:path.join(out,id+'-seated.png')});
-      results.push({id,character:actor.id,avatarScale32:true,matchingColorScheme:true,noWhiteBoxPixels:true,dialogue:true,noMapApi:true,noPreviousRoomCommands:true,noOrphanNpcImages:true,seats:seatIds.length});
+      results.push({id,character:actor.id,avatarScale32:true,matchingColorScheme:true,noWhiteBoxPixels:true,passiveImage:true,dialogue:true,noMapApi:true,noPreviousRoomCommands:true,noOrphanNpcImages:true,seats:seatIds.length});
       fs.writeFileSync(path.join(out,'progress.json'),JSON.stringify({revision,results},null,2)+'\n');console.log(JSON.stringify(results.at(-1)));
     }
     assert.deepEqual(user.errors,[]);fs.writeFileSync(path.join(out,'result.json'),JSON.stringify({revision,results,errors:user.errors},null,2)+'\n');

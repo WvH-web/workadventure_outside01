@@ -24,7 +24,7 @@ Insbesondere aendert ein Lehrer-Outfit keine serverseitigen Rollen oder Freigabe
 
 ## Schlossbewohner
 
-Die Fassung `20261108-expansion7` platziert acht Figuren:
+Die Fassung `20261108-expansion8` platziert acht Figuren:
 Amir im Wandelgang, Otto in der Galerie, Kai im Oberstufensalon, Sam im Spielesaal,
 Elin im Museum, Lea im Musiksalon, Mira im Atelier und Farah in der Sternwarte.
 Ihre Koerper haben echte Kollisionsfelder; die Gespraechsflaechen liegen davor,
@@ -47,9 +47,21 @@ Bildfenster ohne Kartenschnittstelle und alle 92 Sitze. Beim Raumwechsel bleiben
 keine fremden Raumknopfe oder alten Figurenbilder zurueck. Browserfehler: keine.
 Die reine Grafikvorschau bildet diese nativen Zusatzfiguren nicht ab.
 
-Die Aussenfassung `20261108-outdoors1` ergaenzt Noah im Schlosshof, Val im Dorf
-und Rosa im Garten. Ihre native Dialog- und Mehrpersonenprobe steht noch aus;
-die fruehere Abnahme der acht Innenfiguren gilt nicht als Nachweis dafuer.
+Fassung 8 stellt die dekorativen Bilder vom vorhandenen eigenen Inhaltsursprung
+bereit und sperrt nur ihr eigenes enthaltendes Iframe gegen Fokus. Die erneute
+native Einzelprobe aller acht Raeume ist bestanden: alle 92 Sitze und Dialoge,
+32-Pixel-Massstab, transparente Ecken, dauerhafter Tab-Ausschluss und passive
+Bildfenster. Keine alten Raumknopfe, keine verwaisten Bilder und keine JavaScript-
+Fehler. Die tatsaechliche Klick-/Bewegungsprobe im Hof und Museum ist gesondert
+in `OUTDOORS.md` belegt; die Dialogfenster bleiben weiterhin bedienbar.
+
+Die Aussenfassung `20261108-outdoors3` ergaenzt Noah im Schlosshof, Val im Dorf
+und Rosa im Garten. Ihre native Vierpersonenprobe ist bestanden: drei Dialoge,
+32 Sitzplaetze, acht getrennte Hoergruppen und gemeinsames Erzaehlen einschliesslich
+spaetem Beitritt. Die dekorativen Figurenbilder liegen auf dem vorhandenen eigenen
+Inhaltsursprung und machen nur ihr eigenes enthaltendes Fenster passiv. Klicks
+auf die Figuren fangen damit keine Bewegungstasten mehr ab. Die eigentlichen
+Dialoge bleiben bedienbar. Siehe `OUTDOORS.md` fuer Abnahme und Betriebsgrenzen.
 
 ## Quelle und Betrieb
 

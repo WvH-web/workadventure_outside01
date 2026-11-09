@@ -86,10 +86,10 @@ enthaltende Iframe auf `pointer-events: none`, `tabIndex=-1` und `inert`.
 Keine globalen Tastaturereignisse, keine neuen Karten-API- oder Medienrechte;
 Dialoge und Galerien bleiben interaktiv. Das bestehende strenge CSP bleibt erhalten.
 
-Die aktuelle native Einzelprobe ist bestanden: 69 Pixel normale Bewegung und
-72 nach dem Figurenklick, ohne Fokuswechsel ins Bildfenster. Alle fuenf geladenen
-Museumsbilder sind ebenfalls passiv; nach einem Bildklick wurden 72 Pixel echte
-Bewegung gemessen. Keine JavaScript-Fehler. WorkAdventure schreibt die eigene
+Die erneute native Einzelprobe ist bestanden: 72 Pixel normale Bewegung und
+66 nach dem Figurenklick, ohne Fokuswechsel ins Bildfenster. Alle fuenf geladenen
+Museumsbilder haben echte Bildpixel und sind ebenfalls passiv; nach einem Bildklick
+wurden 60 Pixel echte Bewegung gemessen. Keine JavaScript-Fehler. WorkAdventure schreibt die eigene
 `pointer-events`-Darstellung beim Positionieren teilweise auf `auto` zurueck.
 Deshalb prueft die Abnahme die bleibende `inert`-Sperre, den Tab-Ausschluss und
 wirkliches Weiterlaufen statt eines fluechtigen CSS-Werts. Keine wiederholten
@@ -97,7 +97,28 @@ DOM-Beobachter und keine globalen Tastatur-Umleitungen sind notwendig.
 Die Bedeutung der browserseitigen Sperre beschreibt die
 [HTML-Dokumentation](https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Global_attributes/inert).
 
-Der vollstaendige native Wiederholungsnachweis der Fassung 3 fuer Fokus, Kart,
-Shift und Rueckweg steht noch aus. Der vorhandene Ansage- und Filmdienst wird nicht neu
-gestartet. Keine Lastfreigabe fuer 400 Personen; serverseitige Klassen- und
-Altersregeln sowie die anderen Punkte in `BUILD-STATUS.md` bleiben offen.
+Die vollstaendige native Vierpersonenprobe der Fassung 3 ist bestanden:
+alle drei Karten, 32 Sitzplaetze und acht voneinander getrennte Hoergruppen.
+Echte eingehende Sprachpakete samt steigender dekodierter Tonenergie wurden bei
+allen vier Testteilnehmern gemessen. Stehende Besucher gehoeren zur jeweiligen
+Runde; parallele Tische bleiben getrennt. Gemeinsame Erzaehlkarten erreichen auch
+spaeter Hinzukommende. Alle drei Dialoge und das Weiterlaufen nach dem Figurenklick
+funktionieren. Desktop- und Mobil-Spielflaechen sind nicht leer.
+
+Rutschenende und Abbruch, native Kartdarstellung, Fahrtbewegung, Aussteigen per
+Knopf und automatisch ausserhalb des Rundkurses sowie Avatar-Ruecksetzung vor dem
+Rueckweg sind bestanden. Die 400-ms-Fahrtprobe ergab 57 Pixel ohne Shift und
+165 Pixel mit Shift; das ist ein Funktionsnachweis, keine genaue Geschwindigkeits-
+oder Bildratenmessung. Alle drei Zielkarten wurden danach an den erwarteten
+Eingangskoordinaten erreicht. Keine alten Figurenfenster und keine JavaScript-
+Fehler in dieser Probe. Eine vorherige Abschlussprobe hatte bei einem unnoetigen
+Neuladen derselben Karte zu frueh das alte Skriptfenster ausgewaehlt. Die Pruefung
+verwendet nun wirkliche Kartenwechsel und wartet auf die neue Ankunftsposition.
+
+Es wurden kurzlebige kuenstliche Testidentitaeten und synthetischer Ton benutzt,
+keine echten Schuelerkonten oder Geraetemikrofone. Berichte und Browserdaten
+bleiben ausserhalb des oeffentlichen Repositorys. Die sechzehn WAM-Dateien und
+vierzehn geprueften Inhaltsdateien sind separat veroeffentlicht; vorhandene Karten,
+Ansage- und Filmdienst wurden nicht ersetzt oder neu gestartet.
+Keine Lastfreigabe fuer 400 Personen; serverseitige Klassen- und Altersregeln
+sowie die anderen Punkte in `BUILD-STATUS.md` bleiben offen.

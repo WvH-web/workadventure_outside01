@@ -38,8 +38,9 @@ Village und geschuetzte Lehrerzimmer werden nicht ersetzt.
 
 ## Noch zu vervollstaendigen
 
-- Weitere bestehende Aussenangebote anbinden und die neuen Fahrten nativ abnehmen.
-  Die drei neuen Aussenkarten sind gebaut; ihre Vierpersonenprobe steht noch aus.
+- Weitere bestehende Aussenangebote anbinden. Die drei neuen Aussenkarten,
+  ihre acht Hoergruppen, Rutsche und Kart sind in Fassung 3 mit vier getrennten
+  Testteilnehmern abgenommen; Kartdarstellung bleibt lokal. Siehe `OUTDOORS.md`.
 - Weitere im Gesamtkonzept vorgesehene Sonderraeume und Entdeckungen. Private
   Wege und deren genaue Plaene werden nicht in dieser oeffentlichen Datei beschrieben.
 - Serverseitig frisch gepruefte Klassen-/Altersfreigaben fuer Inhalte und
@@ -62,9 +63,21 @@ Village und geschuetzte Lehrerzimmer werden nicht ersetzt.
 
 ## Pruefstand der Innenausbaustufe
 
+Aktuell ist Fassung `20261108-expansion8` mit passiven Figuren- und Museumsbildern.
+Die erneute native Einzelprobe bestand in allen acht betroffenen Innenraeumen:
+alle Dialoge, 92 Sitze, 32-Pixel-Figuren mit transparenten Ecken, ausdruecklicher
+Fokussperre und ohne alte Figurenfenster oder Raumknopfe. JavaScript-Fehler: keine.
+Die gesonderte Klickprobe bestaetigt echte Bewegung nach Figuren- und Museums-
+bildklicks sowie fuenf tatsaechlich geladene Museumsbilder. Insgesamt bestanden
+189 Kernpruefungen. Die aktuelle vollstaendige Grafikprobe mit den Aussenkarten
+prueft sechzehn Karten in 1440, 390 und 320 Pixel Breite: 345 Aufnahmen, keine
+Layoutbefunde oder Browserfehler. Die native Vierpersonenprobe der Aussenfassung
+3 ist in `OUTDOORS.md` dokumentiert. Die folgende Innenraum-Sprachabnahme bleibt
+ausdruecklich der Nachweis der vorherigen Fassung 7, nicht einer neuen Lastprobe.
+
 Fassung `20261108-expansion7`: Innenausbau mit transparenten Figurenbildern und
 raumeigenen Knopfkennungen erfolgreich gebaut. 169 Kernpruefungen inklusive
-verspaeteter Bereinigung nach Raumwechseln bestanden. Die letzte vollstaendige
+verspaeteter Bereinigung nach Raumwechseln bestanden. Die damalige vollstaendige
 Grafik-Browserprobe der Fassung 6 in den drei Groessen 1440, 390 und 320 Pixel
 pruefte alle
 vierzehn Karten, alle neuen Sitzplaetze, jede neue Tuer und die vorhandenen
