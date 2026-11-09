@@ -1,4 +1,4 @@
-import './displays.js?v=20261108-outdoors1';
+import './displays.js?v=20261108-focus1';
 import {castleRoomReady} from './room.js?v=20261108-outdoors1';
 import {characterById} from './characters-data.js?v=20261108-characters1';
 const props=o=>Object.fromEntries((o.properties||[]).map(p=>[p.name,p.value]));
@@ -10,7 +10,7 @@ export class CastleNpcs{
   start(){
     if(this.closed||this.started)return this;this.started=true;
     for(const slot of this.slots){
-      const id=props(slot).castleNpcId,url=new URL('npc-sprite.html',import.meta.url);url.searchParams.set('npc',id);url.searchParams.set('v','20261108-alpha1');
+      const id=props(slot).castleNpcId,url=new URL('https://together.deine-schule.com/castle-content/npc-sprite.html');url.searchParams.set('npc',id);url.searchParams.set('v','20261108-focus1');
       const website=this.wa.room.website.create({name:'castle-npc-'+this.id+'-'+id,url:url.href,
         position:{x:slot.x,y:slot.y,width:96,height:64},visible:true,origin:'map',allowApi:false,allow:'',scale:1});
       this.websites.push(website);

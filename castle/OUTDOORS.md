@@ -1,6 +1,6 @@
 # Hof, Dorf und Garten
 
-Ausbaustand `20261108-outdoors2`. Nur die getrennte Schlossvorschau wird
+Ausbaustand `20261108-outdoors3`. Nur die getrennte Schlossvorschau wird
 erweitert. Alte Schlosskarten, Village, Lehrerschutz und Originalfreizeitpark
 bleiben unveraendert. Keine Veroeffentlichung privater Wege oder Codes.
 
@@ -61,7 +61,8 @@ Keine fremden Spiel- oder Weihnachtsprojekt-Assets wurden kopiert.
 ## Pruefstand
 
 Der komplette Neubau aller sechzehn registrierten Karten ist bestanden.
-186 Kernpruefungen einschliesslich Rueckweg-Absicherung und Kart-Anbindung
+189 Kernpruefungen einschliesslich Rueckweg-Absicherung, Kart-Anbindung und
+passiver Bildfenster
 sind nach dem kompletten Neubau bestanden.
 Die erweiterte Grafik-Browserprobe pruefte alle sechzehn Karten, alle 32 neuen
 Sitze, alle neuen Uebergaenge und den Rutschenabbruch in 1440, 390 und 320 Pixel
@@ -77,7 +78,16 @@ Bank. Fassung 2 verwendet kompaktere Moebel, passende Sitzpunkte und mehr freie
 Oberkoerperpixel. Das geparkte Kart ist eine getrennt ausblendbare native Ebene.
 Neue Boden- und Vordergrunddateinamen verhindern gemischte alte/neue Grafiken.
 
-Der vollstaendige native Wiederholungsnachweis der Fassung 2 fuer Fokus, Kart,
+Eine zusaetzliche Klickprobe in Fassung 2 fand einen echten Fokusfehler:
+Dekorative Karten-Iframes konnten die Tastatur uebernehmen. Die Einzelmessung
+ergab 75 Pixel normale Bewegung, null nach dem Bildklick und 72 nach passiver
+Konfiguration. Fassung 3 stellt nur die Figuren- und Museumsbilder vom vorhandenen
+Inhaltsursprung bereit. Der kleine Helfer setzt ausschliesslich das eigene
+enthaltende Iframe auf `pointer-events: none`, `tabIndex=-1` und `inert`.
+Keine globalen Tastaturereignisse, keine neuen Karten-API- oder Medienrechte;
+Dialoge und Galerien bleiben interaktiv. Das bestehende strenge CSP bleibt erhalten.
+
+Der vollstaendige native Wiederholungsnachweis der Fassung 3 fuer Fokus, Kart,
 Shift und Rueckweg steht noch aus. Der vorhandene Ansage- und Filmdienst wird nicht neu
 gestartet. Keine Lastfreigabe fuer 400 Personen; serverseitige Klassen- und
 Altersregeln sowie die anderen Punkte in `BUILD-STATUS.md` bleiben offen.

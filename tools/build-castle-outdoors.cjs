@@ -3,7 +3,7 @@ const sharp=require('./castle-deps.cjs')('sharp');
 const {geometry}=require('./build-library.cjs');
 const {nativeTarget,writeWam}=require('./castle-wam.cjs');
 const {createCanvas}=require('./castle-deps.cjs')('@napi-rs/canvas');
-const root=path.resolve(__dirname,'..'),T=32,W=36,H=24,revision='20261108-outdoors2';
+const root=path.resolve(__dirname,'..'),T=32,W=36,H=24,revision='20261108-outdoors3',artRevision='20261108-outdoors2';
 const picnicStyle=Object.freeze({width:128,height:96,columns:[40,88],northY:18,southY:74,southStandY:120});
 const P=(name,value)=>({name,type:typeof value==='boolean'?'bool':typeof value==='number'?'float':'string',value});
 const rect=(id,x,y,width,height,preserve=false)=>({id,x,y,width,height,preserve});
@@ -52,7 +52,7 @@ async function buildOne(scene,picnicImage){
   const layout={...scene,width:W,height:H,tileSize:T,avatarPixels:32,expectedSeats:seats.length,groups,exit:scene.portals[0],portals:scene.portals.slice(1)};
   const {blocked,reachable}=geometry(layout,seats,collisions);
   const overlays=scene.tables.map(b=>({input:picnicImage,left:b.x,top:b.y}));
-  const floorFile='floor-'+revision+'.png';
+  const floorFile='floor-'+artRevision+'.png';
   await sharp(path.join(art,'room-source.png')).resize(W*T,H*T,{fit:'fill',kernel:'lanczos3'}).png({compressionLevel:9}).toFile(path.join(art,'room.png'));
   await sharp(path.join(art,'room.png')).composite(overlays).png({compressionLevel:9}).toFile(path.join(art,floorFile));
   const {data,info}=await sharp(path.join(art,floorFile)).ensureAlpha().raw().toBuffer({resolveWithObject:true}),frontCells=new Set();let foregroundPixels=0;
@@ -66,7 +66,7 @@ async function buildOne(scene,picnicImage){
     if(furniture&&!clear){frontCells.add(Math.floor(y/T)*W+Math.floor(x/T));foregroundPixels++}
     else data.fill(0,(y*info.width+x)*4,(y*info.width+x)*4+4);
   }
-  const frontFile='fronts-'+revision+'.png';
+  const frontFile='fronts-'+artRevision+'.png';
   await sharp(data,{raw:{width:info.width,height:info.height,channels:4}}).png({compressionLevel:9}).toFile(path.join(art,frontFile));
   await sharp({create:{width:32,height:32,channels:4,background:'#00000000'}}).png().toFile(path.join(art,'marker.png'));
   const water=createCanvas(256,32),brush=water.getContext('2d');

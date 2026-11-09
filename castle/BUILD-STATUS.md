@@ -106,8 +106,11 @@ synthetische Sprachdatei und kurzlebige Testzugriffe bleiben ausserhalb des
 oeffentlichen Repositorys.
 
 Die Verwaltung erlaubt per Content-Security-Policy nur WorkAdventure-Urspruenge
-als Rahmen. Deshalb werden ausschliesslich die sechs oeffentlichen Galerie-Dateien
-zusaetzlich unter `https://together.deine-schule.com/castle-content/` bereitgestellt.
+als Rahmen. Deshalb werden die sechs oeffentlichen Galerie-Dateien zusaetzlich
+unter `https://together.deine-schule.com/castle-content/` bereitgestellt.
+Die Fokuskorrektur ergaenzt acht gepruefte statische Dateien fuer Figuren- und
+Museumsbilder. Diese machen nur ihr eigenes enthaltendes Bildfenster passiv;
+die eigentlichen Inhalte, Dialoge und Galerien bleiben bedienbar.
 Das ist kein Proxy fuer fremde Inhalte und keine Lockerung der Verwaltungs-CSP.
 Die Galerie braucht keine Kartenschnittstelle und keinen Kamera-/Mikrofonzugriff.
 In der reinen Grafikvorschau unter einer anderen Domain oeffnen Beitraege extern.

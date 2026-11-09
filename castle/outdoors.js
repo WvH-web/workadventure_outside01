@@ -1,4 +1,4 @@
-import './npcs.js?v=20261108-outdoors1';
+import './npcs.js?v=20261108-focus1';
 import {castleRoomReady} from './room.js?v=20261108-outdoors1';
 const props=o=>Object.fromEntries((o.properties||[]).map(p=>[p.name,p.value]));
 const inside=(p,r)=>r&&p.x>=r.x&&p.y>=r.y&&p.x<r.x+r.width&&p.y<r.y+r.height;

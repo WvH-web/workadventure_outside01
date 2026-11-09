@@ -50,6 +50,8 @@ async function main(){
       await profile.locator('#questions button').first().click();assert.notEqual(await profile.locator('#speech').textContent(),before);assert.equal(await profile.evaluate(()=>typeof WA),'undefined');
       await a.page.screenshot({path:path.join(out,scene.id+'-character.png')});await a.script.evaluate(()=>castleActivities.website.close());
       await move(a,talk.x,talk.y);const sprite=a.page.locator('iframe[src*="/npc-sprite.html?npc='+actor+'"]').first(),box=await sprite.boundingBox();assert.ok(box);
+      assert.equal(await sprite.contentFrame().evaluate(()=>window.castleImagePassive),true);
+      assert.deepEqual(await sprite.evaluate(e=>[getComputedStyle(e).pointerEvents,e.inert]),['none',true]);
       await a.page.mouse.click(box.x+box.width/2,box.y+box.height*.75);await a.page.waitForTimeout(300);
       const beforeKey=await a.script.evaluate(()=>WA.player.getPosition());await a.page.keyboard.down('ArrowDown');await a.page.waitForTimeout(350);await a.page.keyboard.up('ArrowDown');
       const afterKey=await a.script.evaluate(()=>WA.player.getPosition());assert.ok(afterKey.y-beforeKey.y>10,'Clicking the decorative character must not swallow movement keys');

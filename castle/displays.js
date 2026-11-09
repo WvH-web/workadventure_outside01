@@ -18,7 +18,7 @@ export class CastleDisplays{
         const item=items.get(slot.board),existing=this.websites.get(slot.board);
         if(!item){if(existing){await this.wa.room.website.delete(existing.name);this.websites.delete(slot.board);}continue;}
         if(this.closed)return;
-        const url=new URL('display.html',import.meta.url);url.searchParams.set('board',slot.board);url.searchParams.set('image',item.image);
+        const url=new URL('https://together.deine-schule.com/castle-content/display.html');url.searchParams.set('v','20261108-focus1');url.searchParams.set('board',slot.board);url.searchParams.set('image',item.image);
         if(existing){if(existing.url!==url.href)existing.url=url.href;continue;}
         const name='castle-exhibit-'+this.id+'-'+slot.board;
         const website=this.wa.room.website.create({name,url:url.href,position:{x:slot.x,y:slot.y,width:slot.width,height:slot.height},visible:true,origin:'map',allowApi:false,allow:'',scale:1});

@@ -31,7 +31,7 @@ async function main(){
       }
       await findRoom(user,id);
       await user.page.waitForTimeout(2400);
-      assert.equal(user.page.frames().filter(f=>f.url().startsWith(web+'npc-sprite.html?')).length,1,'Only the current room inhabitant remains');
+      assert.equal(user.page.frames().filter(f=>f.url().startsWith('https://together.deine-schule.com/castle-content/npc-sprite.html?')).length,1,'Only the current room inhabitant remains');
       const current=await user.script.evaluate(()=>[castleRoom.layout.returnLabel,...castleActivities.areas.map(a=>a.settings.label)]);
       await user.page.getByRole('button',{name:current[0],exact:true}).waitFor();
       for(const label of knownLabels)if(!current.includes(label))
@@ -41,6 +41,8 @@ async function main(){
         return {id,label:area.settings.label,area:{x:area.x,y:area.y,width:area.width,height:area.height}};});
       const sprite=user.page.locator('iframe[src*="/npc-sprite.html?npc='+actor.id+'"]').first();await sprite.waitFor();
       await sprite.contentFrame().locator('#label').waitFor();
+      await sprite.contentFrame().waitForFunction(()=>window.castleImagePassive===true,undefined,{polling:200,timeout:10000});
+      assert.deepEqual(await sprite.evaluate(e=>[getComputedStyle(e).pointerEvents,e.inert]),['none',true]);
       assert.equal(await sprite.contentFrame().locator('html').evaluate(e=>getComputedStyle(e).colorScheme),'dark');
       assert.deepEqual(await sprite.contentFrame().locator('#sprite').evaluate(e=>[e.clientWidth,e.clientHeight]),[32,32]);
       await move(user,actor.area.x+actor.area.width/2,actor.area.y+actor.area.height/2);

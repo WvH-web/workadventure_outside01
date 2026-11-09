@@ -11,7 +11,8 @@ os.umask(0o077)
 base=Path('/opt/wvh-castle-content')
 nginx=Path('/var/www/vhosts/system/together.deine-schule.com/conf/vhost_nginx.conf')
 archive=Path('/tmp/wvh-castle-content.zip')
-allowed={'collection.html','collection.css','collection.js','catalog.js','vendor/lucide.min.js','vendor/LICENSE'}
+original_allowed={'collection.html','collection.css','collection.js','catalog.js','vendor/lucide.min.js','vendor/LICENSE'}
+allowed=original_allowed|{'npc-sprite.html','npc-sprite.css','npc-sprite.js','characters-data.js','passive-image.js','display.html','display.css','display.js'}
 reviewed_nginx='719fa6f23bc53151dcc93b09fc7d273c9991a989035c1e288c84e777a66fa292'
 digest=lambda data:hashlib.sha256(data).hexdigest()
 def inspect(name):
@@ -41,6 +42,11 @@ if old_record:
         raise RuntimeError('Static gallery symlink changed since deployment')
     if any(digest((current/name).read_bytes())!=value for name,value in old_record['files'].items()):
         raise RuntimeError('A deployed gallery file has unreviewed changes')
+    if set(old_record['files']) not in [original_allowed,allowed]:
+        raise RuntimeError('Unknown static-content manifest; review before extending it')
+    existing={p.relative_to(current).as_posix() for p in current.rglob('*') if p.is_file()}
+    if existing!=set(old_record['files']) or any(p.is_symlink() for p in current.rglob('*')):
+        raise RuntimeError('Unreviewed files or links in the static-content release')
 if old_record and old_record['archive_sha256']==archive_hash:
     print(json.dumps({'unchanged':True,'source':'reviewed static gallery','workadventure_not_restarted':True}))
 else:

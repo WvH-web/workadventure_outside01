@@ -95,7 +95,7 @@ async function main(){
       if(id==='museum'){
         await a.script.waitForFunction(()=>window.castleDisplays?.websites.size===5,undefined,{polling:200,timeout:30000});
         let pictures=[];for(let n=0;n<50;n++){
-          pictures=a.page.frames().filter(f=>f.url().startsWith(web+'display.html'));
+          pictures=a.page.frames().filter(f=>f.url().startsWith('https://together.deine-schule.com/castle-content/display.html'));
           if(pictures.length===5&&(await Promise.all(pictures.map(f=>f.locator('img').evaluate(i=>i.complete&&i.naturalWidth>0).catch(()=>false)))).every(Boolean))break;
           await a.page.waitForTimeout(500);
         }
@@ -117,7 +117,7 @@ async function main(){
     await findRoom(a,'grosse-halle');
     await a.script.evaluate(()=>WA.player.teleport(1136,928)).catch(e=>{if(!/Execution context was destroyed|Frame was detached/.test(e.message))throw e;});
     await findRoom(a,'erdgeschoss');
-    assert.ok(!a.page.frames().some(f=>f.url().startsWith(web+'display.html')),'Exhibit iframes do not leak across maps');
+    assert.ok(!a.page.frames().some(f=>f.url().includes('/display.html')),'Exhibit iframes do not leak across maps');
     const errors=users.flatMap(u=>u.errors);assert.deepEqual(errors,[]);
     fs.writeFileSync(path.join(out,'result.json'),JSON.stringify({revision,results,errors,noRealSchoolAccountsOrMicrophonesUsed:true,newHallDoorWorks:true,noOrphanDisplayFrames:true},null,2)+'\n');
     console.log(JSON.stringify({maps:results.length,participants:4,seats:results.reduce((n,r)=>n+r.allSeats,0),passed:true,errors}));

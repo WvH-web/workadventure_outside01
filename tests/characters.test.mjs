@@ -28,13 +28,15 @@ test('native-scale characters create only their own transparent map images, with
   assert.equal(created[0].name,'castle-npc-erdgeschoss-amir');assert.equal(created[0].allowApi,false);assert.equal(created[0].allow,'');
   assert.deepEqual([created[0].position.width,created[0].position.height],[96,64]);
   assert.equal(new URL(created[0].url).searchParams.get('npc'),'amir');
+  assert.equal(new URL(created[0].url).origin,'https://together.deine-schule.com');
   npcs.dispose();npcs.dispose();npcs.start();assert.deepEqual(removed,['castle-npc-erdgeschoss-amir']);
 });
 test('NPC images match the host dark color scheme and are not created after disposal',()=>{
   const map=JSON.parse(fs.readFileSync(new URL('../castle/erdgeschoss.tmj',import.meta.url)));
   const npcs=new CastleNpcs({room:{website:{create:()=>{throw Error('Late character');}}}},map);npcs.dispose();npcs.start();
   const html=fs.readFileSync(new URL('../castle/npc-sprite.html',import.meta.url),'utf8');
-  assert.match(html,/color-scheme:dark/);assert.match(html,/background:transparent/);assert.doesNotMatch(html,/iframe_api|camera|microphone/);
+  const css=fs.readFileSync(new URL('../castle/npc-sprite.css',import.meta.url),'utf8');
+  assert.match(css,/color-scheme:dark/);assert.match(css,/background:transparent/);assert.doesNotMatch(html,/iframe_api|camera|microphone/);
 });
 test('character dialogues accept only known exact owned URLs and never get map access',()=>{
   const object=url=>({properties:[{name:'castleActivityUrl',value:url},{name:'castleActivityApi',value:true}]});
