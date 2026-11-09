@@ -67,7 +67,7 @@ Die bereits laufenden Schloss-, Audio- und WorkAdventure-Dienste wurden nicht
 neu gestartet. Nur der eigene Webpfad kam hinzu; die privaten gemeinsamen
 Webserver-Nachweise wurden auf den neuen Konfigurationshash abgestimmt.
 
-Schlossvorschau `20261109-atelier1`: Am Werkstatttisch im Atelier steht
+Schlossvorschau `20261109-atelier2`: Am Werkstatttisch im Atelier steht
 `Gemeinsam zeichnen` bereit, einschliesslich des nativen Apps-Eintrags. Es
 oeffnet genau ein Seitenfenster ohne Zugriff auf die Karten-API. Die drei
 Gespraechsbereiche und zwoelf Sitzplaetze bleiben gleich. Alle acht neu
@@ -77,6 +77,21 @@ dieselben PNG-Dateien. Kein Ersatz des alten Schlosses.
 Die Live-Seitenprobe ist noch kein Nachweis fuer gemeinsame native
 Schloss-Sprachgespraeche bei geoeffnetem Atelier. Diese kombinierte Probe folgt
 separat. Eine Freigabe fuer 400 gleichzeitige Personen ist damit nicht erteilt.
+
+Beim ersten kombinierten Versuch lud der vierte native Teilnehmer die Karte,
+aber sein Kartenskript lief in WorkAdventures Lade-Zeitlimit. Dieser Versuch
+ist ausdruecklich nicht bestanden. Als gezielte Verbesserung fuer die acht
+neuen Innenraeume buendelt der Kartenbau jetzt die acht zusammengehoerigen
+Quellmodule in eine Datei von rund 31 KB. Es entfaellt deren mehrstufiges
+Nachladen; Karten, Grafikmassstab und Laufwege werden dadurch nicht geaendert.
+Die kombinierte Probe wird mit diesem Stand wiederholt.
+
+Die Quellmodule bleiben lesbar erhalten. `tools/build-castle-script.cjs`
+verwendet die bereits im Village-Projekt gesperrte esbuild-Version 0.17.17
+ausschliesslich zum Bauen, ohne Entwicklungsserver. Das erzeugte Manifest
+prueft Quellen-/Ausgabehashes, fehlende Restimporte und dass Raumsteuerung,
+Aktivitaeten und Figuren jeweils nur einmal enthalten sind. Der gesamte
+Innenraumbau erneuert das Paket automatisch nach den UI-Kennungen.
 
 ## Lizenzen
 

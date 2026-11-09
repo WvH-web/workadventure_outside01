@@ -1,7 +1,7 @@
 const fs=require('node:fs'),path=require('node:path');
 const {buildFurnishedRoom}=require('./build-library.cjs');
 const {createCanvas}=require('./castle-deps.cjs')('@napi-rs/canvas');
-const root=path.resolve(__dirname,'..'),revision='20261109-atelier1';
+const root=path.resolve(__dirname,'..'),revision='20261109-atelier2';
 const own='';
 const games='https://together.deine-schule.com/castle-school/games';
 const collection='https://together.deine-schule.com/castle-content/collection.html';
@@ -94,15 +94,15 @@ async function buildCastleExpansion(){
   const results=[];
   for(const room of rooms){
     const scene=roomScene(room);
-    results.push(await buildFurnishedRoom({id:room.id,folder:room.id+'-20261108-full',name:room.name,scene,script:'npcs.js',
+    results.push(await buildFurnishedRoom({id:room.id,folder:room.id+'-20261108-full',name:room.name,scene,script:'expansion.bundle.js',
       description:room.name+' mit drei getrennten Gespraechsrunden und passenden Aktivitaeten.',copyright:'Original room artwork generated for deine Schule; approved 32px-avatar seating and book-club furniture; village fire animation.'}));
   }
   for(const id of ['erdgeschoss','obergeschoss']){
     const scene=corridorScene(id);
-    results.push(await buildFurnishedRoom({id,folder:id+'-20261108-full',width:40,scene,script:'npcs.js',name:id==='erdgeschoss'?'Wandelgang':'Obere Galerie',
+    results.push(await buildFurnishedRoom({id,folder:id+'-20261108-full',width:40,scene,script:'expansion.bundle.js',name:id==='erdgeschoss'?'Wandelgang':'Obere Galerie',
       description:'Eingerichteter Schlossgang mit acht beschrifteten Tueren und zwei getrennten Gespraechsgruppen.',overlays:[plaques(scene)]}));
   }
-  require('./build-castle-ui.cjs').buildCastleUi();return results;
+  require('./build-castle-ui.cjs').buildCastleUi();require('./build-castle-script.cjs').buildCastleScript();return results;
 }
 module.exports={buildCastleExpansion,roomScene,corridorScene,rooms,revision};
 if(require.main===module)buildCastleExpansion().then(results=>{

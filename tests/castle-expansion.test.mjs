@@ -1,6 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
+import crypto from 'node:crypto';
 import {createRequire} from 'node:module';
 import {readLayout,conversationAt} from '../castle/room.js';
 import {activitySettings} from '../castle/activities.js';
@@ -20,7 +21,7 @@ for(const id of [...rooms.map(r=>r.id),'erdgeschoss','obergeschoss']){
     assert.deepEqual([map.width,map.height,map.tilewidth],[hub?40:28,22,32]);assert.equal(props(map).castleRevision,revision);
     assert.equal(world.illustrated,true);assert.deepEqual(world.seats,layout.seats);assert.equal(layout.seats.length,hub?10:12);
     assert.equal(layout.returnLabel,hub?'Grosse Halle':['oberstufe','sternwarte'].includes(id)?'Obere Galerie':'Wandelgang');
-    assert.equal(new URL(props(map).script,'https://map.invalid/').searchParams.get('room'),id);
+    const entry=new URL(props(map).script,'https://map.invalid/');assert.equal(entry.searchParams.get('room'),id);assert.equal(entry.pathname,'/expansion.bundle.js');
     assert.equal(createWam(map).areas.length,hub?2:3);
     for(const seat of layout.seats){
       const group=layout.groups.find(g=>g.group===seat.audioGroup);assert.ok(group);
@@ -67,6 +68,15 @@ test('all six ephemeral story keys are configured independently and accept no in
     const variable=map.layers.flatMap(l=>l.objects||[]).find(o=>o.name===key&&o.type==='variable');assert.equal(props(variable).persist,false);
   }
   assert.throws(()=>new SharedStory({},'castleStoryUnknown',()=>{}));
+});
+test('expansion entry is one pinned module with each controller included exactly once',()=>{
+  const bundle=fs.readFileSync(new URL('expansion.bundle.js',base)),manifest=read('expansion.bundle.manifest.json');
+  const sha=raw=>crypto.createHash('sha256').update(raw).digest('hex');
+  assert.equal(manifest.sha256,sha(bundle));assert.equal(manifest.bytes,bundle.length);assert.equal(manifest.runtimeModuleRequests,1);assert.ok(bundle.length<60000);
+  assert.equal(manifest.compiler.version,'0.17.17');assert.ok(manifest.sources.length>=6);
+  for(const source of manifest.sources)assert.equal(source.sha256,sha(fs.readFileSync(new URL(source.path.split('?')[0].replace(/^castle\//,''),base))));
+  for(const name of ['room.js','activities.js','displays.js','characters-data.js'])assert.equal(manifest.sources.filter(source=>source.path.split('?')[0]==='castle/'+name).length,1);
+  assert.doesNotMatch(bundle.toString('utf8'),/\b(?:import|export)\s[^;]*\bfrom\s*["']/);
 });
 
 test('the game room table opens first-party school chess without map API access or geometry changes',()=>{

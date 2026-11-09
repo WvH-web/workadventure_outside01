@@ -66,7 +66,10 @@ async function join(browser,number,options={}){
     const Peer=window.RTCPeerConnection;
     if(Peer)window.RTCPeerConnection=class extends Peer{constructor(...args){super(...args);window.__qaPeers.push(this)}};
   },{token:qaToken,name,characterTextureId:options.characterTextureId});
-  const page=await context.newPage(),errors=[],diagnostics=[];page.setDefaultTimeout(15000);
+  const page=await context.newPage(),errors=[],diagnostics=[],scriptLoads=[];page.setDefaultTimeout(15000);
+  const bootStarted=Date.now(),scriptRequests=new Map();
+  page.on('request',request=>{const url=new URL(request.url());if(url.origin==='https://wvh-web.github.io'&&url.pathname.includes('/castle/')&&url.pathname.endsWith('.js'))scriptRequests.set(request,{path:url.pathname,started:Date.now()-bootStarted});});
+  page.on('requestfinished',request=>{const entry=scriptRequests.get(request);if(entry){scriptLoads.push({...entry,finished:Date.now()-bootStarted});scriptRequests.delete(request);}});
   page.on('pageerror',e=>errors.push(e.message));
   page.on('console',message=>{
     if(['error','warning'].includes(message.type()))diagnostics.push({type:message.type(),message:message.text()});
@@ -96,10 +99,10 @@ async function join(browser,number,options={}){
     if(!script)await page.waitForTimeout(500);
   }
   if(!script){
-    fs.writeFileSync(path.join(directory,'bootstrap-'+number+'.private.json'),JSON.stringify({errors,diagnostics,
+    fs.writeFileSync(path.join(directory,'bootstrap-'+number+'.private.json'),JSON.stringify({errors,diagnostics,scriptLoads,
       frames:page.frames().map(f=>{try{const u=new URL(f.url());return u.origin+u.pathname}catch{return 'unknown'}})},null,2));
   }
-  assert.ok(script,'Cinema controller loaded');
+  assert.ok(script,roomId+' controller loaded');
   assert.equal(await script.evaluate(()=>window.castleRoom.layout.seats.length),options.seats??64);
   assert.equal(await script.evaluate(()=>window.castleRoom.layout.groups.length),options.groups??4);
   assert.equal(await script.evaluate(async()=> (await WA.room.getTiledMap()).properties.find(p=>p.name==='castleRevision')?.value),options.revision||'20261108-kino6');
@@ -109,7 +112,7 @@ async function join(browser,number,options={}){
   await script.evaluate(async p=>{await WA.player.teleport(p[0],p[1]);await castleRoom.syncPosition()},parking);
   await context.storageState({path:storage});
   console.log((schoolStorage?'Authorized school test':'Synthetic')+' '+roomId+' participant '+number+' entered.');
-  return {context,page,script,errors,diagnostics,get filmRequests(){return filmRequests}};
+  return {context,page,script,errors,diagnostics,scriptLoads,get filmRequests(){return filmRequests}};
 }
 async function move(u,x,y){
   await u.script.evaluate(async p=>{await castleRoom.stand();await WA.player.teleport(p.x,p.y)}, {x,y});
