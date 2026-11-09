@@ -157,6 +157,13 @@ native real-student acceptance or a 400-person load test. The synthetic browser
 probe checks two waiting participants, immediate/automatic link refresh,
 wrong PIN, late responses, dirty input, changing accounts, opening the latest
 target, embedded layout and server-side permission loss. No production room
-link is changed. Native multi-participant acceptance of this new wiring is
-still pending. Reports and test tokens stay outside the public repository;
-live server audit tokens are kept only in memory.
+link is changed. Native four-participant acceptance now verifies two isolated
+audio groups decoding speech while two game panels are open, denied direct
+launches from unknown accounts, real compact native-menu operation, reopening,
+no duplicated panels, movement after departure and the three game entry routes.
+The actual staff UI-only probe creates no additional WA participant. Native
+test users are synthetic unknown accounts, not real pupils or authorized
+student game participants. No external provider match was started by this test.
+Reports and test tokens stay outside the public repository; live server audit
+tokens are kept only in memory and the temporary UI-only staff credential is
+removed after the test.

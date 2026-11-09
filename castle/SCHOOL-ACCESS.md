@@ -79,7 +79,20 @@ serverseitigen Berechtigungsverlust und direkte unberechtigte Startanfragen.
 Seitenfenster und externer Tab werden getrennt geprueft, Einbettungssperren
 nicht umgangen. Mobil gibt es eine kompakte Angebotsauswahl. Keine realen
 Schueler und keine produktiven Raumlink-Aenderungen wurden dafuer verwendet.
-Die native Mehrpersonenprobe der neuen Anbindung steht noch aus.
+Die native Vierpersonenprobe in WorkAdventure ist ebenfalls bestanden: zwei
+getrennte Tischgespraeche mit weiterlaufender, tatsaechlich dekodierter
+Sprachuebertragung waehrend der Spielefenster, verweigerte direkte Starts fuer
+unbekannte Testkonten, Schliessen/Wiederoeffnen ohne doppelte Fenster sowie
+normale Tastaturbewegung nach dem Verlassen. Spielesaal, Oberstufe und Halle
+verwenden denselben Einstieg; Raumwechsel entfernen das alte Fenster. Desktop
+und Mobil zeigen Karte und passende Bedienelemente ohne leere Spielflaeche.
+Auf schmalen Spielflaechen wird das native Aktionsmenue benutzt.
+
+Die zusaetzliche echte Lehrkraft-UI-Probe erkennt die frische Schulrolle und
+loest einen aktuellen Vorschau-Raum auf, ohne einen weiteren Lehrkraft-Avatar
+in WorkAdventure anzumelden. Die vier nativen Teilnehmer waren ausschliesslich
+unbekannte synthetische Konten. Das ist keine native Freigabeprobe mit einem
+echten Schuelerkonto und keine gestartete Partie bei einem Fremdanbieter.
 
 Die bisherigen Karten und die bisherige oeffentliche Inhaltsdarstellung
 bleiben erhalten. Oeffentliche Fremdseiten und bereits bekannte externe

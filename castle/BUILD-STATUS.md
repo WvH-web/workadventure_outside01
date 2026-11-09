@@ -45,8 +45,11 @@ Village und geschuetzte Lehrerzimmer werden nicht ersetzt.
   vorhandene Raumlinks bleiben die Datenquelle. 59 isolierte PHP-/MySQL-Faelle,
   neun Portal-Formularansichten, zwanzig neue Start-/Katalogpruefungen und eine
   getrennte Zweibrowserprobe bestanden. Sieben Regelplaetze bleiben Entwuerfe,
-  fuenf enthalten echte Vorschauziele und zwei bleiben leer. Die neue native
-  Mehrpersonenprobe ist noch offen. Einzelheiten: `SCHOOL-ACCESS.md`.
+  fuenf enthalten echte Vorschauziele und zwei bleiben leer. Die native
+  Vierpersonenprobe bestaetigt getrennte Tischgespraeche bei offenen Fenstern,
+  verweigerte direkte Starts unbekannter Konten, Wiedereroeffnen, Weiterlaufen
+  und Einstieg aus Spielesaal, Oberstufe und Halle. Die echte Lehrkraft-UI-Probe
+  erstellt keinen zusaetzlichen WA-Teilnehmer. Einzelheiten: `SCHOOL-ACCESS.md`.
 
 ## Noch zu vervollstaendigen
 
@@ -78,13 +81,22 @@ Village und geschuetzte Lehrerzimmer werden nicht ersetzt.
 
 ## Pruefstand der Innenausbaustufe
 
-Aktuell ist Fassung `20261108-expansion8` mit passiven Figuren- und Museumsbildern.
+Aktuell ist Fassung `20261109-games1` mit dem angeschlossenen Spielebereich.
+227 Kernpruefungen, getrennte Browserproben der Lobby und die native
+Vierpersonenprobe der Anbindung sind bestanden; Details und Grenzen stehen in
+`SCHOOL-ACCESS.md`. Die neue Serverkomponente ist mit eigenem gesundem
+Zustandscheck bereitgestellt. Bestehende WorkAdventure-/Audio-Instanzen,
+Anmeldematerial und Nginx bleiben unveraendert.
+
+Die grafische Ausgangsfassung bleibt `20261108-expansion8` mit passiven
+Figuren- und Museumsbildern; fuer die Spiele-Anbindung wurden keine
+Raumgrafiken, Sitzkoordinaten oder Hoergruppen geaendert.
 Die erneute native Einzelprobe bestand in allen acht betroffenen Innenraeumen:
 alle Dialoge, 92 Sitze, 32-Pixel-Figuren mit transparenten Ecken, ausdruecklicher
 Fokussperre und ohne alte Figurenfenster oder Raumknopfe. JavaScript-Fehler: keine.
 Die gesonderte Klickprobe bestaetigt echte Bewegung nach Figuren- und Museums-
 bildklicks sowie fuenf tatsaechlich geladene Museumsbilder. Die gemeinsame Suite
-mit der neuen Schulpruefung besteht inzwischen aus 207 bestandenen Kernpruefungen.
+mit der neuen Schulpruefung bestand damals aus 207 bestandenen Kernpruefungen.
 Die aktuelle vollstaendige Grafikprobe mit den Aussenkarten
 prueft sechzehn Karten in 1440, 390 und 320 Pixel Breite: 345 Aufnahmen, keine
 Layoutbefunde oder Browserfehler. Die native Vierpersonenprobe der Aussenfassung
