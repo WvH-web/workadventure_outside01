@@ -90,7 +90,14 @@ Tischauswahl mit spaeterem Beitritt und Zuruecksetzen erst beim letzten
 Verlassen. Die Vierpersonenprobe im Atelier prueft gemeinsames Zeichnen
 parallel zu zwei getrennten nativen Hoergruppen. Sichtbarer Kart-Einstieg,
 Fahrt, Ausstieg und die schnellere Rutsche sind separat live geprueft.
-Die Tutorialkorrektur wird isoliert vorbereitet; noch kein Client-Austausch.
+Die Tutorialkorrektur ist nach geprueftem isoliertem Lauf und ausdruecklicher
+Wartungsfreigabe als `1.34.5-school-v4-onboarding` live. Nur der Client wurde
+ersetzt; bisheriges Schloss, vorhandene Kartenziele und alle sechzehn
+Vorschau-WAMs bleiben unveraendert. Die erneute native Tischprobe besteht
+einschliesslich vollstaendig sichtbarem mobilen Schachbrett und Platzwahl.
+Die Live-Tutorialprobe mit zwei normal angemeldeten Microsoft-Schueler-
+Testkonten besteht auf Desktop und Mobil: erster Einstieg, Raumwechsel,
+Neuladen, Hilfe-Wiederholung und anschliessend freie Steuerung.
 Nachweise und konkrete Grenzen: [Interaktionen](../docs/schulschloss-interaktionen.md),
 [Schach](../docs/schulschloss-schach.md), [Atelier](../docs/schulschloss-atelier.md).
 Keiner dieser Nachweise ersetzt den noch erforderlichen Lasttest.

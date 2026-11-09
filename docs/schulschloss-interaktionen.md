@@ -58,7 +58,12 @@ Ergaenzung vom 9. November 2026. Das alte Schloss bleibt bestehen.
   Maus-/Touch-Zuege und Sichtbarkeitsgrenzen bestehen bei 390x468, 320x440
   und 760x480 Pixeln. Die erneute native Pruefung verlangt jetzt die tatsaechlich
   sichtbaren Brett- und Platzwahlgrenzen; ein blosses Zaehlen von 64
-  DOM-Feldern gilt dafuer nicht als Beleg. Diese erneute Liveprobe steht aus.
+  DOM-Feldern gilt dafuer nicht als Beleg. Diese erneute Liveprobe besteht
+  nach dem Client-Austausch mit zwei normal angemeldeten Testkonten:
+  Fensterhoehe 469 px, Brettunterkante 378,39 px, Platzwahlunterkante
+  448,39 px. Spaeterer Beitritt, Fortbestand nach einem Aufstehen und eine
+  neue Runde nach dem letzten Aufstehen sind erneut bestaetigt. Auch die
+  native Dreipersonenprobe der gemeinsamen Oberstufenwahl besteht erneut.
 - Sichtbarer Go-Kart-Einstieg, native Fahrt, Ausstieg und wiederhergestellter
   Avatar sind mit einem normal angemeldeten Schueler-Testkonto live geprueft.
 - Die Rutsche verwendet jetzt zeitbasierte Bewegung mit 480 Pixeln/Sekunde
@@ -75,8 +80,18 @@ Ergaenzung vom 9. November 2026. Das alte Schloss bleibt bestehen.
   im Welt-Kontext, nicht als raumuebergreifendes Einstiegsmerkmal. Die
   Client-Korrektur ist isoliert gebaut; sieben neue Tutorial- und sechs
   vorhandene Schul-Anpassungspruefungen bestehen im echten Svelte-Pruefumfeld.
-  Sie ist noch nicht veroeffentlicht; Browserprobe und kontrollierter
-  Client-Austausch stehen aus. Laufende Dienste wurden nicht neu gestartet.
+  Die isolierte native Browserprobe besteht einschliesslich Mobil-Raumwechsel
+  mitten im Tutorial. Nach ausdruecklich erlaubter kurzer Unterbrechung ist
+  `1.34.5-school-v4-onboarding` live. Nur der Client wurde ersetzt; alle
+  sechzehn Vorschau-WAMs, bestehende Kartenziele und Schul-Anpassungen bleiben
+  unveraendert. Die temporaere Testinstanz ist wieder beendet.
+  Die anschliessende Liveprobe besteht mit zwei normal angemeldeten
+  Microsoft-Schueler-Testkonten auf Desktop und 390-Pixel-Touchansicht:
+  erstes Angebot, keine Wiederholung nach Raumwechsel oder Neuladen,
+  ausdrueckliche Hilfe-Wiederholung und mobiler Abschluss. Freie Bewegung,
+  temporaerer Avatarwechsel und frischer Schulzugang bestehen ohne
+  JavaScript-Fehler. Die Einstiegs-Praeferenz gilt pro Browser und Konto;
+  sie wird nicht als geraeteuebergreifende Speicherung ausgegeben.
   Details: `ops/workadventure-onboarding/README.md`.
 
 Externe Angebote bleiben bis zur administrativen Freigabe gesperrt. Eine

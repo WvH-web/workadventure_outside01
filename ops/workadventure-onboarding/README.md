@@ -33,10 +33,21 @@ isolierte Compilerlauf bestehen. Sieben Store-Pruefungen und sechs vorhandene
 Pruefungen der Schul-Anpassungen bestehen im echten WorkAdventure-/Svelte-
 Pruefumfeld. Alle vorher vorhandenen Quellanpassungen bleiben bytegleich.
 
-Das ist noch keine Veroeffentlichung des Clients: Laufende WorkAdventure-,
-Anmelde-, Audio- und Karten-Dienste wurden nicht ersetzt oder neu gestartet.
-Browserprobe, Ruecksetzstand und kontrollierte Client-Auslieferung folgen
-separat. Der Compiler ist kein Grund, einen laufenden Teilnehmer zu trennen.
+Der gepruefte Client `1.34.5-school-v4-onboarding` ist am 9. November nach
+ausdruecklicher Freigabe fuer eine kurze Unterbrechung veroeffentlicht.
+Neustart: 21:33 UTC / 15:33 Costa Rica. Nur der Play-Client wurde ersetzt;
+Anmeldungskonfiguration, fuenf vorhandene Rollen-Patches, Audio-, Karten- und
+Spieledienste bleiben erhalten. Alle sechzehn Vorschau-WAMs sind bytegleich,
+die bisherigen Village-/Nature-Ziele unveraendert. Das alte Schloss bleibt
+bestehen. Unmittelbar vor dem Austausch waren keine Spielverbindungen aktiv.
+
+Die optionale Wartungsfreigabe ist an den exakten Kandidaten, V3-Ausgangsstand
+und die aktuelle Compose-Datei gebunden, laeuft nach 15 Minuten ab und wird
+vor dem Austausch einmalig verbraucht. Ohne diese private Freigabe verhindern
+weiterhin aktive Spielverbindungen den Austausch. Dreizehn isolierte
+Pruefungen bestaetigen den gezielten YAML-Eintrag sowie Gueltigkeits-, Zeit-
+und Umfangsgrenzen der Freigabe. Vollstaendiges V3-Image und originale
+Compose-Datei bleiben als Ruecksetzstand erhalten. Kein erneuter Compilerlauf.
 
 Die native Browserprobe in der Loopback-Testinstanz besteht jetzt ebenfalls:
 erstes Angebot in zwei getrennten Browsern, Raumwechsel und Neuladen ohne
@@ -47,6 +58,30 @@ kuenstliche Gastidentitaeten, keine echte Microsoft-Anmeldung. Ein einfacher
 JWT-Tausch im selben anonymen Browser ist kein gueltiger Microsoft-Kontowechsel:
 WorkAdventure speichert anonyme Weltvariablen browserbezogen. Diese Grenze
 wird nicht als bestandene Microsoft-Kontenprobe ausgegeben.
+
+Die anschliessende Liveprobe besteht mit beiden ausdruecklich vorgesehenen
+kuenstlichen Schueler-Testkonten nach normaler Microsoft-Anmeldung, eines
+davon mit 390-Pixel-Touchansicht. Beide erhalten beim frischen Einstieg das
+erste Angebot; Raumwechsel mitten in einer manuell gestarteten Wiederholung
+und Neuladen bieten es nicht erneut an. Auf Desktop funktioniert ausdrueckliches
+Ueberspringen, mobil der vorhandene kurze Ablauf mit `Next`, `Got it!` und
+`Start exploring!`. Bewegung, temporaerer Kart-Avatar samt Rueckkehr und
+frisch gepruefter Schuelerzugang zum Schachdienst bestehen. Keine
+JavaScript-Fehler. Die ersten fehlgeschlagenen mobilen Pruefversuche hatten
+einen Desktop-Ueberspringen-Knopf beziehungsweise falsche Schrittbeschriftungen
+erwartet; es war keine weitere Client-Aenderung oder Unterbrechung noetig.
+Browserlokale Speicherung bleibt browserlokal, nicht geraeteuebergreifend.
+
+Die Abschaltpruefung der temporaeren Testinstanz besteht; sie ist nicht mehr
+aktiv. Private Nachweise liegen unter dem serverseitigen Upgrade-Verzeichnis
+`20261109-onboarding`, insbesondere `live-deployment.json` und
+`post-rollout-check.json`. Die Live-Browser- und native Tischprobe werden
+ebenfalls dort ohne Anmeldedaten gesichert. Die unabhaengige Nachpruefung vermerkt eine schon
+vor dem Neustart bestehende Webserver-Manifestabweichung: Webkonfiguration
+zuletzt um 19:22 UTC geaendert, Client erst um 21:33 UTC gestartet. Weder die
+Webkonfiguration noch fremde Nachweise wurden dafuer ueberschrieben oder auf
+einen alten Stand zurueckgesetzt. Ein spaeterer Inhalts-Rollout muss diese
+Abweichung gezielt abgleichen; sie wird nicht als passende Pruefsumme ausgegeben.
 
 ## Bau-Cache
 

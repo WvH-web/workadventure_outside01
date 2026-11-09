@@ -119,6 +119,16 @@ erneute native Sprachprobe. Es ist keine Freigabe fuer 400 Teilnehmer. Dafuer mu
 insbesondere die Schulstatus-Abfragen und die gesamte Schlossinstanz gemeinsam
 unter Last geprueft werden.
 
+Nach dem Tutorial-Clientwechsel besteht die erneute native Schlossprobe mit
+zwei normal angemeldeten Microsoft-Testkonten: automatisches Oeffnen beim
+Hinsetzen, fest zugeordneter Tisch 1, gemeinsame Runde bei spaetem Beitritt,
+Fortbestand beim Aufstehen eines Teilnehmers und neue Runde erst nach dem
+letzten Aufstehen. Im echten mobilen Seitenfenster sind alle 64 Felder und
+die Platzwahl vollstaendig sichtbar: Fensterhoehe 469 px, Brettunterkante
+378,39 px, Platzwahlunterkante 448,39 px. Diese Probe fuehrt keine Schachzuege
+aus und beansprucht keine fremden Plaetze. Die getrennte Dreipersonenprobe
+bestaetigt erneut die gemeinsame Wahl und Erzaehlkarten am Oberstufentisch.
+
 Die Abhaengigkeiten sind lokal, versionsgebunden und per Integritaetspruefung
 bezogen: chess.js 1.4.0, cm-chessboard 8.15.4 und eventsource-parser 4.1.3.
 Urheber und Lizenzen sind auf der Schachseite verlinkt. Es wird nur der
