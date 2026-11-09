@@ -1,0 +1,9 @@
+[
+  {"id":"stumbleguysgame","published":false,"audiences":["staff","student"],"staffPreview":true,"minAge":0,"maxAge":null,"gradeLevels":null,"classIds":null},
+  {"id":"haxballarea01","published":false,"audiences":["staff","student"],"staffPreview":true,"minAge":0,"maxAge":null,"gradeLevels":null,"classIds":null},
+  {"id":"gamesarea01","published":false,"audiences":["staff","student"],"staffPreview":true,"minAge":0,"maxAge":null,"gradeLevels":null,"classIds":null},
+  {"id":"gamesarea02","published":false,"audiences":["staff","student"],"staffPreview":true,"minAge":0,"maxAge":null,"gradeLevels":null,"classIds":null},
+  {"id":"gamesarea03","published":false,"audiences":["staff","student"],"staffPreview":true,"minAge":0,"maxAge":null,"gradeLevels":null,"classIds":null},
+  {"id":"gamesarea04","published":false,"audiences":["staff","student"],"staffPreview":true,"minAge":0,"maxAge":null,"gradeLevels":null,"classIds":null},
+  {"id":"gamesarea05","published":false,"audiences":["staff","student"],"staffPreview":true,"minAge":0,"maxAge":null,"gradeLevels":null,"classIds":null}
+]

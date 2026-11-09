@@ -35,6 +35,11 @@ Village und geschuetzte Lehrerzimmer werden nicht ersetzt.
   mit insgesamt 32 Picknickplaetzen in acht Gespraechsgruppen. Neue Figuren:
   Noah, Val und Rosa. Gemeinsame Erzaehlkarten, bestehende Museums-/Musikbeitraege,
   Rutsche und native Go-Kart-Darstellung. Aktuelle Abnahme und Grenzen: `OUTDOORS.md`.
+- Die getrennte Servergrundlage fuer frische Schul-, Klassen- und Alterspruefungen
+  ist bereitgestellt: achtzehn neue Node-Pruefungen, sechsunddreissig kuenstliche
+  SQL-Faelle und eine Livepruefung bestanden. Keine Schuelerprofile werden an
+  die Karte ausgegeben. Das ist noch keine angeschlossene Inhaltssperre; der
+  genaue Stand steht in `SCHOOL-ACCESS.md`.
 
 ## Noch zu vervollstaendigen
 
@@ -43,9 +48,12 @@ Village und geschuetzte Lehrerzimmer werden nicht ersetzt.
   Testteilnehmern abgenommen; Kartdarstellung bleibt lokal. Siehe `OUTDOORS.md`.
 - Weitere im Gesamtkonzept vorgesehene Sonderraeume und Entdeckungen. Private
   Wege und deren genaue Plaene werden nicht in dieser oeffentlichen Datei beschrieben.
-- Serverseitig frisch gepruefte Klassen-/Altersfreigaben fuer Inhalte und
-  passende Zugangspunkte aus dem Verwaltungsportal. Raumnamen allein sind
-  kein Schutz und die aktuelle Innenvorschau ist keine neue Altersfreigabe.
+- Serverseitige Klassen-/Altersentscheidungen sind als Grundlage vorhanden.
+  Noch noetig: Portalpflege samt Anbieterfreigabe, frische Regelkonfiguration,
+  Bindung an gepruefte Zieladressen und die Pruefung beim tatsaechlichen
+  Inhaltsaufruf, Beitritt und Besuch. Die jetzigen Karten verwenden den neuen
+  Dienst noch nicht; Raumnamen sind kein Schutz und die Vorschau ist keine
+  neue Altersfreigabe. Einzelheiten: `SCHOOL-ACCESS.md`.
 - Wirkliche gemeinsame Zeichentische, ein verifiziert gemeinsam genutztes
   Shared Piano, belastbares Schach und gegebenenfalls Billard nach Abnahme
   einer geeigneten vorhandenen Grundlage. Keine bloss dekorativen Spielmoebel
@@ -68,8 +76,9 @@ Die erneute native Einzelprobe bestand in allen acht betroffenen Innenraeumen:
 alle Dialoge, 92 Sitze, 32-Pixel-Figuren mit transparenten Ecken, ausdruecklicher
 Fokussperre und ohne alte Figurenfenster oder Raumknopfe. JavaScript-Fehler: keine.
 Die gesonderte Klickprobe bestaetigt echte Bewegung nach Figuren- und Museums-
-bildklicks sowie fuenf tatsaechlich geladene Museumsbilder. Insgesamt bestanden
-189 Kernpruefungen. Die aktuelle vollstaendige Grafikprobe mit den Aussenkarten
+bildklicks sowie fuenf tatsaechlich geladene Museumsbilder. Die gemeinsame Suite
+mit der neuen Schulpruefung besteht inzwischen aus 207 bestandenen Kernpruefungen.
+Die aktuelle vollstaendige Grafikprobe mit den Aussenkarten
 prueft sechzehn Karten in 1440, 390 und 320 Pixel Breite: 345 Aufnahmen, keine
 Layoutbefunde oder Browserfehler. Die native Vierpersonenprobe der Aussenfassung
 3 ist in `OUTDOORS.md` dokumentiert. Die folgende Innenraum-Sprachabnahme bleibt
