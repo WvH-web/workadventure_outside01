@@ -26,6 +26,11 @@ Village und geschuetzte Lehrerzimmer werden nicht ersetzt.
 - Die Expeditionen bieten sieben bewusst externe Museums- und Weltraumziele.
   Einbettungssperren werden nicht umgangen. NASA Eyes kann separat am
   Forschergruppentisch der Sternwarte im Seitenfenster geoeffnet werden.
+- Zwoelf native `Eventgaeste` sind mit zwei Teilnehmern und dem nativen
+  Auswahlfenster geprueft. Acht klar bezeichnete Schlossfiguren sind mit
+  Dialogen, 32-Pixel-Massstab und transparentem Hintergrund live geprueft.
+  Jung und alt, unterschiedliche Stile und Persoenlichkeiten, schulgeeignet.
+  Figuren zaehlen nicht als echte Besucher. Einzelheiten: `CHARACTERS.md`.
 
 ## Noch zu vervollstaendigen
 
@@ -50,11 +55,6 @@ Village und geschuetzte Lehrerzimmer werden nicht ersetzt.
   und Besuche. Lokale Testdaten bleiben unberuehrt und unveroeffentlicht.
 - Betriebs-, Wiederanlauf- und realistische Leistungstests vor breiter Nutzung.
   Kleine synthetische Mehrteilnehmerproben ersetzen keine Lastabnahme.
-- Zusaetzlich: Zwoelf native `Eventgaeste` sind mit zwei Teilnehmern und dem
-  nativen Auswahlfenster geprueft. Acht klar bezeichnete Schlossfiguren sind
-  mit Dialogen, 32-Pixel-Massstab und transparentem Hintergrund live geprueft.
-  Jung und alt, unterschiedliche Stile und Persoenlichkeiten, schulgeeignet.
-  Figuren zaehlen nicht als echte Besucher. Einzelheiten: `CHARACTERS.md`.
 
 ## Pruefstand der Innenausbaustufe
 
@@ -68,23 +68,36 @@ Hallenfunktionen ohne Layout- oder Browserfehler. Neun gesonderte Inhaltsproben
 pruefen Museum, Musik und Expeditionen inklusive Bilder, Rueckweg aus einem
 Beitrag, geaenderte Daten und eine voruebergehend nicht erreichbare Verwaltung.
 
-Die native Vierpersonenprobe hat das Museum mit allen drei Hoergruppen, spaetem
-Beitritt, zwoelf Sitzen, fuenf Verwaltungsbildern und echtem eingebettetem
-Verwaltungsbeitrag geprueft. Beim folgenden Raumwechsel trat eine verzoegerte
-Initialisierung auf, die in der Einzelprobe nicht reproduziert wurde. Fassung 2
-verwendet eindeutig raumspezifische Skriptadressen und korrekt beschriftete
-Rueckwege. In der Wiederholungsprobe trat an einer Fensterbank ein Sitz-Timeout
-auf. Als konkrete Schwachstelle wurde der bisherige Drehstart in einer gesperrten
-Wandkachel gefunden. Der neue Drehweg verwendet ein kurzes, fuer den ganzen Avatar
-freies Bodenpaar; alle ueber 200 Sitzplaetze werden darauf geprueft. Eine native
-Einzelprobe nach dieser Aenderung pruefte alle 92 Sitze der acht neuen Raeume
-erfolgreich. In Fassung 6 bestanden Museum und Musiksalon auch die Vierpersonenprobe
-mit allen drei getrennten Gruppen, gemeinsamen Karten und den echten eingebetteten
-Verwaltungsbeitraegen. Beim Wechsel zum Oberstufensalon blieben alte Aktivitaetsknopfe
-stehen und der Rueckwegknopf verschwand. Fassung 7 trennt die Kennungen je Raum;
-beim Eintritt werden nur bekannte Bedienelemente anderer Schlossraeume entfernt.
-Der vollstaendige Vierpersonen-Wiederholungsnachweis steht noch aus. Kein allgemeines
-Bestehen aller neuen Raeume wird daraus abgeleitet. Testberichte,
+Die vollstaendige native Vierpersonenprobe der Fassung 7 ist bestanden: alle
+acht neuen Innenbereiche, alle 92 Sitze und 22 getrennte Hoergruppen. Auch
+stehende Teilnehmer werden einbezogen; parallele Runden bleiben getrennt.
+Die sechs gemeinsamen Erzaehlkartenangebote folgen denselben Runden, auch bei
+spaetem Beitritt und erneutem Oeffnen. Museum und Musik oeffnen echte
+Verwaltungsbeitraege; die fuenf Museumsbilder werden korrekt geladen. Desktop
+und Mobil zeigen gefuellte Spielflaechen. Der Rueckweg zur Halle und ihre neue
+Wandelgangtuer funktionieren. Keine zurueckgebliebenen Museumsbildfenster und
+keine JavaScript-Fehler in dieser Probe.
+
+Die separate Figurenprobe der Fassung 7 pruefte ebenfalls alle acht Raeume:
+Dialoge, 32-Pixel-Figuren, vier transparente Hintergrund-Ecken, alle 92 Sitze,
+keine alten Raumknopfe und keine zurueckgebliebenen Figurenbilder. Die erneute
+native Zweipersonenprobe bestaetigte zwoelf Auswahlbilder, zwei unterschiedliche
+32-Pixel-Avatare, gegenseitige Sichtbarkeit und eine gespeicherte Avatarwahl.
+
+Auch die erneute native Kinoprobe mit vier Teilnehmern ist bestanden: ruhiger
+vorderer Bereich, getrennte hintere Gespraeche einschliesslich benachbarter
+Gruppengrenzen, automatisch geoeffnetes Filmfenster, kein Neuladen beim
+Platzwechsel, respektiertes manuelles Schliessen und Rueckweg zur separaten
+Halle. Desktop- und Mobil-Spielflaechen sind gefuellt; JavaScript-Fehler: keine.
+Der Kinoinhalt wurde dabei bewusst durch eine Testseite ersetzt, damit kein
+echter Film gestartet wird. Das ist keine neue Ende-zu-Ende-Pruefung des
+bestehenden synchronen Filmdienstes.
+
+Die frueher gefundenen Sitz- und Knopfprobleme sind damit nachgeprueft: Der
+Drehstart liegt auf einem fuer den ganzen Avatar freien Bodenpaar statt in
+der Wand. Die Knopfkennungen sind je Raum getrennt; beim Eintritt werden nur
+bekannte Bedienelemente anderer Schlossraeume entfernt. Das ist eine kleine
+Funktionsprobe, keine Lastfreigabe fuer 400 gleichzeitige Teilnehmer. Testberichte,
 synthetische Sprachdatei und kurzlebige Testzugriffe bleiben ausserhalb des
 oeffentlichen Repositorys.
 

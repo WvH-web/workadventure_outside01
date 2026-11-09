@@ -24,7 +24,7 @@ Insbesondere aendert ein Lehrer-Outfit keine serverseitigen Rollen oder Freigabe
 
 ## Schlossbewohner
 
-Die Fassung `20261108-expansion6` platziert acht Figuren:
+Die Fassung `20261108-expansion7` platziert acht Figuren:
 Amir im Wandelgang, Otto in der Galerie, Kai im Oberstufensalon, Sam im Spielesaal,
 Elin im Museum, Lea im Musiksalon, Mira im Atelier und Farah in der Sternwarte.
 Ihre Koerper haben echte Kollisionsfelder; die Gespraechsflaechen liegen davor,
@@ -41,9 +41,10 @@ und dem transparenten Figurenbild. Fassung 6 gleicht dieses an; die native
 Einzelprobe in der Halle zeigt damit tatsaechlich keinen weissen Hintergrund.
 Die Figuren verwenden die vorhandene Karten-Webseiten-Schnittstelle, ohne
 Kartenschnittstellen-, Kamera- oder Mikrofonfreigabe fuer die Bilder.
-Die erneute Liveprobe in allen acht Raeumen ist bestanden: 32-Pixel-Figuren,
+Die erneute Liveprobe der Fassung 7 in allen acht Raeumen ist bestanden: 32-Pixel-Figuren,
 vier gepruefte Hintergrund-Eckpixel ohne weissen Kasten, alle Dialoge, sichere
-Bildfenster ohne Kartenschnittstelle und alle 92 Sitze. Browserfehler: keine.
+Bildfenster ohne Kartenschnittstelle und alle 92 Sitze. Beim Raumwechsel bleiben
+keine fremden Raumknopfe oder alten Figurenbilder zurueck. Browserfehler: keine.
 Die reine Grafikvorschau bildet diese nativen Zusatzfiguren nicht ab.
 
 ## Quelle und Betrieb

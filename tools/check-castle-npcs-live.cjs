@@ -5,6 +5,11 @@ const {join,sit,move,writeAudio,audioFixture}=require('./check-cinema-live.cjs')
 const {revision}=require('./build-castle-expansion.cjs');
 const out=path.resolve(__dirname,'../../output/castle-npcs-live-qa');fs.mkdirSync(out,{recursive:true});
 const web='https://wvh-web.github.io/workadventure_outside01/castle/',base='https://together.deine-schule.com/~/castle-preview/';
+const mapIds=require('./castle-map-ids.cjs'),props=o=>Object.fromEntries((o.properties||[]).map(p=>[p.name,p.value]));
+const knownLabels=new Set(mapIds.flatMap(id=>{
+  const map=JSON.parse(fs.readFileSync(path.resolve(__dirname,'../castle',id+'.tmj')));
+  return [props(map).castleReturnLabel||'Grosse Halle',...map.layers.flatMap(l=>l.objects||[]).map(o=>props(o).castleActivityLabel).filter(Boolean)];
+}));
 async function findRoom(user,id){
   let frame;for(let n=0;n<160&&!frame;n++){
     for(const f of user.page.frames())if(await f.evaluate(id=>window.castleRoom?.layout.id===id,id).catch(()=>false))frame=f;
@@ -25,6 +30,12 @@ async function main(){
         await user.script.evaluate(url=>WA.nav.goToRoom(url),base+id+'.wam').catch(e=>{if(!/detached|destroyed/.test(e.message))throw e;});
       }
       await findRoom(user,id);
+      await user.page.waitForTimeout(2400);
+      assert.equal(user.page.frames().filter(f=>f.url().startsWith(web+'npc-sprite.html?')).length,1,'Only the current room inhabitant remains');
+      const current=await user.script.evaluate(()=>[castleRoom.layout.returnLabel,...castleActivities.areas.map(a=>a.settings.label)]);
+      await user.page.getByRole('button',{name:current[0],exact:true}).waitFor();
+      for(const label of knownLabels)if(!current.includes(label))
+        assert.equal(await user.page.getByRole('button',{name:label,exact:true}).count(),0,'No previous-room command: '+label);
       const actor=await user.script.evaluate(async()=>{const p=o=>Object.fromEntries((o.properties||[]).map(p=>[p.name,p.value]));
         const map=await WA.room.getTiledMap(),slot=map.layers.flatMap(l=>l.objects||[]).find(o=>p(o).castleNpcId),id=p(slot).castleNpcId,area=castleActivities.areas.find(a=>a.settings.id==='npc-'+id);
         return {id,label:area.settings.label,area:{x:area.x,y:area.y,width:area.width,height:area.height}};});
@@ -47,7 +58,7 @@ async function main(){
       const seatIds=await user.script.evaluate(()=>castleRoom.layout.seats.map(s=>s.id));
       for(const seatId of seatIds)await sit(user,seatId);
       await user.page.screenshot({path:path.join(out,id+'-seated.png')});
-      results.push({id,character:actor.id,avatarScale32:true,matchingColorScheme:true,noWhiteBoxPixels:true,dialogue:true,noMapApi:true,seats:seatIds.length});
+      results.push({id,character:actor.id,avatarScale32:true,matchingColorScheme:true,noWhiteBoxPixels:true,dialogue:true,noMapApi:true,noPreviousRoomCommands:true,noOrphanNpcImages:true,seats:seatIds.length});
       fs.writeFileSync(path.join(out,'progress.json'),JSON.stringify({revision,results},null,2)+'\n');console.log(JSON.stringify(results.at(-1)));
     }
     assert.deepEqual(user.errors,[]);fs.writeFileSync(path.join(out,'result.json'),JSON.stringify({revision,results,errors:user.errors},null,2)+'\n');

@@ -10,17 +10,20 @@ async function main(){
   try{
     const textures=['wvh-event-farah-v1','wvh-event-amir-v1'];
     for(let i=1;i<=2;i++)users.push(await join(browser,i,{roomId:'museum',roomUrl:'https://together.deine-schule.com/~/castle-preview/museum.wam',
-      outputDir:out,seats:12,groups:3,revision,characterTextureId:textures[i-1],parking:[[432,400],[496,400]]}));
-    const pictures=[];
+      outputDir:out,label:'Avatarprobe',seats:12,groups:3,revision,characterTextureId:textures[i-1],parking:[[432,400],[496,400]]}));
+    const pictures=[],rendered=[];
     for(const [i,user]of users.entries()){
       assert.deepEqual(await user.page.evaluate(()=>JSON.parse(localStorage.getItem('characterTextures'))),[textures[i]]);
       const data=await user.script.evaluate(()=>WA.player.getWokaPicture());const raw=Buffer.from(data.slice(data.indexOf(',')+1),'base64');
       const meta=await sharp(raw).metadata();assert.ok(meta.width>=32&&meta.height>=32);
       const image=await sharp(raw).ensureAlpha().raw().toBuffer();assert.ok(image.some((value,n)=>n%4===3&&value>0));
-      fs.writeFileSync(path.join(out,'native-avatar-'+(i+1)+'.png'),raw);pictures.push({width:meta.width,height:meta.height});
+      fs.writeFileSync(path.join(out,'native-avatar-'+(i+1)+'.png'),raw);pictures.push({width:meta.width,height:meta.height});rendered.push(raw);
     }
+    assert.notEqual(Buffer.compare(rendered[0],rendered[1]),0,'Distinct selected avatars resolve to different native pictures');
     const a=users[0];await move(a,432,400);await move(users[1],496,400);await a.page.waitForTimeout(3000);
-    assert.ok(await a.script.evaluate(()=>[...WA.players.list()].some(p=>p.name==='Hallenprobe 2')));
+    const otherPlayerId=await users[1].script.evaluate(()=>WA.player.playerId);
+    assert.equal(typeof otherPlayerId,'number');
+    await a.script.waitForFunction(id=>[...WA.players.list()].some(p=>p.playerId===id),otherPlayerId,{polling:200,timeout:15000});
     await a.page.screenshot({path:path.join(out,'two-native-avatars.png')});
     await a.page.getByTestId('action-user').click();
     const menu=a.page.getByTestId('profile-menu');await menu.waitFor();
@@ -40,7 +43,7 @@ async function main(){
     await a.page.waitForFunction(()=>JSON.parse(localStorage.getItem('characterTextures'))?.[0]==='wvh-event-jan-v1',undefined,{polling:200});
     const errors=users.flatMap(u=>u.errors);assert.deepEqual(errors,[]);
     fs.writeFileSync(path.join(out,'result.json'),JSON.stringify({participants:2,registeredTextures:true,nativePictures:pictures,
-      otherParticipantTracked:true,collectionInNativePicker:true,allTwelvePickerSpritesVisible:true,selectionSaved:true,errors},null,2)+'\n');
+      differentNativePictures:true,otherParticipantTracked:true,collectionInNativePicker:true,allTwelvePickerSpritesVisible:true,selectionSaved:true,errors},null,2)+'\n');
     console.log(JSON.stringify({participants:2,nativePictures:pictures,collectionInNativePicker:true,errors}));
   }catch(e){for(const [i,user]of users.entries()){
     await user.page.screenshot({path:path.join(out,'failure-'+i+'.png')}).catch(()=>{});
