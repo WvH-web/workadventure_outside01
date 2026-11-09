@@ -2,6 +2,8 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import {CastleRoom,readLayout,isNativeMeetingRoom,nativeRoomUrl} from '../castle/room.js';
+import {clearPreviousCastleUi} from '../castle/ui-lifecycle.js';
+import {ownedUi,legacyUi} from '../castle/ui-ids.js';
 import {createRequire} from 'node:module';
 const require=createRequire(import.meta.url),mapIds=require('../tools/castle-map-ids.cjs');
 
@@ -57,7 +59,7 @@ test('the return command names its actual destination and preserves the original
     player:{state:{saveVariable:async()=>{}},getPosition:async()=>({x:80,y:80}),onPlayerMove:()=>({unsubscribe(){}})},
     ui:{actionBar:{addButton:b=>buttons.push(b),removeButton(){}}},controls:{restorePlayerControls(){}}};
   const room=new CastleRoom(wa,readLayout(labeled));room.refresh=()=>{};room.syncPosition=async()=>{};
-  try{await room.start();assert.equal(buttons.find(b=>b.id==='castle-return-hall').label,'Wandelgang');}
+  try{await room.start();assert.equal(buttons.find(b=>b.id==='castle-return-hall-grosse-halle').label,'Wandelgang');}
   finally{room.dispose();}
 });
 
@@ -77,4 +79,34 @@ test('every seat turns on a body-clear floor pair instead of teleporting into pr
     }
   }
   assert.ok(seats>200);
+});
+
+test('arrival removes only known previous castle commands and keeps all current and unrelated controls',()=>{
+  const buttons=new Set([...Object.values(ownedUi).flat(),...legacyUi,'external-meeting','teacher-room-return']);
+  const wa={ui:{actionBar:{removeButton:id=>buttons.delete(id)}}};
+  clearPreviousCastleUi(wa,'oberstufe');
+  assert.deepEqual([...buttons].sort(),[...ownedUi.oberstufe,'external-meeting','teacher-room-return'].sort());
+  const before=[...buttons];clearPreviousCastleUi(wa,'unknown-map');assert.deepEqual([...buttons],before);
+});
+
+test('late disposal of an old room cannot remove the new room return or stand command',()=>{
+  const buttons=new Set(['castle-return-hall-museum','castle-stand-museum','castle-return-hall-oberstufe','castle-stand-oberstufe']);
+  const wa={room:{id:roomId.replace('.tmj','.wam')},
+    ui:{actionBar:{removeButton:id=>buttons.delete(id)}},controls:{restorePlayerControls(){}},
+    player:{state:{saveVariable:async()=>{}}}};
+  const oldRoom=new CastleRoom(wa,{...readLayout(map),id:'museum',nativeMeetings:true});
+  oldRoom.dispose();
+  assert.deepEqual([...buttons].sort(),['castle-return-hall-oberstufe','castle-stand-oberstufe']);
+});
+
+test('generated ownership covers each mapped activity and never assigns one command to different rooms',()=>{
+  const all=Object.values(ownedUi).flat();assert.equal(new Set(all).size,all.length);
+  assert.deepEqual(Object.keys(ownedUi).sort(),[...mapIds].sort());
+  for(const id of mapIds){
+    const tiled=JSON.parse(fs.readFileSync(new URL('../castle/'+id+'.tmj',import.meta.url)));
+    for(const area of tiled.layers.flatMap(l=>l.objects||[])){
+      const activity=area.properties?.find(p=>p.name==='castleActivityId')?.value;
+      if(activity)assert.ok(ownedUi[id].includes('castle-activity-'+id+'-'+activity));
+    }
+  }
 });

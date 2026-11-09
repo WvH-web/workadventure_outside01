@@ -574,7 +574,7 @@ test("slide cancellation and exceptions always restore player controls", async (
     f.moved.emit({ x: slide.x + 16, y: slide.y + 16 });
     await room.startRide(slide);
     assert.equal(f.calls.controls, true);
-    assert.equal(f.calls.buttons.has("castle-ride-stop"), false);
+    assert.equal(f.calls.buttons.has(room.uiIds.ride), false);
     assert.equal(room.riding, false);
   } finally {
     room.dispose();
@@ -593,7 +593,7 @@ test("a failed slide transport restores controls and removes the exit action", a
     };
     await assert.rejects(room.startRide(slide), /transport unavailable/);
     assert.equal(f.calls.controls, true);
-    assert.equal(f.calls.buttons.has("castle-ride-stop"), false);
+    assert.equal(f.calls.buttons.has(room.uiIds.ride), false);
   } finally {
     room.dispose();
   }

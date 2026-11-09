@@ -1,7 +1,7 @@
 const fs=require('node:fs'),path=require('node:path');
 const {buildFurnishedRoom}=require('./build-library.cjs');
 const {createCanvas}=require('./castle-deps.cjs')('@napi-rs/canvas');
-const root=path.resolve(__dirname,'..'),revision='20261108-expansion6';
+const root=path.resolve(__dirname,'..'),revision='20261108-expansion7';
 const own='';
 const collection='https://together.deine-schule.com/castle-content/collection.html';
 const activity=(id,group,label,url,api=false)=>({id,group,label,url,api});
@@ -101,7 +101,7 @@ async function buildCastleExpansion(){
     results.push(await buildFurnishedRoom({id,folder:id+'-20261108-full',width:40,scene,script:'npcs.js',name:id==='erdgeschoss'?'Wandelgang':'Obere Galerie',
       description:'Eingerichteter Schlossgang mit acht beschrifteten Tueren und zwei getrennten Gespraechsgruppen.',overlays:[plaques(scene)]}));
   }
-  return results;
+  require('./build-castle-ui.cjs').buildCastleUi();return results;
 }
 module.exports={buildCastleExpansion,roomScene,corridorScene,rooms,revision};
 if(require.main===module)buildCastleExpansion().then(results=>{

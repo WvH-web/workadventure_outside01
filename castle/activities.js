@@ -1,4 +1,4 @@
-import {castleRoomReady} from './room.js?v=20261108-navigation2';
+import {castleRoomReady} from './room.js?v=20261108-ui1';
 import {characters} from './characters-data.js?v=20261108-characters1';
 const props=o=>Object.fromEntries((o.properties||[]).map(p=>[p.name,p.value]));
 const inside=(p,a)=>p.x>=a.x&&p.y>=a.y&&p.x<a.x+a.width&&p.y<a.y+a.height;
@@ -21,7 +21,7 @@ export function activitySettings(object){
 }
 export class CastleActivities{
   constructor(wa,room,map){
-    this.wa=wa;this.room=room;this.areas=map.layers.flatMap(l=>l.objects||[]).filter(o=>props(o).castleActivityId)
+    this.wa=wa;this.room=room;this.mapId=props(map).castleMapId||'activity';this.areas=map.layers.flatMap(l=>l.objects||[]).filter(o=>props(o).castleActivityId)
       .map(o=>({...o,settings:activitySettings(o)}));this.epoch=0;this.closed=false;this.button='';
   }
   start(){this.refresh();this.timer=setInterval(()=>this.refresh(),400);return this}
@@ -34,7 +34,7 @@ export class CastleActivities{
     if(this.button)this.wa.ui.actionBar.removeButton(this.button);
     this.button='';
     if(next){
-      this.button='castle-activity-'+next.settings.id;
+      this.button='castle-activity-'+this.mapId+'-'+next.settings.id;
       this.wa.ui.actionBar.addButton({id:this.button,label:next.settings.label,callback:()=>{
         void this.open().catch(e=>console.warn('Activity window:',e.message));
       }});

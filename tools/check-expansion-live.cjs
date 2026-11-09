@@ -69,6 +69,7 @@ async function main(){
   const results=[];let users=[];
   try{
     for(let i=1;i<=4;i++)users.push(await join(browser,i,{roomId:'museum',roomUrl:base+'museum.wam#start',outputDir:out,label:'Schlossprobe',seats:12,groups:3,revision,
+      characterTextureId:['wvh-event-mira-v1','wvh-event-amir-v1','wvh-event-otto-v1','wvh-event-val-v1'][i-1],
       parking:[[112,272],[592,352],[720,288],[432,608]]}));
     const [a,b,c,d]=users;
     for(const id of ['museum','musikzimmer','oberstufe','spielesaal','atelier','sternwarte','erdgeschoss','obergeschoss']){

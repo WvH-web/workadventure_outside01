@@ -52,15 +52,16 @@ Village und geschuetzte Lehrerzimmer werden nicht ersetzt.
   Kleine synthetische Mehrteilnehmerproben ersetzen keine Lastabnahme.
 - Zusaetzlich: Zwoelf native `Eventgaeste` sind mit zwei Teilnehmern und dem
   nativen Auswahlfenster geprueft. Acht klar bezeichnete Schlossfiguren sind
-  vorbereitet; ihre native Platzierungs- und Interaktionsprobe steht noch aus.
+  mit Dialogen, 32-Pixel-Massstab und transparentem Hintergrund live geprueft.
   Jung und alt, unterschiedliche Stile und Persoenlichkeiten, schulgeeignet.
   Figuren zaehlen nicht als echte Besucher. Einzelheiten: `CHARACTERS.md`.
 
 ## Pruefstand der Innenausbaustufe
 
-Fassung `20261108-expansion6`: Innenausbau mit transparenten Figurenbildern erfolgreich gebaut.
-166 Kernpruefungen nach dem Darstellungswechsel bestanden. Die letzte vollstaendige
-Grafik-Browserprobe der Fassung 3 in den drei Groessen 1440, 390 und 320 Pixel
+Fassung `20261108-expansion7`: Innenausbau mit transparenten Figurenbildern und
+raumeigenen Knopfkennungen erfolgreich gebaut. 169 Kernpruefungen inklusive
+verspaeteter Bereinigung nach Raumwechseln bestanden. Die letzte vollstaendige
+Grafik-Browserprobe der Fassung 6 in den drei Groessen 1440, 390 und 320 Pixel
 pruefte alle
 vierzehn Karten, alle neuen Sitzplaetze, jede neue Tuer und die vorhandenen
 Hallenfunktionen ohne Layout- oder Browserfehler. Neun gesonderte Inhaltsproben
@@ -77,9 +78,13 @@ auf. Als konkrete Schwachstelle wurde der bisherige Drehstart in einer gesperrte
 Wandkachel gefunden. Der neue Drehweg verwendet ein kurzes, fuer den ganzen Avatar
 freies Bodenpaar; alle ueber 200 Sitzplaetze werden darauf geprueft. Eine native
 Einzelprobe nach dieser Aenderung pruefte alle 92 Sitze der acht neuen Raeume
-erfolgreich. Der Vierpersonen-Wiederholungsnachweis steht noch aus.
-Die vollstaendige Mehrpersonen-Wiederholungsprobe steht damit noch aus;
-kein allgemeines Bestehen aller neuen Raeume wird daraus abgeleitet. Testberichte,
+erfolgreich. In Fassung 6 bestanden Museum und Musiksalon auch die Vierpersonenprobe
+mit allen drei getrennten Gruppen, gemeinsamen Karten und den echten eingebetteten
+Verwaltungsbeitraegen. Beim Wechsel zum Oberstufensalon blieben alte Aktivitaetsknopfe
+stehen und der Rueckwegknopf verschwand. Fassung 7 trennt die Kennungen je Raum;
+beim Eintritt werden nur bekannte Bedienelemente anderer Schlossraeume entfernt.
+Der vollstaendige Vierpersonen-Wiederholungsnachweis steht noch aus. Kein allgemeines
+Bestehen aller neuen Raeume wird daraus abgeleitet. Testberichte,
 synthetische Sprachdatei und kurzlebige Testzugriffe bleiben ausserhalb des
 oeffentlichen Repositorys.
 

@@ -22,6 +22,7 @@ test('only the exact owned story page gets API access; external providers and th
 });
 test('entering an activity offers a separate button and never opens a panel or changes media automatically',async()=>{
   const s=setup();assert.equal(s.buttons.size,1);assert.equal(s.websites.length,0);
+  assert.ok(s.buttons.has('castle-activity-activity-story'));
   await s.c.open();await s.c.open();assert.equal(s.websites.length,1);assert.equal(s.websites[0].api,true);
   s.websites[0].closed=true;await s.c.open();assert.equal(s.websites.length,2);s.c.dispose();
 });

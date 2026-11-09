@@ -41,7 +41,9 @@ und dem transparenten Figurenbild. Fassung 6 gleicht dieses an; die native
 Einzelprobe in der Halle zeigt damit tatsaechlich keinen weissen Hintergrund.
 Die Figuren verwenden die vorhandene Karten-Webseiten-Schnittstelle, ohne
 Kartenschnittstellen-, Kamera- oder Mikrofonfreigabe fuer die Bilder.
-Die erneute Sichtprobe in allen acht Raeumen steht noch aus.
+Die erneute Liveprobe in allen acht Raeumen ist bestanden: 32-Pixel-Figuren,
+vier gepruefte Hintergrund-Eckpixel ohne weissen Kasten, alle Dialoge, sichere
+Bildfenster ohne Kartenschnittstelle und alle 92 Sitze. Browserfehler: keine.
 Die reine Grafikvorschau bildet diese nativen Zusatzfiguren nicht ab.
 
 ## Quelle und Betrieb

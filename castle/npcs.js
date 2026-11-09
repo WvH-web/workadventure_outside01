@@ -1,5 +1,5 @@
-import './displays.js?v=20261108-characters1';
-import {castleRoomReady} from './room.js?v=20261108-navigation2';
+import './displays.js?v=20261108-ui1';
+import {castleRoomReady} from './room.js?v=20261108-ui1';
 import {characterById} from './characters-data.js?v=20261108-characters1';
 const props=o=>Object.fromEntries((o.properties||[]).map(p=>[p.name,p.value]));
 export class CastleNpcs{

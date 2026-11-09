@@ -1,3 +1,4 @@
+import {clearPreviousCastleUi} from './ui-lifecycle.js?v=20261108-ui1';
 const STATE = "castleSeatV1";
 const PUBLIC = { public: true, persist: false };
 const SYNC = ["cameraState", "microphoneState", "screenSharingState"];
@@ -116,6 +117,8 @@ export class CastleRoom {
   constructor(wa, layout, options = {}) {
     this.wa = wa;
     this.layout = layout;
+    this.uiIds={stand:'castle-stand-'+layout.id,ride:'castle-ride-stop-'+layout.id,back:'castle-return-hall-'+layout.id};
+    this.uiCleanupTimers=[];
     this.nativeMeetings = isNativeMeetingRoom(wa, layout);
     this.delay =
       options.delay || ((ms) => new Promise((r) => setTimeout(r, ms)));
@@ -136,6 +139,7 @@ export class CastleRoom {
     this.positionRetryAt = 0;
   }
   async start() {
+    clearPreviousCastleUi(this.wa,this.layout.id);
     await this.wa.players.configureTracking({ players: true, movement: true });
     await this.wa.player.state.saveVariable(STATE, null, PUBLIC);
     this.position = await this.wa.player.getPosition();
@@ -155,9 +159,15 @@ export class CastleRoom {
     }, 400);
     this.refresh();
     if (this.layout.hallUrl && this.wa.nav?.goToRoom)
-      this.wa.ui.actionBar.addButton({id:"castle-return-hall", label:this.layout.returnLabel || 'Grosse Halle', callback:()=>{
+      this.wa.ui.actionBar.addButton({id:this.uiIds.back, label:this.layout.returnLabel || 'Grosse Halle', callback:()=>{
         void this.returnToHall().catch((error)=>console.warn("Castle return:",error.message));
       }});
+    if(this.wa.room?.getTiledMap)for(const delay of [700,2200])this.uiCleanupTimers.push(setTimeout(()=>{
+      if(this.disposed)return;
+      void bounded(this.wa.room.getTiledMap(),1500).then(map=>{
+        if(!this.disposed&&props(map).castleMapId===this.layout.id)clearPreviousCastleUi(this.wa,this.layout.id);
+      }).catch(()=>{});
+    },delay));
     return this;
   }
   async returnToHall() {
@@ -372,7 +382,7 @@ export class CastleRoom {
         return false;
       }
       this.wa.ui.actionBar.addButton({
-        id: "castle-stand",
+        id: this.uiIds.stand,
         label: "Aufstehen",
         callback: () => {
           void this.stand();
@@ -421,7 +431,7 @@ export class CastleRoom {
     if (this.standingTask) return this.standingTask;
     const seat = this.seat;
     this.seat = null;
-    this.wa.ui.actionBar.removeButton("castle-stand");
+    this.wa.ui.actionBar.removeButton(this.uiIds.stand);
     this.standingTask = (async () => {
       try {
         await Promise.allSettled([
@@ -448,7 +458,7 @@ export class CastleRoom {
     this.riding = true;
     this.wa.controls.disablePlayerControls();
     this.wa.ui.actionBar.addButton({
-      id: "castle-ride-stop",
+      id: this.uiIds.ride,
       label: "Rutsche verlassen",
       callback: () => this.cancelRide(),
     });
@@ -473,7 +483,7 @@ export class CastleRoom {
       }
     } finally {
       this.riding = false;
-      this.wa.ui.actionBar.removeButton("castle-ride-stop");
+      this.wa.ui.actionBar.removeButton(this.uiIds.ride);
       if (!this.disposed) {
         const landing = slide.waypoints.at(-1);
         await bounded(this.wa.player.teleport(landing.x, landing.y)).catch(
@@ -489,10 +499,11 @@ export class CastleRoom {
     this.disposed = true;
     this.riding = false;
     clearInterval(this.timer);
+    for(const timer of this.uiCleanupTimers)clearTimeout(timer);
     this.prompt?.remove();
-    this.wa.ui.actionBar.removeButton("castle-stand");
-    this.wa.ui.actionBar.removeButton("castle-ride-stop");
-    this.wa.ui.actionBar.removeButton("castle-return-hall");
+    this.wa.ui.actionBar.removeButton(this.uiIds.stand);
+    this.wa.ui.actionBar.removeButton(this.uiIds.ride);
+    this.wa.ui.actionBar.removeButton(this.uiIds.back);
     for (const sub of this.subscriptions) sub?.unsubscribe?.();
     this.wa.controls.restorePlayerControls();
     if (!this.nativeMeetings) this.wa.controls.restorePlayerProximityMeeting();
