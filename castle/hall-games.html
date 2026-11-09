@@ -1,14 +1,5 @@
 <!doctype html>
 <html lang="de"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Spielrunden</title><link rel="stylesheet" href="hall-pages.css"><script defer src="vendor/lucide.min.js"></script></head>
-<body><header><i data-lucide="dices"></i><h1>Spielrunden</h1></header><main id="games"></main>
-<script type="module">
-const base="https://deutsche-online-schule.com/schooltools/verwaltung/api/";
-const boards=[['stumbleguysgame','Stumble Guys','flag'],['haxballarea01','Haxball','circle-dot'],...[1,2,3,4,5].map(n=>['gamesarea0'+n,'Spielrunde '+n,'gamepad-2'])];
-const links=new Map();
-for(const [id,title,icon]of boards){const link=document.createElement('a');link.href=base+'workadventure_museum_open.php?board='+id;link.className='game';
- const mark=document.createElement('i');mark.dataset.lucide=icon;const name=document.createElement('strong');name.textContent=title;
- const arrow=document.createElement('i');arrow.dataset.lucide='chevron-right';link.append(mark,name,arrow);document.getElementById('games').append(link);links.set(id,name);}
-window.addEventListener('load',()=>window.lucide?.createIcons());window.lucide?.createIcons();
-try{const r=await fetch(base+'workadventure_museum.php',{cache:'no-store'});if(r.ok){const data=await r.json();for(const item of data.items||[])if(links.has(item.board)&&item.title)links.get(item.board).textContent=item.title;}}catch{}
-</script></body></html>
+<meta http-equiv="refresh" content="0;url=https://together.deine-schule.com/castle-school/games">
+<title>Spielrunden</title><link rel="stylesheet" href="hall-pages.css"></head>
+<body><main><a class="game" href="https://together.deine-schule.com/castle-school/games">Spielrunden &ouml;ffnen</a></main></body></html>

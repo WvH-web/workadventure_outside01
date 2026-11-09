@@ -1,4 +1,4 @@
-import './activities.js?v=20261108-outdoors1';
+import './activities.js?v=20261109-games1';
 import {castleRoomReady} from './room.js?v=20261108-outdoors1';
 import {fetchCatalog,validBoard} from './catalog.js?v=20261108-expansion1';
 export class CastleDisplays{

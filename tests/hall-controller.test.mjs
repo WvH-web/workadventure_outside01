@@ -32,7 +32,7 @@ test('hall presents the board and a same-origin microphone-only widget without a
     f.room.position={x:1370,y:760};f.hall.refresh();
     assert.equal(f.calls.buttons.has('hall-action-noticeboard'),false);
     await f.calls.buttons.get('hall-action-games').callback();
-    assert.match(f.calls.opened[1][0],/hall-games\.html$/);
+    assert.equal(f.calls.opened[1][0],'https://together.deine-schule.com/castle-school/games');
     f.room.position={x:0,y:0};f.hall.refresh();
     assert.equal(f.calls.buttons.size,0);
   } finally {f.hall.dispose();f.hall.dispose();}

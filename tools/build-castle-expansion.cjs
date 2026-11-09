@@ -1,8 +1,9 @@
 const fs=require('node:fs'),path=require('node:path');
 const {buildFurnishedRoom}=require('./build-library.cjs');
 const {createCanvas}=require('./castle-deps.cjs')('@napi-rs/canvas');
-const root=path.resolve(__dirname,'..'),revision='20261108-expansion8';
+const root=path.resolve(__dirname,'..'),revision='20261109-games1';
 const own='';
+const games='https://together.deine-schule.com/castle-school/games';
 const collection='https://together.deine-schule.com/castle-content/collection.html';
 const activity=(id,group,label,url,api=false)=>({id,group,label,url,api});
 const inhabitants={oberstufe:['kai','Kai'],spielesaal:['sam','Sam'],museum:['elin','Elin'],musikzimmer:['lea','Lea'],
@@ -14,9 +15,9 @@ function addInhabitant(scene,id,wide=false){
 }
 const rooms=[
   {id:'oberstufe',name:'Oberstufensalon',parent:'obergeschoss',key:'Os',labels:['Salonrunde','Fensternische','Debatten- und Lerntisch'],
-    activities:[activity('os-story','lesekamin','Erzaehlrunde',own+'story.html',true),activity('os-games','buchclub','Spielrunden',own+'hall-games.html'),activity('os-explore','fensterleser','Expeditionen',own+'expeditions.html')]},
+    activities:[activity('os-story','lesekamin','Erzaehlrunde',own+'story.html',true),activity('os-games','buchclub','Spielrunden',games),activity('os-explore','fensterleser','Expeditionen',own+'expeditions.html')]},
   {id:'spielesaal',name:'Spielesaal',parent:'erdgeschoss',key:'Games',labels:['Spielelounge','Zuschauernische','Spielrunde'],
-    activities:[activity('games-story','lesekamin','Erzaehlkarten',own+'story.html',true),activity('games-shelf','buchclub','Spielrunden',own+'hall-games.html'),activity('games-puzzles','fensterleser','Bausteinraetsel','https://phet.colorado.edu/sims/html/area-builder/latest/area-builder_all.html?locale=de')]},
+    activities:[activity('games-story','lesekamin','Erzaehlkarten',own+'story.html',true),activity('games-shelf','buchclub','Spielrunden',games),activity('games-puzzles','fensterleser','Bausteinraetsel','https://phet.colorado.edu/sims/html/area-builder/latest/area-builder_all.html?locale=de')]},
   {id:'museum',name:'Schlossmuseum',parent:'erdgeschoss',key:'Museum',labels:['Geschichten der Fundstuecke','Entdeckernische','Ausstellungsrunde'],script:'displays.js',
     displays:[{board:'show1',x:80,y:59,width:72,height:45},{board:'show2',x:37,y:135,width:38,height:43},
       {board:'show3',x:112,y:139,width:44,height:30},{board:'show4',x:741,y:58,width:34,height:50},{board:'show5',x:736,y:140,width:37,height:18}],

@@ -6,8 +6,11 @@ const net = require('node:net');
 const crypto = require('node:crypto');
 const { createVerifier } = require('../hall-audio/auth.cjs');
 const { GatewayError } = require('../hall-audio/errors.cjs');
-const { validateProfile, validateRules, decision } = require('./policy.cjs');
+const path = require('node:path');
+const { validateProfile } = require('./policy.cjs');
 const { createLookup } = require('./lookup.cjs');
+const { IDS, offerDecision, offerMetadata, approvedRoomChange, target } = require('./offers.cjs');
+const { createOfferLookup, createRoomLinkUpdater } = require('./catalog.cjs');
 const PREFIX = '/castle-school/';
 
 function clientIp(req, config) {
@@ -28,8 +31,10 @@ async function readJson(req) {
   } catch { throw new GatewayError(400, 'invalid_request'); }
 }
 
-function createSchoolServer({config, lookup, verify = createVerifier(config.secret), rules, clock = Date.now}) {
-  const registry = new Map(validateRules(rules).map(rule => [rule.id, rule]));
+function createSchoolServer({config, lookup, getOffers, updateRoomLink, verify = createVerifier(config.secret), clock = Date.now}) {
+  if(typeof lookup!=='function'||typeof getOffers!=='function'||typeof updateRoomLink!=='function')throw Error('School dependencies required');
+  const pages=new Map(['games','games.js','games.css'].map(name=>[name,{type:name==='games'?'text/html':name.endsWith('.js')?'text/javascript':'text/css',
+    content:fs.readFileSync(path.join(__dirname,'public',name==='games'?'games.html':name))}]));
   const limits = new Map();
   const rateSalt = crypto.randomBytes(32);
   const opaque = value => crypto.createHmac('sha256',rateSalt).update(value).digest('base64url');
@@ -55,7 +60,13 @@ function createSchoolServer({config, lookup, verify = createVerifier(config.secr
       if (url.search || !url.pathname.startsWith(PREFIX)) throw new GatewayError(404, 'not_found');
       const route = url.pathname.slice(PREFIX.length);
       if (route === 'health' && req.method === 'GET') { send(200, {ready: true}); return; }
-      if (!['context', 'decision'].includes(route)) throw new GatewayError(404, 'not_found');
+      if(pages.has(route)){
+        if(req.method!=='GET')throw new GatewayError(405,'method_not_allowed');
+        res.setHeader('X-Frame-Options','SAMEORIGIN');
+        res.setHeader('Content-Security-Policy',"default-src 'none'; script-src 'self'; style-src 'self'; connect-src 'self'; img-src 'self'; frame-src https:; frame-ancestors 'self'; base-uri 'none'; form-action 'none'; object-src 'none'");
+        const page=pages.get(route);res.writeHead(200,{'Content-Type':page.type+'; charset=utf-8'});res.end(page.content);return;
+      }
+      if (!['context', 'decision','launch','room-link'].includes(route)) throw new GatewayError(404, 'not_found');
       if (req.method !== (route === 'context' ? 'GET' : 'POST')) throw new GatewayError(405, 'method_not_allowed');
       if (req.headers.origin && req.headers.origin !== config.origin || req.headers['sec-fetch-site'] && req.headers['sec-fetch-site'] !== 'same-origin') {
         throw new GatewayError(403, 'wrong_origin');
@@ -63,20 +74,36 @@ function createSchoolServer({config, lookup, verify = createVerifier(config.secr
       limit('ip:' + opaque(clientIp(req, config)), 6000);
       const auth = await verify(req.headers.authorization);
       limit('id:' + opaque(auth.identifier), 90);
-      let selected;
-      if (route === 'decision') {
-        const body = await readJson(req);
-        if (Object.keys(body).length !== 1 || typeof body.resourceId !== 'string' || !registry.has(body.resourceId)) {
+      let body;
+      if (route !== 'context') {
+        body = await readJson(req);
+        const keys=Object.keys(body).sort().join(',');
+        if (keys!==(route==='room-link'?'pin,resourceId,targetUrl':'resourceId') || typeof body.resourceId !== 'string' || !IDS.includes(body.resourceId) ||
+          route==='room-link'&&(typeof body.targetUrl!=='string'||!target(body.targetUrl)||typeof body.pin!=='string'||!/^\d{4,12}$/.test(body.pin))) {
           throw new GatewayError(400, 'invalid_request');
         }
-        selected = registry.get(body.resourceId);
       }
-      const profile = validateProfile(await lookup(auth.identifier), clock());
+      const [rawProfile,offers]=await Promise.all([lookup(auth.identifier),getOffers({fresh:route!=='context'})]);
+      const profile=validateProfile(rawProfile,clock());
+      const selected=body?offers.find(offer=>offer.id===body.resourceId):null;
+      if(body&&!selected)throw new GatewayError(503,'unavailable');
       // Only decisions leave this boundary; no birthday, class id, age, email or display name.
       const account = {kind: profile.eligible ? profile.kind : 'unverified', schoolAccount: profile.eligible};
-      const decisions = selected ? {[selected.id]: decision(profile, selected)} :
-        Object.fromEntries([...registry].map(([id, rule]) => [id, decision(profile, rule)]));
-      send(200, {account, decisions, checkedAt: clock()});
+      if(route==='launch'||route==='room-link'){
+        const access=offerDecision(profile,selected,clock());
+        if(!access.allowed)throw new GatewayError(403,'not_allowed');
+        if(route==='room-link'){
+          if(!approvedRoomChange(profile,selected,body.targetUrl,clock()))throw new GatewayError(403,'unreviewed_target');
+          limit('edit-id:'+opaque(auth.identifier),6);limit('edit-ip:'+opaque(clientIp(req,config)),30);
+          await updateRoomLink(body);getOffers.invalidate?.();
+          send(200,{updated:true,checkedAt:clock()});return;
+        }
+        send(200,{id:selected.id,title:selected.title,targetUrl:target(selected.targetUrl).href,presentation:selected.presentation,
+          revision:selected.revision,mode:access.mode,checkedAt:clock()});return;
+      }
+      const decisions=Object.fromEntries((selected?[selected]:offers).map(offer=>[offer.id,offerDecision(profile,offer,clock())]));
+      const metadata=offers.map(offer=>offerMetadata(profile,offer,clock()));
+      send(200,{account,decisions,offers:metadata,checkedAt:clock()});
     } catch (error) {
       const safe = error instanceof GatewayError ? error : new GatewayError(503, 'unavailable');
       if (safe.status === 429 || safe.status === 503) res.setHeader('Retry-After', safe.status === 429 ? '60' : '3');
@@ -95,8 +122,8 @@ async function main() {
   if (origin !== 'https://together.deine-schule.com' || typeof secret !== 'string' || !secret) throw Error('Invalid school configuration');
   const config = {origin, secret, trustedProxyIps: (process.env.CASTLE_SCHOOL_TRUSTED_PROXY_IPS || '').split(',').filter(Boolean)};
   const lookup = createLookup({url: 'https://www.deine-schule.com/workadventure-castle-context.php', key});
-  const rules = JSON.parse(fs.readFileSync(process.env.CASTLE_SCHOOL_RULES_FILE || require('node:path').join(__dirname, 'rules.json'), 'utf8'));
-  const server = createSchoolServer({config, lookup, rules});
+  const getOffers=createOfferLookup({key}),updateRoomLink=createRoomLinkUpdater();
+  const server = createSchoolServer({config, lookup, getOffers, updateRoomLink});
   await new Promise((resolve, reject) => {server.once('error', reject); server.listen(3211, '0.0.0.0', resolve);});
   const stop = () => {server.close(); server.closeIdleConnections();};
   process.once('SIGINT', stop); process.once('SIGTERM', stop);

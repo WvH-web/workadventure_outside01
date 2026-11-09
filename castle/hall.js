@@ -2,6 +2,7 @@ import { castleRoomReady } from "./room.js?v=20261108-scale1";
 
 const noticeUrl = "https://deutsche-online-schule.com/schooltools/verwaltung/api/workadventure_museum_open.php?board=hallnotice01";
 const audioUrl = "https://together.deine-schule.com/castle-audio/";
+const gamesUrl = "https://together.deine-schule.com/castle-school/games";
 const ownUrl = (file) => new URL(file, import.meta.url).toString();
 const props = (o) => Object.fromEntries((o.properties || []).map((p) => [p.name, p.value]));
 const inside = (p, a) => p.x >= a.x && p.y >= a.y && p.x < a.x + a.width && p.y < a.y + a.height;
@@ -48,7 +49,7 @@ export class GreatHall {
       const id = "hall-action-"+kind; active.add(id);
       if (this.actionIds.has(id)) continue;
       this.wa.ui.actionBar.addButton({id,label:kind==="games"?"Spielrunden":"Schlossbrett",
-        callback:()=>this.wa.nav.openCoWebSite(kind==="games"?ownUrl("hall-games.html"):noticeUrl,false)});
+        callback:()=>this.wa.nav.openCoWebSite(kind==="games"?gamesUrl:noticeUrl,false)});
     }
     for (const id of this.actionIds) if (!active.has(id)) this.wa.ui.actionBar.removeButton(id);
     this.actionIds = active;

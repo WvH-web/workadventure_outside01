@@ -1,4 +1,4 @@
-# Schulfreigaben: Verwaltung und Servergrundlage
+# Schulfreigaben und Spielstart
 
 Die neue getrennte Schnittstelle ist bereitgestellt und live geprueft. Sie
 ordnet ein gueltig angemeldetes Konto bei jeder Anfrage frisch der vorhandenen
@@ -18,7 +18,7 @@ ab. Abgelaufene Tokens, fremde Urspruenge und mitgeschickte Klassen-/Alterswerte
 werden abgewiesen. Vier parallele Testabfragen sind geprueft. Keine Schuelerdaten
 wurden veraendert und kein vorhandener WorkAdventure- oder Ansagedienst neu
 gestartet.
-Die gemeinsame bisherige und neue Kernpruefung besteht alle 207 Faelle.
+Die gemeinsame bisherige und neue Kernpruefung besteht alle 227 Faelle.
 
 ## Verwaltung Bereitgestellt
 
@@ -44,25 +44,49 @@ POST-JSON ausdruecklich Erfolg oder Fehler; seine GET-Antwort und die bisherigen
 Raumlinks bleiben unveraendert. Die Liveprobe mit falscher PIN hat weder die
 Adresse noch ihren Zeitstempel geaendert.
 
-## Noch Nicht Angeschlossen
+## Geschuetzter Spielebereich
 
-Die Karte und die Spielseiten verwenden diese Entscheidungen noch nicht.
-Die bestehenden Karten und die bisherige oeffentliche Inhaltsdarstellung
-bleiben erhalten. Es gibt durch diesen Arbeitsschritt also noch keine neuen Sperren
-oder automatischen Schuelerfreigaben in WorkAdventure.
+Der neue [Spielebereich](https://together.deine-schule.com/castle-school/games)
+liest das bestehende WorkAdventure-Anmeldetoken nur auf dessen eigenem Ursprung.
+Es wird weder in eine URL geschrieben noch an Spielanbieter weitergegeben.
+Spielesaal, Oberstufensalon und Hallen-Spieltisch oeffnen diesen Bereich ohne
+WorkAdventure-Scriptfreigabe. Die bisherige Schloss-Spielseite leitet ebenfalls
+dorthin und enthaelt keine eigene oeffentliche Umgehungsliste mehr.
 
-Die sieben vorhandenen Spielkennungen sind zunaechst nur als ungepruefte
-Regelplaetze erfasst; fuer Lehrkraefte ist eine Vorschauentscheidung moeglich.
-Das ist keine Behauptung, dass sieben Spielraeume eingerichtet oder fuer Kinder
-freigegeben waeren. Die Portalpflege ist jetzt vorhanden, aber der getrennte
-Schlossdienst verwendet noch seine Startkonfiguration statt des neuen Katalogs.
+Der tatsaechliche Start prueft Profil, Portalregeln, Datum und geprueften
+Anbieter-/Pfadbereich erneut auf dem Server. Ein alter erlaubter Knopf, ein
+anderer Klassenwert im Browser oder ein teacher-Tag ersetzen diese Pruefung
+nicht. Der allgemeine Katalog enthaelt keine Zieladressen. Nur berechtigte
+Aufrufe bekommen den aktuellen Raumlink. Die bisherige statische Startdatei
+ist fuer diese Entscheidungen nicht mehr die Laufzeitquelle.
 
-Als Naechstes folgen der Anschluss des Schlossdienstes an den neuen Katalog,
-die Durchsetzung der Anbieter-/Pfadbindung und der geschuetzte tatsaechliche
-Aufruf der Angebote. Eigene Dienste muessen spaeter auch direkte Beitritts-, Inhalts- und
-Besuchsanfragen pruefen; eine ausgeblendete Schaltflaeche reicht nicht. Die
-bestehenden dynamischen Raumlinks werden dabei weiterverwendet, nicht doppelt
-gepflegt. Oeffentliche Fremdseiten bleiben unabhaengig erreichbar.
+Die sieben Regelplaetze bleiben Entwuerfe. Aktuell sind fuenf Zieladressen
+eingerichtet und fuer echte berechtigte Lehrkraefte als Vorschau erreichbar;
+zwei bleiben ausdruecklich leer. Fuer Schueler wird ohne bewusste Portal-
+Freigabe kein Spiel aktiviert. Das ist keine pauschale Kinderfreigabe der
+Anbieter und keine Behauptung, dass sieben laufende Spielraeume existieren.
+
+Raumlinks werden im offenen Spielebereich automatisch neu geprueft. Der
+Gastgeber kann sie mit der bestehenden Moderator-PIN aendern; Anbieter-/Pfad-
+wechsel sind nicht dadurch freigegeben. Nach dem Speichern wird unmittelbar
+ein neuer Abruf gestartet. Zwei getrennte Browser bestaetigen, dass auch
+andere wartende Teilnehmer ohne Neuladen den neuen Link sehen. Ein bereits
+laufendes Fremdspiel wird dabei nicht ungefragt neu geladen.
+
+Die synthetische Browserprobe prueft ausserdem falsche PIN, unabgeschickte
+Eingaben waehrend Aktualisierungen, einen verspaeteten alten Abruf, Kontowechsel,
+serverseitigen Berechtigungsverlust und direkte unberechtigte Startanfragen.
+Seitenfenster und externer Tab werden getrennt geprueft, Einbettungssperren
+nicht umgangen. Mobil gibt es eine kompakte Angebotsauswahl. Keine realen
+Schueler und keine produktiven Raumlink-Aenderungen wurden dafuer verwendet.
+Die native Mehrpersonenprobe der neuen Anbindung steht noch aus.
+
+Die bisherigen Karten und die bisherige oeffentliche Inhaltsdarstellung
+bleiben erhalten. Oeffentliche Fremdseiten und bereits bekannte externe
+Raumadressen sind unabhaengig weiter erreichbar; diese Schulfreigabe kann
+keinen fremden Anbieter nachtraeglich sperren. Eigene Dienste muessen spaeter
+auch direkte Beitritts-, Inhalts- und Besuchsanfragen schuetzen, insbesondere
+die noch nicht angeschlossenen persoenlichen Zimmer.
 
 Eine Lastfreigabe fuer 400 Personen, die produktive persoenliche Zimmeranbindung
 und die uebrigen Punkte in `BUILD-STATUS.md` bleiben offen. Technische Grundlage,

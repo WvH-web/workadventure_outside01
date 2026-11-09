@@ -4,6 +4,7 @@ const {validateProfile, validateRules, decision} = require('../ops/castle-school
 const {createLookup} = require('../ops/castle-school/lookup.cjs');
 const {createSchoolServer} = require('../ops/castle-school/server.cjs');
 const {createVerifier} = require('../ops/hall-audio/auth.cjs');
+const {checkedCatalog}=require('./fixtures/castle-offers.cjs');
 const now = 1794196800000, clock = () => now;
 const student = (extra = {}) => ({version:1,kind:'student',eligible:true,age:16,gradeLevel:10,classId:17,checkedAt:now,...extra});
 const role = kind => student({kind,age:null,gradeLevel:null,classId:null});
@@ -86,9 +87,9 @@ test('upstream timeouts abort, and concurrency is bounded without indefinite que
   await assert.rejects(lookup('two@invalid.local'),e=>e.code==='unavailable');await pending;
 });
 
-async function withServer(run,{lookup=async()=>student(),rules=[baseRule],verify,clock:serverClock=clock}={}) {
+async function withServer(run,{lookup=async()=>student(),verify,clock:serverClock=clock}={}) {
   const config={origin:'https://together.deine-schule.com',secret,trustedProxyIps:[]};
-  const server=createSchoolServer({config,lookup,rules,clock:serverClock,verify:verify||createVerifier(secret,{clock:serverClock})});
+  const server=createSchoolServer({config,lookup,getOffers:async()=>checkedCatalog(serverClock()),updateRoomLink:async()=>({updated:true}),clock:serverClock,verify:verify||createVerifier(secret,{clock:serverClock})});
   await new Promise(resolve=>server.listen(0,'127.0.0.1',resolve));
   const base='http://127.0.0.1:'+server.address().port+'/castle-school/';
   const {SignJWT}=require('../ops/hall-audio/node_modules/jose');
@@ -99,9 +100,10 @@ async function withServer(run,{lookup=async()=>student(),rules=[baseRule],verify
 }
 test('HTTP exposes decisions only, not identity, age, birthday, class or tokens',async()=>withServer(async({base,headers,token})=>{
   const response=await fetch(base+'context',{headers});assert.equal(response.status,200);assert.equal(response.headers.get('cache-control'),'no-store');
-  const body=await response.json();assert.deepEqual(body,{account:{kind:'student',schoolAccount:true},decisions:{game:{allowed:true,mode:'participant'}},checkedAt:now});
+  const body=await response.json();assert.deepEqual(body.account,{kind:'student',schoolAccount:true});assert.deepEqual(body.decisions.gamesarea01,{allowed:true,mode:'participant'});
+  assert.equal(Object.keys(body.decisions).length,7);assert.equal(body.offers.length,7);assert.equal(body.checkedAt,now);
   for(const privateValue of [token,'Private Test Name','school@invalid.local','birthdate','gradeLevel','classId','"age"'])assert.ok(!JSON.stringify(body).includes(privateValue));
-  const r=await fetch(base+'decision',{method:'POST',headers,body:JSON.stringify({resourceId:'game'})});assert.equal(r.status,200);
+  const r=await fetch(base+'decision',{method:'POST',headers,body:JSON.stringify({resourceId:'gamesarea01'})});assert.equal(r.status,200);
   assert.equal(r.headers.get('permissions-policy'),'microphone=(), camera=(), display-capture=()');
 }));
 test('HTTP rejects missing, expired, forged and wrongly signed school tokens',async()=>withServer(async({base,headers,token})=>{
@@ -116,11 +118,11 @@ test('HTTP rejects missing, expired, forged and wrongly signed school tokens',as
 test('signed teacher tags and client-supplied ages or classes cannot overrule the database',async()=>{
   let current=student({eligible:false,age:null,gradeLevel:null,classId:null}),calls=0;
   await withServer(async({base,headers})=>{
-    const first=await (await fetch(base+'context',{headers})).json();assert.equal(first.account.kind,'unverified');assert.equal(first.decisions.game.allowed,false);
-    const body={resourceId:'game',age:99,classId:17,role:'staff'};
+    const first=await (await fetch(base+'context',{headers})).json();assert.equal(first.account.kind,'unverified');assert.equal(first.decisions.gamesarea01.allowed,false);
+    const body={resourceId:'gamesarea01',age:99,classId:17,role:'staff'};
     assert.equal((await fetch(base+'decision',{method:'POST',headers,body:JSON.stringify(body)})).status,400);assert.equal(calls,1);
     current=role('staff');const second=await (await fetch(base+'context',{headers})).json();assert.equal(second.account.kind,'staff');assert.equal(calls,2);
-    current=student({eligible:false,age:null,gradeLevel:null,classId:null});const third=await (await fetch(base+'context',{headers})).json();assert.equal(third.decisions.game.allowed,false);assert.equal(calls,3);
+    current=student({eligible:false,age:null,gradeLevel:null,classId:null});const third=await (await fetch(base+'context',{headers})).json();assert.equal(third.decisions.gamesarea01.allowed,false);assert.equal(calls,3);
   },{lookup:async()=>{calls++;return current}});
 });
 test('HTTP rejects cross-origin, malformed bodies, wrong methods and URL/query token transport',async()=>withServer(async({base,headers})=>{

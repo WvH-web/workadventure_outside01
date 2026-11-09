@@ -40,12 +40,13 @@ Village und geschuetzte Lehrerzimmer werden nicht ersetzt.
   SQL-Faelle und eine Livepruefung bestanden. Keine Schuelerprofile werden an
   die Karte ausgegeben. Das ist noch keine angeschlossene Inhaltssperre; der
   genaue Stand steht in `SCHOOL-ACCESS.md`.
-- Neu: Portalverwaltung der Schlossangebote mit Klassen-/Altersfiltern,
-  Gueltigkeitsdaten und Anbieterpruefung ist bereitgestellt. 59 isolierte
-  PHP-/MySQL-Faelle und neun Desktop-/Mobil-Formularansichten bestanden.
-  Die vorhandenen Raumlinks bleiben dieselbe Datenquelle. Diese Portalregeln
-  sind noch nicht an den tatsaechlichen Start der neuen Schloss-Spielseiten
-  angeschlossen; sieben Regelplaetze bleiben zunaechst Entwuerfe.
+- Neu: Portalverwaltung und neuer Spielebereich sind verbunden. Start und
+  Raumlink-Aenderung pruefen Schulprofil und Portalregeln serverseitig;
+  vorhandene Raumlinks bleiben die Datenquelle. 59 isolierte PHP-/MySQL-Faelle,
+  neun Portal-Formularansichten, zwanzig neue Start-/Katalogpruefungen und eine
+  getrennte Zweibrowserprobe bestanden. Sieben Regelplaetze bleiben Entwuerfe,
+  fuenf enthalten echte Vorschauziele und zwei bleiben leer. Die neue native
+  Mehrpersonenprobe ist noch offen. Einzelheiten: `SCHOOL-ACCESS.md`.
 
 ## Noch zu vervollstaendigen
 
@@ -54,13 +55,12 @@ Village und geschuetzte Lehrerzimmer werden nicht ersetzt.
   Testteilnehmern abgenommen; Kartdarstellung bleibt lokal. Siehe `OUTDOORS.md`.
 - Weitere im Gesamtkonzept vorgesehene Sonderraeume und Entdeckungen. Private
   Wege und deren genaue Plaene werden nicht in dieser oeffentlichen Datei beschrieben.
-- Serverseitige Klassen-/Altersentscheidungen und die Portalpflege samt
-  Anbieterfreigabe sind als Grundlage vorhanden.
-  Noch noetig: Anschluss der frischen Regelkonfiguration,
-  Bindung an gepruefte Zieladressen und die Pruefung beim tatsaechlichen
-  Inhaltsaufruf, Beitritt und Besuch. Die jetzigen Karten verwenden den neuen
-  Dienst noch nicht; Raumnamen sind kein Schutz und die Vorschau ist keine
-  neue Altersfreigabe. Einzelheiten: `SCHOOL-ACCESS.md`.
+- Schulprofil, Portalregeln und Anbieter-/Pfadbindung werden im neuen
+  Spielebereich beim tatsaechlichen Start durchgesetzt. Noch noetig sind
+  redaktionelle Schuelerfreigaben und der entsprechende Schutz eigener
+  Inhalts-, Beitritts- und Besuchsendpunkte, insbesondere persoenlicher Zimmer.
+  Raumnamen allein sind kein Schutz; die Vorschau ist keine Kinderfreigabe.
+  Einzelheiten: `SCHOOL-ACCESS.md`.
 - Wirkliche gemeinsame Zeichentische, ein verifiziert gemeinsam genutztes
   Shared Piano, belastbares Schach und gegebenenfalls Billard nach Abnahme
   einer geeigneten vorhandenen Grundlage. Keine bloss dekorativen Spielmoebel
