@@ -75,7 +75,7 @@ Aufbewahrung; jetzt gibt es ausdruecklich keine solche Historie.
 
 ## Pruefungen Und Grenzen
 
-- 25 Regel-, Wiederbeitritts- und Speicherpruefungen sowie acht echte
+- 26 Regel-, Wiederbeitritts- und Speicherpruefungen sowie acht echte
   HTTP-/Ereignisstrom- und Zugangspruefungen mit synthetischen Testprofilen.
 - Getrennte Browser fuer zwei Spieler, Zuschauer und eine Testlehrkraft:
   gemeinsame Zuege, Platzwechsel, Wiederuebernahme nach Neuladen, Remis,
@@ -97,15 +97,25 @@ Aufbewahrung; jetzt gibt es ausdruecklich keine solche Historie.
   Browserfehler. Die echte Lehrkraft-Probe blieb ein eigenes Seitenfenster ohne
   zusaetzlichen Lehrkraft-Avatar oder Zug auf einem gemeinsamen Schulbrett.
 
-Der vollstaendige zugehoerige Regressionstest umfasst inzwischen 262 bestandene
+Der vollstaendige zugehoerige Regressionstest umfasst inzwischen 292 bestandene
 Pruefungen. Die getrennte Browserprobe prueft auch die mobile Touch-Bedienung.
 
-Eine positive Live-Partie mit zwei ausdruecklich freigegebenen Schueler-Testkonten
-steht noch aus. Lokale Mehrspielerproben beweisen nicht den Live-Schuelerzugang.
-Zwei eigens dafuer vorgesehene, kuenstliche Schueleridentitaeten werden auf
-Saschas Auftrag separat mit dem Verwaltungs-Chat abgestimmt; es werden dafuer
-keine echten Schueler verwendet und keine Anbieterfreigaben gelockert.
-Ebenso ist das keine Freigabe fuer 400 gleichzeitige Teilnehmer. Dafuer muessen
+Zusaetzlich sind zwei positive Live-Partien mit den ausdruecklich freigegebenen,
+kuenstlichen Schueler-Testkonten bestanden. Beide haben sich normal bei Microsoft
+angemeldet; kein synthetisches Profil und kein eigens ausgestelltes QA-Token
+ersetzten dabei die Schulanmeldung. Geprueft wurden gemeinsame Zuege, echtes
+mobiles Touch, gleichbleibende Brettmasse beim Anwaehlen eines Bauern,
+Neuladen mit ausdruecklicher Platzuebernahme, vereinbartes Remis und gemeinsame
+neue Partie mit Farbwechsel. Der erfolgreiche Probetisch bleibt leer und frei.
+Lehrer-Reset wird diesen Konten nicht angeboten. Keine Browserfehler.
+
+Dabei wurde auch korrigiert, dass neue Sitzungen nach dem Neuladen die eigene
+reservierte Partie an Tisch 2 oder 3 anzeigen statt stets Tisch 1. Der Platz
+wird weiterhin nicht heimlich uebernommen. Die sichere Zuordnung echter
+Microsoft-Kennungen ist in `schulschloss-schulzugang.md` dokumentiert.
+
+Diese beiden Partien liefen auf der echten Spielseite, nicht zugleich als
+erneute native Sprachprobe. Es ist keine Freigabe fuer 400 Teilnehmer. Dafuer muessen
 insbesondere die Schulstatus-Abfragen und die gesamte Schlossinstanz gemeinsam
 unter Last geprueft werden.
 

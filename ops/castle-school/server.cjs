@@ -4,7 +4,7 @@ const http = require('node:http');
 const fs = require('node:fs');
 const net = require('node:net');
 const crypto = require('node:crypto');
-const { createVerifier } = require('../hall-audio/auth.cjs');
+const { createSchoolVerifier } = require('./identity.cjs');
 const { GatewayError } = require('../hall-audio/errors.cjs');
 const path = require('node:path');
 const { validateProfile } = require('./policy.cjs');
@@ -31,7 +31,7 @@ async function readJson(req) {
   } catch { throw new GatewayError(400, 'invalid_request'); }
 }
 
-function createSchoolServer({config, lookup, getOffers, updateRoomLink, verify = createVerifier(config.secret), clock = Date.now}) {
+function createSchoolServer({config, lookup, getOffers, updateRoomLink, verify = createSchoolVerifier(config.secret), clock = Date.now}) {
   if(typeof lookup!=='function'||typeof getOffers!=='function'||typeof updateRoomLink!=='function')throw Error('School dependencies required');
   const pages=new Map(['games','games.js','games.css'].map(name=>[name,{type:name==='games'?'text/html':name.endsWith('.js')?'text/javascript':'text/css',
     content:fs.readFileSync(path.join(__dirname,'public',name==='games'?'games.html':name))}]));
@@ -83,7 +83,7 @@ function createSchoolServer({config, lookup, getOffers, updateRoomLink, verify =
           throw new GatewayError(400, 'invalid_request');
         }
       }
-      const [rawProfile,offers]=await Promise.all([lookup(auth.identifier),getOffers({fresh:route!=='context'})]);
+      const [rawProfile,offers]=await Promise.all([lookup(auth.schoolIdentifier??auth.identifier),getOffers({fresh:route!=='context'})]);
       const profile=validateProfile(rawProfile,clock());
       const selected=body?offers.find(offer=>offer.id===body.resourceId):null;
       if(body&&!selected)throw new GatewayError(503,'unavailable');

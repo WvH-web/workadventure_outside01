@@ -1,6 +1,6 @@
 'use strict';
 const http=require('node:http'),fs=require('node:fs'),path=require('node:path'),net=require('node:net'),crypto=require('node:crypto');
-const {createVerifier}=require('../hall-audio/auth.cjs');
+const {createSchoolVerifier}=require('../castle-school/identity.cjs');
 const {GatewayError}=require('../hall-audio/errors.cjs');
 const {createLookup}=require('../castle-school/lookup.cjs');
 const {validateProfile}=require('../castle-school/policy.cjs');
@@ -8,13 +8,7 @@ const {ChessRooms}=require('./rooms.cjs');
 const {ChessJournal}=require('./journal.cjs');
 const PREFIX='/castle-chess/';
 function createChessVerifier(secret,{clock=Date.now}={}){
-  const verify=createVerifier(secret,{clock});
-  return async header=>{
-    const auth=await verify(header);
-    // The shared verifier has already authenticated these exact claims, including exp.
-    const claims=JSON.parse(Buffer.from(header.slice(7).split('.')[1],'base64url').toString('utf8'));
-    return {...auth,expiresAt:claims.exp*1000};
-  };
+  return createSchoolVerifier(secret,{clock});
 }
 async function readJson(req){
   if(!/^application\/json(?:;|$)/i.test(req.headers['content-type']||''))throw new GatewayError(415,'invalid_request');
@@ -77,7 +71,7 @@ function createChessServer({config,lookup,rooms=new ChessRooms(),verify=createCh
       if(req.headers.origin&&req.headers.origin!==config.origin||req.headers['sec-fetch-site']&&req.headers['sec-fetch-site']!=='same-origin')throw new GatewayError(403,'wrong_origin');
       limit('ip:'+opaque(ip(req)),10000);const auth=await verify(req.headers.authorization);limit('id:'+opaque(auth.identifier),120);
       let body;if(req.method==='POST'){body=await readJson(req);if(route!=='command'&&Object.keys(body).length)throw new GatewayError(400,'invalid_request');}
-      const profile=validateProfile(await lookup(auth.identifier),clock()),actor={id:opaque('chess:'+auth.identifier),staff:profile.kind==='staff',expiresAt:auth.expiresAt};
+      const profile=validateProfile(await lookup(auth.schoolIdentifier??auth.identifier),clock()),actor={id:opaque('chess:'+auth.identifier),staff:profile.kind==='staff',expiresAt:auth.expiresAt};
       if(!profile.eligible||!['staff','student'].includes(profile.kind)){rooms.revoke(actor.id);throw new GatewayError(403,'school_required');}
       if(route==='session'){limit('session:'+actor.id,20);send(200,rooms.create(actor));return;}
       const sessionId=req.headers['x-chess-session'];rooms.ping(sessionId,actor);

@@ -49,7 +49,7 @@ class ChessRooms {
   create(actor){
     this.actor(actor);this.sweep();
     if(this.sessions.size>=this.maxSessions||[...this.sessions.values()].filter(session=>session.actor===actor.id).length>=4)fail(429,'session_limit');
-    const session={id:crypto.randomBytes(24).toString('hex'),actor:actor.id,staff:actor.staff,table:'tisch-1',connected:false,
+    const session={id:crypto.randomBytes(24).toString('hex'),actor:actor.id,staff:actor.staff,table:this.occupied(actor.id)?.table.id||'tisch-1',connected:false,
       expiresAt:Math.min(actor.expiresAt,this.clock()+this.sessionMs),commands:new Map()};
     this.sessions.set(session.id,session);return {sessionId:session.id,...this.snapshot(session.id)};
   }

@@ -24,6 +24,13 @@ test('the same verified account cannot play both colors or two simultaneous tabl
   assert.throws(()=>f.command(tab,'claim',{color:'b'}),code('already_seated'));f.command(tab,'watch',{tableId:'tisch-2'});
   assert.throws(()=>f.command(tab,'claim',{color:'w'}),code('already_seated'));assert.equal(f.rooms.snapshot(f.a.session).tables[0].watchers,1);
 });
+test('reentry finds the account seat at the third table but never silently takes it over',()=>{
+  const f=setup();for(const user of [f.a,f.b])f.command(user,'watch',{tableId:'tisch-3'});f.claim();f.move(f.a,'e2','e4');f.move(f.b,'e7','e5');
+  f.rooms.disconnect(f.a.session);const returning=f.add(f.a.who.id),snapshot=f.rooms.snapshot(returning.session);
+  assert.equal(snapshot.board.id,'tisch-3');assert.equal(snapshot.self.color,null);assert.equal(snapshot.self.resumeColor,'w');assert.deepEqual(snapshot.board.moves,['e4','e5']);
+  assert.throws(()=>f.move(returning,'g1','f3'),code('not_a_player'));f.command(returning,'resume',{color:'w'});f.move(returning,'g1','f3');
+  assert.equal(f.rooms.snapshot(f.b.session).board.moves.at(-1),'Nf3');assert.throws(()=>f.move(f.a,'f1','c4'),code('connection_required'));
+});
 test('only a current seat owner may move, in turn, from the current server position',()=>{
   const f=setup();f.claim();const watcher=f.add('synthetic-watcher');
   assert.throws(()=>f.move(watcher,'e2','e4'),code('not_a_player'));assert.throws(()=>f.move(f.b,'e7','e5'),code('not_your_turn'));
