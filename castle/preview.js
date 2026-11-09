@@ -1,5 +1,5 @@
 import { readLayout, conversationAt } from "./room.js?v=20261108-gs1";
-import {activitySettings} from './activities.js?v=20261108-expansion1';
+import {activitySettings} from './activities.js?v=20261108-characters1';
 const $ = (id) => document.getElementById(id);
 function showError() {
   const retry = document.createElement("button");
@@ -17,7 +17,7 @@ window.addEventListener("error", (event) => {
 });
 const canvas = $("map"),
   ctx = canvas.getContext("2d");
-const manifest = await fetch("layout.json?v=20261108-expansion1").then((r) =>
+const manifest = await fetch("layout.json?v=20261108-expansion5").then((r) =>
   r.json(),
 );
 const images = new Map();
@@ -143,14 +143,14 @@ async function load(id, entry = "start") {
     if (!cache.has(id))
       cache.set(
         id,
-        await fetch(id + ".tmj?v=20261108-expansion1").then((r) => {
+        await fetch(id + ".tmj?v=20261108-expansion5").then((r) => {
           if (!r.ok) throw Error("Karte nicht erreichbar");
           return r.json();
         }),
       );
     map = cache.get(id);
     tilesets = await Promise.all(
-      map.tilesets.map(async (ts) => ({
+      map.tilesets.filter(ts=>!ts.name.startsWith('Castle NPC ')).map(async (ts) => ({
         ...ts,
         bitmap: await loadImage(ts.image),
       })),
@@ -188,6 +188,7 @@ async function load(id, entry = "start") {
         l.type === "tilelayer" &&
         !["start", "collisions"].includes(l.name) &&
         !l.name.startsWith("door-") &&
+        !l.name.startsWith('castle-npc-') &&
         !world.entries[l.name],
     )) {
       const target = layer.name === "furniture-fronts" ? f : b;

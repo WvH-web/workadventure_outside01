@@ -4,6 +4,7 @@ import fs from "node:fs";
 import path from "node:path";
 import { createRequire } from "node:module";
 import { readLayout, conversationAt, CastleRoom } from "../castle/room.js";
+import {characterById} from '../castle/characters-data.js';
 const base = new URL("../castle/", import.meta.url);
 const sharp = createRequire(import.meta.url)("../tools/castle-deps.cjs")(
   "sharp",
@@ -50,17 +51,22 @@ function reached(map, start) {
   }
   return seen;
 }
-test("all registered modular maps have valid native grids, gids and local assets", () => {
+test("all registered maps have valid grids and verified local or exact owned native avatar assets", () => {
   assert.equal(maps.size, mapIds.length);
   assert.deepEqual([...maps.keys()].sort(),[...mapIds].sort());
   for (const map of maps.values()) {
     assert.equal(map.tilewidth, 32);
     assert.equal(map.tileheight, 32);
     for (const ts of map.tilesets) {
-      assert.ok(fs.existsSync(new URL(ts.image, base)));
-      const image = fs.readFileSync(new URL(ts.image, base));
-      assert.equal(image.readUInt32BE(16), ts.imagewidth);
-      assert.equal(image.readUInt32BE(20), ts.imageheight);
+      if(ts.image.startsWith('https://')){
+        assert.ok(ts.name.startsWith('Castle NPC '));const c=characterById(ts.name.slice('Castle NPC '.length));assert.ok(c);
+        assert.equal(ts.image,c.sprite);assert.deepEqual([ts.imagewidth,ts.imageheight,ts.tilecount],[96,128,12]);
+      }else{
+        assert.ok(fs.existsSync(new URL(ts.image, base)));
+        const image = fs.readFileSync(new URL(ts.image, base));
+        assert.equal(image.readUInt32BE(16), ts.imagewidth);
+        assert.equal(image.readUInt32BE(20), ts.imageheight);
+      }
       assert.equal(ts.columns * 32, ts.imagewidth);
       assert.ok(ts.imagewidth <= 4096 && ts.imageheight <= 4096);
     }

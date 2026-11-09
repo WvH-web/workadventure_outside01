@@ -10,7 +10,7 @@ async function findRoom(user,id){
     if(!frame)await user.page.waitForTimeout(500);
   }
   assert.ok(frame,'Room controller '+id);user.script=frame;
-  await frame.waitForFunction(()=>window.castleNpcs?.figures.length===1&&window.castleActivities,undefined,{polling:200,timeout:30000});
+  await frame.waitForFunction(()=>window.castleActivities,undefined,{polling:200,timeout:30000});
 }
 async function main(){
   writeAudio();const browser=await chromium.launch({channel:'chrome',headless:true,args:['--use-fake-ui-for-media-stream','--use-fake-device-for-media-stream',
@@ -24,11 +24,11 @@ async function main(){
         await user.script.evaluate(url=>WA.nav.goToRoom(url),base+id+'.wam').catch(e=>{if(!/detached|destroyed/.test(e.message))throw e;});
       }
       await findRoom(user,id);
-      const actor=await user.script.evaluate(()=>{const p=o=>Object.fromEntries((o.properties||[]).map(p=>[p.name,p.value]));
-        const slot=castleNpcs.slots[0],id=p(slot).castleNpcId,area=castleActivities.areas.find(a=>a.settings.id==='npc-'+id);
+      const actor=await user.script.evaluate(async()=>{const p=o=>Object.fromEntries((o.properties||[]).map(p=>[p.name,p.value]));
+        const map=await WA.room.getTiledMap(),slot=map.layers.flatMap(l=>l.objects||[]).find(o=>p(o).castleNpcId),id=p(slot).castleNpcId,area=castleActivities.areas.find(a=>a.settings.id==='npc-'+id);
         return {id,label:area.settings.label,area:{x:area.x,y:area.y,width:area.width,height:area.height}};});
       assert.ok(!user.page.frames().some(f=>f.url().startsWith(web+'npc-sprite.html')),'NPCs have no floating website frames');
-      assert.ok(await user.script.evaluate(()=>castleNpcs.figures.every(f=>f.tiles.length===4&&f.tiles[0].layer==='castle-npc-sprites'&&f.tiles[0].tile>0)));
+      assert.ok(await user.script.evaluate(async()=>{const map=await WA.room.getTiledMap();return map.layers.find(l=>l.name==='castle-npc-sprites').data.filter(Boolean).length===1;}));
       await move(user,actor.area.x+actor.area.width/2,actor.area.y+actor.area.height/2);
       await user.page.getByRole('button',{name:actor.label,exact:true}).click();
       let profile;for(let n=0;n<60&&!profile;n++){profile=user.page.frames().find(f=>f.url().startsWith(web+'characters.html?npc='+actor.id));if(!profile)await user.page.waitForTimeout(500);}

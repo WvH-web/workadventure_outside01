@@ -123,6 +123,23 @@ async function buildFurnishedRoom(options={}){
   const mapdata={pixelWidth:W*T,pixelHeight:H*T,avatarSize:32,seats:seats.length,groups:scene.groups.length,sofaWidthPixels:100,bookclubChairWidthPixels:40,
     blockedTiles:blocked.size,reachableFloorTiles:reachable.size,foregroundPixels,sourceSha256:crypto.createHash('sha256').update(fs.readFileSync(path.join(art,'room-source.png'))).digest('hex')};
   const fireTiles=Array.from({length:6},(_,i)=>{const id=Math.floor(i/3)*animation.length*3+i%3;return {id,animation:animation.map((f,j)=>({tileid:id+j*3,duration:f.duration}))}});
+  const npcSets=[];
+  if(scene.npcs?.length){
+    const {characters}=await import('../castle/characters-data.js');let gid=fireGid+(scene.noHearth?0:animation.length*6);
+    const sprites=layers.find(l=>l.name==='castle-npc-sprites').data,labels=layers.find(l=>l.name==='castle-npc-labels').data;
+    for(const n of scene.npcs){
+      const sheet=JSON.parse(fs.readFileSync(path.join(root,'castle/art/characters-20261108',n.id+'.json')));
+      if(sheet.image!==characters.find(c=>c.id===n.id)?.sprite)throw Error('Unreviewed native character source');
+      npcSets.push({...sheet,firstgid:gid,name:'Castle NPC '+n.id});
+      sprites[Math.floor((n.y+48)/32)*W+Math.floor((n.x+48)/32)]=gid+1;gid+=12;
+    }
+    const sheet=JSON.parse(fs.readFileSync(path.join(root,'castle/art/characters-20261108/labels.json')));
+    npcSets.push({...sheet,firstgid:gid,name:'Castle NPC labels',image:'art/characters-20261108/labels.png'});
+    for(const n of scene.npcs){
+      const row=characters.findIndex(c=>c.id===n.id),x=Math.floor((n.x+48)/32),y=Math.floor((n.y+48)/32);
+      for(let i=0;i<3;i++)labels[(y-1)*W+x-1+i]=gid+row*3+i;
+    }
+  }
   const map={compressionlevel:-1,width:W,height:H,tilewidth:T,tileheight:T,infinite:false,orientation:'orthogonal',renderorder:'right-down',tiledversion:'1.11.2',type:'map',version:'1.10',nextlayerid:lid,nextobjectid:oid,layers,
     properties:[P('mapName',name),P('mapDescription',description),P('mapImage',artPath+'floor.png'),P('script',(options.script||'room.js')+'?v='+scene.revision+(scene.scriptRoomId?'&room='+id:'')),
       P('castleMapId',id),P('castleRevision',scene.revision),P('castleArtScale',1),P('castleNativeMeetings',true),P('castleNativeRoomUrl',nativeTarget(id+'.tmj')),P('castleHallUrl',nativeTarget(e.target+'#'+e.entry)),
@@ -130,7 +147,7 @@ async function buildFurnishedRoom(options={}){
       ...(scene.storyVariable?[P('castleStoryVariable',scene.storyVariable)]:[]),
       P('castleMapdata',JSON.stringify(mapdata)),P('mapCopyright',options.copyright||'Original library and book-club artwork generated for deine Schule; approved Great Hall reading furniture; existing village fire animation.')],
     tilesets:[imageSet(1,'Schlossbibliothek','floor.png',W,count,W*T,H*T),imageSet(collisionGid,'Collision marker','marker.png',1,1,T,T,{tiles:[{id:0,properties:[P('collides',true)]}]}),
-      imageSet(entryGid,'Entry marker','marker.png',1,1,T,T),imageSet(frontGid,'Moebel-Vorderkanten',frontFile,W,count,W*T,H*T),...(!scene.noHearth?[imageSet(fireGid,'Bibliothekskamin','fire.png',animation.length*3,animation.length*6,animation.length*96,64,{tiles:fireTiles})]:[])]};
+      imageSet(entryGid,'Entry marker','marker.png',1,1,T,T),imageSet(frontGid,'Moebel-Vorderkanten',frontFile,W,count,W*T,H*T),...(!scene.noHearth?[imageSet(fireGid,'Bibliothekskamin','fire.png',animation.length*3,animation.length*6,animation.length*96,64,{tiles:fireTiles})]:[]),...npcSets]};
   const world={id,width:W,height:H,illustrated:true,artScale:1,rooms:scene.groups.map(g=>({id:g.id,title:g.label,x:g.x,y:g.y,width:g.width,height:g.height,floor:id})),
     seats,rides:[],entries:scene.entries,links:[{name:'halle',x:e.x*T,y:e.y*T,width:e.width*T,height:e.height*T,target:e.target,entry:e.entry},...(scene.portals||[]).map(p=>({name:p.id,x:p.x*T,y:p.y*T,width:p.width*T,height:p.height*T,target:p.target,entry:p.entry||''}))],mapdata};
   fs.writeFileSync(path.join(root,'castle',id+'.tmj'),JSON.stringify(map)+'\n');writeWam(map,path.join(root,'castle'));

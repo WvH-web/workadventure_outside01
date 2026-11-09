@@ -24,7 +24,7 @@ Insbesondere aendert ein Lehrer-Outfit keine serverseitigen Rollen oder Freigabe
 
 ## Schlossbewohner
 
-Die Fassung `20261108-expansion4` platziert acht Figuren:
+Die Fassung `20261108-expansion5` platziert acht Figuren:
 Amir im Wandelgang, Otto in der Galerie, Kai im Oberstufensalon, Sam im Spielesaal,
 Elin im Museum, Lea im Musiksalon, Mira im Atelier und Farah in der Sternwarte.
 Ihre Koerper haben echte Kollisionsfelder; die Gespraechsflaechen liegen davor,
@@ -36,8 +36,11 @@ Ruecksichtnahme vor. Keine freie KI-Konversation, keine Auswertung persoenlicher
 Gesprache und kein Speichern von Kindertexten. Kamera und Mikrofon bleiben aus
 den Figurenfenstern ausgesperrt. Die erste native Probe bestand fuer alle acht
 Dialoge und 92 Sitzplaetze, zeigte aber einen weissen Hintergrund um die Figuren.
-Fassung 4 zeichnet sie deshalb als echte native Spielkacheln mit transparenten
-Namensschildern, ohne Webseitenrahmen. Deren erneute Sichtprobe steht noch aus.
+Fassung 5 liefert ihre echten Spielkacheln und transparenten Namensschilder
+direkt in der Karte mit, ohne Webseitenrahmen oder nachtraegliche Lade-Skripte.
+Die Spritebilder bleiben auf unserem WorkAdventure-Server; die Grafikvorschau
+laedt diese bewusst nicht in ihre eigene Zeichenflaeche. Die erneute native
+Sichtprobe steht noch aus.
 Die reine Grafikvorschau bildet diese nativen Zusatzfiguren nicht ab.
 
 ## Quelle und Betrieb

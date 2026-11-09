@@ -58,7 +58,7 @@ Village und geschuetzte Lehrerzimmer werden nicht ersetzt.
 
 ## Pruefstand der Innenausbaustufe
 
-Fassung `20261108-expansion4`: Innenausbau mit nativen Figuren erfolgreich gebaut.
+Fassung `20261108-expansion5`: Innenausbau mit statischen nativen Figuren erfolgreich gebaut.
 166 Kernpruefungen nach dem Darstellungswechsel bestanden. Die letzte vollstaendige
 Grafik-Browserprobe der Fassung 3 in den drei Groessen 1440, 390 und 320 Pixel
 pruefte alle
