@@ -68,7 +68,11 @@ Village und geschuetzte Lehrerzimmer werden nicht ersetzt.
   Raumnamen allein sind kein Schutz; die Vorschau ist keine Kinderfreigabe.
   Einzelheiten: `SCHOOL-ACCESS.md`.
 - Ein verifiziert gemeinsam genutztes Shared Piano und gegebenenfalls Billard
-  nach Abnahme einer geeigneten vorhandenen Grundlage. Geschuetztes gemeinsames
+  nach Abnahme einer geeigneten vorhandenen Grundlage. Die direkte anonyme
+  Shared-Piano-Probe besteht inzwischen mit wirklicher Audioausgabe im anderen
+  Browser, Touch, spaetem Beitritt und Verlassen des ersten Teilnehmers;
+  native Tischeinbindung und schulische Freigabe bleiben offen.
+  Geschuetztes gemeinsames
   Schach und WBO sind inzwischen mit echten Microsoft-Schueler-Testkonten
   geprueft; Zeichnen samt parallelen nativen Tischgespraechen ebenfalls.
   Einzelheiten stehen in den unten verlinkten Fachnachweisen. Die

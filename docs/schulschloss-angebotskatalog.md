@@ -350,6 +350,34 @@ bleiben ausserhalb des oeffentlichen Repositorys.
 Wiederholung: `node tools/check-offer-embeds.cjs`. Externe Bedingungen koennen
 sich aendern; die Tabelle beschreibt die beobachteten konkreten Ziele.
 
+## Gemeinsame Klavierprobe am 9. November
+
+Shared Piano besteht jetzt eine wirkliche anonyme Mehrteilnehmerprobe direkt
+beim Anbieter. Zwei getrennte Browser sehen denselben Raum. Eine mit der Maus
+gespielte Taste erzeugt im anderen Browser messbare Web-Audio-Ausgabesamples;
+die vorherige Stille wurde ebenfalls gemessen. Nach Verlassen des ersten
+Teilnehmers bleibt der zweite im Raum. Ein neuer dritter Browser tritt ueber
+denselben Raumlink bei und hoert anschliessend eine echte Touch-Taste aus der
+390-Pixel-Ansicht. Spitzenpegel der beiden empfangenen Noten: 0,179 und 0,162,
+jeweils gegen einen gemessenen stillen Ausgangswert von 0. Das sind lineare
+digitale Samplewerte, keine Lautstaerke- oder Gehoerschutzfreigabe.
+
+Geprueft mit `node tools/check-shared-piano-live.cjs`, ohne Kamera, Mikrofon,
+Schulkonten, Schuelerdaten oder Aenderung der zentralen Raumlinks. Die
+Audio-Beobachtung haengt ausschliesslich einen Analyser parallel an den
+bestehenden Ausgang; sie ersetzt weder den Anbieterklang noch die
+Mehrspielerverbindung. Der erste Versuch traf den von einer schwarzen Taste
+ueberlagerten Teil einer weissen Taste; die Wiederholung bedient den freien
+unteren Bereich mit echten Maus-/Touchereignissen.
+
+Der Raumlink und Screenshots bleiben privat ausserhalb des Repositorys. Diese
+Probe ist noch keine native WorkAdventure-Tischprobe, keine Messung der
+Netzwerk-Latenz fuer taktgenaues Zusammenspiel und keine schulische Anbieter-
+oder Altersfreigabe. Der naechste Schritt bleibt ein gemeinsam geteilter
+Raumlink am Musiktisch mit den vorhandenen frischen Schul-/Klassenpruefungen
+und einer ausdruecklich geprueften redaktionellen Freigabe. Keine stille
+Aktivierung fuer Grund- oder Mittelstufe.
+
 ## Technische Reihenfolge und Freigabeschranken
 
 1. Bestehendes Kino, Erzaehlkarten, Museumsverwaltung und aktuelle Spiele-Raumlinks

@@ -146,3 +146,12 @@ Pruefversuche hatten das mobile Hauptmenue beziehungsweise seine zwei
 gleichnamigen Aktionszugaenge falsch angesprochen; die Kartensteuerung blieb
 unveraendert. Der aktuelle Nachweis liegt ausserhalb des Repositorys unter
 `output/castle-gallery-native-qa/result.json`.
+
+Die beiden Pages-Veroeffentlichungsversuche fuer `d227019` scheiterten im
+Auslieferungsschritt nach jeweils zehn Minuten; Build und Artefakt-Upload
+bestanden. Das Artefakt war mit 434.528.281 Byte nur 6.608 Byte groesser als
+der vorher erfolgreich veroeffentlichte Stand. Eine neue Aufblaehung oder ein
+allgemeiner GitHub-Ausfall sind damit nicht als Ursache bewiesen. Die eigenen
+Galeriedateien sind unabhaengig davon auf dem VPS veroeffentlicht und geprueft;
+alte Karten werden nicht zur Umgehung dieses Problems ersetzt. Die erneuerten
+Karten-Skriptpakete benoetigen einen gesonderten erfolgreichen Pages-Nachweis.
