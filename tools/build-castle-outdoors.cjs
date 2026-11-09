@@ -3,7 +3,7 @@ const sharp=require('./castle-deps.cjs')('sharp');
 const {geometry}=require('./build-library.cjs');
 const {nativeTarget,writeWam}=require('./castle-wam.cjs');
 const {createCanvas}=require('./castle-deps.cjs')('@napi-rs/canvas');
-const root=path.resolve(__dirname,'..'),T=32,W=36,H=24,revision='20261109-actions1',artRevision='20261108-outdoors2';
+const root=path.resolve(__dirname,'..'),T=32,W=36,H=24,revision='20261109-actions2',artRevision='20261108-outdoors2';
 const picnicStyle=Object.freeze({width:128,height:96,columns:[40,88],northY:18,southY:74,southStandY:120});
 const P=(name,value)=>({name,type:typeof value==='boolean'?'bool':typeof value==='number'?'float':'string',value});
 const rect=(id,x,y,width,height,preserve=false)=>({id,x,y,width,height,preserve});

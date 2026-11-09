@@ -14,3 +14,22 @@ for name in ['front/Api/Iframe/player.ts','front/Phaser/Game/GameScene.ts']:
     lines=(root/name).read_text().splitlines()
     for number,line in enumerate(lines):
         if any(word in line for word in ['getIdToken','getJwtToken','getAuthToken','getAccessToken']):print('\n'.join(str(i+1)+': '+lines[i] for i in range(max(0,number-2),min(len(lines),number+8))))
+for name in ['front/Connexion/LocalUserStore.ts','front/Connexion/LocalUser.ts']:
+    file=root/name
+    print('\nLOCAL ID SOURCE '+name)
+    if file.exists():
+        lines=file.read_text().splitlines()
+        for number,line in enumerate(lines):
+            if any(word in line for word in ['getLocalUser(', 'localUserKey', 'uuid', 'localUser =']):
+                print('\n'.join(str(i+1)+': '+lines[i] for i in range(max(0,number-1),min(len(lines),number+9))))
+for file in root.rglob('*LocalUser*.ts'):
+    print('\nFOUND '+file.relative_to(root).as_posix())
+    lines=file.read_text().splitlines()
+    for number,line in enumerate(lines):
+        if any(word in line for word in ['getLocalUser(', 'localUserKey', 'uuid', 'localUser =']):
+            print('\n'.join(str(i+1)+': '+lines[i] for i in range(max(0,number-1),min(len(lines),number+9))))
+source=root.parent.parent
+print('\nBUILD DOCKERFILE\n'+(source/'play/Dockerfile').read_text())
+print('\nSOURCE GIT\n')
+import subprocess
+print(subprocess.check_output(['git','status','--short'],cwd=source,text=True))

@@ -72,7 +72,7 @@ async function join(browser,number,options={}){
   page.on('requestfinished',request=>{const entry=scriptRequests.get(request);if(entry){scriptLoads.push({...entry,finished:Date.now()-bootStarted});scriptRequests.delete(request);}});
   page.on('pageerror',e=>errors.push(e.message));
   page.on('console',message=>{
-    if(['error','warning'].includes(message.type()))diagnostics.push({type:message.type(),message:message.text()});
+    if(['error','warning'].includes(message.type()))diagnostics.push({type:message.type(),message:message.text().replace(/(access_token=)[^&'"\s]+/g,'$1[redacted]')});
   });
   page.on('requestfailed',r=>diagnostics.push({request:new URL(r.url()).pathname,error:r.failure()?.errorText}));
   await page.goto(options.roomUrl||url,{waitUntil:'domcontentloaded',timeout:60000});

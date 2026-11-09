@@ -81,7 +81,7 @@ export class CastleActivities{
     }
     if(value.waiting)return;
     const buttons=value.leader?value.table.options.map(option=>({label:option.label,className:'primary',callback:()=>this.rounds.choose(option.id)})):[];
-    void this.wa.ui.openPopup(value.table.area.name,value.leader?'Unsere Tischrunde':'Die Tischrunde wird ausgewaehlt.',buttons).then(popup=>{
+    void Promise.resolve().then(()=>this.wa.ui.openPopup(value.table.area.name,value.leader?'Unsere Tischrunde':'Die Tischrunde wird ausgewaehlt.',buttons)).then(popup=>{
       if(this.closed||epoch!==this.pickerEpoch)popup.close();else this.picker=popup;
     }).catch(e=>console.warn('Table selection:',e.message));
   }

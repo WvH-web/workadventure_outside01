@@ -6,13 +6,13 @@
   },
   "entry": "castle/npcs.js",
   "output": "castle/expansion.bundle.js",
-  "bytes": 38060,
-  "sha256": "08a2207f8f7f8960fbf79b32a591289fc26ead52eb893d281c086d49ec3e136a",
+  "bytes": 38088,
+  "sha256": "b43871efa159666cdf95964df37ccf76e9733f4a8ab80e62307d580646d52805",
   "runtimeModuleRequests": 1,
   "sources": [
     {
       "path": "castle/activities.js?v=20261109-atelier1",
-      "sha256": "6b847422a91422cdddf8a67962d7ebd159ad788254107746b1ce2534343892d9"
+      "sha256": "fa0d8d5380e25e3a45c80cc2a0e93a7f16df61fce571508974556e8c23f77c16"
     },
     {
       "path": "castle/catalog.js?v=20261108-expansion1",

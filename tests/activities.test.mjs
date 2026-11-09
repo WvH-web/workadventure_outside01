@@ -100,13 +100,14 @@ test('a visible table choice opens for all seated participants, not passers-by, 
     const s=setup();s.c.dispose();s.wa.player={playerId:id,state:{castleSeatV1:chair?{id:chair,stage:'seated',visit:crypto.randomUUID()}:null}};
     s.wa.player.state.saveVariable=async(key,value)=>{s.wa.player.state[key]=structuredClone(value);};
     s.wa.players={list:()=>users.filter(other=>other!==s).map(other=>other.wa.player)};
-    s.popups=[];s.wa.ui.openPopup=async(name,label,buttons)=>{const popup={name,label,buttons,closed:false,close(){this.closed=true;}};s.popups.push(popup);return popup;};
+    s.popups=[];s.wa.ui.openPopup=(name,label,buttons)=>{const popup={name,label,buttons,closed:false,close(){this.closed=true;}};s.popups.push(popup);return id%2?popup:Promise.resolve(popup);};
     s.room.layout={seats:[{id:'a',audioGroup:'table'},{id:'b',audioGroup:'table'},{id:'c',audioGroup:'table'}]};s.room.seat=chair?{id:chair,x:20,y:20}:null;
     s.c=new CastleActivities(s.wa,s.room,{layers:[{objects:[area]}]});users.push(s);return s;
   }
   async function tick(){for(let i=0;i<8;i++){for(const s of users)s.c.refresh();await Promise.all(users.map(s=>s.c.rounds?.writing));await new Promise(resolve=>setTimeout(resolve));}}
   const a=add(1,'a'),b=add(2,'b'),passer=add(3,null);await tick();assert.equal(a.popups.at(-1).buttons.length,2);assert.equal(passer.popups.length,0);
   a.popups.at(-1).buttons[0].callback();await tick();assert.equal(a.websites.length,1);assert.equal(b.websites.length,1);assert.equal(passer.websites.length,0);
+  assert.ok(a.popups.every(p=>p.closed));assert.ok(b.popups.every(p=>p.closed));
   assert.equal(a.websites[0].url,b.websites[0].url);assert.equal(b.websites[0].api,false);
   const late=add(4,'c');await tick();assert.equal(late.websites.length,1);assert.equal(late.websites[0].url,a.websites[0].url);
   a.room.seat=null;a.wa.player.state.castleSeatV1=null;await tick();assert.equal(a.websites[0].closed,true);assert.equal(b.websites[0].closed,false);
