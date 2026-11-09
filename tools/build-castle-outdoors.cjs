@@ -3,7 +3,7 @@ const sharp=require('./castle-deps.cjs')('sharp');
 const {geometry}=require('./build-library.cjs');
 const {nativeTarget,writeWam}=require('./castle-wam.cjs');
 const {createCanvas}=require('./castle-deps.cjs')('@napi-rs/canvas');
-const root=path.resolve(__dirname,'..'),T=32,W=36,H=24,revision='20261108-outdoors3',artRevision='20261108-outdoors2';
+const root=path.resolve(__dirname,'..'),T=32,W=36,H=24,revision='20261109-actions1',artRevision='20261108-outdoors2';
 const picnicStyle=Object.freeze({width:128,height:96,columns:[40,88],northY:18,southY:74,southStandY:120});
 const P=(name,value)=>({name,type:typeof value==='boolean'?'bool':typeof value==='number'?'float':'string',value});
 const rect=(id,x,y,width,height,preserve=false)=>({id,x,y,width,height,preserve});
@@ -110,7 +110,7 @@ async function buildOne(scene,picnicImage){
     blockedTiles:blocked.size,reachableFloorTiles:reachable.size,foregroundPixels,sourceSha256:crypto.createHash('sha256').update(fs.readFileSync(path.join(art,'room-source.png'))).digest('hex')};
   const back=scene.portals[0];
   const map={compressionlevel:-1,width:W,height:H,tilewidth:T,tileheight:T,infinite:false,orientation:'orthogonal',renderorder:'right-down',tiledversion:'1.11.2',type:'map',version:'1.10',nextlayerid:lid,nextobjectid:oid,layers,
-    properties:[P('mapName',scene.name),P('mapDescription',scene.name+' mit kleinen Picknickrunden, begehbaren Wegen und Schlossbewohnern.'),P('mapImage',artPath+floorFile),P('script','outdoors.js?v='+revision+'&room='+scene.id),
+    properties:[P('mapName',scene.name),P('mapDescription',scene.name+' mit kleinen Picknickrunden, begehbaren Wegen und Schlossbewohnern.'),P('mapImage',artPath+floorFile),P('script','outdoors.bundle.js?v='+revision+'&room='+scene.id),
       P('castleMapId',scene.id),P('castleRevision',revision),P('castleArtScale',1),P('castleNativeMeetings',true),P('castleNativeRoomUrl',nativeTarget(scene.id+'.tmj')),
       P('castleHallUrl',nativeTarget(back.target+'#'+back.entry)),P('castleReturnLabel',scene.id==='umgebung'?'Grosse Halle':'Schlosshof'),P('castleStoryVariable','castleStory'+scene.key),P('castleMapdata',JSON.stringify(mapdata)),
       P('mapCopyright','Original outdoor and picnic artwork generated for deine Schule; existing school go-cart artwork.')],
@@ -136,7 +136,7 @@ if(require.main===module)buildCastleOutdoors().then(results=>{
   if(process.argv.includes('--update-world')){
     const file=path.join(root,'castle/layout.json'),manifest=JSON.parse(fs.readFileSync(file));
     for(const {world}of results){const i=manifest.worlds.findIndex(w=>w.id===world.id);if(i<0)manifest.worlds.push(world);else manifest.worlds[i]=world}
-    fs.writeFileSync(file,JSON.stringify(manifest)+'\n');require('./build-castle-ui.cjs').buildCastleUi();
+    fs.writeFileSync(file,JSON.stringify(manifest)+'\n');require('./build-castle-ui.cjs').buildCastleUi();require('./build-castle-script.cjs').buildCastleScript();
   }
   console.log(JSON.stringify(results.map(r=>({id:r.world.id,...r.world.mapdata}))));
 }).catch(e=>{console.error(e);process.exitCode=1});

@@ -266,10 +266,10 @@ async function buildMiddleCommonRoom(source) {
       ),
     ]),
   );
-  const activities=[['story','Erzaehlkarten','kaminrunde','story.html',true],['games','Spielrunden','spieltisch','hall-games.html',false],['music','Musikwerkstatt','kreativecke','https://musiclab.chromeexperiments.com/Song-Maker/',false]];
+  const activities=[['story','Erzaehlkarten','kaminrunde','story.html',true],['games','Schach spielen','spieltisch','https://together.deine-schule.com/castle-chess/#table=tisch-1',false],['music','Musikwerkstatt','kreativecke','https://musiclab.chromeexperiments.com/Song-Maker/',false]];
   layers.push(objects('activities',activities.map(([id,label,group,url,api])=>{
     const g=groups.find(g=>g.id===group);
-    return area('activity-'+id,g.x,g.y,g.width,g.height,[P('castleActivityId',id),P('castleActivityLabel',label),P('castleActivityUrl',url),P('castleActivityApi',api)]);
+    return area('activity-'+id,g.x,g.y,g.width,g.height,[P('castleActivityId',id),P('castleActivityLabel',label),P('castleActivityUrl',url),P('castleActivityApi',api),P('castleActivityGroup',group),...(['games','story'].includes(id)?[P('castleActivityOnSit',true)]:[])]);
   })));
   layers.push(objects('variables',[{id:oid++,name:'castleStoryMs',type:'variable',x:0,y:0,width:0,height:0,rotation:0,visible:false,properties:[P('persist',false),P('default',false)]}]));
   layers.push(objects("floorLayer", []));
@@ -374,8 +374,8 @@ async function buildMiddleCommonRoom(source) {
         "Ein gemuetlicher Gemeinschaftsraum mit Kamin, Spieltisch und Kreativecke.",
       ),
       P("mapImage", artPath + floorFile),
-      P("script", "activities.js?v=20261108-activities1"),
-      P('castleRevision','20261108-activities1'),P('castleStoryVariable','castleStoryMs'),
+      P("script", "expansion.bundle.js?v=20261109-actions1&room=mittelstufe"),
+      P('castleRevision','20261109-actions1'),P('castleStoryVariable','castleStoryMs'),
       P("castleNativeMeetings", true),
       P("castleNativeRoomUrl", nativeTarget("mittelstufe.tmj")),
       P("castleArtScale", scale),

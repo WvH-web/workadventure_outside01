@@ -598,6 +598,20 @@ test("a failed slide transport restores controls and removes the exit action", a
     room.dispose();
   }
 });
+test('slide pacing is wall-clock based, faster and continuous across waypoints with bounded frame traffic',async()=>{
+  let now=0;const f=fixture(),layout=readLayout(maps.get('park')),samples=[],waits=[];
+  const room=new CastleRoom(f.wa,layout,{now:()=>now,delay:async ms=>{waits.push(ms);now+=ms;}});await room.start();
+  try{
+    const slide=layout.rides[0],original=f.wa.player.teleport;
+    f.moved.emit({x:slide.x+16,y:slide.y+16});
+    f.wa.player.teleport=async(x,y)=>{samples.push({x,y,at:now});now+=7;await original(x,y);};
+    await room.startRide(slide);
+    const length=slide.waypoints.slice(1).reduce((sum,p,i)=>sum+Math.hypot(p.x-slide.waypoints[i].x,p.y-slide.waypoints[i].y),0);
+    assert.ok(now>=length/480*1000);assert.ok(now<length/480*1000+80);
+    assert.ok(samples.length<length/480*30+4);assert.ok(waits.every(ms=>ms<34));
+    assert.deepEqual({x:samples.at(-1).x,y:samples.at(-1).y},slide.waypoints.at(-1));assert.equal(f.calls.controls,true);assert.equal(room.riding,false);
+  }finally{room.dispose();}
+});
 test("an occupied seat is not stolen and failed movement releases controls", async () => {
   const f = fixture(),
     layout = readLayout(legacyControllerMap),

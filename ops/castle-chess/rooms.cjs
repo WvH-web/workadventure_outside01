@@ -46,10 +46,11 @@ class ChessRooms {
   subscribe(listener){this.listeners.add(listener);return ()=>this.listeners.delete(listener);}
   changed(){this.sequence++;for(const listener of this.listeners){try{listener();}catch{this.listeners.delete(listener);}}}
   actor(actor){if(!actor||typeof actor.id!=='string'||actor.id.length<1||actor.id.length>100||typeof actor.staff!=='boolean'||!Number.isFinite(actor.expiresAt)||actor.expiresAt<=this.clock())fail(401,'unauthorized');}
-  create(actor){
+  create(actor,tableId=null){
     this.actor(actor);this.sweep();
+    if(tableId!==null&&!this.tables.has(tableId))fail(400,'invalid_request');
     if(this.sessions.size>=this.maxSessions||[...this.sessions.values()].filter(session=>session.actor===actor.id).length>=4)fail(429,'session_limit');
-    const session={id:crypto.randomBytes(24).toString('hex'),actor:actor.id,staff:actor.staff,table:this.occupied(actor.id)?.table.id||'tisch-1',connected:false,
+    const session={id:crypto.randomBytes(24).toString('hex'),actor:actor.id,staff:actor.staff,table:tableId||this.occupied(actor.id)?.table.id||'tisch-1',boundTable:tableId,connected:false,
       expiresAt:Math.min(actor.expiresAt,this.clock()+this.sessionMs),commands:new Map()};
     this.sessions.set(session.id,session);return {sessionId:session.id,...this.snapshot(session.id)};
   }
@@ -116,7 +117,7 @@ class ChessRooms {
     if(session.commands.has(command.id)){if(session.commands.get(command.id)!==digest)fail(409,'command_conflict');return this.snapshot(id);}
     const table=this.tables.get(session.table),color=this.selfColor(table,session);
     if(command.action==='watch'){
-      if(!this.tables.has(command.tableId))fail(400,'invalid_request');if(color&&command.tableId!==session.table)fail(409,'leave_seat_first');session.table=command.tableId;
+      if(!this.tables.has(command.tableId)||session.boundTable&&command.tableId!==session.boundTable)fail(400,'invalid_request');if(color&&command.tableId!==session.table)fail(409,'leave_seat_first');session.table=command.tableId;
     }else{
       if(!Number.isSafeInteger(command.revision)||command.revision<1)fail(400,'invalid_request');if(command.revision!==table.revision)fail(409,'stale_position');
       if(['claim','resume'].includes(command.action)){

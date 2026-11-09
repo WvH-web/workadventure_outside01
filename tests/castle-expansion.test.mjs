@@ -81,7 +81,7 @@ test('expansion entry is one pinned module with each controller included exactly
 
 test('the game room table opens first-party school chess without map API access or geometry changes',()=>{
   const map=read('spielesaal.tmj'),table=map.layers.flatMap(layer=>layer.objects||[]).find(object=>props(object).castleActivityId==='games-shelf');
-  const config=activitySettings(table);assert.equal(config.url,'https://together.deine-schule.com/castle-chess/');assert.equal(config.label,'Schach spielen');assert.equal(config.api,false);
+  const config=activitySettings(table);assert.equal(config.url,'https://together.deine-schule.com/castle-chess/#table=tisch-2');assert.equal(config.label,'Schach spielen');assert.equal(config.api,false);assert.equal(config.group,'buchclub');assert.equal(config.autoOnSit,true);
   assert.equal(readLayout(map).seats.length,12);assert.equal(createWam(map).areas.length,3);
 });
 test('the atelier table opens only the protected first-party drawing page without map API access',()=>{

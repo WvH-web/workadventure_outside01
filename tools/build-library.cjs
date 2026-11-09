@@ -113,8 +113,12 @@ async function buildFurnishedRoom(options={}){
   layers.push(objects('conversationAreas',scene.groups.map(g=>area('group-'+g.id,g,[P('conversationGroup',g.id),P('conversationLabel',g.label)]))));
   if(!scene.noHearth)layers.push(objects('ambience',[area('kamin-prasseln',scene.hearth.audio,[P('playAudio','../village/fire.mp3'),P('audioLoop',true),P('audioVolume',.06)])]));
   if(scene.activities)layers.push(objects('activities',scene.activities.map(a=>area('activity-'+a.id,a.area||scene.groups.find(g=>g.id===a.group),[
-    P('castleActivityId',a.id),P('castleActivityLabel',a.label),P('castleActivityUrl',a.url),P('castleActivityApi',a.api)]))));
+    P('castleActivityId',a.id),P('castleActivityLabel',a.label),P('castleActivityUrl',a.url),P('castleActivityApi',a.api),
+    ...(a.group?[P('castleActivityGroup',a.group)]:[]),
+    ...(a.group&&(/^(?:story\.html(?:#table)?|https:\/\/together\.deine-schule\.com\/castle-chess\/(?:#table=tisch-[123])?)$/.test(a.url))?[P('castleActivityOnSit',true)]:[]),
+    ...(a.choices?[P('castleActivityChoices',JSON.stringify(a.choices))]:[])]))));
   if(scene.storyVariable)layers.push(objects('variables',[{id:oid++,name:scene.storyVariable,type:'variable',x:0,y:0,width:0,height:0,rotation:0,visible:false,properties:[P('persist',false),P('default',false)]}]));
+  if(scene.activities?.some(a=>a.choices?.some(option=>option.url==='story.html#table')))layers.push(objects('table-variables',[{id:oid++,name:'castleStoryTable',type:'variable',x:0,y:0,width:0,height:0,rotation:0,visible:false,properties:[P('persist',false),P('default',false)]}]));
   if(scene.displays?.length)layers.push(objects('exhibit-displays',scene.displays.map(d=>area('display-'+d.board,d,[P('castleDisplayBoard',d.board)]))));
   if(scene.npcs?.length)layers.push(objects('castle-characters',scene.npcs.map(n=>area('character-'+n.id,n,[P('castleNpcId',n.id)]))));
   layers.push(objects('floorLayer',[]),tile('furniture-fronts',Array.from({length:count},(_,i)=>frontCells.has(i)?frontGid+i:0)));

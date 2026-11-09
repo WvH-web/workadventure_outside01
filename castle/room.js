@@ -123,6 +123,7 @@ export class CastleRoom {
     this.nativeMeetings = isNativeMeetingRoom(wa, layout);
     this.delay =
       options.delay || ((ms) => new Promise((r) => setTimeout(r, ms)));
+    this.now=options.now||(()=>performance.now());
     this.position = { x: 0, y: 0 };
     this.seat = null;
     this.prompt = null;
@@ -369,11 +370,12 @@ export class CastleRoom {
       return false;
     this.busy = true;
     this.seat = seat;
+    this.seatVisit = crypto.randomUUID();
     try {
       await bounded(
         this.wa.player.state.saveVariable(
           STATE,
-          { id, stage: "claiming" },
+          { id, stage: "claiming", visit: this.seatVisit },
           PUBLIC,
         ),
         5000,'Seat reservation',
@@ -419,7 +421,7 @@ export class CastleRoom {
       await bounded(
         this.wa.player.state.saveVariable(
           STATE,
-          { id, stage: "seated" },
+          { id, stage: "seated", visit: this.seatVisit },
           PUBLIC,
         ),
       );
@@ -437,6 +439,7 @@ export class CastleRoom {
     if (this.standingTask) return this.standingTask;
     const seat = this.seat;
     this.seat = null;
+    this.seatVisit = null;
     this.wa.ui.actionBar.removeButton(this.uiIds.stand);
     this.standingTask = (async () => {
       try {
@@ -469,23 +472,20 @@ export class CastleRoom {
       callback: () => this.cancelRide(),
     });
     try {
-      for (
-        let i = 1;
-        i < slide.waypoints.length && this.riding && !this.disposed;
-        i++
-      ) {
-        const a = slide.waypoints[i - 1],
-          b = slide.waypoints[i],
-          steps = Math.ceil(Math.hypot(b.x - a.x, b.y - a.y) / 24);
-        for (let n = 1; n <= steps && this.riding && !this.disposed; n++) {
-          await bounded(
-            this.wa.player.teleport(
-              a.x + ((b.x - a.x) * n) / steps,
-              a.y + ((b.y - a.y) * n) / steps,
-            ),
-          );
-          await this.delay(80);
-        }
+      const segments=[];let total=0;
+      for(let i=1;i<slide.waypoints.length;i++){
+        const a=slide.waypoints[i-1],b=slide.waypoints[i],length=Math.hypot(b.x-a.x,b.y-a.y);
+        if(length){segments.push({a,b,start:total,length});total+=length;}
+      }
+      const speed=480,cadence=1000/30,started=this.now();let segment=0;
+      // Wall-clock pacing avoids adding an RPC round trip and a pause at every waypoint.
+      while(segments.length&&this.riding&&!this.disposed){
+        const frameStarted=this.now(),distance=Math.min(total,(frameStarted-started)*speed/1000);
+        while(segment<segments.length-1&&distance>segments[segment].start+segments[segment].length)segment++;
+        const {a,b,start,length}=segments[segment],fraction=Math.max(0,Math.min(1,(distance-start)/length));
+        await bounded(this.wa.player.teleport(a.x+(b.x-a.x)*fraction,a.y+(b.y-a.y)*fraction));
+        if(distance>=total)break;
+        await this.delay(Math.max(0,cadence-(this.now()-frameStarted)));
       }
     } finally {
       this.riding = false;

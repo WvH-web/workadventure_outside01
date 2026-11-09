@@ -72,6 +72,18 @@ test('kart uses the existing native appearance and preserves normal movement, Sh
     assert.ok(s.calls.filter(c=>c[0]==='hide'||c[0]==='show').every(c=>c[1]==='kart-parked'));
   }finally{s.park.dispose()}
 });
+test('kart entry and exit remain accessible in the native Apps menu and dispose both actions',async()=>{
+  const s=setup();s.park.start();try{
+    const primary=s.buttons.get(s.park.startId),apps=s.buttons.get(s.park.startId+'-apps');assert.equal(apps.location,'appsMenu');assert.equal(primary.callback,apps.callback);
+    await s.park.startKart();assert.equal(s.buttons.get(s.park.stopId+'-apps').location,'appsMenu');assert.equal(s.buttons.has(s.park.startId+'-apps'),false);
+    await s.park.stopKart();assert.equal(s.buttons.has(s.park.stopId+'-apps'),false);
+  }finally{s.park.dispose();assert.equal(s.buttons.size,0);}
+});
+test('kart offers a visible local entry popup and removes it once entry starts',async()=>{
+  const s=setup();let closed=0,buttons;
+  s.wa.ui.openPopup=(target,label,choices)=>{assert.equal(target,'kart-parking');assert.equal(label,'Go-Kart');buttons=choices;return {close:()=>closed++};};
+  try{s.park.start();await new Promise(resolve=>setImmediate(resolve));assert.equal(buttons[0].label,'Einsteigen');await s.park.startKart();assert.equal(closed,1);assert.equal(s.park.entryPopup,null);}finally{s.park.dispose();}
+});
 test('leaving the circuit restores the avatar without a key binding or player-control override',async()=>{
   const s=setup();try{s.park.start();await s.park.startKart();s.room.position={x:600,y:448};s.park.refresh();await new Promise(r=>setImmediate(r));assert.equal(s.park.active,false);assert.equal(s.park.needsRestore,false);}finally{s.park.dispose()}
 });

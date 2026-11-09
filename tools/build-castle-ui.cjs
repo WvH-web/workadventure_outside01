@@ -5,11 +5,11 @@ function buildCastleUi(){
   for(const id of ids){
     const map=JSON.parse(fs.readFileSync(path.join(root,'castle',id+'.tmj'))),activities=map.layers.flatMap(l=>l.objects||[])
       .map(o=>o.properties?.find(p=>p.name==='castleActivityId')?.value).filter(Boolean);
-    owned[id]=['castle-return-hall-'+id,'castle-stand-'+id,'castle-ride-stop-'+id,...activities.map(a=>'castle-activity-'+id+'-'+a)];
+    owned[id]=['castle-return-hall-'+id,'castle-stand-'+id,'castle-ride-stop-'+id,...activities.flatMap(a=>['castle-activity-'+id+'-'+a,'castle-activity-'+id+'-'+a+'-apps'])];
     for(const a of activities)legacy.add('castle-activity-'+a);
   }
   owned['grosse-halle'].push('hall-action-noticeboard','hall-action-games');owned.kino.push('castle-cinema');
-  owned.park.push('castle-kart-start-park','castle-kart-stop-park');
+  owned.park.push('castle-kart-start-park','castle-kart-stop-park','castle-kart-start-park-apps','castle-kart-stop-park-apps');
   fs.writeFileSync(path.join(root,'castle/ui-ids.js'),'export const ownedUi='+JSON.stringify(owned)+';\nexport const legacyUi='+JSON.stringify([...legacy].sort())+';\n');
   return {maps:ids.length,legacy:legacy.size};
 }

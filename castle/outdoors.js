@@ -23,14 +23,27 @@ export class CastlePark{
     const offer=!this.active&&!this.busy&&!this.needsRestore&&!this.room.seat&&!this.room.riding&&inside(this.room.position,this.parking)&&inside(this.room.position,this.bounds);
     if(offer!==this.offered){
       this.offered=offer;
-      if(offer)this.wa.ui.actionBar.addButton({id:this.startId,label:'Go-Kart fahren',callback:()=>{void this.startKart().catch(e=>console.warn('Cart entry:',e.message))}});
-      else this.wa.ui.actionBar.removeButton(this.startId);
+      this.offerEpoch=(this.offerEpoch||0)+1;this.entryPopup?.close();this.entryPopup=null;
+      if(offer){
+        const callback=()=>{void this.startKart().catch(e=>console.warn('Cart entry:',e.message))};this.action(this.startId,'Go-Kart fahren',callback);
+        if(typeof this.wa.ui.openPopup==='function'){
+          const epoch=this.offerEpoch;
+          void Promise.resolve(this.wa.ui.openPopup('kart-parking','Go-Kart',[{label:'Einsteigen',className:'primary',callback}])).then(popup=>{
+            if(this.closed||!this.offered||epoch!==this.offerEpoch)popup.close();else this.entryPopup=popup;
+          }).catch(error=>console.warn('Cart entry prompt:',error.message));
+        }
+      }else this.removeAction(this.startId);
     }
   }
   setParkingVisible(visible){
     try{void Promise.resolve(this.wa.room?.[visible?'showLayer':'hideLayer']?.('kart-parked')).catch(error=>console.warn('Cart parking:',error.message))}
     catch(error){console.warn('Cart parking:',error.message)}
   }
+  action(id,label,callback){
+    this.wa.ui.actionBar.addButton({id,label,callback});
+    this.wa.ui.actionBar.addButton({id:id+'-apps',label,callback,location:'appsMenu'});
+  }
+  removeAction(id){this.wa.ui.actionBar.removeButton(id);this.wa.ui.actionBar.removeButton(id+'-apps');}
   async startKart(){
     if(this.closed||this.active||this.busy||this.needsRestore||this.room.seat||this.room.riding||!inside(this.room.position,this.parking)||!inside(this.room.position,this.bounds))return false;
     this.busy=true;const epoch=++this.epoch;this.refresh();
@@ -41,7 +54,7 @@ export class CastlePark{
       await bounded(change);if(this.closed||epoch!==this.epoch)return false;
       this.active=true;this.needsRestore=true;
       this.setParkingVisible(false);
-      this.wa.ui.actionBar.addButton({id:this.stopId,label:'Aussteigen',callback:()=>{void this.stopKart().catch(e=>console.warn('Cart exit:',e.message))}});
+      this.action(this.stopId,'Aussteigen',()=>{void this.stopKart().catch(e=>console.warn('Cart exit:',e.message))});
       return true;
     }catch(error){
       this.needsRestore=true;await this.stopKart().catch(()=>{});throw error;
@@ -51,9 +64,9 @@ export class CastlePark{
     if(this.exiting)return this.exiting;
     this.active=false;++this.epoch;
     this.exiting=(async()=>{
-      try{await bounded(this.wa.player.restoreWoka());this.needsRestore=false;this.wa.ui.actionBar.removeButton(this.stopId);if(!this.closed)this.setParkingVisible(true)}
+      try{await bounded(this.wa.player.restoreWoka());this.needsRestore=false;this.removeAction(this.stopId);if(!this.closed)this.setParkingVisible(true)}
       catch(error){
-        if(!this.closed)this.wa.ui.actionBar.addButton({id:this.stopId,label:'Avatar zuruecksetzen',callback:()=>{void this.stopKart().catch(e=>console.warn('Cart reset:',e.message))}});
+        if(!this.closed)this.action(this.stopId,'Avatar zuruecksetzen',()=>{void this.stopKart().catch(e=>console.warn('Cart reset:',e.message))});
         throw error;
       }
     })();
@@ -61,8 +74,9 @@ export class CastlePark{
   }
   dispose(){
     if(this.closed)return;this.closed=true;++this.epoch;clearInterval(this.timer);
+    this.entryPopup?.close();this.entryPopup=null;
     this.unsubscribeTravel?.();
-    this.wa.ui.actionBar.removeButton(this.startId);this.wa.ui.actionBar.removeButton(this.stopId);
+    this.removeAction(this.startId);this.removeAction(this.stopId);
     if(this.active||this.needsRestore||this.busy)void this.stopKart().catch(()=>{});
   }
 }

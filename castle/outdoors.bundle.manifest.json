@@ -1,0 +1,54 @@
+{
+  "version": 1,
+  "compiler": {
+    "name": "esbuild",
+    "version": "0.17.17"
+  },
+  "entry": "castle/outdoors.js",
+  "output": "castle/outdoors.bundle.js",
+  "bytes": 42316,
+  "sha256": "6a2d8654ff0f8febcb2af33db27ccd45a305af4d84cf10d6aac9501a91efbd2a",
+  "runtimeModuleRequests": 1,
+  "sources": [
+    {
+      "path": "castle/activities.js?v=20261109-atelier1",
+      "sha256": "6b847422a91422cdddf8a67962d7ebd159ad788254107746b1ce2534343892d9"
+    },
+    {
+      "path": "castle/catalog.js?v=20261108-expansion1",
+      "sha256": "9109fbb9ec5f2599e455d5e002a792ae28a6354d018b536d668b988e65eb8cfc"
+    },
+    {
+      "path": "castle/characters-data.js?v=20261108-characters1",
+      "sha256": "a41dd61b5efaa6c02b20e1431aea7c904883e840181aa295445ec1084762af77"
+    },
+    {
+      "path": "castle/displays.js?v=20261109-atelier1",
+      "sha256": "e07eeb3dc50fcade6d359c5967054da3d037947aae59310094c2d84077196331"
+    },
+    {
+      "path": "castle/npcs.js?v=20261108-focus1",
+      "sha256": "055a23807c4a7d089adb4d5ca9c94e9a2bbdb99042e25cdc6a309d04f728151a"
+    },
+    {
+      "path": "castle/outdoors.js",
+      "sha256": "d7ed41d2d63ff63d78c0c4264da7be9550ba48418b9cf8cceb2fd5d622fa11e0"
+    },
+    {
+      "path": "castle/room.js?v=20261108-outdoors1",
+      "sha256": "509301b90123f3b5807b10d3fd6cf6d66f63c93b3f6d3abbbaa7e802c243a4c9"
+    },
+    {
+      "path": "castle/table-round.js",
+      "sha256": "53945a38cf6a06b99feab5358eef2c83bba93102c545f7d256a984b937df6b6c"
+    },
+    {
+      "path": "castle/ui-ids.js?v=20261108-outdoors1",
+      "sha256": "bc506c29351371a5a1ba79dad990bfa4ef8c55318855695005e98280f081f4ce"
+    },
+    {
+      "path": "castle/ui-lifecycle.js?v=20261108-outdoors1",
+      "sha256": "0cb6d2030f54ca513dc7c785aeb85dceb1b56c382a720d04576d97e18a76ae04"
+    }
+  ]
+}

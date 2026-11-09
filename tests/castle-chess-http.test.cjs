@@ -60,6 +60,16 @@ test('strict requests reject foreign origins, profile injection, session theft a
   assert.equal((await f.api(a,'session',{}, {'Content-Type':'text/plain'})).status,415);
   assert.equal((await f.api(a,'session',{text:'x'.repeat(5000)})).status,413);
 });
+
+test('a physical table binds the session to a validated board without granting a color or changing school checks',async t=>{
+  const f=await fixture(t),a=await f.actor('bound-a@invalid.local');
+  for(const body of [{tableId:'unknown'},{tableId:'tisch-2',age:99},{tableId:null}])assert.equal((await f.api(a,'session',body)).status,400);
+  const result=await f.api(a,'session',{tableId:'tisch-2'});assert.equal(result.status,200);a.session=result.value.sessionId;
+  assert.equal(result.value.board.id,'tisch-2');assert.equal(result.value.self.color,null);assert.equal(result.value.self.staff,false);
+  const stream=await f.stream(a);await stream.next();assert.equal((await f.cmd(a,'watch',1,{tableId:'tisch-1'})).status,400);
+  assert.equal((await f.cmd(a,'claim',1,{color:'w'})).status,200);
+  f.profiles.set(a.id,{kind:'unknown',eligible:false,age:null,gradeLevel:null,classId:null});assert.equal((await f.api(a,'state')).status,403);
+});
 test('real HTTP/SSE synchronizes two players and spectator with authoritative legal turns',async t=>{
   const f=await fixture(t),a=await f.actor('chess-a@invalid.local'),b=await f.actor('chess-b@invalid.local'),c=await f.actor('chess-watch@invalid.local');
   for(const actor of [a,b,c])await f.join(actor);const sa=await f.stream(a),sb=await f.stream(b),sc=await f.stream(c);

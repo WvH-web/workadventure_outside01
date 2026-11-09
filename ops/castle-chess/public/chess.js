@@ -22,6 +22,7 @@ const cancelled=()=>Object.assign(Error(),{code:'cancelled'});
 
 class ChessPage {
   constructor(){
+    this.boundTable=/^#table=tisch-[123]$/.test(location.hash)?location.hash.slice(7):null;
     this.ui=Object.fromEntries(['connection','message','table','table-bar','presence','puzzle','puzzle-bar','top-seat','your-color','position-status','flip','white','black','resume','leave-seat','seat-actions','move-form','move-from','move-to','move-promotion','submit-move','game-title','result','moves','online-actions','offer-draw','draw-offer','accept-draw','decline-draw','resign','rematch','reset','undo','restart','pgn','confirm','confirm-title'].map(id=>[id,document.getElementById(id)]));
     this.mode='online';this.local=new Chess();this.puzzle=puzzles[0];this.epoch=0;this.auth=undefined;this.requests=new Set();this.orientation='w';this.closed=false;this.retryMs=1500;
     this.board=new Chessboard(document.getElementById('board'),{position:this.local.fen(),assetsUrl:'/castle-chess/vendor/cm-chessboard/assets/',
@@ -84,7 +85,7 @@ class ChessPage {
     this.syncAuth();if(this.closed||!this.auth||this.connecting||this.stream)return this.connecting;
     const epoch=this.epoch,job=(async()=>{
       try{
-        if(!this.session){const value=await this.api('session',{}, {session:false});this.session=value.sessionId;this.state=null;this.accept(value);}
+        if(!this.session){const value=await this.api('session',this.boundTable?{tableId:this.boundTable}:{}, {session:false});this.session=value.sessionId;this.state=null;this.accept(value);}
         else this.accept(await this.api('ping',{}));
         if(epoch!==this.epoch||this.closed)return;
         this.allowed=true;const controller=new AbortController();this.stream=controller;void this.listen(controller,epoch);this.render();
@@ -195,7 +196,7 @@ class ChessPage {
     this.ui['table-bar'].hidden=!online;this.ui['puzzle-bar'].hidden=this.mode!=='puzzle';this.ui['seat-actions'].hidden=!online;this.ui['online-actions'].hidden=!online;
     if(state){const selected=state.board.id;for(const table of state.tables){let option=[...this.ui.table.options].find(option=>option.value===table.id);if(!option){option=new Option('',table.id);this.ui.table.add(option);}option.textContent=table.name+' · '+statuses[table.status];}this.ui.table.value=selected;this.ui.presence.textContent=state.tables.find(table=>table.id===selected).watchers+' Zuschauer';}
     else{this.ui.table.replaceChildren();this.ui.presence.textContent='';}
-    this.ui.table.disabled=!active||Boolean(own);this.ui.puzzle.disabled=!active;
+    this.ui.table.disabled=!!this.boundTable||!active||Boolean(own);this.ui.puzzle.disabled=!active;
     this.ui['game-title'].textContent=online?state?.board.name||'Tischpartie':this.mode==='puzzle'?this.puzzle.name:'Freies Spiel';
     this.ui['top-seat'].textContent=online&&state?colorName(this.orientation==='w'?'b':'w')+' · '+(state.board.seats[this.orientation==='w'?'b':'w'].connected?'am Tisch':state.board.seats[this.orientation==='w'?'b':'w'].occupied?'kehrt zurück':'frei'):colorName(this.orientation==='w'?'b':'w');
     this.ui['your-color'].textContent=online?(own?'Du spielst '+colorName(own):state?.self.resumeColor?'Dein Platz ist reserviert':'Zuschauer'):this.mode==='practice'?'Beide Seiten':'Matt in einem Zug';

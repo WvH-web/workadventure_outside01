@@ -1,4 +1,4 @@
-import {storyCards,SharedStory,newStory} from './story-state.js?v=20261108-outdoors1';
+import {storyCards,SharedStory,newStory} from './story-state.js?v=20261109-actions1';
 const $=id=>document.getElementById(id),preview=new URLSearchParams(location.search).get('preview')==='1';
 let shared,closed=false,cooldown;
 function render(value){
@@ -24,7 +24,7 @@ async function init(){
   let timer;
   try{await Promise.race([WA.onInit(),new Promise((_,reject)=>{timer=setTimeout(()=>reject(Error('Verbindung nicht verfuegbar')),30000)})])}
   finally{clearTimeout(timer)}
-  const map=await WA.room.getTiledMap(),key=map.properties?.find(p=>p.name==='castleStoryVariable')?.value;
+  const map=await WA.room.getTiledMap(),key=location.hash==='#table'?'castleStoryTable':map.properties?.find(p=>p.name==='castleStoryVariable')?.value;
   if(closed)return;
   shared=new SharedStory(WA.state,key,render).start();window.castleStory=shared;
   $('connection').textContent='Gemeinsame Runde';$('roll').disabled=false;

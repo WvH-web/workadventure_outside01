@@ -49,13 +49,16 @@ test('foreground matches the source pixels and protects all heads, torsos and th
 test('activities use real reviewed destinations and distinct ephemeral story variables, never score or identity storage',()=>{
   for(const [id,key,count]of [['grundschule','castleStoryGs',3],['mittelstufe','castleStoryMs',3]]){
     const m=JSON.parse(fs.readFileSync(new URL(id+'.tmj',base))),p=props(m);
-    assert.match(p.script,/^activities\.js\?v=/);assert.equal(p.castleStoryVariable,key);
+    assert.match(p.script,id==='mittelstufe'?/^expansion\.bundle\.js\?v=/:/^activities\.js\?v=/);assert.equal(p.castleStoryVariable,key);
     const variables=m.layers.find(l=>l.name==='variables').objects;
     assert.equal(variables.length,1);assert.equal(variables[0].name,key);assert.equal(variables[0].type,'variable');
     assert.equal(props(variables[0]).persist,false);assert.equal(props(variables[0]).default,false);
     const actions=m.layers.find(l=>l.name==='activities').objects;
     assert.equal(actions.length,count);assert.equal(actions.filter(a=>props(a).castleActivityApi).length,1);
     assert.equal(props(actions.find(a=>props(a).castleActivityApi)).castleActivityUrl,'story.html');
+    if(id==='mittelstufe'){
+      const chess=props(actions.find(a=>props(a).castleActivityId==='games'));assert.equal(chess.castleActivityUrl,'https://together.deine-schule.com/castle-chess/#table=tisch-1');assert.equal(chess.castleActivityOnSit,true);assert.equal(chess.castleActivityGroup,'spieltisch');
+    }
   }
   assert.equal(props(map.layers.find(l=>l.name==='door-halle')).exitUrl,'https://together.deine-schule.com/~/castle-preview/grosse-halle.wam#grundschule');
 });

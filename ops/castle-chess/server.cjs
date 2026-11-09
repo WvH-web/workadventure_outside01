@@ -70,10 +70,10 @@ function createChessServer({config,lookup,rooms=new ChessRooms(),verify=createCh
       if(req.method!==(['state','events','pgn'].includes(route)?'GET':'POST'))throw new GatewayError(405,'method_not_allowed');
       if(req.headers.origin&&req.headers.origin!==config.origin||req.headers['sec-fetch-site']&&req.headers['sec-fetch-site']!=='same-origin')throw new GatewayError(403,'wrong_origin');
       limit('ip:'+opaque(ip(req)),10000);const auth=await verify(req.headers.authorization);limit('id:'+opaque(auth.identifier),120);
-      let body;if(req.method==='POST'){body=await readJson(req);if(route!=='command'&&Object.keys(body).length)throw new GatewayError(400,'invalid_request');}
+      let body;if(req.method==='POST'){body=await readJson(req);if(route!=='command'&&Object.keys(body).length&&!(route==='session'&&Object.keys(body).length===1&&['tisch-1','tisch-2','tisch-3'].includes(body.tableId)))throw new GatewayError(400,'invalid_request');}
       const profile=validateProfile(await lookup(auth.schoolIdentifier??auth.identifier),clock()),actor={id:opaque('chess:'+auth.identifier),staff:profile.kind==='staff',expiresAt:auth.expiresAt};
       if(!profile.eligible||!['staff','student'].includes(profile.kind)){rooms.revoke(actor.id);throw new GatewayError(403,'school_required');}
-      if(route==='session'){limit('session:'+actor.id,20);send(200,rooms.create(actor));return;}
+      if(route==='session'){limit('session:'+actor.id,20);send(200,rooms.create(actor,body.tableId??null));return;}
       const sessionId=req.headers['x-chess-session'];rooms.ping(sessionId,actor);
       if(route==='events'){
         if(streams.size>=600&&!streams.has(sessionId))throw new GatewayError(503,'unavailable');

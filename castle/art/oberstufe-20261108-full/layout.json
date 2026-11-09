@@ -4,7 +4,7 @@
     "height": 22,
     "tileSize": 32,
     "avatarPixels": 32,
-    "revision": "20261109-atelier2",
+    "revision": "20261109-actions1",
     "entries": {
       "start": [
         13,
@@ -326,9 +326,22 @@
       {
         "id": "os-games",
         "group": "buchclub",
-        "label": "Spielrunden",
-        "url": "https://together.deine-schule.com/castle-school/games",
-        "api": false
+        "label": "Tischrunde",
+        "url": "https://together.deine-schule.com/castle-chess/#table=tisch-3",
+        "api": false,
+        "choices": [
+          {
+            "id": "chess",
+            "label": "Schach",
+            "url": "https://together.deine-schule.com/castle-chess/#table=tisch-3"
+          },
+          {
+            "id": "story",
+            "label": "Erzaehlkarten",
+            "url": "story.html#table",
+            "api": true
+          }
+        ]
       },
       {
         "id": "os-explore",

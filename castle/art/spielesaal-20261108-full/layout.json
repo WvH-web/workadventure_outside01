@@ -4,7 +4,7 @@
     "height": 22,
     "tileSize": 32,
     "avatarPixels": 32,
-    "revision": "20261109-atelier2",
+    "revision": "20261109-actions1",
     "entries": {
       "start": [
         13,
@@ -327,7 +327,7 @@
         "id": "games-shelf",
         "group": "buchclub",
         "label": "Schach spielen",
-        "url": "https://together.deine-schule.com/castle-chess/",
+        "url": "https://together.deine-schule.com/castle-chess/#table=tisch-2",
         "api": false
       },
       {

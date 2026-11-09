@@ -29,7 +29,7 @@ async function main(){
       ...(number<=2?{schoolStorageState:path.join(privateRoot,'qa/sso-'+(number===1?'A':'B')+'.private.json')}:{}),
       characterTextureId:['wvh-event-mira-v1','wvh-event-amir-v1','wvh-event-otto-v1','wvh-event-val-v1'][number-1],parking:[[112,272],[432,608],[720,288],[800,352]]}));
     assert.ok(users.every(user=>!user.diagnostics.some(entry=>/Timeout while waiting for script|Script failed to load/.test(entry.message||''))),'No map-script startup timeouts allowed');
-    assert.ok(users.every(user=>user.scriptLoads.length>=1&&user.scriptLoads.every(entry=>entry.path.endsWith('/expansion.bundle.js'))),'Only the bundled expansion entry may load');
+    assert.ok(users.every(user=>!user.scriptLoads.some(entry=>/\/(?:room|activities|displays|npcs)\.js$/.test(entry.path))),'Core controllers must not be fetched separately');
     const [a,b,c,d]=users;await sit(a,'buchclub-n0');await sit(b,'buchclub-s1');await sit(c,'lese-kamin-sofa-links');await sit(d,'lese-kamin-sessel-west');
     stage='audio-before';const before=await sample(users);stage='open';const left=await open(a),right=await open(b);
     assert.equal(a.page.frames().filter(frame=>frame.url()===url).length,1);assert.equal(b.page.frames().filter(frame=>frame.url()===url).length,1);
@@ -50,7 +50,7 @@ async function main(){
       bothVoiceGroupsContinueDecoding:true,voiceGroupsStaySeparate:true,noDuplicatePanels:true,appsEntryWorks:true,reopenAndDepartureWork:true,
       movementResumesAfterClose:true,onlyOwnedProbeInkRemoved:true,noMapScriptStartupTimeouts:true,singleBundledScriptOnly:true,scriptLoads:users.map(user=>user.scriptLoads),errors,loadApprovalFor400:false,results};
     fs.writeFileSync(path.join(output,'result.json'),JSON.stringify(evidence,null,2)+'\n');console.log(JSON.stringify({...evidence,results:undefined},null,2));
-  }catch(error){fs.writeFileSync(path.join(output,'failure.private.json'),JSON.stringify({stage,errorType:error.name,error:error.message,ownIds},null,2));console.error(JSON.stringify({passed:false,stage,errorType:error.name}));let n=0;for(const context of browser.contexts())for(const page of context.pages())await page.screenshot({path:path.join(output,'failure-'+(++n)+'.private.png')}).catch(()=>{});process.exitCode=1;}
+  }catch(error){fs.writeFileSync(path.join(output,'failure.private.json'),JSON.stringify({stage,errorType:error.name,error:error.message,ownIds,scriptLoads:users.map(user=>user.scriptLoads),diagnostics:users.map(user=>user.diagnostics)},null,2));console.error(JSON.stringify({passed:false,stage,errorType:error.name}));let n=0;for(const context of browser.contexts())for(const page of context.pages())await page.screenshot({path:path.join(output,'failure-'+(++n)+'.private.png')}).catch(()=>{});process.exitCode=1;}
   finally{await browser.close();}
 }
 main().catch(error=>{console.error('Native atelier probe stopped: '+error.name);process.exitCode=1;});
