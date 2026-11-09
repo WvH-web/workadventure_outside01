@@ -1,0 +1,35 @@
+<!doctype html><html lang="de"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Isolated castle rounds fixture</title><style>
+body{margin:0;font:14px Arial;background:#182222;color:#fff}header{height:44px;padding:6px;box-sizing:border-box}
+button{min-height:32px}#panel{border:0;width:100%;height:calc(100dvh - 44px);display:block}
+</style></head><body><header id="commands"></header><script type="module">
+import {CastleCommunity} from '/fixture/community.js';
+const states=new Map(),subscriptions=new Map(),moves=new Set();let community,roomId='bibliothek',position={x:700,y:700};
+const events=[],commands=document.getElementById('commands');
+function website(url,id,hidden=false){
+  const frame=document.createElement('iframe');frame.id=id;frame.src=url;
+  if(hidden)frame.style.cssText='position:fixed;width:1px;height:1px;left:-2px;top:-2px;border:0';
+  document.body.append(frame);return {close:async()=>frame.remove()};
+}
+const wa={onInit:async()=>{},room:{getTiledMap:async()=>({properties:[{name:'castleMapId',value:roomId}]})},
+  player:{state:{loadVariable:key=>states.get(key),
+    onVariableChange:key=>({subscribe:callback=>{if(!subscriptions.has(key))subscriptions.set(key,new Set());subscriptions.get(key).add(callback);
+      return {unsubscribe:()=>subscriptions.get(key)?.delete(callback)};}}),
+    saveVariable:async(key,value,options)=>{events.push({type:'state',key,value,options});states.set(key,value);for(const callback of subscriptions.get(key)||[])callback(value);}},
+    teleport:async(x,y)=>{position={x,y};events.push({type:'teleport',roomId,x,y});for(const callback of moves)callback(position);},
+    getPosition:async()=>position,onPlayerMove:callback=>{moves.add(callback);return {unsubscribe:()=>moves.delete(callback)};}},
+  ui:{website:{open:async options=>website(options.url,'presence',true)},actionBar:{
+    addButton:options=>{const button=document.createElement('button');button.id=options.id;button.textContent=options.label;button.onclick=options.callback;commands.append(button);},
+    removeButton:id=>document.getElementById(id)?.remove()},displayActionMessage:message=>events.push({type:'message',message:message.message})},
+  nav:{openCoWebSite:async url=>website(url,'panel')}};
+function enter(id){
+  community?.dispose();if(roomId!==id)position={x:700,y:700};roomId=id;const hooks=new Set();
+  const room={layout:{id},stand:async()=>{events.push({type:'stand',roomId:id});},onBeforeTravel:callback=>{hooks.add(callback);return()=>hooks.delete(callback);},
+    async travelTo(url){await this.stand();for(const hook of hooks)await hook();events.push({type:'travel',url});
+      const next=new URL(url).pathname.match(/\/([a-z-]+)\.wam$/)?.[1];if(!next)throw Error('Invalid fixture destination');
+      setTimeout(()=>enter(next),0);return true;}};
+  community=new CastleCommunity(wa,room).start();
+}
+window.fixture={wa,events,enter,room:()=>roomId,move:(x,y)=>{position={x,y};for(const callback of moves)callback(position);}};
+enter(roomId);
+</script></body></html>

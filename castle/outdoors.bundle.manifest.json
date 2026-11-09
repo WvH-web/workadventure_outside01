@@ -6,8 +6,8 @@
   },
   "entry": "castle/outdoors.js",
   "output": "castle/outdoors.bundle.js",
-  "bytes": 42497,
-  "sha256": "45fbc96bd7f36e5bba4b86db47e809f11dc4b15f0792dfba0c9e5d94683c86ba",
+  "bytes": 46156,
+  "sha256": "46b0cba015428ae00604a9b4febde7c14d0a7d054aeaedb4362382a8ae1f9d5c",
   "runtimeModuleRequests": 1,
   "sources": [
     {
@@ -23,6 +23,10 @@
       "sha256": "a41dd61b5efaa6c02b20e1431aea7c904883e840181aa295445ec1084762af77"
     },
     {
+      "path": "castle/community.js?v=20261109-rounds1",
+      "sha256": "008c4642f3567a070b85ca6e9194299cdf070114664b8042df0d41d0704212cc"
+    },
+    {
       "path": "castle/displays.js?v=20261109-atelier1",
       "sha256": "e07eeb3dc50fcade6d359c5967054da3d037947aae59310094c2d84077196331"
     },
@@ -36,7 +40,7 @@
     },
     {
       "path": "castle/room.js?v=20261108-outdoors1",
-      "sha256": "509301b90123f3b5807b10d3fd6cf6d66f63c93b3f6d3abbbaa7e802c243a4c9"
+      "sha256": "5a93fba592f71cae075bf4c30750e1e950d95a1cca2bd48d26b62657cf81b851"
     },
     {
       "path": "castle/table-round.js",
@@ -44,7 +48,7 @@
     },
     {
       "path": "castle/ui-ids.js?v=20261108-outdoors1",
-      "sha256": "bc506c29351371a5a1ba79dad990bfa4ef8c55318855695005e98280f081f4ce"
+      "sha256": "a3e05c13e1353df0104256f0349da2746292a93090941772ebe9867c41d0203c"
     },
     {
       "path": "castle/ui-lifecycle.js?v=20261108-outdoors1",

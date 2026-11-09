@@ -34,7 +34,7 @@ async function fixture(t,{sessionMs=45000}={}){
     t.after(()=>{controller.abort();});return {controller,next,response};
   }
   const cmd=(actor,action,revision,fields={})=>api(actor,'command',{id:crypto.randomUUID(),action,...fields,...(action==='watch'?{}:{revision})});
-  return {rooms,profiles,actor,api,join,stream,cmd,config,advance:ms=>{now+=ms;rooms.sweep();},get calls(){return calls;}};
+  return {rooms,profiles,actor,api,join,stream,cmd,config,clock,advance:ms=>{now+=ms;rooms.sweep();},get calls(){return calls;}};
 }
 test('HTTP shell is self-contained, licenses available and private backend files never served',async t=>{
   const f=await fixture(t);for(const route of ['', 'chess.js','training.js','credits.html','vendor/chess/LICENSE','vendor/cm-chessboard/assets/pieces/standard.svg'])assert.equal((await f.api(null,route)).status,200);
@@ -92,7 +92,8 @@ test('SSE replacement keeps the same seat connected and fresh revocation ends al
   let revoked;for(let i=0;i<5;i++){revoked=await second.next();if(revoked?.expired)break;}assert.equal(revoked.expired,true);assert.equal(f.rooms.sessions.size,0);
 });
 test('verified JWT expiry caps leases even while otherwise valid school profile remains active',async t=>{
-  const f=await fixture(t),a=await f.actor('chess-short@invalid.local','student',Date.now()+10000);const state=await f.join(a);assert.ok(state.leaseMs<=10000);
+  const f=await fixture(t),expiry=f.clock()+10000,a=await f.actor('chess-short@invalid.local','student',expiry);
+  const state=await f.join(a);assert.equal(state.leaseMs,Math.floor(expiry/1000)*1000-f.clock());assert.ok(state.leaseMs<=10000);
   f.advance(11000);assert.equal((await f.api(a,'ping',{})).status,401);assert.equal(f.rooms.sessions.size,0);
 });
 test('training puzzles each have a genuine legal mate in one and no already-finished position',async()=>{

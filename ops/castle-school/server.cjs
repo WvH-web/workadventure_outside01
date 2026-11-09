@@ -11,7 +11,20 @@ const { validateProfile } = require('./policy.cjs');
 const { createLookup } = require('./lookup.cjs');
 const { IDS, offerDecision, offerMetadata, approvedRoomChange, target } = require('./offers.cjs');
 const { createOfferLookup, createRoomLinkUpdater } = require('./catalog.cjs');
+const { RoundBoard, KINDS } = require('./rounds.cjs');
 const PREFIX = '/castle-school/';
+const roundRoutes=new Map([['round-context',null],['round-create','create'],['round-join','join'],
+  ['round-visit','visit'],['round-heartbeat','heartbeat'],['round-leave','leave'],['round-close','close']]);
+function validateRoundBody(route,body){
+  const keys=Object.keys(body).sort().join(',');
+  if(route==='round-create'){
+    if(keys==='capacity,kind,targetId'&&typeof body.targetId==='string'&&/^[a-z0-9][a-z0-9-]{0,63}$/.test(body.targetId)&&
+      typeof body.kind==='string'&&Object.hasOwn(KINDS,body.kind)&&Number.isInteger(body.capacity)&&body.capacity>=2&&body.capacity<=12)return;
+  }else if(['round-join','round-visit','round-close'].includes(route)){
+    if(keys==='roundId'&&typeof body.roundId==='string'&&/^[a-f0-9]{8}-[a-f0-9]{4}-4[a-f0-9]{3}-[89ab][a-f0-9]{3}-[a-f0-9]{12}$/.test(body.roundId))return;
+  }else if(keys==='leaseId'&&typeof body.leaseId==='string'&&/^[a-f0-9]{48}$/.test(body.leaseId))return;
+  throw new GatewayError(400,'invalid_request');
+}
 
 function clientIp(req, config) {
   const peer = (req.socket.remoteAddress || '').replace(/^::ffff:/, '');
@@ -31,14 +44,22 @@ async function readJson(req) {
   } catch { throw new GatewayError(400, 'invalid_request'); }
 }
 
-function createSchoolServer({config, lookup, getOffers, updateRoomLink, verify = createSchoolVerifier(config.secret), clock = Date.now}) {
+function createSchoolServer({config, lookup, getOffers, updateRoomLink, roundTargets, verify = createSchoolVerifier(config.secret), clock = Date.now}) {
   if(typeof lookup!=='function'||typeof getOffers!=='function'||typeof updateRoomLink!=='function')throw Error('School dependencies required');
   const pages=new Map(['games','games.js','games.css'].map(name=>[name,{type:name==='games'?'text/html':name.endsWith('.js')?'text/javascript':'text/css',
     content:fs.readFileSync(path.join(__dirname,'public',name==='games'?'games.html':name))}]));
+  for(const name of ['rounds','rounds.js','rounds.css','round-client.js','presence','presence.js','presence.css']){
+    const html=['rounds','presence'].includes(name);
+    pages.set(name,{type:html?'text/html':name.endsWith('.js')?'text/javascript':'text/css',
+      content:fs.readFileSync(path.join(__dirname,'public',html?name+'.html':name))});
+  }
   const limits = new Map();
+  const rounds=new RoundBoard({targets:roundTargets||JSON.parse(fs.readFileSync(path.join(__dirname,'round-targets.json'),'utf8')),clock});
+  for(const mapId of new Set(rounds.targets.map(target=>target.mapId)))pages.set('round-rooms/'+mapId+'.webp',{
+    type:'image/webp',content:fs.readFileSync(path.join(__dirname,'public/round-rooms',mapId+'.webp'))});
   const rateSalt = crypto.randomBytes(32);
   const opaque = value => crypto.createHmac('sha256',rateSalt).update(value).digest('base64url');
-  const sweep = () => {const now=clock();for(const [id,value] of limits)if(value.until<=now)limits.delete(id);};
+  const sweep = () => {const now=clock();for(const [id,value] of limits)if(value.until<=now)limits.delete(id);rounds.sweep();};
   const sweeper = setInterval(sweep,1000);sweeper.unref();
   function limit(key, maximum) {
     const now = clock(); let entry = limits.get(key);
@@ -64,16 +85,26 @@ function createSchoolServer({config, lookup, getOffers, updateRoomLink, verify =
         if(req.method!=='GET')throw new GatewayError(405,'method_not_allowed');
         res.setHeader('X-Frame-Options','SAMEORIGIN');
         res.setHeader('Content-Security-Policy',"default-src 'none'; script-src 'self'; style-src 'self'; connect-src 'self'; img-src 'self'; frame-src https:; frame-ancestors 'self'; base-uri 'none'; form-action 'none'; object-src 'none'");
-        const page=pages.get(route);res.writeHead(200,{'Content-Type':page.type+'; charset=utf-8'});res.end(page.content);return;
+        const page=pages.get(route);res.writeHead(200,{'Content-Type':page.type+(page.type.startsWith('image/')?'':'; charset=utf-8')});res.end(page.content);return;
       }
-      if (!['context', 'decision','launch','room-link'].includes(route)) throw new GatewayError(404, 'not_found');
-      if (req.method !== (route === 'context' ? 'GET' : 'POST')) throw new GatewayError(405, 'method_not_allowed');
+      if (!['context', 'decision','launch','room-link'].includes(route)&&!roundRoutes.has(route)) throw new GatewayError(404, 'not_found');
+      if (req.method !== (route === 'context'||route==='round-context' ? 'GET' : 'POST')) throw new GatewayError(405, 'method_not_allowed');
       if (req.headers.origin && req.headers.origin !== config.origin || req.headers['sec-fetch-site'] && req.headers['sec-fetch-site'] !== 'same-origin') {
         throw new GatewayError(403, 'wrong_origin');
       }
       limit('ip:' + opaque(clientIp(req, config)), 6000);
       const auth = await verify(req.headers.authorization);
       limit('id:' + opaque(auth.identifier), 90);
+      if(roundRoutes.has(route)){
+        const roundBody=route==='round-context'?null:await readJson(req);
+        if(roundBody)validateRoundBody(route,roundBody);
+        let profile;
+        try{profile=validateProfile(await lookup(auth.schoolIdentifier??auth.identifier),clock());}
+        catch(error){rounds.revoke(auth);throw error;}
+        if(route==='round-create')limit('round-create:'+opaque(auth.identifier),6);
+        const value=route==='round-context'?rounds.context(auth,profile):rounds[roundRoutes.get(route)](auth,profile,roundBody);
+        send(200,value);return;
+      }
       let body;
       if (route !== 'context') {
         body = await readJson(req);
@@ -111,7 +142,7 @@ function createSchoolServer({config, lookup, getOffers, updateRoomLink, verify =
     }
   });
   server.requestTimeout = 8000; server.headersTimeout = 8000;
-  server.once('close',()=>{clearInterval(sweeper);limits.clear();});
+  server.once('close',()=>{clearInterval(sweeper);limits.clear();rounds.dispose();});
   return server;
 }
 

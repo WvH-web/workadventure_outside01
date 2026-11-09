@@ -1,0 +1,22 @@
+<!doctype html>
+<html lang="de"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Runden im Schloss</title><link rel="stylesheet" href="/castle-school/rounds.css">
+<script defer src="/iframe_api.js"></script><script defer src="/castle-content/vendor/lucide.min.js"></script>
+<script type="module" src="/castle-school/rounds.js"></script></head>
+<body><header><i data-lucide="users-round" aria-hidden="true"></i><h1>Runden im Schloss</h1>
+<a href="/castle-school/games" target="_blank" rel="noopener noreferrer" class="icon-button" title="Spielangebote in neuem Tab" aria-label="Spielangebote in neuem Tab"><i data-lucide="dices" aria-hidden="true"></i></a>
+<button id="refresh" class="icon-button" title="Aktualisieren" aria-label="Aktualisieren"><i data-lucide="refresh-cw" aria-hidden="true"></i></button></header>
+<p id="account" class="account" role="status">Schulzugang wird gepr&uuml;ft &hellip;</p>
+<p id="message" class="message" role="status" hidden></p>
+<section id="mine" class="mine" aria-label="Deine Anmeldung" hidden><div><strong id="my-title"></strong><span id="my-place"></span></div>
+<button id="my-travel" class="icon-button" title="Zur Runde" aria-label="Zur Runde"><i data-lucide="map-pin" aria-hidden="true"></i></button>
+<button id="leave" class="icon-button" title="Abmelden" aria-label="Abmelden"><i data-lucide="user-round-minus" aria-hidden="true"></i></button></section>
+<main><section class="directory" aria-label="Offene Runden"><div class="filters"><label>Aktivit&auml;t<select id="filter"><option value="">Alle Runden</option></select></label>
+<label class="check"><input id="free-only" type="checkbox">Freie Pl&auml;tze</label></div>
+<p id="empty" class="empty">Runden werden geladen &hellip;</p><div id="round-list" aria-live="polite"></div></section>
+<aside><details id="create-panel"><summary><i data-lucide="plus" aria-hidden="true"></i>Mitspieler suchen</summary>
+<form id="create-form"><label for="target">Treffpunkt</label><select id="target" required disabled></select>
+<label for="kind">Aktivit&auml;t</label><select id="kind" required disabled></select>
+<label for="capacity">Pl&auml;tze</label><input id="capacity" type="number" min="2" max="12" value="4" required disabled>
+<button id="announce" class="primary" type="submit" disabled><i data-lucide="user-round-plus" aria-hidden="true"></i>Runde anbieten</button></form></details></aside></main>
+</body></html>

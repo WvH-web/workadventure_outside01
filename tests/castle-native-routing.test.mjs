@@ -104,6 +104,7 @@ test('generated ownership covers each mapped activity and never assigns one comm
   assert.deepEqual(Object.keys(ownedUi).sort(),[...mapIds].sort());
   for(const id of mapIds){
     const tiled=JSON.parse(fs.readFileSync(new URL('../castle/'+id+'.tmj',import.meta.url)));
+    assert.ok(ownedUi[id].includes('castle-rounds-'+id));
     for(const area of tiled.layers.flatMap(l=>l.objects||[])){
       const activity=area.properties?.find(p=>p.name==='castleActivityId')?.value;
       if(activity)assert.ok(ownedUi[id].includes('castle-activity-'+id+'-'+activity));

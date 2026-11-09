@@ -1,4 +1,5 @@
 import {clearPreviousCastleUi} from './ui-lifecycle.js?v=20261108-outdoors1';
+import {CastleCommunity} from './community.js?v=20261109-rounds1';
 const STATE = "castleSeatV1";
 const PUBLIC = { public: true, persist: false };
 const SYNC = ["cameraState", "microphoneState", "screenSharingState"];
@@ -176,14 +177,15 @@ export class CastleRoom {
     this.beforeTravel.add(callback);
     return ()=>this.beforeTravel.delete(callback);
   }
-  async returnToHall() {
-    if (!this.layout.hallUrl || !this.wa.nav?.goToRoom || this.riding || this.navigating) return false;
+  returnToHall() { return this.travelTo(this.layout.hallUrl); }
+  async travelTo(url) {
+    if (!url || !this.wa.nav?.goToRoom || this.riding || this.navigating) return false;
     this.navigating = true;
     try {
       await this.stand();
       await Promise.allSettled([...this.beforeTravel].map(callback=>bounded(Promise.resolve().then(callback),2500,'Castle departure')));
       if (this.audioTask) await bounded(this.audioTask,2500).catch(()=>{});
-      await this.wa.nav.goToRoom(this.layout.hallUrl);
+      await this.wa.nav.goToRoom(url);
       return true;
     } finally { this.navigating = false; }
   }
@@ -503,6 +505,7 @@ export class CastleRoom {
   dispose() {
     if (this.disposed) return;
     this.disposed = true;
+    this.community?.dispose();
     this.riding = false;
     clearInterval(this.timer);
     for(const timer of this.uiCleanupTimers)clearTimeout(timer);
@@ -530,6 +533,7 @@ export const castleRoomReady = typeof WA !== "undefined"
       }
       const room = new CastleRoom(WA, layout);
       await room.start();
+      if(props(map).castleCommunity===true)room.community=new CastleCommunity(WA,room).start();
       window.castleRoom = room;
       window.addEventListener("pagehide", () => room.dispose(), { once: true });
       return room;
