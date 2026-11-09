@@ -48,13 +48,13 @@
         "id": "picknick",
         "label": "Picknickrunde",
         "x": 176,
-        "y": 552
+        "y": 544
       },
       {
         "id": "blumenrunde",
         "label": "Blumengarten",
         "x": 800,
-        "y": 552
+        "y": 544
       }
     ],
     "groups": [
@@ -222,80 +222,80 @@
     {
       "id": "picknick-n0",
       "label": "Picknickrunde Nord 1",
-      "x": 226,
+      "x": 216,
       "y": 562,
-      "standX": 226,
-      "standY": 532,
+      "standX": 216,
+      "standY": 524,
       "facing": "down",
       "audioGroup": "picknick"
     },
     {
       "id": "picknick-n1",
       "label": "Picknickrunde Nord 2",
-      "x": 286,
+      "x": 264,
       "y": 562,
-      "standX": 286,
-      "standY": 532,
+      "standX": 264,
+      "standY": 524,
       "facing": "down",
       "audioGroup": "picknick"
     },
     {
       "id": "picknick-s0",
       "label": "Picknickrunde Sued 1",
-      "x": 226,
-      "y": 638,
-      "standX": 226,
-      "standY": 688,
+      "x": 216,
+      "y": 618,
+      "standX": 216,
+      "standY": 664,
       "facing": "up",
       "audioGroup": "picknick"
     },
     {
       "id": "picknick-s1",
       "label": "Picknickrunde Sued 2",
-      "x": 286,
-      "y": 638,
-      "standX": 286,
-      "standY": 688,
+      "x": 264,
+      "y": 618,
+      "standX": 264,
+      "standY": 664,
       "facing": "up",
       "audioGroup": "picknick"
     },
     {
       "id": "blumenrunde-n0",
       "label": "Blumengarten Nord 1",
-      "x": 850,
+      "x": 840,
       "y": 562,
-      "standX": 850,
-      "standY": 532,
+      "standX": 840,
+      "standY": 524,
       "facing": "down",
       "audioGroup": "blumenrunde"
     },
     {
       "id": "blumenrunde-n1",
       "label": "Blumengarten Nord 2",
-      "x": 910,
+      "x": 888,
       "y": 562,
-      "standX": 910,
-      "standY": 532,
+      "standX": 888,
+      "standY": 524,
       "facing": "down",
       "audioGroup": "blumenrunde"
     },
     {
       "id": "blumenrunde-s0",
       "label": "Blumengarten Sued 1",
-      "x": 850,
-      "y": 638,
-      "standX": 850,
-      "standY": 688,
+      "x": 840,
+      "y": 618,
+      "standX": 840,
+      "standY": 664,
       "facing": "up",
       "audioGroup": "blumenrunde"
     },
     {
       "id": "blumenrunde-s1",
       "label": "Blumengarten Sued 2",
-      "x": 910,
-      "y": 638,
-      "standX": 910,
-      "standY": 688,
+      "x": 888,
+      "y": 618,
+      "standX": 888,
+      "standY": 664,
       "facing": "up",
       "audioGroup": "blumenrunde"
     }
@@ -419,18 +419,18 @@
     },
     {
       "id": "picknick-table",
-      "x": 196,
-      "y": 576,
-      "width": 120,
-      "height": 48,
+      "x": 192,
+      "y": 564,
+      "width": 96,
+      "height": 44,
       "preserve": true
     },
     {
       "id": "blumenrunde-table",
-      "x": 820,
-      "y": 576,
-      "width": 120,
-      "height": 48,
+      "x": 816,
+      "y": 564,
+      "width": 96,
+      "height": 44,
       "preserve": true
     },
     {
@@ -446,12 +446,12 @@
     "pixelWidth": 1152,
     "pixelHeight": 768,
     "avatarSize": 32,
-    "picnicWidthPixels": 160,
+    "picnicWidthPixels": 128,
     "seats": 8,
     "groups": 2,
-    "blockedTiles": 307,
-    "reachableFloorTiles": 553,
-    "foregroundPixels": 17292,
+    "blockedTiles": 306,
+    "reachableFloorTiles": 554,
+    "foregroundPixels": 9988,
     "sourceSha256": "45b3bd55ec812c91824cf8e5f5be5c50fb78293c566726065b46f4f3f71eb761"
   }
 }

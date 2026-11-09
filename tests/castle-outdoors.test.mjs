@@ -7,7 +7,7 @@ import {CastlePark} from '../castle/outdoors.js';
 import {activitySettings} from '../castle/activities.js';
 import {SharedStory} from '../castle/story-state.js';
 const require=createRequire(import.meta.url),sharp=require('../tools/castle-deps.cjs')('sharp');
-const {scenes,revision}=require('../tools/build-castle-outdoors.cjs'),{createWam}=require('../tools/castle-wam.cjs');
+const {scenes,revision,picnicStyle}=require('../tools/build-castle-outdoors.cjs'),{createWam}=require('../tools/castle-wam.cjs');
 const base=new URL('../castle/',import.meta.url),read=name=>JSON.parse(fs.readFileSync(new URL(name,base)));
 const manifest=read('layout.json'),props=o=>Object.fromEntries((o.properties||[]).map(p=>[p.name,p.value]));
 const inside=(p,r)=>p.x>=r.x&&p.y>=r.y&&p.x<r.x+r.width&&p.y<r.y+r.height;
@@ -47,19 +47,19 @@ for(const scene of scenes){
   });
   test(scene.id+': foreground keeps real furniture pixels, not ground rectangles, and leaves all avatar heads visible',async()=>{
     const map=read(scene.id+'.tmj'),layout=readLayout(map),folder='art/'+scene.id+'-20261108-full/';
-    const floor=await sharp(fs.readFileSync(new URL(folder+'floor.png',base))).ensureAlpha().raw().toBuffer();
-    const fronts=await sharp(fs.readFileSync(new URL(folder+'fronts.png',base))).ensureAlpha().raw().toBuffer();
+    const floor=await sharp(fs.readFileSync(new URL(props(map).mapImage,base))).ensureAlpha().raw().toBuffer();
+    const fronts=await sharp(fs.readFileSync(new URL(map.tilesets.find(t=>t.name==='Picknick-Vorderkanten').image,base))).ensureAlpha().raw().toBuffer();
     const furniture=await sharp(fs.readFileSync(new URL('art/outdoor-furniture-20261108/picnic.png',base))).ensureAlpha().raw().toBuffer();
     let count=0;for(let y=0;y<768;y++)for(let x=0;x<1152;x++){
       const offset=(y*1152+x)*4;if(!fronts[offset+3])continue;count++;assert.deepEqual(fronts.subarray(offset,offset+4),floor.subarray(offset,offset+4));
-      assert.ok(scene.tables.some(b=>x>=b.x&&x<b.x+160&&y>=b.y&&y<b.y+112&&furniture[((y-b.y)*160+x-b.x)*4+3]>0),'No background cutout');
+      assert.ok(scene.tables.some(b=>x>=b.x&&x<b.x+picnicStyle.width&&y>=b.y&&y<b.y+picnicStyle.height&&furniture[((y-b.y)*picnicStyle.width+x-b.x)*4+3]>0),'No background cutout');
     }
-    assert.ok(count>10000);for(const seat of layout.seats)for(let y=seat.y-20;y<seat.y+3;y++)for(let x=seat.x-9;x<seat.x+9;x++)assert.equal(fronts[(y*1152+x)*4+3],0,seat.id+' head');
+    assert.ok(count>5000);for(const seat of layout.seats)for(let y=seat.y-20;y<seat.y+11;y++)for(let x=seat.x-15;x<seat.x+15;x++)assert.equal(fronts[(y*1152+x)*4+3],0,seat.id+' head and torso');
   });
 }
 function setup(appearance=async()=>{},restore=async()=>{}){
   const buttons=new Map(),calls=[],beforeTravel=new Set(),room={position:{x:520,y:288},onBeforeTravel:fn=>{beforeTravel.add(fn);return ()=>beforeTravel.delete(fn)}},map=read('park.tmj');
-  const wa={player:{setTemporaryWoka:async options=>{calls.push(['appearance',options]);return appearance()},restoreWoka:async()=>{calls.push(['restore']);return restore()}},
+  const wa={room:{showLayer:layer=>calls.push(['show',layer]),hideLayer:layer=>calls.push(['hide',layer])},player:{setTemporaryWoka:async options=>{calls.push(['appearance',options]);return appearance()},restoreWoka:async()=>{calls.push(['restore']);return restore()}},
     ui:{actionBar:{addButton:b=>buttons.set(b.id,b),removeButton:id=>buttons.delete(id)}}};
   return {wa,room,map,buttons,calls,beforeTravel,park:new CastlePark(wa,room,map)};
 }
@@ -68,7 +68,8 @@ test('kart uses the existing native appearance and preserves normal movement, Sh
     s.park.start();assert.equal(s.buttons.get(s.park.startId).label,'Go-Kart fahren');assert.equal(await s.park.startKart(),true);
     assert.equal(s.calls[0][1].textureId,'wvh-go-cart-avatar-v3');assert.equal(s.calls[0][1].scale,.62);assert.equal(s.buttons.get(s.park.stopId).label,'Aussteigen');
     await s.park.stopKart();assert.equal(s.park.active,false);assert.equal(s.park.needsRestore,false);assert.equal(s.buttons.has(s.park.stopId),false);
-    assert.deepEqual(s.calls.map(c=>c[0]),['appearance','restore']);
+    assert.deepEqual(s.calls.map(c=>c[0]),['appearance','hide','restore','show']);
+    assert.ok(s.calls.filter(c=>c[0]==='hide'||c[0]==='show').every(c=>c[1]==='kart-parked'));
   }finally{s.park.dispose()}
 });
 test('leaving the circuit restores the avatar without a key binding or player-control override',async()=>{
@@ -76,6 +77,9 @@ test('leaving the circuit restores the avatar without a key binding or player-co
 });
 test('unsupported clients never offer a broken kart command',()=>{
   const s=setup();delete s.wa.player.setTemporaryWoka;s.park.start();assert.equal(s.buttons.size,0);assert.equal(s.park.timer,undefined);s.park.dispose();
+});
+test('the parking fringe outside the driveable area does not offer a kart that would immediately exit',async()=>{
+  const s=setup();try{s.room.position={x:580,y:288};s.park.start();assert.equal(s.buttons.size,0);assert.equal(await s.park.startKart(),false);assert.equal(s.calls.length,0);}finally{s.park.dispose()}
 });
 test('the voluntary return restores the kart appearance before navigation and releases only its own hook',async()=>{
   const s=setup(),unrelated=()=>{};s.beforeTravel.add(unrelated);try{

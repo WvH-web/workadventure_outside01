@@ -13,22 +13,26 @@ export class CastlePark{
     this.startId='castle-kart-start-park';this.stopId='castle-kart-stop-park';this.epoch=0;
   }
   start(){
-    if(!this.parking||this.timer||typeof this.wa.player.setTemporaryWoka!=='function'||typeof this.wa.player.restoreWoka!=='function')return this;
+    if(!this.parking||!this.bounds||this.timer||typeof this.wa.player.setTemporaryWoka!=='function'||typeof this.wa.player.restoreWoka!=='function')return this;
     this.unsubscribeTravel=this.room.onBeforeTravel?.(()=>this.active||this.needsRestore||this.busy?this.stopKart():undefined);
     this.timer=setInterval(()=>this.refresh(),250);this.refresh();return this;
   }
   refresh(){
     if(this.closed)return;
     if(this.active&&!inside(this.room.position,this.bounds)){void this.stopKart().catch(e=>console.warn('Cart exit:',e.message));return}
-    const offer=!this.active&&!this.busy&&!this.needsRestore&&!this.room.seat&&!this.room.riding&&inside(this.room.position,this.parking);
+    const offer=!this.active&&!this.busy&&!this.needsRestore&&!this.room.seat&&!this.room.riding&&inside(this.room.position,this.parking)&&inside(this.room.position,this.bounds);
     if(offer!==this.offered){
       this.offered=offer;
       if(offer)this.wa.ui.actionBar.addButton({id:this.startId,label:'Go-Kart fahren',callback:()=>{void this.startKart().catch(e=>console.warn('Cart entry:',e.message))}});
       else this.wa.ui.actionBar.removeButton(this.startId);
     }
   }
+  setParkingVisible(visible){
+    try{void Promise.resolve(this.wa.room?.[visible?'showLayer':'hideLayer']?.('kart-parked')).catch(error=>console.warn('Cart parking:',error.message))}
+    catch(error){console.warn('Cart parking:',error.message)}
+  }
   async startKart(){
-    if(this.closed||this.active||this.busy||this.needsRestore||this.room.seat||this.room.riding||!inside(this.room.position,this.parking))return false;
+    if(this.closed||this.active||this.busy||this.needsRestore||this.room.seat||this.room.riding||!inside(this.room.position,this.parking)||!inside(this.room.position,this.bounds))return false;
     this.busy=true;const epoch=++this.epoch;this.refresh();
     const change=Promise.resolve().then(()=>this.wa.player.setTemporaryWoka({textureId:'wvh-go-cart-avatar-v3',url:'https://together.deine-schule.com/resources/wvh/go-cart-avatar.png?v=3',frameWidth:96,frameHeight:80,scale:.62}));
     // A late appearance update after leaving must not put the kart back on the next map.
@@ -36,6 +40,7 @@ export class CastlePark{
     try{
       await bounded(change);if(this.closed||epoch!==this.epoch)return false;
       this.active=true;this.needsRestore=true;
+      this.setParkingVisible(false);
       this.wa.ui.actionBar.addButton({id:this.stopId,label:'Aussteigen',callback:()=>{void this.stopKart().catch(e=>console.warn('Cart exit:',e.message))}});
       return true;
     }catch(error){
@@ -46,7 +51,7 @@ export class CastlePark{
     if(this.exiting)return this.exiting;
     this.active=false;++this.epoch;
     this.exiting=(async()=>{
-      try{await bounded(this.wa.player.restoreWoka());this.needsRestore=false;this.wa.ui.actionBar.removeButton(this.stopId)}
+      try{await bounded(this.wa.player.restoreWoka());this.needsRestore=false;this.wa.ui.actionBar.removeButton(this.stopId);if(!this.closed)this.setParkingVisible(true)}
       catch(error){
         if(!this.closed)this.wa.ui.actionBar.addButton({id:this.stopId,label:'Avatar zuruecksetzen',callback:()=>{void this.stopKart().catch(e=>console.warn('Cart reset:',e.message))}});
         throw error;

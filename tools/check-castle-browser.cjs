@@ -331,7 +331,7 @@ async function checkBoard(page, viewport) {
     }
     const report = { results, errors, layoutFindings, cmsMode: "official endpoint URLs with local deterministic CMS/cinema responses; no publishing or protected-room navigation", cmsRequests, screenshots, output: out };
     fs.writeFileSync(path.join(out, "great-hall-browser-report.json"), JSON.stringify(report, null, 2) + "\n");
-    console.log(JSON.stringify(report, null, 2));
+    console.log(JSON.stringify({output:out,viewports:results.map(r=>({viewport:r.viewport,maps:r.maps,layoutPassed:r.layoutPassed})),screenshots:screenshots.length,errors,layoutFindings},null,2));
     assert(errors.length === 0, "Browser errors: " + errors.join("; "));
     assert(layoutFindings.length === 0, "Layout findings saved in great-hall-browser-report.json");
   } finally { await browser.close(); }

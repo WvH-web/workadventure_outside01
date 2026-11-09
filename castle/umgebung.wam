@@ -1,6 +1,6 @@
 {
   "version": "2.1.0",
-  "mapUrl": "https://wvh-web.github.io/workadventure_outside01/castle/umgebung.tmj?v=20261108-outdoors1",
+  "mapUrl": "https://wvh-web.github.io/workadventure_outside01/castle/umgebung.tmj?v=20261108-outdoors2",
   "entities": {},
   "areas": [
     {
@@ -64,6 +64,6 @@
     "name": "Schlosshof",
     "description": "Schlosshof mit kleinen Picknickrunden, begehbaren Wegen und Schlossbewohnern.",
     "copyright": "Original outdoor and picnic artwork generated for deine Schule; existing school go-cart artwork.",
-    "thumbnail": "https://wvh-web.github.io/workadventure_outside01/castle/art/umgebung-20261108-full/floor.png"
+    "thumbnail": "https://wvh-web.github.io/workadventure_outside01/castle/art/umgebung-20261108-full/floor-20261108-outdoors2.png"
   }
 }

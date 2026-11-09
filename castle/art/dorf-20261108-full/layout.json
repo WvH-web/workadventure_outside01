@@ -58,13 +58,13 @@
         "id": "buchrunde",
         "label": "Buechertreff",
         "x": 224,
-        "y": 552
+        "y": 544
       },
       {
         "id": "musikbank",
         "label": "Musiktreff",
         "x": 800,
-        "y": 552
+        "y": 544
       }
     ],
     "groups": [
@@ -166,9 +166,9 @@
     {
       "id": "marktrunde-n0",
       "label": "Marktrunde Nord 1",
-      "x": 290,
-      "y": 330,
-      "standX": 290,
+      "x": 280,
+      "y": 338,
+      "standX": 280,
       "standY": 300,
       "facing": "down",
       "audioGroup": "marktrunde"
@@ -176,9 +176,9 @@
     {
       "id": "marktrunde-n1",
       "label": "Marktrunde Nord 2",
-      "x": 350,
-      "y": 330,
-      "standX": 350,
+      "x": 328,
+      "y": 338,
+      "standX": 328,
       "standY": 300,
       "facing": "down",
       "audioGroup": "marktrunde"
@@ -186,100 +186,100 @@
     {
       "id": "marktrunde-s0",
       "label": "Marktrunde Sued 1",
-      "x": 290,
-      "y": 406,
-      "standX": 290,
-      "standY": 456,
+      "x": 280,
+      "y": 394,
+      "standX": 280,
+      "standY": 440,
       "facing": "up",
       "audioGroup": "marktrunde"
     },
     {
       "id": "marktrunde-s1",
       "label": "Marktrunde Sued 2",
-      "x": 350,
-      "y": 406,
-      "standX": 350,
-      "standY": 456,
+      "x": 328,
+      "y": 394,
+      "standX": 328,
+      "standY": 440,
       "facing": "up",
       "audioGroup": "marktrunde"
     },
     {
       "id": "buchrunde-n0",
       "label": "Buechertreff Nord 1",
-      "x": 274,
+      "x": 264,
       "y": 562,
-      "standX": 274,
-      "standY": 532,
+      "standX": 264,
+      "standY": 524,
       "facing": "down",
       "audioGroup": "buchrunde"
     },
     {
       "id": "buchrunde-n1",
       "label": "Buechertreff Nord 2",
-      "x": 334,
+      "x": 312,
       "y": 562,
-      "standX": 334,
-      "standY": 532,
+      "standX": 312,
+      "standY": 524,
       "facing": "down",
       "audioGroup": "buchrunde"
     },
     {
       "id": "buchrunde-s0",
       "label": "Buechertreff Sued 1",
-      "x": 274,
-      "y": 638,
-      "standX": 274,
-      "standY": 688,
+      "x": 264,
+      "y": 618,
+      "standX": 264,
+      "standY": 664,
       "facing": "up",
       "audioGroup": "buchrunde"
     },
     {
       "id": "buchrunde-s1",
       "label": "Buechertreff Sued 2",
-      "x": 334,
-      "y": 638,
-      "standX": 334,
-      "standY": 688,
+      "x": 312,
+      "y": 618,
+      "standX": 312,
+      "standY": 664,
       "facing": "up",
       "audioGroup": "buchrunde"
     },
     {
       "id": "musikbank-n0",
       "label": "Musiktreff Nord 1",
-      "x": 850,
+      "x": 840,
       "y": 562,
-      "standX": 850,
-      "standY": 532,
+      "standX": 840,
+      "standY": 524,
       "facing": "down",
       "audioGroup": "musikbank"
     },
     {
       "id": "musikbank-n1",
       "label": "Musiktreff Nord 2",
-      "x": 910,
+      "x": 888,
       "y": 562,
-      "standX": 910,
-      "standY": 532,
+      "standX": 888,
+      "standY": 524,
       "facing": "down",
       "audioGroup": "musikbank"
     },
     {
       "id": "musikbank-s0",
       "label": "Musiktreff Sued 1",
-      "x": 850,
-      "y": 638,
-      "standX": 850,
-      "standY": 688,
+      "x": 840,
+      "y": 618,
+      "standX": 840,
+      "standY": 664,
       "facing": "up",
       "audioGroup": "musikbank"
     },
     {
       "id": "musikbank-s1",
       "label": "Musiktreff Sued 2",
-      "x": 910,
-      "y": 638,
-      "standX": 910,
-      "standY": 688,
+      "x": 888,
+      "y": 618,
+      "standX": 888,
+      "standY": 664,
       "facing": "up",
       "audioGroup": "musikbank"
     }
@@ -388,26 +388,26 @@
     },
     {
       "id": "marktrunde-table",
-      "x": 260,
-      "y": 344,
-      "width": 120,
-      "height": 48,
+      "x": 256,
+      "y": 340,
+      "width": 96,
+      "height": 44,
       "preserve": true
     },
     {
       "id": "buchrunde-table",
-      "x": 244,
-      "y": 576,
-      "width": 120,
-      "height": 48,
+      "x": 240,
+      "y": 564,
+      "width": 96,
+      "height": 44,
       "preserve": true
     },
     {
       "id": "musikbank-table",
-      "x": 820,
-      "y": 576,
-      "width": 120,
-      "height": 48,
+      "x": 816,
+      "y": 564,
+      "width": 96,
+      "height": 44,
       "preserve": true
     },
     {
@@ -423,12 +423,12 @@
     "pixelWidth": 1152,
     "pixelHeight": 768,
     "avatarSize": 32,
-    "picnicWidthPixels": 160,
+    "picnicWidthPixels": 128,
     "seats": 12,
     "groups": 3,
-    "blockedTiles": 412,
-    "reachableFloorTiles": 448,
-    "foregroundPixels": 25938,
+    "blockedTiles": 411,
+    "reachableFloorTiles": 449,
+    "foregroundPixels": 14982,
     "sourceSha256": "9c783591496cf0d7d8c960de58b26efb4cf765a55d642fd0217245b521887ebb"
   }
 }

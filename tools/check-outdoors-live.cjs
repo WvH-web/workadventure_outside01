@@ -8,11 +8,11 @@ const base='https://together.deine-schule.com/~/castle-preview/';
 const parking=[[560,336],[656,432],[560,544],[656,688]];
 async function story(users){
   const frames=[];for(const user of users.slice(0,2))frames.push(await openActivity(user,'story.html'));
-  for(const frame of frames)await frame.waitForFunction(()=>window.castleStory&&!document.getElementById('roll').disabled,undefined,{timeout:30000});
+  for(const frame of frames)await frame.waitForFunction(()=>window.castleStory&&!document.getElementById('roll').disabled,undefined,{polling:200,timeout:30000});
   const previous=await frames[0].locator('body').getAttribute('data-round');await frames[0].getByRole('button',{name:'Neue Karten',exact:true}).click();
-  await frames[0].waitForFunction(old=>document.body.dataset.round&&document.body.dataset.round!==old,previous);
-  const round=await frames[0].locator('body').getAttribute('data-round');for(const frame of frames.slice(1))await frame.waitForFunction(round=>document.body.dataset.round===round,round);
-  const late=await openActivity(users[2],'story.html');await late.waitForFunction(round=>window.castleStory&&document.body.dataset.round===round,round,{timeout:30000});
+  await frames[0].waitForFunction(old=>document.body.dataset.round&&document.body.dataset.round!==old,previous,{polling:200});
+  const round=await frames[0].locator('body').getAttribute('data-round');for(const frame of frames.slice(1))await frame.waitForFunction(round=>document.body.dataset.round===round,round,{polling:200});
+  const late=await openActivity(users[2],'story.html');await late.waitForFunction(round=>window.castleStory&&document.body.dataset.round===round,round,{polling:200,timeout:30000});
   for(const user of users)await user.script.evaluate(()=>castleActivities.website.close());return {sameRound:true,lateJoiner:true,participants:users.length};
 }
 async function main(){
@@ -49,18 +49,22 @@ async function main(){
       assert.ok(profile);await profile.locator('#questions button').first().waitFor();const before=await profile.locator('#speech').textContent();
       await profile.locator('#questions button').first().click();assert.notEqual(await profile.locator('#speech').textContent(),before);assert.equal(await profile.evaluate(()=>typeof WA),'undefined');
       await a.page.screenshot({path:path.join(out,scene.id+'-character.png')});await a.script.evaluate(()=>castleActivities.website.close());
-      results.push({id:scene.id,participants:4,seats:seatIds.length,groups:scene.groups.length,standingIncluded:true,shared,together,separated,third,actor,actorDialogue:true,mobileCanvas:true});
+      await move(a,talk.x,talk.y);const sprite=a.page.locator('iframe[src*="/npc-sprite.html?npc='+actor+'"]').first(),box=await sprite.boundingBox();assert.ok(box);
+      await a.page.mouse.click(box.x+box.width/2,box.y+box.height*.75);await a.page.waitForTimeout(300);
+      const beforeKey=await a.script.evaluate(()=>WA.player.getPosition());await a.page.keyboard.down('ArrowDown');await a.page.waitForTimeout(350);await a.page.keyboard.up('ArrowDown');
+      const afterKey=await a.script.evaluate(()=>WA.player.getPosition());assert.ok(afterKey.y-beforeKey.y>10,'Clicking the decorative character must not swallow movement keys');
+      results.push({id:scene.id,participants:4,seats:seatIds.length,groups:scene.groups.length,standingIncluded:true,shared,together,separated,third,actor,actorDialogue:true,characterClickPreservesMovement:true,mobileCanvas:true});
       fs.writeFileSync(path.join(out,'progress.json'),JSON.stringify({revision,results},null,2)+'\n');console.log(JSON.stringify({id:scene.id,participants:4,seats:seatIds.length,groups:scene.groups.length,passed:true}));
     }
     await move(a,1012,160);
     const route=await a.script.evaluate(()=>castleRoom.layout.rides[0]);
     const ride=a.script.evaluate(()=>castleRoom.startRide(castleRoom.layout.rides[0]));
-    await a.script.waitForFunction(()=>castleRoom.riding,undefined,{timeout:5000});await a.page.screenshot({path:path.join(out,'park-sliding.png')});await ride;
+    await a.script.waitForFunction(()=>castleRoom.riding,undefined,{polling:100,timeout:5000});await a.page.screenshot({path:path.join(out,'park-sliding.png')});await ride;
     const landing=await a.script.evaluate(async()=>{await castleRoom.syncPosition();return castleRoom.position});assert.ok(Math.hypot(landing.x-route.waypoints.at(-1).x,landing.y-route.waypoints.at(-1).y)<2);
     await move(a,1012,160);const cancel=a.script.evaluate(()=>castleRoom.startRide(castleRoom.layout.rides[0]));
-    await a.script.waitForFunction(()=>castleRoom.riding,undefined,{timeout:5000});await a.page.getByRole('button',{name:'Rutsche verlassen',exact:true}).click();await cancel;
+    await a.script.waitForFunction(()=>castleRoom.riding,undefined,{polling:100,timeout:5000});await a.page.getByRole('button',{name:'Rutsche verlassen',exact:true}).click();await cancel;
     await move(a,520,288);await a.page.getByRole('button',{name:'Go-Kart fahren',exact:true}).click();
-    await a.script.waitForFunction(()=>castlePark.active,undefined,{timeout:10000});await a.page.screenshot({path:path.join(out,'park-native-kart.png')});
+    await a.script.waitForFunction(()=>castlePark.active,undefined,{polling:200,timeout:10000});await a.page.screenshot({path:path.join(out,'park-native-kart.png')});
     await a.page.keyboard.down('ArrowLeft');await a.page.waitForTimeout(450);await a.page.keyboard.up('ArrowLeft');
     const driving=await a.script.evaluate(()=>WA.player.getPosition());assert.ok(driving.x<512,'Kart keeps native movement');
     const distances=[];for(const boosted of [false,true]){
@@ -68,10 +72,10 @@ async function main(){
       distances.push((await a.script.evaluate(()=>WA.player.getPosition())).x-200);
     }
     assert.ok(distances[0]>10&&distances[1]>distances[0]*1.3,'Native Shift acceleration remains available');
-    await a.page.getByRole('button',{name:'Aussteigen',exact:true}).click();await a.script.waitForFunction(()=>!castlePark.active&&!castlePark.needsRestore);
-    await move(a,520,288);await a.page.getByRole('button',{name:'Go-Kart fahren',exact:true}).click();await a.script.waitForFunction(()=>castlePark.active);
-    await move(a,560,448);await a.script.waitForFunction(()=>!castlePark.active&&!castlePark.needsRestore);
-    await move(a,520,288);await a.page.getByRole('button',{name:'Go-Kart fahren',exact:true}).click();await a.script.waitForFunction(()=>castlePark.active);
+    await a.page.getByRole('button',{name:'Aussteigen',exact:true}).click();await a.script.waitForFunction(()=>!castlePark.active&&!castlePark.needsRestore,undefined,{polling:200});
+    await move(a,520,288);await a.page.getByRole('button',{name:'Go-Kart fahren',exact:true}).click();await a.script.waitForFunction(()=>castlePark.active,undefined,{polling:200});
+    await move(a,560,448);await a.script.waitForFunction(()=>!castlePark.active&&!castlePark.needsRestore,undefined,{polling:200});
+    await move(a,520,288);await a.page.getByRole('button',{name:'Go-Kart fahren',exact:true}).click();await a.script.waitForFunction(()=>castlePark.active,undefined,{polling:200});
     await a.script.evaluate(()=>{const go=WA.nav.goToRoom.bind(WA.nav);WA.nav.goToRoom=url=>{if(castlePark.active||castlePark.needsRestore)throw Error('Kart was not restored before navigation');return go(url)}});
     await a.script.evaluate(()=>castleRoom.returnToHall()).catch(e=>{if(!/detached|destroyed/.test(e.message))throw e});await findRoom(a,'umgebung');
     for(const [id,entry]of [['umgebung','garten'],['dorf','schloss'],['park','dorf']]){
@@ -84,6 +88,9 @@ async function main(){
   }catch(error){
     let n=0;for(const context of browser.contexts())for(const page of context.pages()){
       n++;await page.screenshot({path:path.join(out,'failure-'+n+'.png')}).catch(()=>{});fs.writeFileSync(path.join(out,'failure-'+n+'.txt'),await page.locator('body').innerText().catch(()=>''));
+      const state=await users[n-1]?.script.evaluate(()=>({room:castleRoom.layout.id,position:castleRoom.position,kart:{active:castlePark.active,busy:castlePark.busy,needsRestore:castlePark.needsRestore,closed:castlePark.closed}})).catch(()=>null);
+      const diagnostics=users[n-1]?.diagnostics?.map(d=>({...d,message:d.message?.replace(/([?&](?:access_token|token|authToken|code)=)[^\s'"&]+/g,'$1[redacted]').replace(/[A-Za-z0-9_-]{10,}\.[A-Za-z0-9_-]{10,}\.[A-Za-z0-9_-]{10,}/g,'[redacted]')}));
+      fs.writeFileSync(path.join(out,'failure-'+n+'-state.private.json'),JSON.stringify({state,diagnostics},null,2)+'\n');
     }throw error;
   }finally{await browser.close()}
 }

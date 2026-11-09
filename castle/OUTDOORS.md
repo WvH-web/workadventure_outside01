@@ -1,13 +1,13 @@
 # Hof, Dorf und Garten
 
-Ausbaustand `20261108-outdoors1`. Nur die getrennte Schlossvorschau wird
+Ausbaustand `20261108-outdoors2`. Nur die getrennte Schlossvorschau wird
 erweitert. Alte Schlosskarten, Village, Lehrerschutz und Originalfreizeitpark
 bleiben unveraendert. Keine Veroeffentlichung privater Wege oder Codes.
 
 ## Spielbare Geometrie
 
 Alle drei Karten haben 36 x 24 Kacheln, also 1152 x 768 Pixel. Avatare werden
-nicht skaliert. Die eigens erstellte Picknickgarnitur ist 160 x 112 Pixel gross,
+nicht skaliert. Die eigens erstellte Picknickgarnitur ist 128 x 96 Pixel gross,
 mit vier einzelnen Plaetzen, passenden Blickrichtungen, freien Aufstehpositionen
 und aus echten Moebelpixeln abgeleiteten Vorderkanten. Keine Grundflaechen werden
 als undurchsichtige Vordergrund-Rechtecke ueber Spieler gelegt.
@@ -61,13 +61,23 @@ Keine fremden Spiel- oder Weihnachtsprojekt-Assets wurden kopiert.
 ## Pruefstand
 
 Der komplette Neubau aller sechzehn registrierten Karten ist bestanden.
-185 Kernpruefungen einschliesslich Rueckweg-Absicherung und Kart-Anbindung
+186 Kernpruefungen einschliesslich Rueckweg-Absicherung und Kart-Anbindung
 sind nach dem kompletten Neubau bestanden.
 Die erweiterte Grafik-Browserprobe pruefte alle sechzehn Karten, alle 32 neuen
 Sitze, alle neuen Uebergaenge und den Rutschenabbruch in 1440, 390 und 320 Pixel
 Breite ohne Layout- oder Browserfehler.
 
-Die native Vierpersonenprobe fuer Sprache, Figuren, Rutsche, Kart, Shift und
-Rueckweg steht noch aus. Der vorhandene Ansage- und Filmdienst wird nicht neu
+In Fassung 1 bestanden alle drei Karten die native Vierpersonenprobe fuer acht
+Hoergruppen, 32 Sitze, gemeinsame Karten samt spaetem Beitritt, drei Dialoge,
+mobile Spielflaechen und Rutsche samt Abbruch. Die Fahrzeugdarstellung wurde
+geladen; eine ungeeignete Warteabfrage im unsichtbaren Skriptfenster brach den
+weiteren Fahrzeugtest ab. Die Abfrage verwendet nun ausdrueckliches Polling.
+Die Liveansicht zeigte ausserdem zu viel verdeckten Oberkoerper auf der vorderen
+Bank. Fassung 2 verwendet kompaktere Moebel, passende Sitzpunkte und mehr freie
+Oberkoerperpixel. Das geparkte Kart ist eine getrennt ausblendbare native Ebene.
+Neue Boden- und Vordergrunddateinamen verhindern gemischte alte/neue Grafiken.
+
+Der vollstaendige native Wiederholungsnachweis der Fassung 2 fuer Fokus, Kart,
+Shift und Rueckweg steht noch aus. Der vorhandene Ansage- und Filmdienst wird nicht neu
 gestartet. Keine Lastfreigabe fuer 400 Personen; serverseitige Klassen- und
 Altersregeln sowie die anderen Punkte in `BUILD-STATUS.md` bleiben offen.

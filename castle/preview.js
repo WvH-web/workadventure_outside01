@@ -17,7 +17,7 @@ window.addEventListener("error", (event) => {
 });
 const canvas = $("map"),
   ctx = canvas.getContext("2d");
-const manifest = await fetch("layout.json?v=20261108-outdoors1").then((r) =>
+const manifest = await fetch("layout.json?v=20261108-outdoors2").then((r) =>
   r.json(),
 );
 const images = new Map();
@@ -143,7 +143,7 @@ async function load(id, entry = "start") {
     if (!cache.has(id))
       cache.set(
         id,
-        await fetch(id + ".tmj?v=20261108-outdoors1").then((r) => {
+        await fetch(id + ".tmj?v=20261108-outdoors2").then((r) => {
           if (!r.ok) throw Error("Karte nicht erreichbar");
           return r.json();
         }),

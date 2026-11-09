@@ -80,13 +80,13 @@
         "id": "rosenrunde",
         "label": "Rosentisch",
         "x": 160,
-        "y": 552
+        "y": 544
       },
       {
         "id": "gartenrunde",
         "label": "Gartentisch",
         "x": 800,
-        "y": 552
+        "y": 544
       }
     ],
     "groups": [
@@ -172,9 +172,9 @@
     {
       "id": "hofrunde-n0",
       "label": "Hofrunde Nord 1",
-      "x": 194,
-      "y": 298,
-      "standX": 194,
+      "x": 184,
+      "y": 306,
+      "standX": 184,
       "standY": 268,
       "facing": "down",
       "audioGroup": "hofrunde"
@@ -182,9 +182,9 @@
     {
       "id": "hofrunde-n1",
       "label": "Hofrunde Nord 2",
-      "x": 254,
-      "y": 298,
-      "standX": 254,
+      "x": 232,
+      "y": 306,
+      "standX": 232,
       "standY": 268,
       "facing": "down",
       "audioGroup": "hofrunde"
@@ -192,100 +192,100 @@
     {
       "id": "hofrunde-s0",
       "label": "Hofrunde Sued 1",
-      "x": 194,
-      "y": 374,
-      "standX": 194,
-      "standY": 424,
+      "x": 184,
+      "y": 362,
+      "standX": 184,
+      "standY": 408,
       "facing": "up",
       "audioGroup": "hofrunde"
     },
     {
       "id": "hofrunde-s1",
       "label": "Hofrunde Sued 2",
-      "x": 254,
-      "y": 374,
-      "standX": 254,
-      "standY": 424,
+      "x": 232,
+      "y": 362,
+      "standX": 232,
+      "standY": 408,
       "facing": "up",
       "audioGroup": "hofrunde"
     },
     {
       "id": "rosenrunde-n0",
       "label": "Rosentisch Nord 1",
-      "x": 210,
+      "x": 200,
       "y": 562,
-      "standX": 210,
-      "standY": 532,
+      "standX": 200,
+      "standY": 524,
       "facing": "down",
       "audioGroup": "rosenrunde"
     },
     {
       "id": "rosenrunde-n1",
       "label": "Rosentisch Nord 2",
-      "x": 270,
+      "x": 248,
       "y": 562,
-      "standX": 270,
-      "standY": 532,
+      "standX": 248,
+      "standY": 524,
       "facing": "down",
       "audioGroup": "rosenrunde"
     },
     {
       "id": "rosenrunde-s0",
       "label": "Rosentisch Sued 1",
-      "x": 210,
-      "y": 638,
-      "standX": 210,
-      "standY": 688,
+      "x": 200,
+      "y": 618,
+      "standX": 200,
+      "standY": 664,
       "facing": "up",
       "audioGroup": "rosenrunde"
     },
     {
       "id": "rosenrunde-s1",
       "label": "Rosentisch Sued 2",
-      "x": 270,
-      "y": 638,
-      "standX": 270,
-      "standY": 688,
+      "x": 248,
+      "y": 618,
+      "standX": 248,
+      "standY": 664,
       "facing": "up",
       "audioGroup": "rosenrunde"
     },
     {
       "id": "gartenrunde-n0",
       "label": "Gartentisch Nord 1",
-      "x": 850,
+      "x": 840,
       "y": 562,
-      "standX": 850,
-      "standY": 532,
+      "standX": 840,
+      "standY": 524,
       "facing": "down",
       "audioGroup": "gartenrunde"
     },
     {
       "id": "gartenrunde-n1",
       "label": "Gartentisch Nord 2",
-      "x": 910,
+      "x": 888,
       "y": 562,
-      "standX": 910,
-      "standY": 532,
+      "standX": 888,
+      "standY": 524,
       "facing": "down",
       "audioGroup": "gartenrunde"
     },
     {
       "id": "gartenrunde-s0",
       "label": "Gartentisch Sued 1",
-      "x": 850,
-      "y": 638,
-      "standX": 850,
-      "standY": 688,
+      "x": 840,
+      "y": 618,
+      "standX": 840,
+      "standY": 664,
       "facing": "up",
       "audioGroup": "gartenrunde"
     },
     {
       "id": "gartenrunde-s1",
       "label": "Gartentisch Sued 2",
-      "x": 910,
-      "y": 638,
-      "standX": 910,
-      "standY": 688,
+      "x": 888,
+      "y": 618,
+      "standX": 888,
+      "standY": 664,
       "facing": "up",
       "audioGroup": "gartenrunde"
     }
@@ -378,26 +378,26 @@
     },
     {
       "id": "hofrunde-table",
-      "x": 164,
-      "y": 312,
-      "width": 120,
-      "height": 48,
+      "x": 160,
+      "y": 308,
+      "width": 96,
+      "height": 44,
       "preserve": true
     },
     {
       "id": "rosenrunde-table",
-      "x": 180,
-      "y": 576,
-      "width": 120,
-      "height": 48,
+      "x": 176,
+      "y": 564,
+      "width": 96,
+      "height": 44,
       "preserve": true
     },
     {
       "id": "gartenrunde-table",
-      "x": 820,
-      "y": 576,
-      "width": 120,
-      "height": 48,
+      "x": 816,
+      "y": 564,
+      "width": 96,
+      "height": 44,
       "preserve": true
     },
     {
@@ -413,12 +413,12 @@
     "pixelWidth": 1152,
     "pixelHeight": 768,
     "avatarSize": 32,
-    "picnicWidthPixels": 160,
+    "picnicWidthPixels": 128,
     "seats": 12,
     "groups": 3,
-    "blockedTiles": 379,
-    "reachableFloorTiles": 477,
-    "foregroundPixels": 25938,
+    "blockedTiles": 378,
+    "reachableFloorTiles": 478,
+    "foregroundPixels": 14982,
     "sourceSha256": "5c19d40c543360a49a52624e9b005b83001e564fdc97d052c2ab264140e60a39"
   }
 }
