@@ -1,0 +1,5 @@
+FROM wvh-workadventure-checks:1.34.5-onboarding-v1 AS client
+FROM wvh-workadventure-play:1.34.5-school-v3
+USER root
+COPY --from=client --chown=node:node /usr/src/play/dist/public /usr/src/play/dist/public
+USER node

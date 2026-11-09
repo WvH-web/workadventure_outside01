@@ -67,24 +67,32 @@ Die bereits laufenden Schloss-, Audio- und WorkAdventure-Dienste wurden nicht
 neu gestartet. Nur der eigene Webpfad kam hinzu; die privaten gemeinsamen
 Webserver-Nachweise wurden auf den neuen Konfigurationshash abgestimmt.
 
-Schlossvorschau `20261109-atelier2`: Am Werkstatttisch im Atelier steht
+Schlossvorschau `20261109-actions2`: Am Werkstatttisch im Atelier steht
 `Gemeinsam zeichnen` bereit, einschliesslich des nativen Apps-Eintrags. Es
 oeffnet genau ein Seitenfenster ohne Zugriff auf die Karten-API. Die drei
 Gespraechsbereiche und zwoelf Sitzplaetze bleiben gleich. Alle acht neu
 versionierten Karten behalten dieselben Kollisions-/Sitzgeometrien und exakt
 dieselben PNG-Dateien. Kein Ersatz des alten Schlosses.
 
-Die Live-Seitenprobe ist noch kein Nachweis fuer gemeinsame native
-Schloss-Sprachgespraeche bei geoeffnetem Atelier. Diese kombinierte Probe folgt
-separat. Eine Freigabe fuer 400 gleichzeitige Personen ist damit nicht erteilt.
+Die kombinierte native Vierpersonenprobe ist jetzt bestanden: zwei regulaer
+angemeldete Microsoft-Schueler-Testkonten zeichnen dieselben Objekte am
+Werkstatttisch, waehrend zwei kuenstliche Testteilnehmer in einer anderen
+Lesegruppe sprechen. Beide Hoergruppen empfangen weiter dekodiertes Audio
+und bleiben voneinander getrennt. Zeichnen und Sprachgespraeche laufen
+gleichzeitig. Desktop sowie 390 Pixel Breite zeigen die echte Zeichenflaeche.
+Schliessen, erneutes Oeffnen und freie Bewegung nach dem Verlassen bestehen;
+keine doppelten Fenster, Kartenskript-Zeitlimits oder JavaScript-Fehler.
+Nur selbst erzeugte Pruefstriche wurden entfernt. Das ist ausdruecklich
+keine Freigabe fuer 400 gleichzeitige Personen.
 
 Beim ersten kombinierten Versuch lud der vierte native Teilnehmer die Karte,
 aber sein Kartenskript lief in WorkAdventures Lade-Zeitlimit. Dieser Versuch
 ist ausdruecklich nicht bestanden. Als gezielte Verbesserung fuer die acht
-neuen Innenraeume buendelt der Kartenbau jetzt die acht zusammengehoerigen
-Quellmodule in eine Datei von rund 31 KB. Es entfaellt deren mehrstufiges
+neuen Innenraeume buendelt der Kartenbau die zusammengehoerigen
+Quellmodule in eine Datei. Einschliesslich Tischrundensteuerung sind es jetzt
+neun Module und rund 38 KB unkomprimiert. Es entfaellt deren mehrstufiges
 Nachladen; Karten, Grafikmassstab und Laufwege werden dadurch nicht geaendert.
-Die kombinierte Probe wird mit diesem Stand wiederholt.
+Die oben beschriebene kombinierte Probe besteht mit diesem Stand.
 
 Die Quellmodule bleiben lesbar erhalten. `tools/build-castle-script.cjs`
 verwendet die bereits im Village-Projekt gesperrte esbuild-Version 0.17.17

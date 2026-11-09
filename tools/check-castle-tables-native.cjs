@@ -17,7 +17,7 @@ async function main(){
   let stage='chess-entry';const users=[],evidence={revision,loadApprovalFor400:false};
   async function enter(number,room,school=false){
     const user=await join(browser,number,{roomId:room,roomUrl:'https://together.deine-schule.com/~/castle-preview/'+room+'.wam#start',outputDir:output,label:'Tischprobe',seats:12,groups:3,revision,
-      ...(school?{schoolStorageState:path.join(root,'qa/sso-'+(number===1?'A':'B')+'.private.json')}:{}),parking:room==='mittelstufe'?[[112,400],[880,400]]:[[112,272],[432,608],[800,352]],characterTextureId:'wvh-event-mira-v1'});
+      ...(school?{schoolStorageState:path.join(root,'qa/sso-'+(number===1?'A':'B')+'.private.json'),mobile:number===2}:{}),parking:room==='mittelstufe'?[[112,400],[880,400]]:[[112,272],[432,608],[800,352]],characterTextureId:'wvh-event-mira-v1'});
     users.push(user);return user;
   }
   try{
@@ -31,11 +31,13 @@ async function main(){
     assert.deepEqual(await b.script.evaluate(()=>castleActivities.rounds.value.round),round);assert.equal(await right.locator('#table').inputValue(),'tisch-1');
     assert.equal(await left.locator('#moves').innerText(),await right.locator('#moves').innerText());
     assert.equal(await left.locator('#reset').isVisible(),false);assert.equal(await right.locator('#reset').isVisible(),false);
+    assert.equal(await right.evaluate(()=>document.documentElement.scrollWidth>innerWidth+1),false);
+    assert.equal(await right.locator('#board rect.square').count(),64);await b.page.screenshot({path:path.join(output,'chess-mobile-native.private.png')});
     stage='standing-one';await stand(a);assert.equal(b.page.frames().some(frame=>frame.url()===chess),true);assert.deepEqual(await b.script.evaluate(()=>castleActivities.rounds.value.round),round);
     await sit(a,chairs[0]);await panel(a,chess);await wait(a,id=>castleActivities.rounds.value?.round?.id===id,round.id);
     stage='last-standing';await stand(a);await stand(b);await sit(a,chairs[0]);await wait(a,id=>castleActivities.rounds.value?.round?.id&&castleActivities.rounds.value.round.id!==id,round.id);await panel(a,chess);
     await a.page.screenshot({path:path.join(output,'chess-auto-native.private.png')});
-    evidence.chess={normalMicrosoftPupils:2,automaticOnSitting:true,physicalBoardBound:true,lateJoinSameRound:true,oneStandingKeepsPeerRound:true,allStandingCreatesNewRound:true,noUnrelatedGameMovesOrSeatsChanged:true};
+    evidence.chess={normalMicrosoftPupils:2,automaticOnSitting:true,physicalBoardBound:true,lateJoinSameRound:true,oneStandingKeepsPeerRound:true,allStandingCreatesNewRound:true,mobile390NativePanel:true,mobileBoardHas64Squares:true,noUnrelatedGameMovesOrSeatsChanged:true};
     for(const user of [a,b])await user.context.close();
     stage='choice-entry';const one=await enter(1,'oberstufe'),two=await enter(2,'oberstufe');
     const seats=await one.script.evaluate(()=>castleRoom.layout.seats.filter(s=>s.audioGroup==='buchclub').map(s=>s.id));

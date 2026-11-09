@@ -64,11 +64,13 @@ Village und geschuetzte Lehrerzimmer werden nicht ersetzt.
   Inhalts-, Beitritts- und Besuchsendpunkte, insbesondere persoenlicher Zimmer.
   Raumnamen allein sind kein Schutz; die Vorschau ist keine Kinderfreigabe.
   Einzelheiten: `SCHOOL-ACCESS.md`.
-- Wirkliche gemeinsame Zeichentische, ein verifiziert gemeinsam genutztes
-  Shared Piano, belastbares Schach und gegebenenfalls Billard nach Abnahme
-  einer geeigneten vorhandenen Grundlage. Keine bloss dekorativen Spielmoebel
-  als funktionierende Spiele ausgeben. Die Spielrundenliste verwendet derzeit
-  die sieben bereits vorhandenen Verwaltungsangebote und deren aktuelle Links.
+- Ein verifiziert gemeinsam genutztes Shared Piano und gegebenenfalls Billard
+  nach Abnahme einer geeigneten vorhandenen Grundlage. Geschuetztes gemeinsames
+  Schach und WBO sind inzwischen mit echten Microsoft-Schueler-Testkonten
+  geprueft; Zeichnen samt parallelen nativen Tischgespraechen ebenfalls.
+  Einzelheiten stehen in den unten verlinkten Fachnachweisen. Die
+  Spielrundenliste verwendet die sieben vorhandenen Verwaltungsangebote
+  und deren aktuelle Links; redaktionelle Schuelerfreigaben bleiben offen.
 - Gemeinsame Rundenliste mit freiwilligem Mitmachstatus, Gastgeberpflege,
   zeitlich ablaufenden externen Links und ehrlicher Anzeige nicht bekannter Spielstaende.
 - Redaktionell freigegebene Themenrotation, Aushang und freiwillige Erinnerungen
@@ -81,7 +83,19 @@ Village und geschuetzte Lehrerzimmer werden nicht ersetzt.
 
 ## Pruefstand der Innenausbaustufe
 
-Aktuell ist Fassung `20261109-games1` mit dem angeschlossenen Spielebereich.
+Aktuelle Interaktionsfassung: `20261109-actions2`. 306 automatische
+Kernpruefungen bestehen. Native Mehrteilnehmerproben bestaetigen automatisches
+Schach beim Hinsetzen, feste physische Schachzuordnung und eine gemeinsame
+Tischauswahl mit spaeterem Beitritt und Zuruecksetzen erst beim letzten
+Verlassen. Die Vierpersonenprobe im Atelier prueft gemeinsames Zeichnen
+parallel zu zwei getrennten nativen Hoergruppen. Sichtbarer Kart-Einstieg,
+Fahrt, Ausstieg und die schnellere Rutsche sind separat live geprueft.
+Die Tutorialkorrektur wird isoliert vorbereitet; noch kein Client-Austausch.
+Nachweise und konkrete Grenzen: [Interaktionen](../docs/schulschloss-interaktionen.md),
+[Schach](../docs/schulschloss-schach.md), [Atelier](../docs/schulschloss-atelier.md).
+Keiner dieser Nachweise ersetzt den noch erforderlichen Lasttest.
+
+Fruehere Fassung `20261109-games1` mit dem angeschlossenen Spielebereich:
 227 Kernpruefungen, getrennte Browserproben der Lobby und die native
 Vierpersonenprobe der Anbindung sind bestanden; Details und Grenzen stehen in
 `SCHOOL-ACCESS.md`. Die neue Serverkomponente ist mit eigenem gesundem

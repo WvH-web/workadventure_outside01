@@ -1,0 +1,115 @@
+diff --git a/play/src/front/Stores/OnboardingStore.ts b/play/src/front/Stores/OnboardingStore.ts
+--- a/play/src/front/Stores/OnboardingStore.ts
++++ b/play/src/front/Stores/OnboardingStore.ts
+@@ -3,8 +3,11 @@
+ import { ENABLE_TUTORIAL } from "../Enum/EnvironmentVariable";
+ import { touchScreenManager } from "../Touch/TouchScreenManager";
+ import { inBbbStore, inJitsiStore, inLivekitStore } from "./MediaStore";
++import { localUserStore } from "../Connection/LocalUserStore";
++import { OnboardingVisit } from "./OnboardingVisit";
+ 
+ const TUTORIAL_DONE_KEY = "tutorialDone";
++const visit = new OnboardingVisit(() => localUserStore.getLocalUser()?.uuid ?? null);
+ 
+ /** True when the current onboarding run is the short mobile flow (joystick + communication + complete) */
+ export const isMobileOnboarding = writable<boolean>(false);
+@@ -41,11 +44,15 @@
+         if (!enableTutorial) return true;
+ 
++        if (visit.has()) return true;
++
+         // Check player state "tutorialDone" (same as WA.player.state.tutorialDone in scripting API)
+         const manager = scene?.getPlayerVariablesManager?.();
+         if (!manager) return false;
+         const value = manager.variables.get(TUTORIAL_DONE_KEY);
+-        return value === true || value === "true";
++        const completed = value === true || value === "true";
++        if (completed) visit.remember();
++        return completed;
+     };
+ 
+     const start = () => {
+@@ -54,6 +61,7 @@
+             set(null);
+             return;
+         }
++        visit.remember();
+         const mobile = touchScreenManager.primaryTouchDevice;
+         isMobileOnboarding.set(mobile);
+         set("welcome");
+@@ -84,6 +92,7 @@
+     };
+ 
+     const complete = () => {
++        visit.remember();
+         isMobileOnboarding.set(false);
+         const scene = gameManager.getCurrentGameScene();
+         const manager = scene?.getPlayerVariablesManager?.();
+@@ -101,6 +110,7 @@
+     };
+ 
+     const reset = () => {
++        visit.clear();
+         isMobileOnboarding.set(false);
+         const scene = gameManager.getCurrentGameScene();
+         const manager = scene?.getPlayerVariablesManager?.();
+@@ -112,8 +122,14 @@
+         set(null);
+     };
+ 
++    const dismiss = () => {
++        isMobileOnboarding.set(false);
++        set(null);
++    };
++
+     const restart = () => {
+         reset();
++        visit.remember();
+         const mobile = touchScreenManager.primaryTouchDevice;
+         isMobileOnboarding.set(touchScreenManager.primaryTouchDevice);
+         setTimeout(() => {
+@@ -129,6 +145,7 @@
+         skip,
+         complete,
+         reset,
++        dismiss,
+         restart,
+         isCompleted,
+     };
+diff --git a/play/src/front/Components/Onboarding/Onboarding.svelte b/play/src/front/Components/Onboarding/Onboarding.svelte
+--- a/play/src/front/Components/Onboarding/Onboarding.svelte
++++ b/play/src/front/Components/Onboarding/Onboarding.svelte
+@@ -20,6 +20,7 @@
+     import CompleteStep from "./Steps/CompleteStep.svelte";
+ 
+     let movementTimeout: ReturnType<typeof setTimeout> | null = null;
++    let startTimeout: ReturnType<typeof setTimeout> | null = null;
+     let onboardingHighlight: OnboardingHighlight | null = $state(null);
+     let onboardingUnsubscribe: Unsubscriber | undefined = undefined;
+     let currentGameScene: GameScene | undefined = undefined;
+@@ -33,6 +34,7 @@
+ 
+     function destroyOnboarding() {
+         currentGameScene?.CurrentPlayer?.off(hasMovedEventName, handlePlayerMove);
++        if (startTimeout) clearTimeout(startTimeout);
+         if (movementTimeout) clearTimeout(movementTimeout);
+         window.removeEventListener("keydown", handleKeyDown);
+         if (onboardingUnsubscribe) onboardingUnsubscribe();
+@@ -45,7 +47,8 @@
+         currentGameScene?.CurrentPlayer?.on(hasMovedEventName, handlePlayerMove);
+ 
+         // Auto-start onboarding if not completed (with a small delay to ensure scene is loaded)
+-        setTimeout(() => {
++        startTimeout = setTimeout(() => {
++            startTimeout = null;
+             if (onboardingStore.isCompleted()) return;
+ 
+             // Start the onboarding
+@@ -69,6 +72,7 @@
+ 
+     onDestroy(() => {
+         destroyOnboarding();
++        onboardingStore.dismiss();
+     });
+ 
+     function handlePlayerMove() {
