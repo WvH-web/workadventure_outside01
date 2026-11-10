@@ -26,7 +26,7 @@ function createSchoolVerifier(secret,{clock=Date.now,fetcher=fetch,timeout=3000,
       finally{clearTimeout(timer);active--;pending.delete(key);}
     });pending.set(key,job);return job;
   }
-  return async header=>{
+  const resolve=async header=>{
     const auth=await verify(header);
     // Only these exact, already authenticated WorkAdventure claims are inspected.
     const claims=JSON.parse(Buffer.from(header.slice(7).split('.')[1],'base64url').toString('utf8')),expiresAt=claims.exp*1000;
@@ -35,5 +35,7 @@ function createSchoolVerifier(secret,{clock=Date.now,fetcher=fetch,timeout=3000,
       schoolIdentifier=await microsoft(claims.accessToken,expiresAt);
     return {...auth,schoolIdentifier,expiresAt};
   };
+  resolve.preflight=verify;
+  return resolve;
 }
 module.exports={createSchoolVerifier};

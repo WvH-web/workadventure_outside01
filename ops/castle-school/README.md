@@ -380,3 +380,59 @@ client-port healthcheck reporting unhealthy while its actual `/castle-audio/heal
 endpoint returned ready. It was not restarted or relabeled by this work. Its
 healthcheck needs a later scoped correction, not a false claim that the hall
 audio endpoint was down.
+
+### Bounded Admission
+
+The School API now verifies the existing WorkAdventure signature locally before
+admitting a request to sixteen shared workers. Up to 512 requests can wait in
+FIFO order for at most four seconds; one authenticated identifier can hold at
+most four active/waiting places. Existing per-IP/per-identity rate limits remain
+in force. The queue holds only process-salted opaque keys, never class or age
+decisions. Expiry is checked again after waiting and after upstream work. Every
+admitted decision still uses a fresh school profile, and normal opaque Microsoft
+subjects still resolve through the same fixed Graph endpoint and its existing
+short identity-only cache.
+
+Queued disconnects/timeouts free their place immediately. An active request keeps
+its worker until all its upstream work has settled, even after a disconnect or a
+failed parallel catalog/profile request. This prevents canceled or failed work
+from exceeding upstream concurrency. Bounded 503/429 responses include a retry
+hint; none becomes a permission grant. Shutdown rejects queued work and drains
+active requests. No profile cache, role override, provider bypass, room layout,
+native audio setting or game integration is introduced.
+
+Six gate cases and six real-HTTP cases cover FIFO/limits, cancellation, shutdown,
+expired queued tokens and a class change while waiting. A controlled 400-request
+burst passed on Windows and in an isolated, network-disabled Linux container
+with the production Node image and 256 MiB/0.5 CPU limits. Each request performed
+its own synthetic 50 ms Graph and 55 ms school read; observed maximum concurrency
+was sixteen for each. These are synthetic dependencies, not 400 real Microsoft
+logins, database users or audio participants. This is not a 400-person castle
+capacity approval.
+
+Windows loopback refused 168 of 400 simultaneous TCP connects against both a
+bare echo server and the application, independently of backlog size or transport
+library. Its application test therefore establishes 400 connections first and
+then sends all 400 HTTP requests together, without a client request queue. Linux
+also tests simultaneous fresh TCP connections. The transport distinction is
+recorded explicitly in the evidence. Twelve earlier serial reads for the two
+authorized synthetic pupils observed a 55.32 ms median and 311.18 ms maximum;
+that small read-only timing sample is not a provider latency guarantee.
+
+`tools/castle-admission-ops.py` pins both reviewed archives, preserves forty old
+source hashes except the four explicit changes, and accepts the two added files.
+The two already-live UI documents and their helper must match their independent
+deployment receipt exactly. Its stage has no public route and disables portal
+room-link writes. Fresh database/cohort canaries use only the two authorized test
+pupils via signed synthetic legacy identities; they do not claim a new normal
+Microsoft login. They create no registrations or portal writes.
+
+Publication requires the exact accepted stage and unchanged protected baseline.
+It clones the School container's immutable image, environment, health check and
+restrictions, changing only its read-only release mount and release label. The
+previous container and original deployment manifest are retained for rollback.
+Seven scope/rollback tests reject foreign containers, unsafe mounts and unrelated
+changes, including a lost container-create response. Private stage/publication
+receipts are `admission-stage.json` and `admission-deployment.json` under the
+School service's private directory. The piano acceptance checker follows this
+explicit maintenance transition instead of rewriting older evidence.

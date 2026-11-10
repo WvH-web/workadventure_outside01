@@ -12,6 +12,7 @@ const { createLookup } = require('./lookup.cjs');
 const { IDS, offerDecision, offerMetadata, approvedRoomChange, target } = require('./offers.cjs');
 const { createOfferLookup, createRoomLinkUpdater } = require('./catalog.cjs');
 const { RoundBoard, KINDS } = require('./rounds.cjs');
+const { AdmissionGate } = require('./admission.cjs');
 const PREFIX = '/castle-school/';
 const roundRoutes=new Map([['round-context',null],['round-create','create'],['round-join','join'],
   ['round-visit','visit'],['round-heartbeat','heartbeat'],['round-leave','leave'],['round-close','close']]);
@@ -44,7 +45,7 @@ async function readJson(req) {
   } catch { throw new GatewayError(400, 'invalid_request'); }
 }
 
-function createSchoolServer({config, lookup, getOffers, updateRoomLink, roundTargets, verify = createSchoolVerifier(config.secret), clock = Date.now}) {
+function createSchoolServer({config, lookup, getOffers, updateRoomLink, roundTargets, clock = Date.now, verify = createSchoolVerifier(config.secret,{clock}), admissionOptions}) {
   if(typeof lookup!=='function'||typeof getOffers!=='function'||typeof updateRoomLink!=='function')throw Error('School dependencies required');
   const pages=new Map(['games','games.js','games.css'].map(name=>[name,{type:name==='games'?'text/html':name.endsWith('.js')?'text/javascript':'text/css',
     content:fs.readFileSync(path.join(__dirname,'public',name==='games'?'games.html':name))}]));
@@ -54,6 +55,7 @@ function createSchoolServer({config, lookup, getOffers, updateRoomLink, roundTar
       content:fs.readFileSync(path.join(__dirname,'public',html?name+'.html':name))});
   }
   const limits = new Map();
+  const admission=new AdmissionGate(admissionOptions),preflight=typeof verify.preflight==='function'?verify.preflight:verify;
   const rounds=new RoundBoard({targets:roundTargets||JSON.parse(fs.readFileSync(path.join(__dirname,'round-targets.json'),'utf8')),clock});
   for(const mapId of new Set(rounds.targets.map(target=>target.mapId)))pages.set('round-rooms/'+mapId+'.webp',{
     type:'image/webp',content:fs.readFileSync(path.join(__dirname,'public/round-rooms',mapId+'.webp'))});
@@ -71,6 +73,9 @@ function createSchoolServer({config, lookup, getOffers, updateRoomLink, roundTar
     if (++entry.count > maximum) throw new GatewayError(429, 'rate_limited');
   }
   const server = http.createServer(async (req, res) => {
+    const abort=new AbortController(),onAbort=()=>abort.abort(),onClose=()=>{if(!res.writableEnded)abort.abort();};
+    req.once('aborted',onAbort);res.once('close',onClose);let release;
+    const open=()=>{if(abort.signal.aborted)throw new GatewayError(503,'unavailable');};
     res.setHeader('Cache-Control', 'no-store'); res.setHeader('X-Content-Type-Options', 'nosniff');
     res.setHeader('Referrer-Policy', 'no-referrer'); res.setHeader('X-Frame-Options', 'DENY');
     res.setHeader('Permissions-Policy', 'microphone=(), camera=(), display-capture=()');
@@ -93,28 +98,36 @@ function createSchoolServer({config, lookup, getOffers, updateRoomLink, roundTar
         throw new GatewayError(403, 'wrong_origin');
       }
       limit('ip:' + opaque(clientIp(req, config)), 6000);
-      const auth = await verify(req.headers.authorization);
-      limit('id:' + opaque(auth.identifier), 90);
+      const authorization=req.headers.authorization,preauth=await preflight(authorization),principal=opaque(preauth.identifier);
+      limit('id:' + principal, 90);
+      let body;
+      if(!['context','round-context'].includes(route)){
+        body=await readJson(req);
+        if(roundRoutes.has(route))validateRoundBody(route,body);
+        else{
+          const keys=Object.keys(body).sort().join(',');
+          if(keys!==(route==='room-link'?'pin,resourceId,targetUrl':'resourceId')||typeof body.resourceId!=='string'||!IDS.includes(body.resourceId)||
+            route==='room-link'&&(typeof body.targetUrl!=='string'||!target(body.targetUrl)||typeof body.pin!=='string'||!/^\d{4,12}$/.test(body.pin)))throw new GatewayError(400,'invalid_request');
+        }
+      }
+      // Only locally verified, bounded requests wait. No school decision or provider response is cached here.
+      release=await admission.acquire(principal,{signal:abort.signal});open();
+      const auth=await verify(authorization);open();
+      if(auth.identifier!==preauth.identifier)throw new GatewayError(401,'unauthorized');
+      const fresh=async()=>{open();if((await preflight(authorization)).identifier!==auth.identifier)throw new GatewayError(401,'unauthorized');open();};
       if(roundRoutes.has(route)){
-        const roundBody=route==='round-context'?null:await readJson(req);
-        if(roundBody)validateRoundBody(route,roundBody);
         let profile;
         try{profile=validateProfile(await lookup(auth.schoolIdentifier??auth.identifier),clock());}
         catch(error){rounds.revoke(auth);throw error;}
+        await fresh();
         if(route==='round-create')limit('round-create:'+opaque(auth.identifier),6);
-        const value=route==='round-context'?rounds.context(auth,profile):rounds[roundRoutes.get(route)](auth,profile,roundBody);
+        const value=route==='round-context'?rounds.context(auth,profile):rounds[roundRoutes.get(route)](auth,profile,body);
         send(200,value);return;
       }
-      let body;
-      if (route !== 'context') {
-        body = await readJson(req);
-        const keys=Object.keys(body).sort().join(',');
-        if (keys!==(route==='room-link'?'pin,resourceId,targetUrl':'resourceId') || typeof body.resourceId !== 'string' || !IDS.includes(body.resourceId) ||
-          route==='room-link'&&(typeof body.targetUrl!=='string'||!target(body.targetUrl)||typeof body.pin!=='string'||!/^\d{4,12}$/.test(body.pin))) {
-          throw new GatewayError(400, 'invalid_request');
-        }
-      }
-      const [rawProfile,offers]=await Promise.all([lookup(auth.schoolIdentifier??auth.identifier),getOffers({fresh:route!=='context'})]);
+      const results=await Promise.allSettled([Promise.resolve().then(()=>lookup(auth.schoolIdentifier??auth.identifier)),Promise.resolve().then(()=>getOffers({fresh:route!=='context'}))]);
+      for(const result of results)if(result.status==='rejected')throw result.reason;
+      const [rawProfile,offers]=results.map(result=>result.value);
+      await fresh();
       const profile=validateProfile(rawProfile,clock());
       const selected=body?offers.find(offer=>offer.id===body.resourceId):null;
       if(body&&!selected)throw new GatewayError(503,'unavailable');
@@ -137,12 +150,15 @@ function createSchoolServer({config, lookup, getOffers, updateRoomLink, roundTar
       send(200,{account,decisions,offers:metadata,checkedAt:clock()});
     } catch (error) {
       const safe = error instanceof GatewayError ? error : new GatewayError(503, 'unavailable');
-      if (safe.status === 429 || safe.status === 503) res.setHeader('Retry-After', safe.status === 429 ? '60' : '3');
+      if (safe.status === 429 || safe.status === 503) res.setHeader('Retry-After', String(safe.retryAfter||(safe.status === 429 ? 60 : 3)));
       send(safe.status, {error: safe.code});
+    } finally {
+      release?.();req.removeListener('aborted',onAbort);res.removeListener('close',onClose);
     }
   });
+  server.closeAdmissions=()=>admission.close();
   server.requestTimeout = 8000; server.headersTimeout = 8000;
-  server.once('close',()=>{clearInterval(sweeper);limits.clear();rounds.dispose();});
+  server.once('close',()=>{admission.close();clearInterval(sweeper);limits.clear();rounds.dispose();});
   return server;
 }
 
@@ -156,7 +172,7 @@ async function main() {
   const getOffers=createOfferLookup({key}),updateRoomLink=createRoomLinkUpdater();
   const server = createSchoolServer({config, lookup, getOffers, updateRoomLink});
   await new Promise((resolve, reject) => {server.once('error', reject); server.listen(3211, '0.0.0.0', resolve);});
-  const stop = () => {server.close(); server.closeIdleConnections();};
+  const stop = () => {server.closeAdmissions();server.close(); server.closeIdleConnections();};
   process.once('SIGINT', stop); process.once('SIGTERM', stop);
   console.info('Castle school permission service ready');
 }

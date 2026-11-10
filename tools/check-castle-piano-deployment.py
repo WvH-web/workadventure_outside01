@@ -13,6 +13,44 @@ def request(path,body=None):
     try:response=urllib.request.urlopen(req,timeout=10)
     except urllib.error.HTTPError as error:response=error
     return response.status,response.read(2000000),response.headers
+def verify_school_admission(ops,expected):
+    path=Path('/opt/wvh-castle-school/private/admission-deployment.json')
+    if not path.exists():return expected,False
+    assert path.resolve()==path and path.stat().st_mode&0o777==0o600
+    value=json.loads(path.read_text());assert value['passed'] and value['healthy'] and value['before']==expected
+    before,after=value['before'],value['after'];name='wvh-castle-school';manifest='/opt/wvh-castle-school/private/deployment.json'
+    assert {key:item for key,item in before['services'].items() if key!=name}=={key:item for key,item in after['services'].items() if key!=name}
+    assert {key:item for key,item in before['files'].items() if key!=manifest}=={key:item for key,item in after['files'].items() if key!=manifest}
+    sha=ops['sha'];current=ops['inspect'](name);old=ops['inspect'](value['rollbackContainer'])
+    assert current['Id']==value['containerId']==after['services'][name]['id'] and current['Image']==value['image']==old['Image']
+    assert current['State']['Health']['Status']=='healthy' and old['Id']==before['services'][name]['id'] and not old['State']['Running']
+    assert sha(json.dumps(old['Config'],sort_keys=True).encode())==value['configBeforeSha256']
+    assert sha(json.dumps(current['Config'],sort_keys=True).encode())==value['configSha256']
+    assert sha(json.dumps(current['HostConfig'],sort_keys=True).encode())==value['hostConfigSha256']
+    previous=Path(value['oldRecordPath']);assert previous.resolve()==previous and previous.parent==path.parent and previous.stat().st_mode&0o777==0o600
+    assert sha(previous.read_bytes())==value['oldRecordSha256']==before['files'][manifest]
+    old_record=json.loads(previous.read_text());assert old_record['release']==value['oldRelease'] and len(old_record['files'])==40
+    release=Path(value['release']);assert release.resolve()==release and release.parent==path.parent.parent/'releases'
+    assert not any(item.is_symlink() for item in release.rglob('*'))
+    assert {item.relative_to(release).as_posix() for item in release.rglob('*') if item.is_file()}==set(value['files']) and len(value['files'])==42
+    assert all(sha((release/file).read_bytes())==digest for file,digest in value['files'].items())
+    assert all(sha((Path(old_record['release'])/file).read_bytes())==digest for file,digest in old_record['files'].items())
+    old_config=json.loads(json.dumps(old['Config']));old_config['Image']=old['Image'];old_config['Labels']['wvh.release']=value['releaseId']
+    assert current['Config']==old_config
+    host=json.loads(json.dumps(old['HostConfig']));changed=0
+    for mount in host['Mounts']:
+        if mount['Target']=='/srv/release':assert mount['ReadOnly'];mount['Source']=str(release);changed+=1
+    assert changed==1 and current['HostConfig']==host
+    assert sha(Path(manifest).read_bytes())==value['newRecordSha256']==after['files'][manifest]
+    record=json.loads(Path(manifest).read_text());assert record['files']==value['files'] and record['release']==str(release)
+    stage=path.with_name('admission-stage.json');assert sha(stage.read_bytes())==value['stageReceiptSha256']
+    staged=json.loads(stage.read_text());assert staged['passed'] and staged['stopped'] and staged['files']==value['files'] and staged['before']==before
+    assert sha(path.with_name('admission-linux-tests.private.log').read_bytes())==value['linuxTestLogSha256']==staged['linuxTestLogSha256']
+    assert value['syntheticHttpRequests']==400 and value['liveCanary']['freshDatabaseAndCohortRules'] and not value['fullCastleApprovalFor400']
+    assert not ops['exists']('wvh-castle-admission-stage') and not ops['exists']('wvh-castle-admission-qa')
+    assert not ops['run']('ss','-ltnH','sport = :13212').strip()
+    return after,True
+
 def main():
     os.umask(0o077);ops=runpy.run_path('/tmp/wvh-castle-piano-ops.py');wam=runpy.run_path('/tmp/wvh-deploy-castle-piano-wam.py');sha=ops['sha'];private=ops['PRIVATE']
     deployment=json.loads((private/'deployment.json').read_text());wrapped=json.loads((private/'music-wrapper-deployment.json').read_text())
@@ -46,6 +84,7 @@ def main():
         assert all(sha(Path(path).read_bytes())==digest for path,digest in {**repair['applicationFiles'],**repair['protectedFiles']}.items())
         assert ops['inspect'](repair['rollbackContainer'])['Id']==repair['gatewayBeforeId'] and not ops['inspect'](repair['rollbackContainer'])['State']['Running']
         expected=after;health_repair=True
+    expected,school_admission=verify_school_admission(ops,expected)
     assert ops['baseline']()==expected,'An unrelated protected file or existing service changed'
     assert ui['nginx_before_sha256']==deployment['nginx_after_sha256']
     for route,name in [('presence','presence.html'),('rounds','rounds.html'),('unowned-ui.js','unowned-ui.js')]:
@@ -65,8 +104,10 @@ def main():
     ops['atomic'](private/'accepted-native-live-proof.json',native)
     result={'passed':True,'release':deployment['release'],'helperRelease':ui['release'],'sourceCommit':publication['head'],
       'nativeLiveProofSha256':sha(native_raw),'normalMicrosoftPupils':2,'mouseAndMobileTouch':True,'parallelTableSpeechDecodedBoth':True,
-      'onlyMusicPreviewWrapperChanged':True,'existingContainersAndOtherMapsUnchanged':not health_repair,
-      'allOtherServicesPreservedExceptVerifiedHallHealthRepair':True,'hallHealthRepairVerified':health_repair,'historicalManifestsPreserved':True,
+      'onlyMusicPreviewWrapperChanged':True,'existingContainersAndOtherMapsUnchanged':not health_repair and not school_admission,
+      'allOtherServicesPreservedExceptVerifiedHallHealthRepair':not school_admission,
+      'allOtherServicesPreservedExceptVerifiedMaintenance':True,'schoolAdmissionVerified':school_admission,
+      'hallHealthRepairVerified':health_repair,'historicalManifestsPreserved':True,
       'permissionsAndAuthenticationUnchanged':True,'stageStopped':True,'healthy':True,'loadApprovalFor400':False,
       'checkedAt':time.strftime('%Y-%m-%dT%H:%M:%SZ',time.gmtime())}
     ops['atomic'](private/'published-acceptance.json',result);print(json.dumps(result,indent=2))
