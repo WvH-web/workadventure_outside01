@@ -173,7 +173,8 @@ removed after the test.
 
 ## Voluntary Round Directory Candidate
 
-The accepted service candidate is **live as `6973432bdfccee7c`**. The separate
+The original accepted service candidate was `6973432bdfccee7c`; the bounded
+admission update is **live as `da25574fd7da8512`** (see the final section). The separate
 preview maps are enabled with runtime `20261109-rounds1`; published native
 acceptance passed as described below. Existing school
 catalog, chess, art, old castle, Village and protected teacher access remain
@@ -436,3 +437,13 @@ changes, including a lost container-create response. Private stage/publication
 receipts are `admission-stage.json` and `admission-deployment.json` under the
 School service's private directory. The piano acceptance checker follows this
 explicit maintenance transition instead of rewriting older evidence.
+
+Publication completed on 2026-11-10 at 21:34 UTC as `da25574fd7da8512`.
+Only the School container was replaced; its health check and both read-only
+HTTPS cohort canaries passed afterwards. The 21:35 UTC acceptance followed the
+saved Hall-health and School-admission receipts, verified the preserved old
+manifests, all protected files and preview wrappers, and confirmed that staging
+was stopped. It revalidates retained native piano/voice evidence, not a new
+post-maintenance multi-browser run. Locally, 398 Node cases passed and one
+optional widget browser case was skipped; seven operator scope/rollback cases
+also passed. The overall school-castle goal and full-capacity approval remain open.

@@ -67,14 +67,13 @@ Village und geschuetzte Lehrerzimmer werden nicht ersetzt.
   Inhalts-, Beitritts- und Besuchsendpunkte, insbesondere persoenlicher Zimmer.
   Raumnamen allein sind kein Schutz; die Vorschau ist keine Kinderfreigabe.
   Einzelheiten: `SCHOOL-ACCESS.md`.
-- Ein eigenes schulisch geschuetztes Schlossklavier ist ausdruecklich
-  beschlossen; die technische Umsetzung mit gemeinsamem Spielen, allein
-  Ueben und echter Schul-Anbindung steht noch aus. Gegebenenfalls Billard
-  nach Abnahme einer geeigneten vorhandenen Grundlage. Die direkte anonyme
-  Shared-Piano-Probe besteht inzwischen mit wirklicher Audioausgabe im anderen
-  Browser, Touch, spaetem Beitritt und Verlassen des ersten Teilnehmers;
-  Die native Abnahme und Freigabe des eigenen Schulklaviers bleiben offen.
-  Geschuetztes gemeinsames
+- Weitere geeignete gemeinsame Spiele, gegebenenfalls Billard nach Abnahme
+  einer vorhandenen Grundlage. Das eigene geschuetzte Schlossklavier ist als
+  `8a1f180e9b723ef1` im Musiksalon live: gemeinsam spielen, allein ueben,
+  echte Schul-Anbindung und echte Klavier-Samples. Die native Probe mit zwei
+  normalen Microsoft-Testkonten besteht einschliesslich Touch, dekodiertem
+  Klavierton im anderen Browser und parallelen Tischgespraechen. Das ist kein
+  anonymer Shared-Piano-Ersatzlink. Geschuetztes gemeinsames
   Schach und WBO sind inzwischen mit echten Microsoft-Schueler-Testkonten
   geprueft; Zeichnen samt parallelen nativen Tischgespraechen ebenfalls.
   Einzelheiten stehen in den unten verlinkten Fachnachweisen. Die
@@ -89,8 +88,9 @@ Village und geschuetzte Lehrerzimmer werden nicht ersetzt.
   angemeldeten Microsoft-Schultestkonten besteht, einschliesslich echter
   Klassen-/Stufentrennung. Die native Zweipersonenprobe bestaetigt beidseitigen
   Tischton bei offener Uebersicht, mobilen Zugang, Wiederbeitritt und
-  kartenuebergreifenden Besuch. Der eigene Dienst ist als `6973432bdfccee7c`
-  gesund live und mit beiden Konten gegen den echten HTTPS-Endpunkt geprueft.
+  kartenuebergreifenden Besuch. Der urspruengliche Dienst `6973432bdfccee7c`
+  wurde mit beiden Konten gegen den echten HTTPS-Endpunkt geprueft. Die unten
+  dokumentierte begrenzte Anfrageverarbeitung ist als `da25574fd7da8512` gesund live.
   Die Runtime-Aktivierung `20261109-rounds1` aendert ausschliesslich technische
   Eigenschaften der neuen Vorschaukarten, nicht deren Einrichtung oder
   Gespraechsflaechen. Auch die veroeffentlichte Zweipersonenprobe besteht
@@ -107,6 +107,32 @@ Village und geschuetzte Lehrerzimmer werden nicht ersetzt.
   und Besuche. Lokale Testdaten bleiben unberuehrt und unveroeffentlicht.
 - Betriebs-, Wiederanlauf- und realistische Leistungstests vor breiter Nutzung.
   Kleine synthetische Mehrteilnehmerproben ersetzen keine Lastabnahme.
+
+## Begrenzte Anfrageverarbeitung am 10. November
+
+Nach ausdruecklicher Freigabe wurde nur die Runden-/Schulpruefung kurz neu
+gestartet. Maximal 16 aktive Anfragen, 512 wartende Anfragen, hoechstens vier
+aktive/wartende Plaetze je bestaetigtem Konto und vier Sekunden Wartefrist.
+Schulprofile und Klassenfreigaben werden weiterhin frisch gelesen. Abbruch,
+abgelaufene Anmeldung und unzulaessige Klassenwechsel erteilen keinen Zugriff.
+Karten, bisheriges Schloss, WorkAdventure-Client, Tischton, Kino und Spiele
+blieben unveraendert; die vorige Dienstausgabe bleibt als Ruecksetzstand erhalten.
+
+Die isolierte Linux-Pruefung mit der echten Node-Laufzeit und den gleichen
+Ressourcengrenzen besteht fuer 400 gleichzeitig eintreffende HTTP-Testanfragen
+mit kuenstlichen Abhaengigkeiten. Zwei autorisierte Testprofile bestaetigen
+anschliessend die echten Klassenfreigaben am oeffentlichen HTTPS-Endpunkt.
+Diese letzte Probe verwendet signierte Testidentitaeten, keine neuen normalen
+Microsoft-Anmeldungen. 398 lokale Node-Faelle bestehen, ein optionaler
+Browserfall bleibt ausgelassen; sieben Betriebs-/Ruecksetzfaelle bestehen.
+Die anschliessende Bestandspruefung bestaetigt unveraenderte andere Dienste,
+geschuetzte Dateien und Karten sowie beendete Testdienste. Vorige native
+Klavier-/Sprachnachweise wurden nachgeprueft, nicht als neue Browserprobe ausgegeben.
+
+Das ist keine Freigabe fuer 400 reale Schlossbesucher. Die getrennte bisherige
+Audioprobe bestand bis 100 Teilnehmer; der 200er-Versuch wurde wegen hoher
+Serverlast abgebrochen. Einzelheiten: `tools/castle-capacity/README.md` und
+`ops/castle-school/README.md`. Das Gesamtziel bleibt aktiv.
 
 ## Pruefstand der Innenausbaustufe
 
