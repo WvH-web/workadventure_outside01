@@ -18,6 +18,8 @@ class MusicWrapper(unittest.TestCase):
           'standingClosesOnlyOwnedPiano','remainingMusicianContinues','lastStandingResetsChoice','existingBandAndChoirPreserved','visibleInstrumentApproachWorks',
           'noMobileHorizontalOverflow','nonblankNativeCanvas','normalMovementAfterClosure']}
         value.update(normalMicrosoftPupils=2,publishedPreview=False,schoolOverrides=False,loadApprovalFor400=False,errors=[]);module.proof(value)
+        module.proof({**value,'candidateMapOnlyInsideTestBrowsers':False,'publishedPreview':True},live=True)
+        with self.assertRaises(AssertionError):module.proof(value,live=True)
         for patch in [{'nativeTableConversationDecodedBoth':False},{'normalMovementAfterClosure':False},{'normalMicrosoftPupils':1},{'schoolOverrides':True},{'errors':['error']}]:
             with self.assertRaises(AssertionError):module.proof({**value,**patch})
 if __name__=='__main__':unittest.main()

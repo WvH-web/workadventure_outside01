@@ -243,3 +243,15 @@ nativen mobilen Empfang und ist kein bestandener Sprachnachweis. Die normale
 native Testkonfiguration mit sichtbarer Mikrofonbedienung besteht; die separate
 Klavierprobe besteht auch mit strenger Autoplay-Regel und bewusstem Tonstart.
 Die nachfolgende Live-Abnahme ohne lokale Skriptumleitung bleibt erforderlich.
+
+Diese Live-Abnahme ist anschliessend mit Chrome 157 und denselben beiden
+normalen Schul-Testkonten bestanden, einschliesslich Mobil-Touch, Musik und
+nativer Sprache in beide Richtungen, sichtbarer Auswahl, spaeterem Beitritt,
+Aufstehen, erhaltener Galerie und freier Bewegung. Keine lokale Karten- oder
+Skriptumleitung, keine Browserfehler. Pages-Lauf `42747604594` fuer Commit
+`2e51f67` besteht; alle 29 veroeffentlichten Schloss-Laufzeitdateien sind exakt
+gegen diesen Commit geprueft. Ausschliesslich `musikzimmer.wam` wurde auf die
+Fassung `20261109-piano1` umgeschaltet. Seine drei nativen Sprachbereiche und
+alle uebrigen WAM-Felder bleiben unveraendert. Lokaler Abschlussstand: 382
+Node-Faelle, davon 381 bestanden und ein separater optionaler Widget-Browsertest
+uebersprungen; 18 Python-Betriebs-/Umfangspruefungen bestanden.

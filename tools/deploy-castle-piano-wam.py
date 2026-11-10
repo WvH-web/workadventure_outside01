@@ -18,9 +18,9 @@ def guarded(before,after):
     assert (a.scheme,a.netloc,a.path,a.fragment)==(b.scheme,b.netloc,b.path,b.fragment)
     assert b.scheme=='https' and b.netloc=='wvh-web.github.io' and b.path=='/workadventure_outside01/castle/musikzimmer.tmj'
     assert urllib.parse.parse_qs(b.query)=={'v':['20261109-piano1-20261109-rounds1']}
-def proof(value):
+def proof(value,live=False):
     assert value['passed'] and value['realNativeWorkAdventure'] and value['normalMicrosoftPupils']==2
-    assert value['candidateMapOnlyInsideTestBrowsers'] and not value['publishedPreview'] and not value['schoolOverrides'] and not value['loadApprovalFor400']
+    assert value['candidateMapOnlyInsideTestBrowsers'] is (not live) and value['publishedPreview'] is live and not value['schoolOverrides'] and not value['loadApprovalFor400']
     for key in ['publicPianoService','realPublicPianoWebSocketHandshake','visibleGroupPicker','lateJoinSharesChoice','desktopAndMobileTouchHeardBothWays',
       'nativeTableConversationDecodedBoth','nativeMicrophonesActivatedWithUi','standingClosesOnlyOwnedPiano','remainingMusicianContinues','lastStandingResetsChoice',
       'existingBandAndChoirPreserved','visibleInstrumentApproachWorks','noMobileHorizontalOverflow','nonblankNativeCanvas','normalMovementAfterClosure']:assert value[key] is True
