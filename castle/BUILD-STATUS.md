@@ -107,9 +107,12 @@ Village und geschuetzte Lehrerzimmer werden nicht ersetzt.
   und Besuche. Lokale Testdaten bleiben unberuehrt und unveroeffentlicht.
   Die kanonische Schulzuordnung und kurzlebige Zugangsverwaltung sind inzwischen
   separat implementiert. Reale MySQL-Prueffaelle, zwei autorisierte Testprofile
-  sowie die Verbindung zum originalen Konto-/Zimmercode bestehen. Oeffentlicher
-  Einstieg und Besuchs-/Sprachabnahme fehlen noch; kein Zimmerzugang wurde
-  freigeschaltet. Einzelheiten: `ops/castle-homes/README.md`.
+  sowie die Verbindung zum originalen Konto-/Zimmercode bestehen. Der geschuetzte
+  Einstieg ist lokal mit zwei getrennten Browserzugaengen, wirklichen privaten
+  Besuchen, Nachrichten und Kontowechsel geprueft. Desktop und 390/320-Pixel-
+  Ansichten passen. Produktiver Schuleinstieg, native Besuchs-/Sprachabnahme
+  und Betriebsabnahme fehlen noch; kein Schul-Zimmerzugang wurde freigeschaltet.
+  Einzelheiten: `ops/castle-homes/README.md`.
 - Betriebs-, Wiederanlauf- und realistische Leistungstests vor breiter Nutzung.
   Kleine synthetische Mehrteilnehmerproben ersetzen keine Lastabnahme.
 
