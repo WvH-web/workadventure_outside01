@@ -1,9 +1,9 @@
 import { castleRoomReady } from "./room.js?v=20261109-rounds1";
 
-const noticeUrl = "https://deutsche-online-schule.com/schooltools/verwaltung/api/workadventure_museum_open.php?board=hallnotice01";
 const audioUrl = "https://together.deine-schule.com/castle-audio/";
 const gamesUrl = "https://together.deine-schule.com/castle-school/games";
 const ownUrl = (file) => new URL(file, import.meta.url).toString();
+const noticeUrl = ownUrl("hall-notices.html?v=20261110-notices1");
 const props = (o) => Object.fromEntries((o.properties || []).map((p) => [p.name, p.value]));
 const inside = (p, a) => p.x >= a.x && p.y >= a.y && p.x < a.x + a.width && p.y < a.y + a.height;
 function hallObjects(layers, result = []) {
@@ -26,7 +26,7 @@ export class GreatHall {
     const display = this.objects.find((o) => o.settings.hallBoardDisplay);
     if (display) {
       try {
-        this.board = await this.wa.room.website.create({name:"hall-noticeboard", url:ownUrl("hall-board.html"),
+        this.board = await this.wa.room.website.create({name:"hall-noticeboard", url:ownUrl("hall-board.html?v=20261110-notices1"),
           position:{x:display.x,y:display.y,width:display.width,height:display.height},visible:true,origin:"map"});
         if (this.closed) { await this.wa.room.website.delete("hall-noticeboard"); return this; }
       } catch (error) { console.warn("Hall noticeboard:", error.message); }

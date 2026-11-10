@@ -554,3 +554,43 @@ Die Bestandsaufnahme beschreibt die lokalen Projektdateien. Eine eingetragene
 externe Adresse ist kein Nachweis ihrer aktuellen Funktionsfaehigkeit. Das Konzept
 aendert keine vorhandene Karte und ist keine Zusage bereits implementierter
 Anwesenheits-, Turnier- oder Automationsfunktionen.
+
+## Entwicklungsstand: Zeitgesteuertes Schlossbrett, 10.11.2026
+
+Im separaten Zweig `codex/castle-notice-schedule-20261110` liegen ein kleiner
+oeffentlicher Aushang-Feed und die zugehoerige Schlossdarstellung. In der
+Verwaltung lassen sich mehrere ausdruecklich oeffentliche Texte vorbereiten,
+terminieren und zurueckziehen. Die Darstellung fragt alle 30 Sekunden neu an,
+wechselt aktive Wandtitel alle 15 Sekunden und entfernt abgelaufene Texte auch
+zwischen Abrufen. Das Seitenfenster zeigt die vollstaendigen Texte und
+Terminangaben in Berliner Schulzeit. Der bisherige Museums-Aushang bleibt als
+Rueckfall und ueber einen eigenen Link erreichbar; dessen Wandabruf bleibt bei
+hoechstens einem Abruf pro Minute. Es werden keine Dateien hochgeladen oder
+weiteren Bilder auf Vorrat geladen, sondern vorhandene Schlossgrafiken benutzt.
+
+Die Anzeige benutzt Serverzeit plus eine monotone Uhr statt der moeglicherweise
+falsch gestellten Geraeteuhr. Netzwerkfehler leeren geplante Meldungen; ein alter
+erfolgreicher Abruf kann eine spaetere Ruecknahme nicht ueberschreiben. Die Seiten
+bekommen weder Karten-API noch Medienrechte oder Schuelerprofile. Eine kleine
+Wandansicht ist kein Ort fuer private Klasseninformationen.
+
+Geprueft: 47 PHP-/MySQL-Faelle mit ausschliesslich synthetischen Daten, sieben
+Feed-Tests und 13 Browseransichten einschliesslich 320/390 Pixel Mobilbreite und
+der echten 120x96-Pixel-Wandflaeche. Browser prueft Ruecknahme ohne Neuladen,
+Ablauf ohne neuen Abruf, sichere Textdarstellung, Ausfall und Museums-Rueckfall.
+Die bestehende gesamte Node-Testsammlung umfasst jetzt 389 Faelle; ein optionaler
+Widget-Browsertest wird ohne dessen gesonderten Testmodus weiterhin ausgelassen.
+
+**Noch keine Live-Aktivierung:** Die zugehoerige Portalbereitstellung ist vor
+jedem Upload an der schon bekannten FTPS-Zertifikats-/IP-Konfiguration gestoppt.
+Der bestaetigte Hosting-Servername samt gueltiger Vertrauenskette muss zuerst
+geprueft werden. Bis dahin nicht auf `gh-pages` uebernehmen: Die neue oeffentliche
+Schnittstelle existiert live noch nicht. Bestehende Online-Raeume, WAM-Dateien,
+Kino, Schulrechte, Schlossklavier und das alte Schloss bleiben unveraendert.
+Die isolierte PHP-Pruefung startete keine Anwendungsdienste neu; ihre eigene
+Datenbank wurde wieder entfernt. Das ist kein neuer Mehrspieler- oder Lasttest.
+
+Noch offen bleiben die persoenlich geschuetzte Programmuebersicht, praezise
+Zielgruppen-/Alterspruefung auch fuer zukuenftige Termine, freigegebene
+Themenrotation, Kalenderuebernahme und freiwillige deduplizierte Erinnerungen.
+Diese Erweiterung ist ein Baustein, kein Abschluss des Schloss-Gesamtziels.

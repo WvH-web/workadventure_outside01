@@ -20,6 +20,7 @@ test('hall presents the board and a same-origin microphone-only widget without a
   await f.hall.start();
   try {
     assert.deepEqual(f.calls.board.position,{x:1343,y:429,width:120,height:96});
+    assert.equal(f.calls.board.url,new URL('../castle/hall-board.html?v=20261110-notices1',import.meta.url).href);
     assert.equal(f.calls.widget.url,'https://together.deine-schule.com/castle-audio/');
     assert.equal(f.calls.widget.allowApi,true);
     assert.equal(f.calls.widget.allowPolicy,'microphone; autoplay');
@@ -27,7 +28,8 @@ test('hall presents the board and a same-origin microphone-only widget without a
     assert.equal(f.calls.buttons.size,0);
     f.room.position={x:1350,y:450};f.hall.refresh();
     await f.calls.buttons.get('hall-action-noticeboard').callback();
-    assert.match(f.calls.opened[0][0],/workadventure_museum_open\.php\?board=hallnotice01$/);
+    assert.equal(f.calls.opened[0][0],new URL('../castle/hall-notices.html?v=20261110-notices1',import.meta.url).href);
+    assert.match(fs.readFileSync(new URL('../castle/hall-notices.html',import.meta.url),'utf8'),/workadventure_museum_open\.php\?board=hallnotice01/);
     assert.equal(f.calls.opened[0][1],false);
     f.room.position={x:1370,y:760};f.hall.refresh();
     assert.equal(f.calls.buttons.has('hall-action-noticeboard'),false);
