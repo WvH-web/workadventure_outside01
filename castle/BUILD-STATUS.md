@@ -105,6 +105,11 @@ Village und geschuetzte Lehrerzimmer werden nicht ersetzt.
   automatische Rotation oder Versandfunktion.
 - Abgesicherte produktive Sternenhueter-Schulbruecke fuer persoenliche Zimmer
   und Besuche. Lokale Testdaten bleiben unberuehrt und unveroeffentlicht.
+  Die kanonische Schulzuordnung und kurzlebige Zugangsverwaltung sind inzwischen
+  separat implementiert. Reale MySQL-Prueffaelle, zwei autorisierte Testprofile
+  sowie die Verbindung zum originalen Konto-/Zimmercode bestehen. Oeffentlicher
+  Einstieg und Besuchs-/Sprachabnahme fehlen noch; kein Zimmerzugang wurde
+  freigeschaltet. Einzelheiten: `ops/castle-homes/README.md`.
 - Betriebs-, Wiederanlauf- und realistische Leistungstests vor breiter Nutzung.
   Kleine synthetische Mehrteilnehmerproben ersetzen keine Lastabnahme.
 
