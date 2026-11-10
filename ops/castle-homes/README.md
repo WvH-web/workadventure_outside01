@@ -6,6 +6,10 @@ public context endpoint, school room database,
 portal login/logout hook or live game was activated or changed. The separate
 colleague preview remains fictional. The full school-castle goal remains open.
 
+An isolated VPS runtime preflight also passes with ordinary Microsoft sessions
+from the two explicitly authorized synthetic pupil accounts and fresh real
+read-only school context. This is loopback-only, not public or native room entry.
+
 ## Reuse Existing Rooms
 
 The existing Sternenhueter account and bedroom modules remain the source of
@@ -184,6 +188,48 @@ checking. The latest pinned private MySQL/context archive is
 `48741f8abebc9e98ce799453f3d209b2a82fed4110326a941a26a162ba715592`.
 Its replay/context checks use disposable private state; no public endpoint was
 installed and no existing service was restarted.
+
+## Isolated Linux Runtime Preflight
+
+`tools/package-castle-homes-qa.cjs` packages only the scoped gateway/context code,
+its QA client/router and the existing icon license. It does not package keys,
+login states, game databases, a fictional login selector or colleague inventory.
+A generated manifest pins 107 original game modules and bedroom assets against
+the read-only release `/opt/wvh-sterne-kollegium/releases/20261109T191624Z`.
+The installed dependencies are reused, not reinstalled or changed. This is not
+yet a separately deployed production runtime/dependency image.
+
+`tools/prepare-castle-homes-qa.cjs` reads the two designated accounts' successful
+ordinary Microsoft browser states into a separate private transfer file; it
+prints no credentials. The VPS verifier checks the real platform signature and
+Microsoft Graph identity, without minting replacement platform tokens. No pupil
+other than these two synthetic identities may reach this probe's school lookup.
+
+`tools/check-castle-homes-runtime.py` verifies the pinned archive and source
+manifest, then runs the actual room engine and PHP endpoint in one disposable
+unprivileged systemd identity. Credentials use systemd's private credential mount;
+PHP and gateway listen only on loopback. The PHP lookup URL is explicitly routed
+inside the test to its local listener. The fixed public HTTPS endpoint is neither
+installed nor tested by this preflight. The actual school SQL transaction remains
+read-only; room edits occur only in the disposable fixture database.
+
+Eight cases passed on 2026-11-10 with seven provider checks and twelve fresh
+school lookups: unsigned context denial, real-session school entry, same-owner
+inventory across devices, actual two-user WebSocket visits and younger-child
+phrase protection, non-disconnecting renewal, closed SQLite backup integrity,
+restore retaining owners/furniture but not grants/open visits, and dependency
+failure revoking HTTP plus an already open socket. Restore uses a separate copy,
+not a live database overwrite; it does not prove online production backup.
+
+Pinned QA archive:
+`f8876b6cbc8f999503db915eef1cbe9190598a6822a27181064a1482fe65c8e0`.
+Private proof: `/opt/wvh-castle-homes/private/runtime-preflight.json`.
+All existing Docker processes, the colleague service, protected configurations,
+preview maps and all 107 reviewed original inputs remained unchanged. Temporary
+credentials/input are removed even on failure; systemd removes its runtime tree.
+No public room route, school database for rooms, map action, media or moderation
+permission was activated. Native WorkAdventure, public TLS/cookies, family/staff
+accounts, voluntary isolated voice and sustained production capacity remain open.
 
 Still required before school activation: publish the reviewed gateway with its
 real identity endpoint, immutable game release and durable school database;
