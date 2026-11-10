@@ -88,6 +88,8 @@ try:
         '--read-only','--tmpfs','/tmp:rw,noexec,nosuid,size=32m',
         '--cap-drop','ALL','--security-opt','no-new-privileges:true',
         '--memory','384m','--cpus','1','--log-opt','max-size=5m','--log-opt','max-file=2',
+        '--health-cmd',"node -e \"fetch('http://127.0.0.1:3210/castle-audio/health',{signal:AbortSignal.timeout(1500)}).then(async r=>process.exit(r.ok&&(await r.json()).ready===true?0:1)).catch(()=>process.exit(1))\"",
+        '--health-interval','10s','--health-timeout','3s','--health-start-period','10s','--health-retries','3',
         '--entrypoint','node',before['Config']['Image'],'/srv/hall-audio/server.cjs')
     created = True
     healthy = False

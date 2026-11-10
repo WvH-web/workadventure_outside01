@@ -4,6 +4,7 @@ import os
 from pathlib import Path
 import runpy
 import time
+import hashlib
 import urllib.error
 import urllib.request
 
@@ -26,11 +27,25 @@ def main():
     release=Path(deployment['release_path']);assert release.resolve()==release and not any(path.is_symlink() for path in release.rglob('*'))
     assert {path.relative_to(release).as_posix() for path in release.rglob('*') if path.is_file()}==set(deployment['files'])
     assert len(deployment['files'])==58 and all(sha((release/name).read_bytes())==digest for name,digest in deployment['files'].items())
-    assert ops['baseline']()==wrapped['after']
     expected=json.loads(json.dumps(deployment['before']));nginx=str(ops['PROTECTED'][0]);expected['files'][nginx]=ui['nginx_after_sha256']
     for name in ['musikzimmer.wam']:
         path='/var/lib/docker/volumes/workadventure_map-storage-data/_data/castle-preview/'+name;expected['files'][path]=wrapped['newWamSha256']
     manifest='/opt/wvh-hall-audio/private/castle-wams.manifest.json';expected['files'][manifest]=wrapped['after']['files'][manifest]
+    assert expected==wrapped['after'],'Historical piano acceptance differs'
+    health_path=Path('/opt/wvh-hall-audio/private/health-maintenance.json');health_repair=False
+    if health_path.exists():
+        assert health_path.resolve()==health_path and health_path.stat().st_mode&0o777==0o600
+        repair=json.loads(health_path.read_text());assert repair['passed'] and repair['before']==expected
+        before,after=repair['before'],repair['after'];name='wvh-hall-audio'
+        assert before['files']==after['files'] and {k:v for k,v in before['services'].items() if k!=name}=={k:v for k,v in after['services'].items() if k!=name}
+        hall=ops['inspect'](name)
+        assert hall['Id']==repair['gatewayAfterId']==after['services'][name]['id'] and hall['Image']==repair['image']
+        assert hall['Config']['Healthcheck']==repair['healthConfig'] and hall['State']['Health']['Status']=='healthy'
+        assert hashlib.sha256(json.dumps(hall['Config'],sort_keys=True).encode()).hexdigest()==repair['configAfterSha256']
+        assert hashlib.sha256(json.dumps(hall['HostConfig'],sort_keys=True).encode()).hexdigest()==repair['hostConfigSha256']
+        assert all(sha(Path(path).read_bytes())==digest for path,digest in {**repair['applicationFiles'],**repair['protectedFiles']}.items())
+        assert ops['inspect'](repair['rollbackContainer'])['Id']==repair['gatewayBeforeId'] and not ops['inspect'](repair['rollbackContainer'])['State']['Running']
+        expected=after;health_repair=True
     assert ops['baseline']()==expected,'An unrelated protected file or existing service changed'
     assert ui['nginx_before_sha256']==deployment['nginx_after_sha256']
     for route,name in [('presence','presence.html'),('rounds','rounds.html'),('unowned-ui.js','unowned-ui.js')]:
@@ -50,7 +65,8 @@ def main():
     ops['atomic'](private/'accepted-native-live-proof.json',native)
     result={'passed':True,'release':deployment['release'],'helperRelease':ui['release'],'sourceCommit':publication['head'],
       'nativeLiveProofSha256':sha(native_raw),'normalMicrosoftPupils':2,'mouseAndMobileTouch':True,'parallelTableSpeechDecodedBoth':True,
-      'onlyMusicPreviewWrapperChanged':True,'existingContainersAndOtherMapsUnchanged':True,'historicalManifestsPreserved':True,
+      'onlyMusicPreviewWrapperChanged':True,'existingContainersAndOtherMapsUnchanged':not health_repair,
+      'allOtherServicesPreservedExceptVerifiedHallHealthRepair':True,'hallHealthRepairVerified':health_repair,'historicalManifestsPreserved':True,
       'permissionsAndAuthenticationUnchanged':True,'stageStopped':True,'healthy':True,'loadApprovalFor400':False,
       'checkedAt':time.strftime('%Y-%m-%dT%H:%M:%SZ',time.gmtime())}
     ops['atomic'](private/'published-acceptance.json',result);print(json.dumps(result,indent=2))

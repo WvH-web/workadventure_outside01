@@ -228,3 +228,31 @@ Same-origin widget code has normal access to the WA origin's storage. Treat all
 gateway HTML/JS and dependencies as trusted; the service's HS256 verification
 secret also permits signing if the service is compromised. WA login JWTs remain
 valid until their own expiry; this is not an OpenID introspection/revocation service.
+
+## Scoped Health Repair, 2026-11-10
+
+The Hall service had inherited the WorkAdventure image's port-3000 check while
+its own ready endpoint is port 3210 at `/castle-audio/health`. HTTP readiness was
+working, but Docker incorrectly reported the container as unhealthy.
+`tools/hall-ops/repair-health.py` repaired only that idle preview gateway.
+It pins the old container id, verifies two empty-audience observations, clones
+the immutable image, environment, restrictions and read-only application mount,
+and changes only the health configuration and the image-reference spelling to
+the same immutable image id. The old container remains stopped for rollback.
+
+The actual health command checks status 200, a true `ready` value, a bounded
+response and a 1.5-second HTTP timeout. Subsequent fresh-install/update helpers
+also override the unrelated inherited check. The one-time repair is not a
+general updater and refuses another execution against the healthy replacement.
+
+The private `health-maintenance.json` receipt retains before/after container and
+protected-file evidence. All other running containers, routes, WAMs, school
+permissions, podium verifier and application bytes remained unchanged. The
+piano deployment audit explicitly follows this documented health-only change;
+it no longer falsely claims that every historical container id is unchanged.
+Neither historical deployment manifests nor earlier native test proofs were
+rewritten to disguise a change.
+
+Additional audio fan-out tooling and its limits are described in
+[`tools/castle-capacity/README.md`](../../tools/castle-capacity/README.md).
+This repair and a healthy ready endpoint are not a 400-user capacity approval.
