@@ -21,7 +21,9 @@ test('community creates only its own offscreen no-media bridge and one visible c
   const f=fixture();f.community.start();f.community.start();await f.community.bridgePending;
   assert.equal(f.opened.length,1);assert.deepEqual(f.opened[0],{url:'https://together.deine-schule.com/castle-school/presence',allowApi:true,allowPolicy:'',visible:true,
     position:{vertical:'top',horizontal:'left'},size:{width:'1px',height:'1px'},margin:{left:'-2px',top:'-2px'}});
-  assert.equal(f.buttons.size,1);assert.equal(f.buttons.get('castle-rounds-bibliothek').label,'Runden');
+  assert.equal(f.buttons.size,2);assert.equal(f.buttons.get('castle-rounds-bibliothek').label,'Runden');
+  assert.equal(f.buttons.get('castle-rounds-bibliothek-apps').location,'appsMenu');
+  assert.equal(f.buttons.get('castle-rounds-bibliothek-apps').callback,f.buttons.get('castle-rounds-bibliothek').callback);
   const first=f.community.open(),second=f.community.open();assert.equal(first,second);await first;
   assert.deepEqual(f.opened[1],['https://together.deine-schule.com/castle-school/rounds',true,'',60,0]);
   f.community.dispose();await settle();assert.equal(f.buttons.size,0);assert.equal(f.handlers.size,0);assert.equal(f.hooks.size,0);
@@ -59,6 +61,15 @@ test('a late panel response is closed only once after departure, not left in the
   const f=fixture();f.community.start();await f.community.bridgePending;
   let resolve;f.wa.nav.openCoWebSite=()=>new Promise(done=>resolve=done);const pending=f.community.open();await settle();f.community.dispose();
   resolve({close:async()=>f.closed.push('late-panel')});await pending;assert.ok(f.closed.includes('late-panel'));
+});
+
+test('a same-room invitation invalidates an opening panel before its late native response can mark it open again',async()=>{
+  const f=fixture();f.community.start();await f.community.bridgePending;
+  let resolve;f.wa.nav.openCoWebSite=()=>new Promise(done=>resolve=done);
+  const pending=f.community.open();await settle();await f.community.travel(value());
+  assert.equal(f.state.get(ready),nonce);
+  resolve({close:async()=>f.closed.push('late-same-room-panel')});await pending;
+  assert.equal(f.community.website,null);assert.ok(f.closed.includes('late-same-room-panel'));f.community.dispose();
 });
 test('a newer invitation wins while an old stand response is pending; only its nonce is acknowledged',async()=>{
   const f=fixture();let resolve;f.room.stand=()=>new Promise(done=>resolve=done);

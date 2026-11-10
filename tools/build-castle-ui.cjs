@@ -5,7 +5,7 @@ function buildCastleUi(){
   for(const id of ids){
     const map=JSON.parse(fs.readFileSync(path.join(root,'castle',id+'.tmj'))),activities=map.layers.flatMap(l=>l.objects||[])
       .map(o=>o.properties?.find(p=>p.name==='castleActivityId')?.value).filter(Boolean);
-    owned[id]=['castle-return-hall-'+id,'castle-stand-'+id,'castle-ride-stop-'+id,'castle-rounds-'+id,...activities.flatMap(a=>['castle-activity-'+id+'-'+a,'castle-activity-'+id+'-'+a+'-apps'])];
+    owned[id]=['castle-return-hall-'+id,'castle-stand-'+id,'castle-ride-stop-'+id,'castle-rounds-'+id,'castle-rounds-'+id+'-apps',...activities.flatMap(a=>['castle-activity-'+id+'-'+a,'castle-activity-'+id+'-'+a+'-apps'])];
     for(const a of activities)legacy.add('castle-activity-'+a);
   }
   owned['grosse-halle'].push('hall-action-noticeboard','hall-action-games');owned.kino.push('castle-cinema');

@@ -19,7 +19,7 @@ const wa={onInit:async()=>{},room:{getTiledMap:async()=>({properties:[{name:'cas
     teleport:async(x,y)=>{position={x,y};events.push({type:'teleport',roomId,x,y});for(const callback of moves)callback(position);},
     getPosition:async()=>position,onPlayerMove:callback=>{moves.add(callback);return {unsubscribe:()=>moves.delete(callback)};}},
   ui:{website:{open:async options=>website(options.url,'presence',true)},actionBar:{
-    addButton:options=>{const button=document.createElement('button');button.id=options.id;button.textContent=options.label;button.onclick=options.callback;commands.append(button);},
+    addButton:options=>{const button=document.createElement('button');button.id=options.id;button.textContent=options.label;button.onclick=options.callback;button.hidden=options.location==='appsMenu';commands.append(button);},
     removeButton:id=>document.getElementById(id)?.remove()},displayActionMessage:message=>events.push({type:'message',message:message.message})},
   nav:{openCoWebSite:async url=>website(url,'panel')}};
 function enter(id){

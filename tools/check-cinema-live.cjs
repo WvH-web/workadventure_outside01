@@ -33,6 +33,7 @@ async function join(browser,number,options={}){
   const context=await browser.newContext({permissions:['microphone','camera'],viewport:number===1?{width:1440,height:1000}:{width:800,height:700},
     ...(options.mobile?{isMobile:true,hasTouch:true,viewport:{width:390,height:844}}:{}),
     ...(schoolStorage?{storageState:schoolStorage}:fs.existsSync(storage)?{storageState:storage}:{})});
+  if(options.configureContext)await options.configureContext(context);
   let filmRequests=0;
   await context.route('https://deutsche-online-schule.com/kino/**',route=>{
     filmRequests++;

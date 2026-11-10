@@ -227,7 +227,7 @@ cleanup; the background bridge freshly reauthorizes before teleporting to an
 existing safe approach point. It never claims a seat, changes a game selection,
 claims a chess color or starts a foreign website automatically.
 
-Local evidence: fifteen domain tests, eight real-HTTP tests and nine native
+Local evidence: fifteen domain tests, eight real-HTTP tests and ten native
 controller tests pass. `tools/check-castle-rounds.cjs` additionally runs the real
 server, production round pages and native community module in three isolated
 browser contexts at 320, 390 and 780 pixels. It checks two registrations, an
@@ -236,10 +236,64 @@ cross-room cleanup, visiting a different round, last departure, delayed old
 context across an account change and fresh loss of school permission. Thumbnails
 render; no overflow, clipped buttons or JavaScript errors were observed.
 The form is also checked expanded, collapsed and at a compact 469-pixel frame
-height on mobile. The existing core suite passes 344 checks, with its optional
+height on mobile. The existing core suite passes 345 checks, with its optional
 widget-browser check run separately and passing as well. An older chess-expiry
 test was made deterministic by using its own frozen clock for token issuance;
 no chess runtime behavior changed.
 School profiles and movement are explicit fixtures: this is not live native
 acceptance, an audio test or a capacity claim. No production portal data was
 written. External provider room expiry/host confirmation is still separate work.
+
+### Isolated Server And Native Acceptance
+
+Release candidate `6973432bdfccee7c` passed a real loopback-only VPS preflight
+using the two explicitly authorized synthetic school accounts after normal
+Microsoft login. The candidate used the unchanged production identity verifier
+and fresh school database lookup. Both pupils joined the same reading round;
+creator departure retained the peer. Primary/middle grade restrictions were
+checked with the actual grade-3 and grade-7 profiles. A stage-only override at
+one library table additionally restricted its exact class to the first account;
+discovery, direct visit, join and create denied the other class. This temporary
+override never changed a live rule, map or database row. Every portal write
+handler in staging was disabled. The existing seven-entry offer catalog was
+also checked unchanged.
+
+The subsequent native browser acceptance used actual WorkAdventure, its real
+iframe API, microphone/voice transport and the two normal Microsoft sessions,
+including a 390-pixel touch context. Only those test browsers received the
+candidate map flag and local controller files; public maps were not enabled.
+Both participants decoded non-silent native library-table audio, including
+while the round directory was open. The first-party background bridge was
+measured at one pixel. Real grade/class filtering, creator departure, explicit
+reentry, renewal with the directory closed, cross-map travel to the atelier,
+uncounted visits, releasing the prior registration, last physical departure,
+free arrow-key movement and a nonblank native canvas passed without JavaScript
+errors. This is scoped acceptance with two test pupils, not a 400-user load
+approval, a provider-game session test or production publication.
+
+Earlier attempts are not counted as passes. They exposed a pending-window
+response race, a missing mobile Apps entry and a probe that incorrectly waited
+for animation frames inside a hidden scripting iframe. Window generations now
+reject a late open after same-room travel; a dedicated unit case covers it.
+The Apps entry follows the existing activity pattern, shares one opener and is
+removed on departure. Native probes poll hidden script state explicitly. No
+map script gains school-token access or parent-document access from these fixes.
+
+`tools/castle-rounds-ops.py` pins the old manifest and reviewed archive, permits
+only the server change plus the twenty-five new round files, verifies all
+previous file hashes, snapshots existing platform/service/map/config state and
+starts one non-root, read-only, bounded container on loopback port 13212. It
+does not update the production manifest or inherited historical Nginx hash.
+Its cleanup requires the exact owned container id/release, validates the private
+directory before stopping anything and removes only its two private stage
+files. Five isolated cleanup tests pass. The native proof is retained privately
+and the stage and temporary token handoff are removed after acceptance. No
+production service restart, routing change, account change or portal data write
+is part of this preflight. A guarded production update and published-preview
+acceptance still remain before enabling the directory for ordinary visitors.
+
+The baseline audit separately found the existing hall audio container's inherited
+client-port healthcheck reporting unhealthy while its actual `/castle-audio/health`
+endpoint returned ready. It was not restarted or relabeled by this work. Its
+healthcheck needs a later scoped correction, not a false claim that the hall
+audio endpoint was down.

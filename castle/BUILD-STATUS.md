@@ -84,9 +84,13 @@ Village und geschuetzte Lehrerzimmer werden nicht ersetzt.
   implementiert und mit drei getrennten Browsern geprueft. Sie zeigt freiwillige
   Anmeldungen, keine behauptete Belegung oder laufenden Fremdspiele.
   Schul-/Klassenpruefung, Ablauf, Wiederbeitritt und bereinigter Raumwechsel
-  sind lokal abgedeckt. Sie ist noch nicht live; keine Karte aktiviert sie.
-  Native Abnahme mit echten Schultestkonten, kontrollierte Bereitstellung und
-  die Pflege externer Raumangebote bleiben offen. Details stehen in
+  sind lokal abgedeckt. Auch der getrennte VPS-Test mit zwei regulaer
+  angemeldeten Microsoft-Schultestkonten besteht, einschliesslich echter
+  Klassen-/Stufentrennung. Die native Zweipersonenprobe bestaetigt beidseitigen
+  Tischton bei offener Uebersicht, mobilen Zugang, Wiederbeitritt und
+  kartenuebergreifenden Besuch. Sie ist noch nicht live; keine Karte aktiviert
+  sie. Kontrollierte Bereitstellung, anschliessende veroeffentlichte Abnahme
+  und die Pflege externer Raumangebote bleiben offen. Details stehen in
   `ops/castle-school/README.md`.
 - Redaktionell freigegebene Themenrotation, Aushang und freiwillige Erinnerungen
   aus dem Portal. Die jetzt vorhandene Expeditionenliste ist noch keine
