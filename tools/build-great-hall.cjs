@@ -227,6 +227,7 @@ async function buildGreatHall() {
     links: layout.portals.map((p) => ({ name: p.id, x: p.x * T, y: p.y * T, width: p.width * T, height: p.height * T, target: p.target, entry: p.entry || "" })),
     mapdata,
   };
+  require('./castle-runtime.cjs').applyRuntime(map);
   fs.writeFileSync(path.join(root, "castle/grosse-halle.tmj"), JSON.stringify(map) + "\n");
   writeWam(map, path.join(root, "castle"));
   const firePreview = await sharp(path.join(art, layout.render.fire)).extract({ left: 0, top: 0, width: 64, height: 64 }).png().toBuffer();

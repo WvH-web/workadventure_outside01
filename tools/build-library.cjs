@@ -136,6 +136,7 @@ async function buildFurnishedRoom(options={}){
       imageSet(entryGid,'Entry marker','marker.png',1,1,T,T),imageSet(frontGid,'Moebel-Vorderkanten',frontFile,W,count,W*T,H*T),...(!scene.noHearth?[imageSet(fireGid,'Bibliothekskamin','fire.png',animation.length*3,animation.length*6,animation.length*96,64,{tiles:fireTiles})]:[])]};
   const world={id,width:W,height:H,illustrated:true,artScale:1,rooms:scene.groups.map(g=>({id:g.id,title:g.label,x:g.x,y:g.y,width:g.width,height:g.height,floor:id})),
     seats,rides:[],entries:scene.entries,links:[{name:'halle',x:e.x*T,y:e.y*T,width:e.width*T,height:e.height*T,target:e.target,entry:e.entry},...(scene.portals||[]).map(p=>({name:p.id,x:p.x*T,y:p.y*T,width:p.width*T,height:p.height*T,target:p.target,entry:p.entry||''}))],mapdata};
+  require('./castle-runtime.cjs').applyRuntime(map);
   fs.writeFileSync(path.join(root,'castle',id+'.tmj'),JSON.stringify(map)+'\n');writeWam(map,path.join(root,'castle'));
   fs.writeFileSync(path.join(art,'layout.json'),JSON.stringify({scene,seats,groups:scene.groups,collisionRects:rects,frontPolygons:polygons,mapdata},null,2)+'\n');
   const previewFire=await sharp(path.join(art,'fire.png')).extract({left:0,top:0,width:96,height:64}).png().toBuffer();

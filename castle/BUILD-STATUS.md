@@ -88,8 +88,11 @@ Village und geschuetzte Lehrerzimmer werden nicht ersetzt.
   angemeldeten Microsoft-Schultestkonten besteht, einschliesslich echter
   Klassen-/Stufentrennung. Die native Zweipersonenprobe bestaetigt beidseitigen
   Tischton bei offener Uebersicht, mobilen Zugang, Wiederbeitritt und
-  kartenuebergreifenden Besuch. Sie ist noch nicht live; keine Karte aktiviert
-  sie. Kontrollierte Bereitstellung, anschliessende veroeffentlichte Abnahme
+  kartenuebergreifenden Besuch. Der eigene Dienst ist als `6973432bdfccee7c`
+  gesund live und mit beiden Konten gegen den echten HTTPS-Endpunkt geprueft.
+  Die Runtime-Aktivierung `20261109-rounds1` aendert ausschliesslich technische
+  Eigenschaften der neuen Vorschaukarten, nicht deren Einrichtung oder
+  Gespraechsflaechen. Veroeffentlichte Abnahme nach der Kartenbereitstellung
   und die Pflege externer Raumangebote bleiben offen. Details stehen in
   `ops/castle-school/README.md`.
 - Redaktionell freigegebene Themenrotation, Aushang und freiwillige Erinnerungen

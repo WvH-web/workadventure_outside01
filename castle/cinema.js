@@ -1,4 +1,4 @@
-import {castleRoomReady} from './room.js?v=20261108-kino3';
+import {castleRoomReady} from './room.js?v=20261109-rounds1';
 
 const props=o=>Object.fromEntries((o.properties||[]).map(p=>[p.name,p.value]));
 const inside=(p,a)=>p.x>=a.x&&p.y>=a.y&&p.x<a.x+a.width&&p.y<a.y+a.height;

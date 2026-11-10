@@ -1,4 +1,4 @@
-import {castleRoomReady} from './room.js?v=20261108-outdoors1';
+import {castleRoomReady} from './room.js?v=20261109-rounds1';
 import {characters} from './characters-data.js?v=20261108-characters1';
 import {TableRound} from './table-round.js';
 const props=o=>Object.fromEntries((o.properties||[]).map(p=>[p.name,p.value]));

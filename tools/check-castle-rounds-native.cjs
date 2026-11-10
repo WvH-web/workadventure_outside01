@@ -3,8 +3,9 @@ const fs=require('node:fs'),path=require('node:path'),assert=require('node:asser
 const {chromium}=require('./castle-deps.cjs')('playwright'),sharp=require('./castle-deps.cjs')('sharp');
 const {join,stats,writeAudio,audioFixture}=require('./check-cinema-live.cjs');
 const {revision}=require('./build-castle-expansion.cjs');
+const live=process.argv.includes('--live');
 const root=path.resolve(__dirname,'..'),privateRoot=path.join(process.env.USERPROFILE,'.codex/private/workadventure-school-test-accounts');
-const output=path.join(privateRoot,'qa/rounds-native-stage'),origin='https://together.deine-schule.com';
+const output=path.join(privateRoot,'qa/rounds-native-'+(live?'live':'stage')),origin='https://together.deine-schule.com';
 const prefix='https://wvh-web.github.io/workadventure_outside01/castle/';
 async function main(){
   fs.mkdirSync(output,{recursive:true});writeAudio();let stage='entry';const users=[],results=[];
@@ -31,7 +32,7 @@ async function main(){
     const user=await join(browser,number,{roomId:'bibliothek',roomUrl:origin+'/~/castle-preview/bibliothek.wam#start',outputDir:output,
       label:'Rundenprobe',seats:13,groups:3,revision:map.properties.find(property=>property.name==='castleRevision').value,
       schoolStorageState:path.join(privateRoot,'qa/sso-'+(number===1?'A':'B')+'.private.json'),mobile:number===2,
-      parking:[[96,432],[800,432]],characterTextureId:'wvh-event-mira-v1',configureContext:routes});
+      parking:[[96,432],[800,432]],characterTextureId:'wvh-event-mira-v1',...(live?{}:{configureContext:routes})});
     users.push(user);await user.script.waitForFunction(()=>window.castleRoom.community?.bridge,undefined,{polling:200,timeout:20000});return user;
   }
   async function controller(user,id){
@@ -87,7 +88,7 @@ async function main(){
     let af=await panel(a);await count(af,2);assert.equal(await af.locator('#target option[value^="mittelstufe-"]').count(),0);
     assert.equal(await af.locator('#target option[value="bibliothek-buchclub"]').count(),1);
     await a.page.screenshot({path:path.join(output,'rounds-desktop.private.png')});
-    bf=await panel(b);await count(bf,2);assert.equal(await bf.locator('#target option[value="bibliothek-buchclub"]').count(),0);
+    bf=await panel(b);await count(bf,2);assert.equal(await bf.locator('#target option[value="bibliothek-buchclub"]').count(),live?1:0);
     assert.equal(await bf.evaluate(()=>document.documentElement.scrollWidth>innerWidth),false);
     await b.page.screenshot({path:path.join(output,'rounds-mobile.private.png')});
     stage='audio-with-directory';await sample(a,b);
@@ -118,8 +119,8 @@ async function main(){
     results.push({case:'native-travel',crossMapArrivalReauthorized:true,visitReleasesPreviousMembership:true,
       lastPhysicalDepartureRemovesAnnouncement:true,normalMovementAfterClosure:true,nonblankNativeCanvas:true,noSeatOrGameClaimed:true});
     const errors=users.flatMap(user=>user.errors);assert.deepEqual(errors,[]);
-    const proof={passed:true,results,errors,stageOnly:true,realNativeWorkAdventure:true,mapsModifiedOnlyInsideTestBrowsers:true,
-      productionSchoolAndWebConfigChanged:false,realClassOverrideOnlyInStage:true,loadApprovalFor400:false,audio};
+    const proof={passed:true,results,errors,stageOnly:!live,realNativeWorkAdventure:true,mapsModifiedOnlyInsideTestBrowsers:!live,
+      productionSchoolAndWebConfigChanged:false,realClassOverrideOnlyInStage:!live,publishedPreview:live,loadApprovalFor400:false,audio};
     fs.writeFileSync(path.join(output,'result.json'),JSON.stringify(proof,null,2)+'\n');console.log(JSON.stringify({...proof,audio:undefined},null,2));
   }catch(error){
     const state=[];

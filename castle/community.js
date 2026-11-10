@@ -1,4 +1,4 @@
-import {ownedUi} from './ui-ids.js?v=20261108-outdoors1';
+import {ownedUi} from './ui-ids.js?v=20261109-rounds1';
 const REQUEST='castleRoundTravelV1',READY='castleRoundTravelReadyV1',FAILED='castleRoundTravelFailedV1';
 const PRIVATE={public:false,persist:false};
 const PAGE='https://together.deine-schule.com/castle-school/rounds';

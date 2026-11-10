@@ -1,4 +1,4 @@
-import {clearPreviousCastleUi} from './ui-lifecycle.js?v=20261108-outdoors1';
+import {clearPreviousCastleUi} from './ui-lifecycle.js?v=20261109-rounds1';
 import {CastleCommunity} from './community.js?v=20261109-rounds1';
 const STATE = "castleSeatV1";
 const PUBLIC = { public: true, persist: false };

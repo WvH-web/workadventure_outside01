@@ -1,4 +1,4 @@
-import { castleRoomReady } from "./room.js?v=20261108-scale1";
+import { castleRoomReady } from "./room.js?v=20261109-rounds1";
 
 const noticeUrl = "https://deutsche-online-schule.com/schooltools/verwaltung/api/workadventure_museum_open.php?board=hallnotice01";
 const audioUrl = "https://together.deine-schule.com/castle-audio/";

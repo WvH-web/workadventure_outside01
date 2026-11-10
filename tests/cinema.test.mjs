@@ -138,6 +138,6 @@ test('preview and native cinema share the same geometry, source version and furn
   assert.equal(world.width,map.width);assert.equal(world.height,map.height);assert.equal(world.illustrated,true);
   assert.deepEqual(world.entries,source.scene.entries);assert.equal(world.mapdata.avatarSize,32);
   const wam=JSON.parse(fs.readFileSync(new URL('kino.wam',base)));
-  assert.equal(new URL(wam.mapUrl).searchParams.get('v'),source.scene.revision);
+  assert.equal(new URL(wam.mapUrl).searchParams.get('v'),[source.scene.revision,props(map).castleRuntimeRevision].filter(Boolean).join('-'));
   assert.equal(props(map).castleArtScale,1);
 });

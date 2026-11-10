@@ -201,6 +201,7 @@ async function buildCinema() {
     ...groups.map(g=>({id:g.id,title:g.label,x:g.x,y:g.y,width:g.width,height:g.height,floor:'kino'})),
     {id:'foyer',title:'Kinofoyer',x:432,y:656,width:96,height:208,floor:'kino'}],
     seats,rides:[],entries:scene.entries,links:[{name:'foyer',x:e.x*T,y:e.y*T,width:e.width*T,height:e.height*T,target:e.target,entry:e.entry}],mapdata};
+  require('./castle-runtime.cjs').applyRuntime(map);
   fs.writeFileSync(path.join(root,'castle/kino.tmj'),JSON.stringify(map)+'\n');
   writeWam(map,path.join(root,'castle'));
   fs.writeFileSync(path.join(art,'layout.json'),JSON.stringify({scene,seats,groups,collisionRects,mapdata},null,2)+'\n');

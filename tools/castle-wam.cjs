@@ -4,6 +4,7 @@ const path = require('node:path');
 const mapBase = 'https://wvh-web.github.io/workadventure_outside01/castle/';
 const playBase = 'https://together.deine-schule.com/~/castle-preview/';
 const ids = new Set(require('./castle-map-ids.cjs'));
+const {mapVersion}=require('./castle-runtime.cjs');
 const props = object => Object.fromEntries((object.properties || []).map(p => [p.name,p.value]));
 const inside = (point,area) => point.x >= area.x && point.y >= area.y &&
   point.x < area.x + area.width && point.y < area.y + area.height;
@@ -67,7 +68,7 @@ function createWam(map) {
       roomName:'school-castle-v2-'+id+'-'+group.id}],
   }));
   const sourceUrl=new URL(id+'.tmj',mapBase);
-  if(settings.castleRevision)sourceUrl.searchParams.set('v',settings.castleRevision);
+  const revision=mapVersion(map);if(revision)sourceUrl.searchParams.set('v',revision);
   return {version:'2.1.0',mapUrl:sourceUrl.href,entities:{},areas,entityCollections:[],
     settings:{megaphone:{enabled:false,title:'',scope:'ROOM'}},
     metadata:{name:settings.mapName || id,description:settings.mapDescription || '',

@@ -120,6 +120,7 @@ async function buildOne(scene,picnicImage){
       ...(scene.kart?[imageSet(kartGid,'Geparktes Kart','kart.png',3,9,96,96)]:[])]};
   const world={id:scene.id,width:W,height:H,illustrated:true,artScale:1,rooms:groups.map(g=>({id:g.id,title:g.label,x:g.x,y:g.y,width:g.width,height:g.height,floor:scene.id})),
     seats,rides:scene.ride?[scene.ride]:[],entries:scene.entries,links:scene.portals.map(p=>({name:p.id,x:p.x*T,y:p.y*T,width:p.width*T,height:p.height*T,target:p.target,entry:p.entry})),mapdata};
+  require('./castle-runtime.cjs').applyRuntime(map);
   fs.writeFileSync(path.join(root,'castle',scene.id+'.tmj'),JSON.stringify(map)+'\n');writeWam(map,path.join(root,'castle'));
   fs.writeFileSync(path.join(art,'layout.json'),JSON.stringify({scene,seats,groups,collisionRects:collisions,mapdata},null,2)+'\n');
   fs.copyFileSync(path.join(art,floorFile),path.join(root,'castle/art',scene.id+'-overview.png'));

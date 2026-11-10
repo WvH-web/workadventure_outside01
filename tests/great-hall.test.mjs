@@ -118,7 +118,7 @@ test("Great Hall is a native 48x32 map with valid grids, gids and local assets",
   assert.equal(map.orientation, "orthogonal");
   assert.equal(properties(map).castleMapId, "grosse-halle");
   assert.equal(properties(map).castleArtScale, 1);
-  assert.equal(properties(map).script, "hall.js?v=20261109-games1");
+  assert.equal(properties(map).script, "hall.js?v="+[properties(map).castleRevision,properties(map).castleRuntimeRevision].filter(Boolean).join('-'));
   assert.equal(properties(map).castleFurnitureScale, 0.625);
   assert.ok(!map.properties.some((p) => /playerScale|avatarScale/i.test(p.name)));
   for (const l of tileLayers) {

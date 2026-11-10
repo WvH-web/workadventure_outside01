@@ -12,7 +12,7 @@
   "sources": [
     {
       "path": "castle/activities.js?v=20261109-atelier1",
-      "sha256": "fa0d8d5380e25e3a45c80cc2a0e93a7f16df61fce571508974556e8c23f77c16"
+      "sha256": "eed099bc769ecc078d2754ba15e8e645857d76745964270c4efdf700eb05ab9b"
     },
     {
       "path": "castle/catalog.js?v=20261108-expansion1",
@@ -24,35 +24,35 @@
     },
     {
       "path": "castle/community.js?v=20261109-rounds1",
-      "sha256": "9ad036cffb923856b86ea24935d71f08469e83f052a70279c9ebfcda1f648bb2"
+      "sha256": "4f53059a9db658853fcd7343e63bde7a2758e2b2413e85bb4d1b34d975106891"
     },
     {
       "path": "castle/displays.js?v=20261109-atelier1",
-      "sha256": "e07eeb3dc50fcade6d359c5967054da3d037947aae59310094c2d84077196331"
+      "sha256": "4dff6991afa2396929c6869080b3bb6fdb9135fc2e9e345b978e4dfc2e1aad83"
     },
     {
       "path": "castle/npcs.js?v=20261108-focus1",
-      "sha256": "055a23807c4a7d089adb4d5ca9c94e9a2bbdb99042e25cdc6a309d04f728151a"
+      "sha256": "6e4d6e124cd03bf93a88a5c72a5f2cef5ed75bcc5e1f2dc96daf9c63db4b9bf1"
     },
     {
       "path": "castle/outdoors.js",
-      "sha256": "d7ed41d2d63ff63d78c0c4264da7be9550ba48418b9cf8cceb2fd5d622fa11e0"
+      "sha256": "a545295217185da7bc6b8b1feddfb988009bcd89d715016108cc06c15ee5cef9"
     },
     {
-      "path": "castle/room.js?v=20261108-outdoors1",
-      "sha256": "5a93fba592f71cae075bf4c30750e1e950d95a1cca2bd48d26b62657cf81b851"
+      "path": "castle/room.js?v=20261109-rounds1",
+      "sha256": "b77136fa20c3f2a02a4808e026553d505db64749933e9b44b376a13522d7be76"
     },
     {
       "path": "castle/table-round.js",
       "sha256": "53945a38cf6a06b99feab5358eef2c83bba93102c545f7d256a984b937df6b6c"
     },
     {
-      "path": "castle/ui-ids.js?v=20261108-outdoors1",
+      "path": "castle/ui-ids.js?v=20261109-rounds1",
       "sha256": "41ac55f9f4efe1bfb2ca21c1292ba0054515f60de54042102a2b66ed373b25f8"
     },
     {
-      "path": "castle/ui-lifecycle.js?v=20261108-outdoors1",
-      "sha256": "0cb6d2030f54ca513dc7c785aeb85dceb1b56c382a720d04576d97e18a76ae04"
+      "path": "castle/ui-lifecycle.js?v=20261109-rounds1",
+      "sha256": "a8cdd3b9fbf5215273d090ac504b878f9459f7cd617fa84f12aae13e77cfa924"
     }
   ]
 }
