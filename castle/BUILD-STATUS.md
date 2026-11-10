@@ -67,21 +67,22 @@ Village und geschuetzte Lehrerzimmer werden nicht ersetzt.
   Inhalts-, Beitritts- und Besuchsendpunkte, insbesondere persoenlicher Zimmer.
   Raumnamen allein sind kein Schutz; die Vorschau ist keine Kinderfreigabe.
   Einzelheiten: `SCHOOL-ACCESS.md`.
-- Ein verifiziert gemeinsam genutztes Shared Piano und gegebenenfalls Billard
+- Ein eigenes schulisch geschuetztes Schlossklavier ist ausdruecklich
+  beschlossen; die technische Umsetzung mit gemeinsamem Spielen, allein
+  Ueben und echter Schul-Anbindung steht noch aus. Gegebenenfalls Billard
   nach Abnahme einer geeigneten vorhandenen Grundlage. Die direkte anonyme
   Shared-Piano-Probe besteht inzwischen mit wirklicher Audioausgabe im anderen
   Browser, Touch, spaetem Beitritt und Verlassen des ersten Teilnehmers;
-  native Tischeinbindung und schulische Freigabe bleiben offen.
+  Die native Abnahme und Freigabe des eigenen Schulklaviers bleiben offen.
   Geschuetztes gemeinsames
   Schach und WBO sind inzwischen mit echten Microsoft-Schueler-Testkonten
   geprueft; Zeichnen samt parallelen nativen Tischgespraechen ebenfalls.
   Einzelheiten stehen in den unten verlinkten Fachnachweisen. Die
   Spielrundenliste verwendet die sieben vorhandenen Verwaltungsangebote
   und deren aktuelle Links; redaktionelle Schuelerfreigaben bleiben offen.
-- Gemeinsame Rundenliste mit freiwilligem Mitmachstatus, Gastgeberpflege,
-  zeitlich ablaufenden externen Links und ehrlicher Anzeige nicht bekannter Spielstaende.
-  Die erste eigene Rundenliste fuer 49 echte Gespraechsbereiche ist lokal
-  implementiert und mit drei getrennten Browsern geprueft. Sie zeigt freiwillige
+- Gastgeberpflege und zeitlich ablaufende externe Spiellinks bleiben offen.
+  Die eigene gemeinsame Rundenliste fuer 49 echte Gespraechsbereiche ist
+  in allen 16 Vorschaukarten live. Sie zeigt freiwillige
   Anmeldungen, keine behauptete Belegung oder laufenden Fremdspiele.
   Schul-/Klassenpruefung, Ablauf, Wiederbeitritt und bereinigter Raumwechsel
   sind lokal abgedeckt. Auch der getrennte VPS-Test mit zwei regulaer
@@ -92,8 +93,12 @@ Village und geschuetzte Lehrerzimmer werden nicht ersetzt.
   gesund live und mit beiden Konten gegen den echten HTTPS-Endpunkt geprueft.
   Die Runtime-Aktivierung `20261109-rounds1` aendert ausschliesslich technische
   Eigenschaften der neuen Vorschaukarten, nicht deren Einrichtung oder
-  Gespraechsflaechen. Veroeffentlichte Abnahme nach der Kartenbereitstellung
-  und die Pflege externer Raumangebote bleiben offen. Details stehen in
+  Gespraechsflaechen. Auch die veroeffentlichte Zweipersonenprobe besteht
+  ohne Testumleitung, darunter mobiler Beitritt und wirklich dekodierter
+  Tischton. Alle 16 veroeffentlichten Raeume sind mit jeweils genau einer
+  Runden-Anbindung und sichtbarer Grafik durchlaufen. Im Leerlauf entstehen
+  keine Runden-API-Abfragen. Eine gesonderte Doppelkontofenster-Probe besteht.
+  Die Pflege externer Raumangebote bleibt offen. Details stehen in
   `ops/castle-school/README.md`.
 - Redaktionell freigegebene Themenrotation, Aushang und freiwillige Erinnerungen
   aus dem Portal. Die jetzt vorhandene Expeditionenliste ist noch keine

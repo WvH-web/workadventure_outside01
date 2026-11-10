@@ -174,8 +174,8 @@ removed after the test.
 ## Voluntary Round Directory Candidate
 
 The accepted service candidate is **live as `6973432bdfccee7c`**. The separate
-preview maps are being enabled with runtime `20261109-rounds1`; published native
-acceptance is required before reporting that activation as complete. Existing school
+preview maps are enabled with runtime `20261109-rounds1`; published native
+acceptance passed as described below. Existing school
 catalog, chess, art, old castle, Village and protected teacher access remain
 unchanged. `castleCommunity: true` is required before a new-map controller opens
 the owned round UI or its first-party background membership bridge. Deployment
@@ -325,6 +325,55 @@ sixteen runtime markers, unchanged voice geometry, idempotent managed-metadata
 edits, preservation of room arguments, rejection of old/teacher/foreign maps
 and scripts, and matching controller imports. No art, collision, seat, door or
 native audio rectangle changed during activation preparation.
+
+### Published Preview Acceptance
+
+Pages run `42728397079` successfully published commit `351a542`. Twenty-nine
+public map/runtime files were checked byte-for-byte against that exact Git
+commit. The sixteen VPS wrappers were then guarded against their saved prior
+versions: only each `mapUrl` cache revision could change. Every native voice
+area, property, identifier, description and other WAM field remained identical.
+All sixteen HTTP map-storage routes and native room lookups passed without a
+WorkAdventure restart or changes to old maps.
+
+The unmodified published pages passed a subsequent real native test with the
+two normal Microsoft pupil sessions, one using mobile touch. Shared reading
+registration, both-way decoded table audio, audio while the directory remained
+open, real grade filtering, absence of the stage-only class override, creator
+departure, explicit reentry, private background renewal, cross-map visiting,
+release of the former registration, last physical departure, free movement and
+a nonblank native canvas all passed. No map or API route was intercepted by
+that acceptance. The synthetic microphone source is explicit test input, not
+invented receiver audio. No JavaScript errors were observed.
+
+All sixteen published rooms were also traversed sequentially with a normal
+Microsoft test session. Each had exactly one membership bridge, the expected
+runtime/seats/groups and a nonblank canvas. An idle, unregistered visitor made
+zero round API requests across the sixteen rooms. The cinema endpoint was
+stubbed in this room-smoke probe to avoid starting a film; this does not claim a
+new film-synchronization test. Its first counter incorrectly counted the static
+`round-client.js` file as a profile request; the corrected exact API matcher
+passed. A separate same-account two-window probe explicitly accepted the normal
+duplicate-session warning without disabling that warning. A transient private
+probe value was not observed in the second connection during twelve seconds,
+longer than the ten-second native travel-request freshness window, and was
+removed afterwards. This is not a claim about all persisted player variables.
+
+A repeated voice check initially sampled while the native call still displayed
+Connecting. The current probe records transport/audio samples and requires
+actual decoded energy in both receivers within a fixed 25-second ceiling;
+otherwise it fails with private diagnostics. The successful final run observed
+audio after 4067 ms of that sampling window. The slowest sequential room check
+after the first entry was 8806 ms, including its validation/screenshot overhead.
+These observations are not a 400-person capacity approval or a latency SLA.
+
+Release-specific final audit: `/opt/wvh-castle-school/private/rounds-published-acceptance.json`.
+All three detailed browser proofs remain private on the VPS. The previous
+school container is retained; other service ids/start times, web configuration
+and authentication files are unchanged. Temporary stage/container/token files
+are removed. The final checker can revalidate the retained exact proofs without
+re-uploading credentials. It is scoped to this release and must not be used to
+silently redefine the baseline of future map or service changes.
 
 The baseline audit separately found the existing hall audio container's inherited
 client-port healthcheck reporting unhealthy while its actual `/castle-audio/health`

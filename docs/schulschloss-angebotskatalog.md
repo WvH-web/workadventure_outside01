@@ -94,7 +94,7 @@ noetig. Es werden keine fremden Spiele kopiert oder Schutzmechanismen umgangen.
 
 | Angebot und Quelle | Nutzung im Schloss | Gemeinsamer Zustand | Seitenfenster |
 | --- | --- | --- | --- |
-| [Shared Piano](https://experiments.withgoogle.com/shared-piano) | Musikzimmer, spontane Klangrunde | Laut Anbieter bis zu zehn Personen gleichzeitig, ohne Anmeldung; gleicher Raumlink erforderlich | Kandidat |
+| [Shared Piano](https://experiments.withgoogle.com/shared-piano) | Technischer Vergleich fuer die gemeinsame Klangrunde | Mehrbrowser-/Touch-Tonprobe bestanden; fuer den Musiksalon ist stattdessen ein eigenes geschuetztes Schlossklavier beschlossen | Vergleichspilot, keine Schueleraktivierung |
 | [WBO](https://github.com/lovasoa/whitebophir) | Maltisch, gemeinsame Schlosszeitung, Raetselwand | Gemeinsames Zeichnen in Echtzeit, gespeicherte Boards; eigene Instanz moeglich | Kandidat; fuer dauerhaften Schuleinsatz eigene geschuetzte Instanz bevorzugen |
 | [Excalidraw](https://github.com/excalidraw/excalidraw) | Ideen sammeln, Karten zeichnen, Geschichten planen | Gehostete Anwendung hat Echtzeit-Zusammenarbeit; eigene Integration moeglich | Kandidat; reine Zeichenkomponente bringt noch keinen fertigen Mehrspielerdienst mit |
 | [CryptPad](https://docs.cryptpad.org/en/user_guide/user_account.html) | Zusammen schreiben, Schuelerzeitung und Projektplanung | Dokumente gemeinsam bearbeiten; Gastnutzung mit Einschraenkungen moeglich | Eingeschraenkt; nur passende Anwendungen und freigeschalteter Embed-Modus |
@@ -183,7 +183,7 @@ Es wurden keine privaten Anbieterraeume angelegt und keine Live-Schulangebote ge
 
 ## Empfohlene erste Erprobung
 
-1. Shared Piano: wirklich gemeinsam musizieren, denselben Raumlink teilen.
+1. Eigenes geschuetztes Schlossklavier: wirklich gemeinsam musizieren; Shared Piano dient als technischer Vergleich.
 2. WBO: gemeinsam malen in einer schulisch geschuetzten eigenen Instanz.
 3. MakeCode Arcade: ein geprueftes Mehrspielerspiel und ein eigenes Schuelerprojekt.
 4. PhET und NASA Eyes: allein beginnen und mit Gespraechspartnern weiter entdecken.
@@ -242,7 +242,7 @@ eingebaute Anwesenheits- oder Veranstaltungsfunktion.
 | --- | --- | --- | --- |
 | Bibliothek | Ein Buch, Bildraetsel oder Hoerangebot entdecken | Vorlesen, Geschichte fortsetzen, Puzzle gemeinsam loesen | Freigegebene Buchempfehlung oder gemeinsame Erzaehlkarten |
 | Atelier | An einer kleinen Zeichnung beginnen | Am selben geschuetzten Board weiterzeichnen | Zeitlich wechselnde Schuelergalerie |
-| Musikzimmer | Melodie ausprobieren | Shared-Piano-Runde mit gleichem Raumlink | Freiwillig eingereichter kleiner Musikbeitrag |
+| Musikzimmer | Melodie ausprobieren | Geplantes gemeinsames Schlossklavier mit Schulzugang | Freiwillig eingereichter kleiner Musikbeitrag |
 | Museum | Drei Lieblingsobjekte suchen | Anderen Fundstuecke zeigen und ueberraschende Details sammeln | Von Schuelern kuratierte Mini-Ausstellung |
 | Sternwarte | Mond oder Raumsonde erkunden | Eine Frage gemeinsam verfolgen | Ein gemeinsames Bild oder eine Frage fuer den naechsten Treff |
 | Spielesaal | Ueben oder beim Spiel zuschauen | Einer echten gemeinsamen Partie beitreten | Abgeschlossene Partie, keine Pflicht-Rangliste |
@@ -373,10 +373,39 @@ unteren Bereich mit echten Maus-/Touchereignissen.
 Der Raumlink und Screenshots bleiben privat ausserhalb des Repositorys. Diese
 Probe ist noch keine native WorkAdventure-Tischprobe, keine Messung der
 Netzwerk-Latenz fuer taktgenaues Zusammenspiel und keine schulische Anbieter-
-oder Altersfreigabe. Der naechste Schritt bleibt ein gemeinsam geteilter
-Raumlink am Musiktisch mit den vorhandenen frischen Schul-/Klassenpruefungen
-und einer ausdruecklich geprueften redaktionellen Freigabe. Keine stille
-Aktivierung fuer Grund- oder Mittelstufe.
+oder Altersfreigabe. Die anschliessende ausdrueckliche Entscheidung lautet:
+ein eigenes schulisch geschuetztes Schlossklavier bauen. Shared Piano wird
+nicht still fuer Grund- oder Mittelstufe aktiviert.
+
+## Beschlossene eigene Klavier-Anbindung
+
+Im Musiksalon soll ein gemeinsames, erst nach Schulpruefung zugaengliches
+Instrument entstehen. Der Spieler oeffnet es am passenden Tisch im
+Seitenfenster; die vorhandene Gespraechsgruppe bleibt dabei erhalten.
+Gemeinsames Spielen und allein Ueben, ein bewusst eingeschalteter Klang,
+Lautstaerke, Touch-Akkorde, Loslassen aller gehaltenen Toene bei Verlassen
+oder Verbindungsabbruch und Beitritt ohne dauerhaften Ersteller gehoeren zur
+Abnahme. Es werden Notenereignisse geteilt, keine Mikrofonaufnahmen und keine
+automatisch gespeicherten Schueler-Darbietungen.
+
+Die technische Vorpruefung richtet sich auf den bestehenden
+[Tone.js-Sampler](https://tonejs.github.io/docs/15.1.22/classes/Sampler.html)
+mit einer festgehaltenen Version und selbst bereitgestellten Klangdateien.
+Tone.js steht unter [MIT](https://github.com/Tonejs/Tone.js/blob/15.1.22/LICENSE.md).
+Die [Salamander-Dateien der Tone.js-Distribution](https://github.com/Tonejs/audio/blob/master/salamander/README)
+nennen Alexander Holm und CC BY 3.0. Vor dem Einbau sind die verwendeten
+Dateien, Herkunft, Pruefsummen, Pflichtangaben und das Ladevolumen konkret zu
+protokollieren. Ein kurzer begrenzter Samplesatz soll statt einer grossen
+vollstaendigen Bibliothek geladen werden.
+
+Die gemeinsame Verbindung muss auf dem Server an bestaetigte, kurzlebige
+Schulsitzungen gebunden sein. Browserangaben zu Alter, Klasse oder Lehrerrolle
+duerfen keine Berechtigung erteilen; andere Tische und unbekannte Konten
+duerfen keinen Notenstrom mitlesen. Berechtigungserneuerung, Ablauf,
+spaete Antworten, mehrere Fenster, Neustart und das Loslassen fremder
+Teilnehmer sind gesondert zu pruefen. Eine lokale Klangdemo waere noch keine
+fertige Schul-Anbindung. Das Instrument ist noch nicht implementiert oder
+live; die bisherige Mediengalerie und ihre Verwaltungslinks bleiben erhalten.
 
 ## Technische Reihenfolge und Freigabeschranken
 

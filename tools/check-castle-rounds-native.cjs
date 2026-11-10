@@ -3,12 +3,12 @@ const fs=require('node:fs'),path=require('node:path'),assert=require('node:asser
 const {chromium}=require('./castle-deps.cjs')('playwright'),sharp=require('./castle-deps.cjs')('sharp');
 const {join,stats,writeAudio,audioFixture}=require('./check-cinema-live.cjs');
 const {revision}=require('./build-castle-expansion.cjs');
-const live=process.argv.includes('--live');
+const brothers=process.argv.includes('--brother-probe'),live=process.argv.includes('--live')||brothers;
 const root=path.resolve(__dirname,'..'),privateRoot=path.join(process.env.USERPROFILE,'.codex/private/workadventure-school-test-accounts');
-const output=path.join(privateRoot,'qa/rounds-native-'+(live?'live':'stage')),origin='https://together.deine-schule.com';
+const output=path.join(privateRoot,'qa/rounds-native-'+(brothers?'brothers':live?'live':'stage')),origin='https://together.deine-schule.com';
 const prefix='https://wvh-web.github.io/workadventure_outside01/castle/';
 async function main(){
-  fs.mkdirSync(output,{recursive:true});writeAudio();let stage='entry';const users=[],results=[];
+  fs.mkdirSync(output,{recursive:true});fs.rmSync(path.join(output,'result.json'),{force:true});writeAudio();let stage='entry';const users=[],results=[];
   const browser=await chromium.launch({channel:'chrome',headless:true,args:['--use-fake-ui-for-media-stream','--use-fake-device-for-media-stream',
     '--use-file-for-fake-audio-capture='+audioFixture,'--use-gl=angle','--use-angle=swiftshader','--enable-unsafe-swiftshader']});
   async function routes(context){
@@ -31,7 +31,8 @@ async function main(){
     const map=JSON.parse(fs.readFileSync(path.join(root,'castle/bibliothek.tmj')));
     const user=await join(browser,number,{roomId:'bibliothek',roomUrl:origin+'/~/castle-preview/bibliothek.wam#start',outputDir:output,
       label:'Rundenprobe',seats:13,groups:3,revision:map.properties.find(property=>property.name==='castleRevision').value,
-      schoolStorageState:path.join(privateRoot,'qa/sso-'+(number===1?'A':'B')+'.private.json'),mobile:number===2,
+      schoolStorageState:path.join(privateRoot,'qa/sso-'+(number===1||brothers?'A':'B')+'.private.json'),mobile:number===2,
+      allowDuplicateTestSession:brothers&&number===2,
       parking:[[96,432],[800,432]],characterTextureId:'wvh-event-mira-v1',...(live?{}:{configureContext:routes})});
     users.push(user);await user.script.waitForFunction(()=>window.castleRoom.community?.bridge,undefined,{polling:200,timeout:20000});return user;
   }
@@ -73,12 +74,33 @@ async function main(){
     assert.ok(membership?.roundId);return membership.roundId;
   }
   async function sample(a,b){
-    const before=[await stats(a),await stats(b)];await a.page.waitForTimeout(4000);const after=[await stats(a),await stats(b)];
-    assert.ok(after.every((value,index)=>value.energy>before[index].energy),'Both real native participants decode non-silent table audio');
-    assert.ok(after[0].rooms.some(room=>room.endsWith('area-lesekamin')&&after[1].rooms.includes(room)));return {before,after};
+    const before=[await stats(a),await stats(b)],started=Date.now(),samples=[];let after;
+    do{
+      await a.page.waitForTimeout(2000);after=[await stats(a),await stats(b)];samples.push({milliseconds:Date.now()-started,values:after});
+      if(after.every((value,index)=>value.energy>before[index].energy)&&after[0].rooms.some(room=>room.endsWith('area-lesekamin')&&after[1].rooms.includes(room)))
+        return {before,after,connectionAndAudioWaitMilliseconds:Date.now()-started,samples};
+    }while(Date.now()-started<25000);
+    fs.writeFileSync(path.join(output,'audio-wait-failure.private.json'),JSON.stringify({before,after,samples},null,2)+'\n');
+    throw Error('Both native participants must decode non-silent table audio within 25 seconds');
   }
   try{
-    const a=await enter(1),b=await enter(2);stage='same-room-create';const roundId=await create(a,'bibliothek-lesekamin','read');
+    const a=await enter(1),b=await enter(2);
+    if(brothers){
+      stage='same-account-transient-boundary';
+      const own=await a.page.evaluate(()=>JSON.parse(localStorage.getItem('localUser')).uuid);
+      assert.ok(typeof own==='string'&&own.length>0);assert.equal(own,await b.page.evaluate(()=>JSON.parse(localStorage.getItem('localUser')).uuid));
+      const key='castlePrivateProbe'+Date.now().toString(36),nonce=require('node:crypto').randomUUID();
+      await a.script.evaluate(({key,nonce})=>WA.player.state.saveVariable(key,nonce,{public:false,persist:false}),{key,nonce});
+      let observed=false;
+      try{await b.script.waitForFunction(({key,nonce})=>WA.player.state.loadVariable(key)===nonce,{key,nonce},{polling:200,timeout:12000});observed=true;}
+      catch(error){if(error.name!=='TimeoutError')throw error;}
+      for(const user of [a,b])await user.script.evaluate(key=>WA.player.state.saveVariable(key,undefined,{public:false,persist:false}),key);
+      const proof={passed:!observed,normalMicrosoftSameAccountConnections:2,sameAccountVerified:true,transientPrivateStateReachedOtherConnection:observed,
+        requestFreshnessWindowMilliseconds:10000,observedForMilliseconds:12000,probeVariableRemoved:true,gameOrSeatChanged:false};
+      fs.writeFileSync(path.join(output,'result.json'),JSON.stringify(proof,null,2)+'\n');console.log(JSON.stringify(proof));
+      if(observed)process.exitCode=1;return;
+    }
+    stage='same-room-create';const roundId=await create(a,'bibliothek-lesekamin','read');
     stage='mobile-directory';let bf=await panel(b);await count(bf,1);assert.equal(await bf.locator('#target option[value^="grundschule-"]').count(),0);
     stage='mobile-join';
     await bf.locator('.round').getByRole('button',{name:'Mitmachen',exact:true}).click();await arrived(b,'bibliothek');
@@ -100,7 +122,8 @@ async function main(){
     const heartbeat=b.page.waitForResponse(response=>response.url()===origin+'/castle-school/round-heartbeat'&&response.status()===200,{timeout:30000});
     await (await heartbeat).finished();
     results.push({case:'native-library',normalMicrosoftPupils:2,oneMobileTouch:true,tableAudioDecodedBoth:true,
-      directoryDoesNotMuteConversation:true,onePixelPrivateBridge:true,realGradeAndClassFiltering:true,
+      directoryDoesNotMuteConversation:true,onePixelPrivateBridge:true,
+      ...(live?{realGradeFiltering:true,stageClassOverrideNotPublished:true}:{realGradeAndClassFiltering:true}),
       creatorDepartureKeepsPeer:true,explicitReentryWorks:true,heartbeatWithoutOpenDirectory:true});
     stage='cross-room-create';const otherId=await create(a,'atelier-buchclub','draw');
     assert.ok(a.page.url().includes('/atelier.wam'));af=await panel(a);await count(af,1);
@@ -131,7 +154,8 @@ async function main(){
       position:WA.player.getPosition(),
       framePaths:[...document.querySelectorAll('iframe')].map(frame=>{try{return new URL(frame.src).pathname;}catch{return '';}})})).catch(()=>null));
     fs.writeFileSync(path.join(output,'failure.private.json'),JSON.stringify({stage,errorType:error.name,error:error.message,stack:error.stack,
-      errors:users.flatMap(user=>user.errors),diagnostics:users.map(user=>user.diagnostics),state},null,2)+'\n');
+      errors:users.flatMap(user=>user.errors),diagnostics:users.map(user=>user.diagnostics),
+      audio:await Promise.all(users.map(user=>stats(user).catch(()=>null))),state},null,2)+'\n');
     let index=0;for(const context of browser.contexts())for(const page of context.pages())await page.screenshot({path:path.join(output,'failure-'+(++index)+'.private.png')}).catch(()=>{});
     console.error(JSON.stringify({passed:false,stage,errorType:error.name}));process.exitCode=1;
   }finally{await browser.close();}

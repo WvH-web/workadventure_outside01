@@ -87,6 +87,12 @@ async function join(browser,number,options={}){
     await page.waitForTimeout(1800);
   }
   assert.ok(ready,'Native cinema entry '+number);
+  if(options.allowDuplicateTestSession){
+    assert.ok(schoolStorage,'Only explicit synthetic school sessions may accept the duplicate-session notice');
+    const notice=page.locator('[role="alertdialog"][aria-labelledby="duplicate-user-title"]');
+    await notice.waitFor({state:'visible',timeout:6000}).catch(()=>{});
+    if(await notice.isVisible())await notice.getByRole('button',{name:'I understand, continue',exact:true}).click();
+  }
   const skip=page.getByTestId('onboarding-button-welcome-skip');
   await skip.waitFor({state:'visible',timeout:5000}).catch(()=>{});
   if(await skip.isVisible().catch(()=>false))await skip.click();

@@ -263,8 +263,9 @@ Simulation, nicht unabhaengig berechnete Kugelbewegungen je Browser.
 - [Jigsaw Explorer](https://www.jigsawexplorer.com/multiplayer-jigsaw-puzzle-games/):
   gemeinsames Puzzle mit sichtbaren Zuegen aller Mitspieler und speicherbarem
   Fortschritt. Der Ersteller muss nicht dauerhaft anwesend sein.
-- [Shared Piano](https://experiments.withgoogle.com/shared-piano): gemeinsam live
-  im Browser musizieren, laut Anbieter ohne Anmeldung oder Installation.
+- Eigenes geschuetztes Schlossklavier: gemeinsam live im Musiksalon spielen
+  und allein ueben. Die externe Shared-Piano-Probe bleibt technischer
+  Vergleich; die ausdrueckliche Entscheidung ist die eigene Schul-Anbindung.
 - Eigene kooperative Schlossraetsel: Hinweise verteilen, gemeinsam kombinieren,
   einen Weg oeffnen. Der bisherige Schnitzeljagd-Code speichert individuellen
   Fortschritt; echter Gruppenfortschritt waere eine Erweiterung.
