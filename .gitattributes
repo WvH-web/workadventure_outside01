@@ -3,3 +3,6 @@ ops/castle-chess/vendor/** -text
 ops/castle-chess/public/vendor/** -text
 ops/castle-art/vendor/** -text
 ops/castle-art/upstream/** -text
+ops/castle-piano/vendor/** -text
+ops/castle-piano/public/vendor/** -text
+ops/castle-piano/public/samples/** -text

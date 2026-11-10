@@ -4,7 +4,7 @@
     "height": 22,
     "tileSize": 32,
     "avatarPixels": 32,
-    "revision": "20261109-actions2",
+    "revision": "20261109-piano1",
     "entries": {
       "start": [
         13,
@@ -317,6 +317,19 @@
     "returnLabel": "Wandelgang",
     "activities": [
       {
+        "id": "music-piano",
+        "group": null,
+        "label": "Schlossklavier",
+        "url": "https://together.deine-schule.com/castle-piano/",
+        "api": false,
+        "area": {
+          "x": 64,
+          "y": 256,
+          "width": 128,
+          "height": 48
+        }
+      },
+      {
         "id": "music-story",
         "group": "lesekamin",
         "label": "Erzaehlkarten",
@@ -326,9 +339,21 @@
       {
         "id": "music-band",
         "group": "buchclub",
-        "label": "Band und Chor",
-        "url": "https://together.deine-schule.com/castle-content/collection.html?kind=music",
-        "api": false
+        "label": "Klavier, Band und Chor",
+        "url": "https://together.deine-schule.com/castle-piano/",
+        "api": false,
+        "choices": [
+          {
+            "id": "piano",
+            "label": "Schlossklavier",
+            "url": "https://together.deine-schule.com/castle-piano/"
+          },
+          {
+            "id": "choir",
+            "label": "Band und Chor",
+            "url": "https://together.deine-schule.com/castle-content/collection.html?kind=music"
+          }
+        ]
       },
       {
         "id": "music-compose",

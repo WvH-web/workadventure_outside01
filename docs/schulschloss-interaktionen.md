@@ -155,3 +155,91 @@ allgemeiner GitHub-Ausfall sind damit nicht als Ursache bewiesen. Die eigenen
 Galeriedateien sind unabhaengig davon auf dem VPS veroeffentlicht und geprueft;
 alte Karten werden nicht zur Umgehung dieses Problems ersetzt. Die erneuerten
 Karten-Skriptpakete benoetigen einen gesonderten erfolgreichen Pages-Nachweis.
+
+## Eigenes geschuetztes Schlossklavier
+
+Die ausdrueckliche Entscheidung fuer ein eigenes Schulklavier ersetzt die
+fruehere externe Shared-Piano-Idee. Der getrennte Dienst `/castle-piano/`,
+Fassung `8a1f180e9b723ef1`, ist produktiv und gesund. Kein vorhandener
+WorkAdventure-, Karten-, Schach-, Atelier- oder Schuldienst wurde ersetzt.
+Die Webserver-Ergaenzung besteht ausschliesslich aus der neuen Klavierrouting-
+Regel; bisherige Regeln und historische Bereitstellungsnachweise bleiben erhalten.
+Die alte Schlosswelt, Lehrerberechtigungen und Geheimwege sind unveraendert.
+
+- Ein gemeinsames Klavier fuer hoechstens acht gleichzeitig Verbundene,
+  Tonumfang C3 bis C6, bis zu acht gehaltene Tasten je Person und ein Haltepedal.
+- Der Modus `Allein ueben` hat keinen gemeinsamen Notenkanal. Es werden keine
+  Aufnahmen, Namen, Schulkonto-Kennungen oder Auffuehrungsverlaeufe gespeichert.
+- Signierter WorkAdventure-Zugang und frischer Portalstatus bei Anmeldung
+  und Erneuerung. Die erneuerbare Freigabe gilt hoechstens 45 Sekunden,
+  begrenzt durch die gepruefte Anmeldung. Notenmeldungen erneuern sie nicht.
+  Ein abgelaufener Microsoft-Zugang wird nicht durch erfundene Rollen ersetzt;
+  dann ist die normale erneute Anmeldung erforderlich.
+- Klassen-, Jahrgangs- und Altersregeln werden serverseitig durch dieselbe
+  gepruefte Schulrichtlinie ausgewertet. Dieses eigene Instrument ist bewusst
+  fuer aktive Schueler aller Altersstufen und aktive Lehrkraefte freigegeben,
+  nicht fuer Eltern, unbekannte Konten oder vermeintliche Lehrer-Tags im Browser.
+- Ein undurchsichtiges, kurzes HttpOnly-Cookie ist auf den Klavierpfad begrenzt.
+  Keine Schul-Zugangsschluessel in URLs, WebSocket-Protokollen oder Spielerzustand.
+  Ein weiteres Fenster braucht eine ausdrueckliche Uebernahme. Beim Verlassen,
+  Verbindungsabbruch oder Freigabeablauf enden nur die eigenen Toene.
+- Kamera, Mikrofon, Bildschirmfreigabe und Hardware-MIDI sind in der Klavierseite
+  gesperrt. Sie erhaelt keinen Zugriff auf die WorkAdventure-Karten-API.
+  Die normale Tischunterhaltung bleibt Aufgabe des vorhandenen nativen Audiobereichs.
+
+Klang: [Tone.js Sampler 15.1.22](https://tonejs.github.io/docs/15.1.22/classes/Sampler.html),
+aus fest geprueften Quellen lokal gebuendelt, mit allen Abhaengigkeits-Lizenzen.
+13 unveraenderte Salamander-MP3-Dateien von Alexander Holm,
+[CC BY 3.0 und feste Quellfassung](https://github.com/Tonejs/audio/tree/869b6f8d9cddb47d966238c012041480b1ce517a/salamander),
+zusammen 843.324 Byte. Die eigentliche Klangbibliothek wird erst beim bewussten
+Start geladen, nicht auf jeder Schlosskarte. Eigener Lautstaerkeregler und
+Begrenzung der Summe; keine zusaetzliche fremde Musikverbindung.
+
+29 lokale Domain-/HTTP-/Projektionsfaelle bestehen. Die echten Browserproben
+pruefen Maus und Touch bei 320 und 390 Pixeln, hoerbaren Samplerklang im anderen
+Browser, unabhaengiges Loslassen gleicher Toene, spaeteren Beitritt, privates
+Ueben, Fenster-Uebernahme und abgelaufene Berechtigungen. Die getrennte VPS-
+Vorpruefung verwendet echte Schulprofile hinter einer privaten Testverbindung;
+die nachfolgende Produktivprobe verwendet den echten oeffentlichen WebSocket-
+Handshake. Beide bestehen mit den zwei ausdruecklich vorgesehenen kuenstlichen
+Microsoft-Schuelerkonten, ohne Rechte- oder Datenbankaenderungen.
+
+Die native Kandidatenprobe besteht mit beiden normalen Microsoft-Schueler-
+Testkonten: gemeinsame Wahl beim Hinsetzen, spaeterer Beitritt, echter
+Klavierklang per Maus und Mobil-Touch in beide Richtungen und gleichzeitig
+steigende dekodierte Sprachenergie in beiden nativen Tischverbindungen.
+Aufstehen schliesst nur das eigene Klavier; der andere spielt weiter. Nach
+dem letzten Aufstehen kann eine neue Runde die erhaltene Band-/Chor-Galerie
+waehlen. Der ausdrueckliche Zugang am sichtbaren Klavier und normale Bewegung
+nach dem Schliessen bestehen ebenfalls, ohne JavaScript-Fehler.
+Sitzplaetze, Grafiken und drei getrennte Sprachbereiche werden dafuer nicht
+veraendert. Detailbilder, Anmeldesitzungen und Betriebsnachweise bleiben privat.
+Das ist weder ein samplegenau synchronisiertes Bandstudio noch eine Lastfreigabe
+fuer 400 Personen. Das gesamte Schlossziel bleibt offen.
+
+Die Probe hat einen vorhandenen WorkAdventure-Nebeneffekt aufgedeckt:
+Native Popup-Klicks werden an alle registrierten Kartenfenster gesendet.
+Die unsichtbare Rundenanmeldung besitzt kein solches Popup und meldete deshalb
+einen unbekannten Popup-Schluessel. Ein frueher, ausschliesslich auf den
+vertrauenswuerdigen Elternrahmen und genau diesen Nachrichtentyp begrenzter
+Filter behebt dies in den beiden Runden-Hilfsseiten. Andere Zustands- und
+API-Nachrichten bleiben unveraendert. Die echte veroeffentlichte `iframe_api.js`
+reproduziert im ungefilterten Kontrollfenster den Fehler und bleibt im
+gefilterten Fenster fehlerfrei. Zwei lokale Grenzpruefungen bestehen ebenfalls.
+
+Die Hilfsseiten-Fassung `b7020b16c96c065f` bedient nur `presence`, `rounds`
+und das neue kleine Hilfsskript mit unveraenderten Sicherheitsheadern. Der
+Schuldienst und seine laufenden Runden wurden dafuer nicht neu gestartet;
+alle bisherigen Dienststarts, Berechtigungen und Bereitstellungsnachweise
+bleiben erhalten. Die Webserver-Umschaltung wird bis zur tatsaechlichen
+Auslieferung aller drei erwarteten Inhalte beobachtet, nicht nach dem ersten
+noch alten HTTP-Ergebnis als fehlgeschlagen behandelt.
+
+Die Kandidatenprobe verwendet den zur vorhandenen Pruefbibliothek passenden
+Chromium 151: Die aktuelle lokale Chrome-157-/Playwright-1.62-Kombination
+umging in der Gegenprobe die Skriptumleitung in abgeschotteten Kartenfenstern.
+Eine absichtlich strengere Autoplay-Einstellung blockierte zusaetzlich einen
+nativen mobilen Empfang und ist kein bestandener Sprachnachweis. Die normale
+native Testkonfiguration mit sichtbarer Mikrofonbedienung besteht; die separate
+Klavierprobe besteht auch mit strenger Autoplay-Regel und bewusstem Tonstart.
+Die nachfolgende Live-Abnahme ohne lokale Skriptumleitung bleibt erforderlich.

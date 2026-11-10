@@ -1,0 +1,9 @@
+{
+  "name": "wvh-castle-piano",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "School-authorized shared castle piano",
+  "engines": { "node": ">=24" },
+  "dependencies": { "tone": "15.1.22", "ws": "8.22.0" }
+}

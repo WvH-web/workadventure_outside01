@@ -18,7 +18,7 @@ const manifest=read('layout.json');
 for(const id of [...rooms.map(r=>r.id),'erdgeschoss','obergeschoss']){
   test(id+': current illustrated layout, native scale and real destinations',()=>{
     const map=read(id+'.tmj'),layout=readLayout(map),world=manifest.worlds.find(w=>w.id===id),hub=id==='erdgeschoss'||id==='obergeschoss';
-    assert.deepEqual([map.width,map.height,map.tilewidth],[hub?40:28,22,32]);assert.equal(props(map).castleRevision,revision);
+    assert.deepEqual([map.width,map.height,map.tilewidth],[hub?40:28,22,32]);assert.equal(props(map).castleRevision,rooms.find(room=>room.id===id)?.revision||revision);
     assert.equal(world.illustrated,true);assert.deepEqual(world.seats,layout.seats);assert.equal(layout.seats.length,hub?10:12);
     assert.equal(layout.returnLabel,hub?'Grosse Halle':['oberstufe','sternwarte'].includes(id)?'Obere Galerie':'Wandelgang');
     const entry=new URL(props(map).script,'https://map.invalid/');assert.equal(entry.searchParams.get('room'),id);assert.equal(entry.pathname,'/expansion.bundle.js');
@@ -89,6 +89,18 @@ test('the atelier table opens only the protected first-party drawing page withou
   const config=activitySettings(table);assert.equal(config.url,'https://together.deine-schule.com/castle-art/');assert.equal(config.label,'Gemeinsam zeichnen');assert.equal(config.api,false);
   assert.equal(readLayout(map).seats.length,12);assert.equal(createWam(map).areas.length,3);
   for(const bad of ['https://evil.invalid/castle-art/','https://together.deine-schule.com/castle-art/?token=bad','https://together.deine-schule.com/castle-art/wbo/boards/arbitrary'])
+    assert.throws(()=>activitySettings({properties:table.properties.map(property=>property.name==='castleActivityUrl'?{...property,value:bad}:property)}));
+});
+
+test('the music table shares a protected piano or the existing choir collection without changing furniture or conversation groups',()=>{
+  const map=read('musikzimmer.tmj'),objects=map.layers.flatMap(layer=>layer.objects||[]),table=objects.find(object=>props(object).castleActivityId==='music-band');
+  const config=activitySettings(table);assert.equal(config.url,'https://together.deine-schule.com/castle-piano/');assert.equal(config.api,false);assert.equal(config.autoOnSit,true);
+  const choices=JSON.parse(props(table).castleActivityChoices);assert.deepEqual(choices.map(option=>option.id),['piano','choir']);
+  assert.equal(choices[1].url,'https://together.deine-schule.com/castle-content/collection.html?kind=music');
+  const nearby=objects.find(object=>props(object).castleActivityId==='music-piano');assert.equal(activitySettings(nearby).autoOnSit,false);
+  const layout=readLayout(map);assert.equal(layout.seats.length,12);assert.equal(createWam(map).areas.length,3);
+  assert.deepEqual(read('musikzimmer.wam').areas,createWam(map).areas);
+  for(const bad of ['https://evil.invalid/castle-piano/','https://together.deine-schule.com/castle-piano/?token=bad','https://together.deine-schule.com/castle-piano/socket'])
     assert.throws(()=>activitySettings({properties:table.properties.map(property=>property.name==='castleActivityUrl'?{...property,value:bad}:property)}));
 });
 test('catalog rejects arbitrary boards and image hosts, never trusting target or open URLs',()=>{

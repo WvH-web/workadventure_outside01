@@ -5,6 +5,7 @@ const root=path.resolve(__dirname,'..'),revision='20261109-actions2';
 const own='';
 const games='https://together.deine-schule.com/castle-school/games';
 const collection='https://together.deine-schule.com/castle-content/collection.html';
+const piano='https://together.deine-schule.com/castle-piano/';
 const activity=(id,group,label,url,api=false)=>({id,group,label,url,api});
 const inhabitants={oberstufe:['kai','Kai'],spielesaal:['sam','Sam'],museum:['elin','Elin'],musikzimmer:['lea','Lea'],
   atelier:['mira','Mira'],sternwarte:['farah','Farah'],erdgeschoss:['amir','Amir'],obergeschoss:['otto','Otto']};
@@ -24,8 +25,11 @@ const rooms=[
     displays:[{board:'show1',x:80,y:59,width:72,height:45},{board:'show2',x:37,y:135,width:38,height:43},
       {board:'show3',x:112,y:139,width:44,height:30},{board:'show4',x:741,y:58,width:34,height:50},{board:'show5',x:736,y:140,width:37,height:18}],
     activities:[activity('museum-story','lesekamin','Fundstueck-Geschichten',own+'story.html',true),activity('museum-collection','buchclub','Unsere Ausstellung',collection+'?kind=museum'),activity('museum-tour','fensterleser','Expeditionen',own+'expeditions.html')]},
-  {id:'musikzimmer',name:'Musiksalon',parent:'erdgeschoss',key:'Music',labels:['Musik- und Erzaehlrunde','Klangnische','Band- und Chortreff'],
-    activities:[activity('music-story','lesekamin','Erzaehlkarten',own+'story.html',true),activity('music-band','buchclub','Band und Chor',collection+'?kind=music'),activity('music-compose','fensterleser','Song Maker','https://musiclab.chromeexperiments.com/Song-Maker/')]},
+  {id:'musikzimmer',name:'Musiksalon',parent:'erdgeschoss',key:'Music',revision:'20261109-piano1',labels:['Musik- und Erzaehlrunde','Klangnische','Band- und Chortreff'],
+    activities:[{...activity('music-piano',null,'Schlossklavier',piano),area:{x:64,y:256,width:128,height:48}},
+      activity('music-story','lesekamin','Erzaehlkarten',own+'story.html',true),{...activity('music-band','buchclub','Klavier, Band und Chor',piano),choices:[
+        {id:'piano',label:'Schlossklavier',url:piano},{id:'choir',label:'Band und Chor',url:collection+'?kind=music'}]},
+      activity('music-compose','fensterleser','Song Maker','https://musiclab.chromeexperiments.com/Song-Maker/')]},
   {id:'atelier',name:'Schlossatelier',parent:'erdgeschoss',key:'Atelier',labels:['Ideenrunde','Zeichen- und Klangnische','Werkstatttisch'],
     activities:[activity('atelier-story','lesekamin','Ideenkarten',own+'story.html',true),activity('atelier-draw','buchclub','Gemeinsam zeichnen','https://together.deine-schule.com/castle-art/'),activity('atelier-music','fensterleser','Klangentwurf','https://musiclab.chromeexperiments.com/Song-Maker/')]},
   {id:'sternwarte',name:'Sternwarte',parent:'obergeschoss',key:'Stars',labels:['Sternengeschichten','Fenster zum All','Forschergruppe'],
@@ -33,7 +37,7 @@ const rooms=[
 ];
 function roomScene(config){
   const scene=JSON.parse(fs.readFileSync(path.join(root,'castle/art/bibliothek-20261108/scene.json')));
-  scene.revision=revision;scene.expectedSeats=12;scene.storyVariable='castleStory'+config.key;
+  scene.revision=config.revision||revision;scene.expectedSeats=12;scene.storyVariable='castleStory'+config.key;
   scene.scriptRoomId=true;
   scene.window={columns:['museum','atelier','sternwarte'].includes(config.id)?[776,816]:[752,800],y:config.id==='sternwarte'?184:config.id==='museum'?200:204,standY:272,label:config.labels[1]};
   if(config.id==='sternwarte'){
@@ -92,14 +96,15 @@ function plaques(scene){
   }
   return {input:canvas.toBuffer('image/png'),left:0,top:0};
 }
-async function buildCastleExpansion(){
+async function buildCastleExpansion({only}={}){
+  if(only&&!rooms.some(room=>room.id===only)&&!['erdgeschoss','obergeschoss'].includes(only))throw Error('Unknown expansion room');
   const results=[];
-  for(const room of rooms){
+  for(const room of rooms.filter(room=>!only||room.id===only)){
     const scene=roomScene(room);
     results.push(await buildFurnishedRoom({id:room.id,folder:room.id+'-20261108-full',name:room.name,scene,script:'expansion.bundle.js',
       description:room.name+' mit drei getrennten Gespraechsrunden und passenden Aktivitaeten.',copyright:'Original room artwork generated for deine Schule; approved 32px-avatar seating and book-club furniture; village fire animation.'}));
   }
-  for(const id of ['erdgeschoss','obergeschoss']){
+  for(const id of ['erdgeschoss','obergeschoss'].filter(id=>!only||id===only)){
     const scene=corridorScene(id);
     results.push(await buildFurnishedRoom({id,folder:id+'-20261108-full',width:40,scene,script:'expansion.bundle.js',name:id==='erdgeschoss'?'Wandelgang':'Obere Galerie',
       description:'Eingerichteter Schlossgang mit acht beschrifteten Tueren und zwei getrennten Gespraechsgruppen.',overlays:[plaques(scene)]}));
@@ -107,7 +112,7 @@ async function buildCastleExpansion(){
   require('./build-castle-ui.cjs').buildCastleUi();require('./build-castle-script.cjs').buildCastleScript();return results;
 }
 module.exports={buildCastleExpansion,roomScene,corridorScene,rooms,revision};
-if(require.main===module)buildCastleExpansion().then(results=>{
+if(require.main===module)buildCastleExpansion({only:process.argv.find(arg=>arg.startsWith('--only='))?.slice('--only='.length)}).then(results=>{
   if(process.argv.includes('--update-world')){
     const file=path.join(root,'castle/layout.json'),manifest=JSON.parse(fs.readFileSync(file));
     for(const {world} of results){const i=manifest.worlds.findIndex(w=>w.id===world.id);if(i<0)manifest.worlds.push(world);else manifest.worlds[i]=world;}

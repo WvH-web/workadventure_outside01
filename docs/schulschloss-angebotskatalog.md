@@ -404,8 +404,16 @@ duerfen keine Berechtigung erteilen; andere Tische und unbekannte Konten
 duerfen keinen Notenstrom mitlesen. Berechtigungserneuerung, Ablauf,
 spaete Antworten, mehrere Fenster, Neustart und das Loslassen fremder
 Teilnehmer sind gesondert zu pruefen. Eine lokale Klangdemo waere noch keine
-fertige Schul-Anbindung. Das Instrument ist noch nicht implementiert oder
-live; die bisherige Mediengalerie und ihre Verwaltungslinks bleiben erhalten.
+fertige Schul-Anbindung. Die eigene Schul-Anbindung ist inzwischen als
+getrennter Dienst `8a1f180e9b723ef1` veroeffentlicht und mit zwei normal ueber
+Microsoft angemeldeten Schueler-Testkonten geprueft. Gemeinsame Maus-/Touch-
+Toene, privates Ueben, Berechtigungserneuerung und Fortsetzung ohne den
+Ersteller bestehen. Die native Kandidatenabnahme mit zwei Schul-Testkonten
+besteht ebenfalls: gemeinsame Wahl beim Hinsetzen, spaeterer Beitritt, Musik
+und Tischgespraech gleichzeitig sowie freies Weiterlaufen nach dem Aufstehen.
+Die genaue Veroeffentlichung und Live-Abnahme sind eigene Schritte. Die bisherige
+Mediengalerie und ihre Verwaltungslinks bleiben erhalten; keine Schuelerfreigabe
+des externen Shared Piano.
 
 ## Technische Reihenfolge und Freigabeschranken
 

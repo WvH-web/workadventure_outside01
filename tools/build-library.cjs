@@ -115,7 +115,7 @@ async function buildFurnishedRoom(options={}){
   if(scene.activities)layers.push(objects('activities',scene.activities.map(a=>area('activity-'+a.id,a.area||scene.groups.find(g=>g.id===a.group),[
     P('castleActivityId',a.id),P('castleActivityLabel',a.label),P('castleActivityUrl',a.url),P('castleActivityApi',a.api),
     ...(a.group?[P('castleActivityGroup',a.group)]:[]),
-    ...(a.group&&(/^(?:story\.html(?:#table)?|https:\/\/together\.deine-schule\.com\/castle-chess\/(?:#table=tisch-[123])?)$/.test(a.url))?[P('castleActivityOnSit',true)]:[]),
+    ...(a.group&&(/^(?:story\.html(?:#table)?|https:\/\/together\.deine-schule\.com\/castle-chess\/(?:#table=tisch-[123])?|https:\/\/together\.deine-schule\.com\/castle-piano\/)$/.test(a.url))?[P('castleActivityOnSit',true)]:[]),
     ...(a.choices?[P('castleActivityChoices',JSON.stringify(a.choices))]:[])]))));
   if(scene.storyVariable)layers.push(objects('variables',[{id:oid++,name:scene.storyVariable,type:'variable',x:0,y:0,width:0,height:0,rotation:0,visible:false,properties:[P('persist',false),P('default',false)]}]));
   if(scene.activities?.some(a=>a.choices?.some(option=>option.url==='story.html#table')))layers.push(objects('table-variables',[{id:oid++,name:'castleStoryTable',type:'variable',x:0,y:0,width:0,height:0,rotation:0,visible:false,properties:[P('persist',false),P('default',false)]}]));

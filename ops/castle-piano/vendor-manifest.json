@@ -1,0 +1,283 @@
+{
+  "version": 1,
+  "packages": [
+    {
+      "name": "@babel/runtime",
+      "version": "7.29.13",
+      "license": "MIT",
+      "integrity": "sha512-v+oN26xP4YIlQsbQ/CbTH1WG5m/l/DjKKZNy/Kp3f/AFvbgt7Em/D0FeMM3O2hX0YzeN2M16W8lOpyhIkfCBcQ==",
+      "notices": [
+        "public/vendor/licenses/_babel_runtime-7.29.13-LICENSE"
+      ]
+    },
+    {
+      "name": "automation-events",
+      "version": "7.1.19",
+      "license": "MIT",
+      "integrity": "sha512-cD+TLhJTI0q4AI3ktd353lrGZiVa9AchowSDzQzzGjSoYe22js4vlS32VUtWuaulghi1Yq0KYNWKk9wWuGymPA==",
+      "notices": [
+        "public/vendor/licenses/automation-events-7.1.19-LICENSE"
+      ]
+    },
+    {
+      "name": "standardized-audio-context",
+      "version": "25.3.77",
+      "license": "MIT",
+      "integrity": "sha512-Ki9zNz6pKcC5Pi+QPjPyVsD9GwJIJWgryji0XL9cAJXMGyn+dPOf6Qik1AHei0+UNVcc4BOCa0hWLBzlwqsW/A==",
+      "notices": [
+        "public/vendor/licenses/standardized-audio-context-25.3.77-LICENSE"
+      ]
+    },
+    {
+      "name": "tone",
+      "version": "15.1.22",
+      "license": "MIT",
+      "integrity": "sha512-TCScAGD4sLsama5DjvTUXlLDXSqPealhL64nsdV1hhr6frPWve0DeSo63AKnSJwgfg55fhvxj0iPPRwPN5o0ag==",
+      "notices": [
+        "public/vendor/licenses/tone-15.1.22-LICENSE.md"
+      ]
+    },
+    {
+      "name": "tslib",
+      "version": "2.9.1",
+      "license": "0BSD",
+      "integrity": "sha512-a4Ux9VKuIMHsOS7ENbEq6hK2ZGYIT27Rtl0E4eD9KqwxhKiQeMZE/9xb3IdYwWaSOyIBQLExhQgXDTYoiCxnWA==",
+      "notices": [
+        "public/vendor/licenses/tslib-2.9.1-CopyrightNotice.txt",
+        "public/vendor/licenses/tslib-2.9.1-LICENSE.txt"
+      ]
+    },
+    {
+      "name": "ws",
+      "version": "8.22.0",
+      "license": "MIT",
+      "integrity": "sha512-Ydggc987+RO0AnWtZ/7Wq9FtNvcrL1b/RO0ud9mWjUPgDrsAAwQSF51sm2hm1XofbU/4jkpGEsLFsZZxU+1DOg==",
+      "notices": [
+        "public/vendor/licenses/ws-8.22.0-LICENSE"
+      ]
+    }
+  ],
+  "files": [
+    {
+      "path": "public/vendor/licenses/_babel_runtime-7.29.13-LICENSE",
+      "bytes": 1106,
+      "sha256": "117da2af0d4ce0fe1c8e19b5cff9dcd806adf973d328d27b11d4448c4ff24f76"
+    },
+    {
+      "path": "public/vendor/licenses/automation-events-7.1.19-LICENSE",
+      "bytes": 1076,
+      "sha256": "04238a17c611b988a3ef5934e6c247acd4a344c837f60b223f3d9ffb57aa4dde"
+    },
+    {
+      "path": "public/vendor/licenses/standardized-audio-context-25.3.77-LICENSE",
+      "bytes": 1076,
+      "sha256": "8d1fa516b18bd6ed3fb06ad3f8d95c41d465f3762ccb66d433b12ee08750a382"
+    },
+    {
+      "path": "public/vendor/licenses/tone-15.1.22-LICENSE.md",
+      "bytes": 1072,
+      "sha256": "391ed5af60b7b5d1f74b31040c5fa645e6e238f3d9b4c971941a262a675bbdcd"
+    },
+    {
+      "path": "public/vendor/licenses/tslib-2.9.1-CopyrightNotice.txt",
+      "bytes": 822,
+      "sha256": "da16ddb65f8ca390998fb99223d0112498b56b45784d00afd77ff8ce1ac4de8b"
+    },
+    {
+      "path": "public/vendor/licenses/tslib-2.9.1-LICENSE.txt",
+      "bytes": 655,
+      "sha256": "210b19e543130388c68654b7497e967119ce17145f66ab7d85688fbd70f08751"
+    },
+    {
+      "path": "public/vendor/licenses/ws-8.22.0-LICENSE",
+      "bytes": 1183,
+      "sha256": "2b29dcfe0d6471f7e8c92c5fb38c9f93edee10330937055440192f1832b1ecef"
+    },
+    {
+      "path": "vendor/ws/LICENSE",
+      "bytes": 1183,
+      "sha256": "2b29dcfe0d6471f7e8c92c5fb38c9f93edee10330937055440192f1832b1ecef"
+    },
+    {
+      "path": "vendor/ws/browser.js",
+      "bytes": 176,
+      "sha256": "010da44addea1d88b2b732540c3f1fd0cbcb28926b96623d4c64222e0ead2d0e"
+    },
+    {
+      "path": "vendor/ws/lib/buffer-util.js",
+      "bytes": 3056,
+      "sha256": "8b0a45739132f82e25ea13163780abf547ccfe989267f3eb7abb475beec92da3"
+    },
+    {
+      "path": "vendor/ws/lib/constants.js",
+      "bytes": 503,
+      "sha256": "391e823142b8b370e55a2fd32b022deaf03b8415c56000009674ebc86a0b4f86"
+    },
+    {
+      "path": "vendor/ws/lib/event-target.js",
+      "bytes": 7321,
+      "sha256": "c45d3c6e12d170c860c0c3f1a050aa0f864d9806632b609a1e607d675aba128c"
+    },
+    {
+      "path": "vendor/ws/lib/extension.js",
+      "bytes": 6183,
+      "sha256": "852564f0f6b460287043803eae732666fb5610f676874354fc89f06aa4e986ed"
+    },
+    {
+      "path": "vendor/ws/index.js",
+      "bytes": 796,
+      "sha256": "924564d5be26d59b9682c4263f68320e48dde7240bd2d1ad17ec305537429dd2"
+    },
+    {
+      "path": "vendor/ws/lib/limiter.js",
+      "bytes": 1034,
+      "sha256": "e0469d4b83f6ba764b15f80e1766b75c136fbff68f048f4c050f0b1c7f065f69"
+    },
+    {
+      "path": "vendor/ws/lib/permessage-deflate.js",
+      "bytes": 14669,
+      "sha256": "16a91536988a53c23047ee5882392068728a839a244178c3b09b8c54982f58b0"
+    },
+    {
+      "path": "vendor/ws/lib/receiver.js",
+      "bytes": 17439,
+      "sha256": "a6ada33c9a2d54eaf595824b821ea89ca2c6395f89aa06755c52142148274884"
+    },
+    {
+      "path": "vendor/ws/lib/sender.js",
+      "bytes": 16886,
+      "sha256": "d0791d30c3defd44dcabbddb879a901c757993fea2c00a7ffea01d53b23b4b77"
+    },
+    {
+      "path": "vendor/ws/lib/stream.js",
+      "bytes": 4204,
+      "sha256": "a56fcb6e2b152097ee820b6f5410b1f71e59819b45d08d9f8bda588fe39070ec"
+    },
+    {
+      "path": "vendor/ws/lib/subprotocol.js",
+      "bytes": 1498,
+      "sha256": "be3f6323d6f549568577dcba9004c1479d95c65a7abb0fe0c582875b9fac0b7c"
+    },
+    {
+      "path": "vendor/ws/lib/validation.js",
+      "bytes": 3903,
+      "sha256": "41ce8e83d0d434132e1704895fedb91f6703a701b42d91c80954ab29b2845593"
+    },
+    {
+      "path": "vendor/ws/lib/websocket-server.js",
+      "bytes": 17022,
+      "sha256": "6d8dd89a841748c80445fd5fcdb5ba8005369b53cc3525135e11304c8b9c55e5"
+    },
+    {
+      "path": "vendor/ws/lib/websocket.js",
+      "bytes": 37848,
+      "sha256": "7ccf305925f0cdb74e06b75b4c84de134b1bd771a220ef409b24520def08128f"
+    },
+    {
+      "path": "vendor/ws/package.json",
+      "bytes": 1829,
+      "sha256": "c1ef91ca04eb4754c011c5f0e7638b5078ff71104fada400c44ac761cf93e0b1"
+    },
+    {
+      "path": "vendor/ws/README.md",
+      "bytes": 15306,
+      "sha256": "bb979132f3cbff08ce47f36d041e18071f8f534d01f591c0b129ba7abf1e480e"
+    },
+    {
+      "path": "vendor/ws/wrapper.mjs",
+      "bytes": 554,
+      "sha256": "fe154662301fd558f935f9c217fccbe7a7dac02ff39e648a000589403ff27c7f"
+    },
+    {
+      "path": "public/vendor/tone.js.LEGAL.txt",
+      "bytes": 206,
+      "sha256": "c4639a339fec753628b0aed7380602b23ea201fee7c042e2bc5c1ef88f8477f5"
+    },
+    {
+      "path": "public/vendor/tone.js",
+      "bytes": 163856,
+      "sha256": "5505d28056a69accdeb3ee3235bbca040d70deda84ccc8666ff90cde382d1d56"
+    },
+    {
+      "path": "public/samples/C3.mp3",
+      "bytes": 78036,
+      "sha256": "bb70dd921d81b3dda561c19b5c029292ae5a6fba1947e364bf274218ce19a9d1"
+    },
+    {
+      "path": "public/samples/Ds3.mp3",
+      "bytes": 78717,
+      "sha256": "4fe73ea3f2c59a1dbfb35cff1d9d8a9e38cb12ef39a91a13083729544cdafed5"
+    },
+    {
+      "path": "public/samples/Fs3.mp3",
+      "bytes": 77933,
+      "sha256": "960fefd90f56608b7edf958dadfeca893cff5744ab9034d61e419401fe45ce9c"
+    },
+    {
+      "path": "public/samples/A3.mp3",
+      "bytes": 74526,
+      "sha256": "8e108fe228e34e32f6b4e61efff732eec53058a9e6f05a8d8e719598b132c4f9"
+    },
+    {
+      "path": "public/samples/C4.mp3",
+      "bytes": 78718,
+      "sha256": "689eaa4c2fd7f29a2cc0e386eec462156d523a87d701269e5e2458e66056f4f6"
+    },
+    {
+      "path": "public/samples/Ds4.mp3",
+      "bytes": 73519,
+      "sha256": "663e8bb3e2d0fa23a30526dcd7ab0e42609c193c07025647ef46badcf81ec211"
+    },
+    {
+      "path": "public/samples/Fs4.mp3",
+      "bytes": 68219,
+      "sha256": "613652f5c96e35736ce6a46bc4ddb6ba1076d1fb16a35a4c22c14e67efdde57c"
+    },
+    {
+      "path": "public/samples/A4.mp3",
+      "bytes": 61148,
+      "sha256": "a62df24a2c84cea8d18c1fa8aca7c18c877ba2b76a00a591256fa74d3ce54ac3"
+    },
+    {
+      "path": "public/samples/C5.mp3",
+      "bytes": 68920,
+      "sha256": "2f5b0f7422063010fb379e684bfdf2daa3911dcd2251413d79fa2a53029fdc30"
+    },
+    {
+      "path": "public/samples/Ds5.mp3",
+      "bytes": 58179,
+      "sha256": "bf71096e653ab7ceca3914b9fd44d8c27fe83c162564c5db34bd06b94eb14b8c"
+    },
+    {
+      "path": "public/samples/Fs5.mp3",
+      "bytes": 51597,
+      "sha256": "ed2fdf543274ea72ddd4eb634a16356531a5f4040b2a60d34fb12a5c72cbf22f"
+    },
+    {
+      "path": "public/samples/A5.mp3",
+      "bytes": 45747,
+      "sha256": "9e5cee1fe9cf68b7193623d46a27c8956e572c1ff234ca0e11599b556050dec6"
+    },
+    {
+      "path": "public/samples/C6.mp3",
+      "bytes": 28065,
+      "sha256": "0d3232edd13ba69fd5caf4a295060ae0fd533b8a1433ae0a038644d70715c907"
+    },
+    {
+      "path": "public/samples/README",
+      "bytes": 1883,
+      "sha256": "04ddba91bcafcb4c53dee7b004479f79af47bb92574f06bbe741b00c3ca64e0e"
+    }
+  ],
+  "samples": {
+    "commit": "869b6f8d9cddb47d966238c012041480b1ce517a",
+    "author": "Alexander Holm",
+    "license": "CC-BY-3.0",
+    "source": "https://github.com/Tonejs/audio/tree/869b6f8d9cddb47d966238c012041480b1ce517a/salamander"
+  },
+  "compiler": {
+    "name": "esbuild",
+    "version": "0.17.17",
+    "sourceModules": 789
+  }
+}

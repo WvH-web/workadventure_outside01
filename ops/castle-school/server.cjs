@@ -48,7 +48,7 @@ function createSchoolServer({config, lookup, getOffers, updateRoomLink, roundTar
   if(typeof lookup!=='function'||typeof getOffers!=='function'||typeof updateRoomLink!=='function')throw Error('School dependencies required');
   const pages=new Map(['games','games.js','games.css'].map(name=>[name,{type:name==='games'?'text/html':name.endsWith('.js')?'text/javascript':'text/css',
     content:fs.readFileSync(path.join(__dirname,'public',name==='games'?'games.html':name))}]));
-  for(const name of ['rounds','rounds.js','rounds.css','round-client.js','presence','presence.js','presence.css']){
+  for(const name of ['rounds','rounds.js','rounds.css','round-client.js','presence','presence.js','presence.css','unowned-ui.js']){
     const html=['rounds','presence'].includes(name);
     pages.set(name,{type:html?'text/html':name.endsWith('.js')?'text/javascript':'text/css',
       content:fs.readFileSync(path.join(__dirname,'public',html?name+'.html':name))});
