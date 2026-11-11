@@ -3,8 +3,8 @@ const test=require('node:test'),assert=require('node:assert/strict'),fs=require(
 const file=path.resolve(__dirname,'../tools/check-castle-rounds-native.cjs'),source=fs.readFileSync(file,'utf8');
 
 test('low disk space stops recovery probes before browser dependencies or any result/audio writes',async()=>{
-  for(const available of [0,1024,1024**3-1]){
-    const imported=[],writes=[],messages=[],process={argv:['node',file,'--recovery-published'],env:{USERPROFILE:'C:\\synthetic-test-home'},exitCode:0};
+  for(const mode of ['--recovery-published','--game-host-published'])for(const available of [0,1024,1024**3-1]){
+    const imported=[],writes=[],messages=[],process={argv:['node',file,mode],env:{USERPROFILE:'C:\\synthetic-test-home'},exitCode:0};
     const fileSystem={...fs,statfsSync:()=>({bavail:available,bsize:1}),
       mkdirSync:(...args)=>writes.push(['mkdir',...args]),rmSync:(...args)=>writes.push(['remove',...args]),writeFileSync:(...args)=>writes.push(['write',...args])};
     vm.runInNewContext(source,{__dirname:path.dirname(file),process,Buffer,console:{error:message=>messages.push(message)},

@@ -1,15 +1,18 @@
 'use strict';
 const fs=require('node:fs'),path=require('node:path'),assert=require('node:assert/strict');
-const candidate=process.argv.includes('--recovery-candidate'),recovery=process.argv.includes('--recovery-published')||candidate;
+const hostPublished=process.argv.includes('--game-host-published');
+const candidate=process.argv.includes('--recovery-candidate'),recovery=process.argv.includes('--recovery-published')||candidate||hostPublished;
+assert.ok(!hostPublished||!candidate&&!process.argv.includes('--brother-probe'));
 const brothers=process.argv.includes('--brother-probe'),live=process.argv.includes('--live')||brothers||recovery;
 const attemptArg=process.argv.find(arg=>arg.startsWith('--attempt='));assert.ok(!attemptArg||recovery&&/^--attempt=[1-9]$/.test(attemptArg));
 const suffix=attemptArg&&attemptArg!=='--attempt=1'?'-attempt-'+attemptArg.split('=')[1]:'';
 const root=path.resolve(__dirname,'..'),privateRoot=path.join(process.env.USERPROFILE,'.codex/private/workadventure-school-test-accounts');
-const outputName='rounds-native-'+(recovery?'recovery-'+(candidate?'candidate':'published')+suffix:brothers?'brothers':live?'live':'stage');
+const outputName='rounds-native-'+(hostPublished?'game-host-published'+suffix+'/'+new Date().toISOString().replace(/[:.]/g,'-'):recovery?'recovery-'+(candidate?'candidate':'published')+suffix:brothers?'brothers':live?'live':'stage');
 let output=path.join(privateRoot,'qa',outputName);const origin='https://together.deine-schule.com';
 const prefix='https://wvh-web.github.io/workadventure_outside01/castle/';
 const crypto=require('node:crypto'),sha=raw=>crypto.createHash('sha256').update(raw).digest('hex');
-const modules=Object.fromEntries(['presence.js','round-client.js'].map(name=>[name,fs.readFileSync(path.join(root,'ops/castle-school/public',name))]));
+const moduleNames=hostPublished?['games.html','games.js','games.css','rounds.html','rounds.js','round-client.js','presence.html','presence.js']:['presence.js','round-client.js'];
+const modules=Object.fromEntries(moduleNames.map(name=>[name,fs.readFileSync(path.join(root,'ops/castle-school/public',name))]));
 async function main(){
   if(recovery){const disk=fs.statfsSync(root);if(disk.bavail*disk.bsize<1024**3)throw Object.assign(Error('Insufficient local space for two browser profiles'),{code:'INSUFFICIENT_DISK_SPACE'});}
   if(process.platform==='win32')output=require('./castle-local-storage.cjs').outputPath(outputName);
@@ -38,8 +41,8 @@ async function main(){
   async function recoveryRoutes(context){
     if(candidate)for(const [name,body]of Object.entries(modules))await context.route(origin+'/castle-school/'+name,route=>route.fulfill({contentType:'text/javascript',body}));
     context.on('request',request=>{if(request.url().startsWith(origin+'/castle-school/round-')&&!request.url().endsWith('.js'))roundRequests.push({number:contextNumbers.get(context),route:new URL(request.url()).pathname});});
-    context.on('response',response=>{const name=new URL(response.url()).pathname.slice('/castle-school/'.length);
-      if(response.url()===origin+'/castle-school/'+name&&Object.hasOwn(modules,name)){
+    context.on('response',response=>{const route=new URL(response.url()).pathname.slice('/castle-school/'.length),name=['games','rounds','presence'].includes(route)?route+'.html':route;
+      if(response.url()===origin+'/castle-school/'+route&&Object.hasOwn(modules,name)){
         const pending=response.body().then(raw=>{assert.equal(response.status(),200);assert.equal(sha(raw),sha(modules[name]));return sha(raw);});
         pending.catch(()=>{});served.push([contextNumbers.get(context)+':'+name,pending]);
       }
@@ -119,7 +122,7 @@ async function main(){
       fs.writeFileSync(path.join(output,'result.json'),JSON.stringify(proof,null,2)+'\n');console.log(JSON.stringify(proof));
       if(observed)process.exitCode=1;return;
     }
-    stage='same-room-create';const roundId=await create(a,'bibliothek-lesekamin','read');
+    stage='same-room-create';const roundId=await create(a,'bibliothek-lesekamin',hostPublished?'talk':'read');
     stage='mobile-directory';let bf=await panel(b);await count(bf,1);assert.equal(await bf.locator('#target option[value^="grundschule-"]').count(),0);
     stage='mobile-join';
     await bf.locator('.round').getByRole('button',{name:'Mitmachen',exact:true}).click();await arrived(b,'bibliothek');
@@ -133,6 +136,54 @@ async function main(){
     assert.equal(await bf.evaluate(()=>document.documentElement.scrollWidth>innerWidth),false);
     await b.page.screenshot({path:path.join(output,'rounds-mobile.private.png')});
     stage='audio-with-directory';await sample(a,b);
+    if(hostPublished){
+      stage='published-game-boundary';
+      const frameAt=async(user,route)=>{
+        for(let n=0;n<80;n++){
+          const found=user.page.frames().find(frame=>{try{return new URL(frame.url()).origin===origin&&new URL(frame.url()).pathname==='/castle-school/'+route;}catch{return false;}});
+          if(found)return found;await user.page.waitForTimeout(250);
+        }throw Error('Published sidebar navigation missing');
+      };
+      for(const [index,user]of users.entries()){
+        const roundsFrame=index===0?af:bf,before=await user.page.evaluate(()=>JSON.parse(sessionStorage.getItem('castleRoundMembershipV1')));
+        const pageCount=user.page.context().pages().length;
+        await roundsFrame.getByRole('link',{name:'Spielangebote',exact:true}).click();
+        const gamesFrame=await frameAt(user,'games');await gamesFrame.locator('#games-list button').last().waitFor({state:'attached'});
+        await gamesFrame.locator('#account').filter({hasText:'Schulzugang'}).waitFor();
+        assert.equal(await gamesFrame.locator('#games-list button').count(),7);
+        await gamesFrame.locator('#back-rounds').waitFor({state:'visible'});
+        if(index===1)await gamesFrame.locator('#offer-select').selectOption('haxballarea01');
+        else await gamesFrame.locator('[data-game-id="haxballarea01"]').click();
+        await gamesFrame.locator('#availability').filter({hasText:'nicht freigegeben'}).waitFor();
+        assert.equal(await gamesFrame.locator('#lobby').isVisible(),false);assert.equal(await gamesFrame.locator('#frame-slot iframe').count(),0);
+        const boundary=await user.page.evaluate(async roundId=>{
+          const headers={Authorization:'Bearer '+localStorage.getItem('authToken'),'Content-Type':'application/json'};
+          const call=async(route,body)=>{const response=await fetch('/castle-school/'+route,{headers,...(body?{method:'POST',body:JSON.stringify(body)}:{})});return {status:response.status,value:await response.json()};};
+          const context=await call('context'),membership=JSON.parse(sessionStorage.getItem('castleRoundMembershipV1'));
+          const denied=[];for(const resourceId of ['gamesarea01','gamesarea02','gamesarea03','gamesarea04','gamesarea05','stumbleguysgame','haxballarea01']){
+            const response=await call('launch',{resourceId});denied.push(response.status===403&&response.value.error==='not_allowed'&&!Object.hasOwn(response.value,'targetUrl'));
+          }
+          const confirmation=await call('round-game-confirm',{leaseId:membership.leaseId,resourceId:'haxballarea01',revision:1,targetUrl:'https://www.haxball.com/play'});
+          const launch=await call('round-game-launch',{roundId});
+          return {status:context.status,student:context.value.account?.kind==='student',ownRound:context.value.round?.id===roundId&&context.value.round?.mine===true,
+            allDraftsDenied:context.value.offers?.length===7&&context.value.offers.every(offer=>offer.allowed===false&&!Object.hasOwn(offer,'targetUrl'))&&Object.values(context.value.decisions).every(decision=>decision.allowed===false),
+            allLaunchesDenied:denied.length===7&&denied.every(Boolean),confirmationDenied:confirmation.status===403&&confirmation.value.error==='not_allowed',
+            noGameInvented:launch.status===409&&launch.value.error==='game_not_ready'};
+        },roundId);
+        assert.equal(boundary.status,200);assert.ok(Object.entries(boundary).every(([key,value])=>key==='status'||value===true));
+        assert.equal(await gamesFrame.evaluate(()=>document.documentElement.scrollWidth>innerWidth),false);
+        await user.page.screenshot({path:path.join(output,'game-boundary-'+(index+1)+'.private.png')});
+        await gamesFrame.getByRole('link',{name:'Treffpunktrunden',exact:true}).click();
+        const returned=await frameAt(user,'rounds');await returned.locator('#target option').first().waitFor({state:'attached'});await count(returned,2);
+        const after=await user.page.evaluate(()=>JSON.parse(sessionStorage.getItem('castleRoundMembershipV1')));
+        assert.equal(after.leaseId,before.leaseId);assert.equal(after.roundId,before.roundId);assert.equal(user.page.context().pages().length,pageCount);
+        await user.script.evaluate(()=>castleRoom.community.closePanel());
+      }
+      await sample(a,b);af=await panel(a);bf=await panel(b);
+      results.push({case:'published-game-boundary',normalMicrosoftPupils:2,oneMobileTouch:true,actualPublishedSources:true,
+        allSevenRealDraftsDenied:true,noTargetUrlDisclosure:true,explicitHostCannotBypassDraft:true,noGameInvented:true,
+        sameSidebarBothDirections:true,sameLeaseBothDirections:true,noExtraTab:true,ownRoundBundled:true,tableAudioAfterPanelReturn:true});
+    }
     stage='creator-leaves';await af.getByRole('button',{name:'Abmelden',exact:true}).click();await af.locator('#mine').waitFor({state:'hidden'});
     await refresh(bf);await count(bf,1);
     const oldLease=await b.page.evaluate(()=>sessionStorage.getItem('castleRoundMembershipV1'));
@@ -190,6 +241,8 @@ async function main(){
         explicitFaultInjection:{route:'round-heartbeat',status:503,count:1},naturalHeartbeatFault:true,
         moduleSha256:Object.fromEntries(Object.entries(modules).map(([name,body])=>[name,sha(body)])),observed,audio:recoveryAudio};
     }
+    if(hostPublished)proof.gameHostPublication={actualPublishedRoutes:true,providerCatalogSubstituted:false,providerContentSubstituted:false,
+      realExternalGameTested:false,realProviderStudentApproval:false,serverOrMapInterception:false};
     fs.writeFileSync(path.join(output,'result.json'),JSON.stringify(proof,null,2)+'\n');console.log(JSON.stringify({...proof,audio:undefined},null,2));
   }catch(error){
     const state=[];
