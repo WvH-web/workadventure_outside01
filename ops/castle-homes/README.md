@@ -422,10 +422,74 @@ The 400-request admission burst remains internally simultaneous. A prior run
 with competing test files hit the existing four-second queue deadline for some
 synthetic requests; no production deadlines or admission rules were relaxed.
 
-Before broader activation, reduce the mandatory first-load image set rather than
-assuming caching solves cold entry, verify additional browser/device behavior,
-and complete the independent production-runtime lifecycle and native entry.
+The later progressive-entry release below reduces the mandatory first-load set.
+Broader activation still needs additional browser/device behavior and the
+independent production-runtime lifecycle and native entry.
 This is not private-room voice, broad school admission or approval for 400 users.
+
+## Progressive Room Entry
+
+Pilot release `c609afec40261d7c` loads the architecture, two avatar sheets and the
+atlases used by the current saved room. A starter room needs four images, about
+6,704,173 encoded bytes instead of the complete 30,386,384-byte catalog. Furnished
+rooms and chosen floors load the additional images they actually use; four is
+not a hardcoded limit or a promise for every possible room. Catalog thumbnails
+load when visible, with deduplicated requests and an observer-free fallback.
+
+Two original frontend modules are adapted only after their exact source hashes
+match the reviewed original release. The rendering/material/geometry methods,
+source images, purchases, inventory and authentication remain the original ones.
+The three replacement module routes retain the same private browser binding;
+they cannot replace an API or authentication route. Existing cached image hashes
+are unchanged. Only the pilot's executable path changed on the server. No old
+castle, other map, Nginx setting, PHP context, credential or moderator policy was
+changed, and the colleague runtime remains byte-identical.
+
+The initial scene waits for the latest authorized room, not the first provisional
+snapshot. Furniture and floor changes wait for their real image/alpha data before
+painting and pointer hit testing resume. Waiting stops the current movement
+input; a failed image shows a retry instead of retrying every animation frame.
+Late completions cannot reactivate a disposed room or paint a replaced catalog
+canvas. The exact existing alpha extraction is retained.
+
+The isolated Chrome 157 probe passes at 1000/390 pixels: four initial images,
+all thirteen catalog atlases, actual opaque/transparent hit testing, original
+purchase handlers, floor preview and pixel-exact cancellation after settled
+frames, saved floor/furniture on a fresh device (six required images), a genuine
+two-person visit and a received phrase. Synthetic points exist only in its new
+temporary database and matching in-memory fixture; no live pupil points were
+seeded. One separate image-failure episode intentionally aborts a single image
+request, then verifies retry and saved-room recovery. Normal interaction checks
+do not intercept network responses; the fault injection is labelled separately.
+
+Twenty-eight isolated Linux service/gateway/media/progressive cases pass before
+activation. All seven real TLS/context/WebSocket/45-second-lease regression cases
+pass after it. The historical audit verifies this explicit unit-only transition
+against unchanged earlier receipts, immutable sources and recovery copies.
+Private receipt: `progressive-deployment.json` in the pilot directory.
+
+Freshly obtained normal Microsoft states for the two authorized synthetic pupils
+pass genuine public standalone entry. One observation measured first entry at
+6.0/5.0 seconds and a new protected view at 3.9/3.4 seconds, with all four images
+reused from disk cache, nonblank desktop/mobile canvases and no failed requests.
+The separate full UI probe also passes invitations, received phrases, account
+switching, remaining-device isolation and 1000/390/320-pixel layouts without
+JavaScript/resource errors. Its recorded post-interaction first-ready figures
+were 7.0/14.0 seconds; those also include UI actions and screenshots. These remain
+individual observations, not a latency guarantee or a 400-user approval. Pupil
+moderation denial still passes against the real public service.
+
+A later local regression stalled in the pre-existing queued-request abort probe:
+aborting before the request reached the test server could leave an unbounded
+wait for a server-side close event. Only that verified test runner/worker was
+stopped. The test now observes actual arrival before aborting and bounds its
+lifecycle-event waits; the isolated six-case admission suite passes again,
+including its internally simultaneous 400 synthetic requests. Production
+admission deadlines, concurrency and role rules were not changed.
+The final isolated-file full regression passes 453 cases: 452 passed, no
+failures, one existing optional widget-browser skip. Its 400-request synthetic
+burst still runs simultaneously and passes without provider/database simulation
+being mislabelled as a real 400-pupil production approval.
 
 Still required before school activation: publish the reviewed gateway with its
 broader approved admission policy, independent immutable game release and durable

@@ -2,7 +2,7 @@
 const assert=require('node:assert/strict'),path=require('node:path'),fs=require('node:fs/promises');
 const {chromium}=require('./castle-deps.cjs')('playwright');
 const normalize=url=>{const parsed=new URL(url);return parsed.pathname.replace(/\/view\/[a-f0-9-]{36}\//,'/view/[view]/');};
-const label=process.argv.includes('--optimized')?'optimized':'baseline';
+const label=process.argv.includes('--progressive')?'progressive':process.argv.includes('--optimized')?'optimized':'baseline';
 async function main(){
  const root=path.join(process.env.USERPROFILE,'.codex/private/workadventure-school-test-accounts'),output=path.join(root,'qa/homes-loading');await fs.mkdir(output,{recursive:true});
  const handoff=JSON.parse(await fs.readFile(path.join(root,'handoff.json'),'utf8'));assert.equal(handoff.contains_real_pupil_data,false);
@@ -28,7 +28,7 @@ async function main(){
    const value={account,viewport,ready,elapsedMs:Date.now()-started,errors,requests:rows,details,cached};results.push(value);
    console.log(JSON.stringify({account,ready,elapsedMs:value.elapsedMs,loading:details?.loading,errors,imageRequests:rows.filter(row=>row.type==='image').length,
     imageBytes:rows.filter(row=>row.type==='image').reduce((n,row)=>n+row.bytes,0),failedRequests:rows.filter(row=>row.failure).length}));
-   if(label==='optimized'&&ready){
+   if(label!=='baseline'&&ready){
     const previous=await page.locator('iframe').getAttribute('src');await page.locator('#leave').click();phase='warm';const warmStarted=Date.now();let warmReady=false;
     await page.goto('https://together.deine-schule.com/castle-homes/',{waitUntil:'domcontentloaded'});
     const next=page.frameLocator('iframe[title="Dein Schlosszimmer"]');try{await next.locator('#loading').waitFor({state:'attached',timeout:20000});await next.locator('#loading').waitFor({state:'hidden',timeout:30000});warmReady=true;}catch{}

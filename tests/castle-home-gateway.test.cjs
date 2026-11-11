@@ -7,6 +7,7 @@ const {client}=require('../tools/castle-home-test-client.cjs');
 const key='c'.repeat(64),pupil=id=>({sub:'wvh:student:'+id,role:'student',grade:3,age:9,moderator:false,read_only:false});
 const deferred=()=>{let resolve;const promise=new Promise(done=>resolve=done);return {promise,resolve};};
 async function fixture(run,options={}){
+ const assetOverrides=options.assetOverrides;
  const seen=[],profiles=new Map([['a@invalid.local',pupil(7)],['b@invalid.local',pupil(8)]]);let lookup=async id=>profiles.get(id)??null;
  const preflight=async header=>{if(!['Bearer a','Bearer b'].includes(header))throw new GatewayError(401,'unauthorized');return {identifier:header.slice(7)+'@invalid.local'};};
  const verify=Object.assign(async header=>({...await preflight(header),expiresAt:Date.now()+3600000}),{preflight});
@@ -21,7 +22,7 @@ async function fixture(run,options={}){
    res.writeHead(200,{'Content-Type':'application/json'});res.end(JSON.stringify({me:{id:'opaque-game-person',name:'Schlossfreund',grade:3,age:9},account:{role:'student',canModerate:false},
     players:[{name:'Unrelated hidden village member'}],subject:'wvh:student:7',email:'private@invalid.local',nested:{accessToken:'private',birthdate:'2017-01-01'},room:{placed:[]}}));
   });
-  return {game:{server,async close(){server.closeAllConnections();await new Promise(resolve=>server.close(resolve));}},assetPaths:new Set(['/zimmer/app.js','/bilder/leer.png']),roomSocial:'// reviewed fixture'};
+  return {game:{server,async close(){server.closeAllConnections();await new Promise(resolve=>server.close(resolve));}},assetPaths:new Set(['/zimmer/app.js','/zimmer/renderer.js','/zimmer/castle-room-media.js','/bilder/leer.png']),roomSocial:'// reviewed fixture',assetOverrides};
  }});
  try{await run({app,seen,profiles,setLookup:next=>lookup=next,a:client(app.url,'a'),b:client(app.url,'b')});}finally{await app.close();}
 }
@@ -29,6 +30,18 @@ async function fixture(run,options={}){
 test('strict projection and duplicate cookie rejection do not expose school or unrelated browser credentials',()=>{
  assert.deepEqual(project({grade:3,nested:{age:9,birthdate:'private',name:'Own name'},items:[{subject:'private',item:'chair'}]}),{nested:{name:'Own name'},items:[{item:'chair'}]});
  assert.equal(cookie('view=first; view=second','view'),null);assert.equal(cookie('other=x; view=one','view'),'one');assert.equal(cookie('prefixview=one','view'),null);
+});
+
+test('reviewed progressive modules keep the same browser binding and cannot override any API or authorization route',async()=>{
+ const overrides=new Map([['/zimmer/castle-room-media.js','// reviewed progressive fixture']]);
+ await fixture(async({a,b,seen})=>{await a.open();await b.open();overrides.set('/zimmer/castle-room-media.js','// later unreviewed mutation');
+  const own=await a.request('view/'+a.view+'/zimmer/castle-room-media.js');assert.equal(own.status,200);assert.equal(own.value,'// reviewed progressive fixture');
+  assert.equal(own.headers.get('cache-control'),'no-store, private');assert.equal(own.headers.get('content-type'),'text/javascript; charset=utf-8');
+  assert.equal((await b.request('view/'+a.view+'/zimmer/castle-room-media.js')).status,401);
+  assert.equal((await a.request('view/'+a.view+'/zimmer/castle-room-media.js?role=teacher')).status,404);assert.equal(seen.some(row=>row.path==='/zimmer/castle-room-media.js'),false);
+  await a.leave();assert.equal((await a.request('view/'+a.view+'/zimmer/castle-room-media.js')).status,401);
+ },{assetOverrides:overrides});
+ await assert.rejects(fixture(async()=>{},{assetOverrides:new Map([['/api/bedroom','// cannot replace the API']])}),/Reviewed room-media modules/);
 });
 
 test('only pinned generic image hashes are cacheable; protected views, API and unknown files remain private',async()=>{

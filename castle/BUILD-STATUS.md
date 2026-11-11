@@ -251,6 +251,31 @@ Die Servereinrichtung sichert die bisherige Nginx-Konfiguration, prueft deren
 Pruefsumme vor dem Ergaenzen genau dieses neuen Pfads und testet Nginx vor dem
 graceful Reload; WorkAdventure und der Ansagedienst bleiben unangetastet.
 
+## Persoenliche Zimmer: Geschuetzter Pilot
+
+Die Sternenhueter-Zimmer sind als eigenstaendiger, schulisch geschuetzter Pilot
+bereitgestellt, noch nicht allgemein ueber die Schlosskarte freigeschaltet.
+Zwei ausdruecklich vorgesehene Microsoft-Testkonten und das gezielt genehmigte
+Administratorkonto haben Zugang. Die allgemeine Kontorolle wurde nicht geaendert;
+nur das genehmigte Konto darf gemeldete Zimmergespraeche pruefen.
+
+Die neue Ladefolge benoetigt fuer ein Startzimmer vier statt aller 19 Bilder:
+rund 6,7 statt 30,4 MB, bei unveraenderten sichtbaren Bildpunkten und
+Anklickflaechen. Weitere Einrichtung und Bodenbilder werden bei Bedarf geladen.
+Die isolierte Desktop-/Mobilprobe prueft alle 13 Katalog-Bildgruppen, Kaeufe,
+Bodenvorschau, Speichern, ein zweites Geraet, Besuche, Nachrichten und Erholung
+nach einem unterbrochenen Bildabruf. Die echte Browserprobe mit den beiden
+normalen Microsoft-Testanmeldungen ist ebenfalls bestanden. Einzelmessungen
+lagen bei etwa 5-6 Sekunden fuer den ersten Aufruf und 3-4 Sekunden fuer einen
+erneuten Besuch; das ist keine feste Ladezeit- oder 400-Personen-Zusage.
+
+Offen bleiben insbesondere die unabhaengige produktive Spiel-Laufzeit,
+abgesicherte freiwillige Zimmergespraeche per Mikrofon, Wiederherstellungs- und
+Lastnachweise und die abschliessende native Kartenfreigabe. Der Gesamtausbau
+ist damit nicht abgeschlossen. Das bisherige Schloss, andere Karten und das
+Kollegiumsprojekt bleiben unveraendert. Einzelheiten und Nachweise:
+`ops/castle-homes/README.md`.
+
 ## Quellen und Wiederaufbau
 
 Alle acht neuen Raumhintergruende wurden mit dem integrierten Bildgenerator

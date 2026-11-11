@@ -27,7 +27,7 @@ async function createHomeGateway({key,verify,lookup,createGame,origin,port=0,all
  const staticPages=pages||new Map(['index.html','entry.js','entry.css','room.html','room.css','exit.html','exit.js','moderation.html','moderation.js','moderation.css'].map(name=>[name,fs.readFileSync(path.join(__dirname,'public',name))]));
  if(!staticPages.has('icons.js'))staticPages.set('icons.js',fs.readFileSync(path.join(__dirname,'../hall-audio/public/vendor/lucide.min.js')));
  const entries=new Map(),views=new Map(),bySid=new Map(),limits=new Map(),connections=new Set(),controls=new Set(),logouts=new Set();
- let backend,game,assetPaths,roomSocial,closed=false,publicOrigin=origin;
+ let backend,game,assetPaths,roomSocial,assetOverrides,closed=false,publicOrigin=origin;
  const mac=value=>crypto.createHmac('sha256',key).update(value).digest('hex');
  const fingerprint=value=>mac('browser\n'+value);
  const authority=createHomeAuthority({key,verify,lookup,clock,admissionOptions,onInvalid:sid=>{const view=bySid.get(sid);if(view)drop(view);}});
@@ -111,6 +111,7 @@ async function createHomeGateway({key,verify,lookup,createGame,origin,port=0,all
   const api=route.startsWith('/api/');if(api){if(!apiAllowed(route,req.method)||url.search)fail(404,'not_found');if(route==='/api/moderation/chat'&&!view.moderator)fail(403,'not_allowed');if(req.method==='POST'){sameOrigin(req);if(!/^application\/json(?:;|$)/i.test(req.headers['content-type']||''))fail(415,'invalid_request');}}
   else if(req.method!=='GET'||!assetPaths.has(route)||url.search)fail(404,'not_found');
   const image=!api&&media?.redirect(route);if(image){res.writeHead(302,{Location:BASE+image});res.end();return;}
+  if(!api&&assetOverrides.has(route)){res.writeHead(200,{'Content-Type':'text/javascript; charset=utf-8'});res.end(assetOverrides.get(route));return;}
   if(route==='/game/room-social.js'){res.writeHead(200,{'Content-Type':'text/javascript; charset=utf-8'});res.end(roomSocial);return;}
   const body=req.method==='POST'?await collect(req,16384):undefined;
   await new Promise((resolve,reject)=>{
@@ -194,6 +195,7 @@ async function createHomeGateway({key,verify,lookup,createGame,origin,port=0,all
    cookiePath:BASE,trustProxy:true,requireSchool:true,media:null,testMode:false});
   game=value.game;assetPaths=value.assetPaths;roomSocial=value.roomSocial;
   if(!game?.server||typeof game.close!=='function'||!(assetPaths instanceof Set)||assetPaths.size>400||typeof roomSocial!=='string')throw Error('Reviewed room assets required');
+  assetOverrides=new Map(value.assetOverrides||[]);if(assetOverrides.size>3||[...assetOverrides].some(([route,source])=>!['/zimmer/app.js','/zimmer/renderer.js','/zimmer/castle-room-media.js'].includes(route)||!assetPaths.has(route)||typeof source!=='string'||source.length>100000))throw Error('Reviewed room-media modules required');
   await new Promise((resolve,reject)=>{game.server.once('error',reject);game.server.listen(0,'127.0.0.1',resolve);});backend='http://127.0.0.1:'+game.server.address().port;
   timer=setInterval(()=>{authority.sweep();for(const [id,entry]of entries)if(!entry.view&&clock()-entry.last>60000)entries.delete(id);},1000);timer.unref();
   return {server,url:publicOrigin+BASE,close,inspectForTest:()=>({views:views.size,entries:entries.size})};

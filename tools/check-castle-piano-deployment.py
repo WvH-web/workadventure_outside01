@@ -52,11 +52,48 @@ def verify_school_admission(ops,expected):
     assert not ops['run']('ss','-ltnH','sport = :13212').strip()
     return after,True
 
+def homes_progressive_transition(ops,media_record,media_raw):
+    root=Path('/opt/wvh-castle-homes');private=root/'private';path=private/'progressive-deployment.json';sha=ops['sha']
+    if not path.exists():return lambda name:Path(name).read_bytes()
+    assert path.resolve()==path and path.stat().st_mode&0o777==0o600
+    value=json.loads(path.read_text());assert value['passed'] and value['mediaReceiptSha256']==sha(media_raw)
+    assert value['before']==value['after']==media_record['after']
+    archive=value['archiveSha256'];assert re.fullmatch('[a-f0-9]{64}',archive)
+    release=Path(value['release']);assert release==root/'releases'/archive[:16] and release.resolve()==release
+    assert not any(item.is_symlink() for item in release.rglob('*'))
+    assert {item.relative_to(release).as_posix() for item in release.rglob('*') if item.is_file()}==set(value['files']) and len(value['files'])==58
+    assert all(sha((release/name).read_bytes())==digest for name,digest in value['files'].items())
+    allowed={'ops/castle-homes/game-adapter.cjs','ops/castle-homes/gateway.cjs','ops/castle-homes/public/room.css','tests/castle-home-gateway.test.cjs','tests/castle-home-media.test.cjs'}
+    assert all(value['files'][name]==digest for name,digest in media_record['files'].items() if name not in allowed)
+    backup=Path(value['unitBeforeFile']);assert backup.resolve()==backup and backup.parent.parent==private and backup.parent.name.startswith('before-progressive-') and backup.name=='service.snapshot'
+    assert backup.stat().st_uid==0 and backup.stat().st_mode&0o777==0o600
+    original=backup.read_bytes();unit=Path('/etc/systemd/system/wvh-castle-homes.service')
+    assert sha(original)==value['unitBeforeSha256']==media_record['unitAfterSha256']
+    expected=original.replace(str(Path(media_record['release'])/'ops/castle-homes/service.cjs').encode(),str(release/'ops/castle-homes/service.cjs').encode())
+    assert unit.read_bytes()==expected and sha(expected)==value['unitAfterSha256']
+    recovery=Path(value['recoveryDatabaseFile']);assert recovery==backup.parent/'pilot.sqlite' and recovery.resolve()==recovery
+    assert recovery.stat().st_uid==0 and recovery.stat().st_mode&0o777==0o600 and sha(recovery.read_bytes())==value['recoveryDatabaseSha256']
+    proof_raw=(release/'ops/castle-homes/progressive-browser-proof.json').read_bytes();assert sha(proof_raw)==value['browserProofSha256']
+    proof=json.loads(proof_raw);assert proof['passed'] and proof['browserVersion'].startswith('157.') and not proof['errors']
+    assert not proof['positiveNetworkInterception'] and proof['negativeImageFaultInjectionOnly']
+    assert proof['syntheticDatabaseOnly'] and proof['syntheticPointsSeededOnlyInPrivateFixture'] and not proof['publicDeploymentTested'] and not proof['normalMicrosoftLoginTested'] and not proof['nativeWorkAdventureTested']
+    assert len(proof['checks'])==2 and all(row['initialImageCount']==4 and row['noUnusedAtlasOrFloor'] and row['allCatalogAtlasesRendered']==13 and row['floorPreviewAndExactCancellation'] for row in proof['checks'])
+    assert proof['realOpaqueAndTransparentHitTesting'] and proof['savedFloorAndFurnitureOnFreshDevice'] and proof['freshDeviceRequiredImages']==6
+    assert proof['sharedVisitAndReceivedPhrase'] and proof['interruptedImageRetryAndSavedRoomRecovery']
+    assert sha((private/'progressive-linux-tests.private.log').read_bytes())==value['linuxTestLogSha256']
+    acceptance=value['acceptance'];assert acceptance['passed'] and len(acceptance['checks'])==7 and acceptance['realPublicTls'] and acceptance['realPublicContextEndpoint'] and acceptance['realPublicWebSockets'] and acceptance['realLeaseClock']
+    assert not acceptance['networkInterception']
+    assert value['privateAuthorityAndModerationUnchanged'] and value['originalRuntimeAndImagesUnchanged'] and value['existingServicesAndMapsUnchanged'] and value['onlyRoomPilotRestarted']
+    assert not value['broadSchoolRoomAccess'] and not value['voiceEnabled']
+    return lambda name:original if Path(name)==unit else Path(name).read_bytes()
+
+
 def homes_media_transition(ops,moderation,moderation_raw):
     root=Path('/opt/wvh-castle-homes');private=root/'private';path=private/'media-deployment.json';sha=ops['sha']
     if not path.exists():return lambda name:Path(name).read_bytes()
     assert path.resolve()==path and path.stat().st_mode&0o777==0o600
-    value=json.loads(path.read_text());assert value['passed'] and value['moderationReceiptSha256']==sha(moderation_raw)
+    media_raw=path.read_bytes();value=json.loads(media_raw);assert value['passed'] and value['moderationReceiptSha256']==sha(moderation_raw)
+    previous=homes_progressive_transition(ops,value,media_raw)
     assert value['before']==value['after']==moderation['after']
     archive=value['archiveSha256'];assert re.fullmatch('[a-f0-9]{64}',archive)
     release=Path(value['release']);assert release==root/'releases'/archive[:16] and release.resolve()==release
@@ -68,7 +105,7 @@ def homes_media_transition(ops,moderation,moderation_raw):
     original=backup.read_bytes();unit=Path('/etc/systemd/system/wvh-castle-homes.service')
     assert sha(original)==value['unitBeforeSha256']==moderation['changedFiles'][str(unit)]
     expected=original.replace(str(Path(moderation['release'])/'ops/castle-homes/service.cjs').encode(),str(release/'ops/castle-homes/service.cjs').encode())
-    assert unit.read_bytes()==expected and sha(expected)==value['unitAfterSha256']
+    assert previous(unit)==expected and sha(expected)==value['unitAfterSha256']
     recovery=Path(value['recoveryDatabaseFile']);assert recovery==backup.parent/'pilot.sqlite' and recovery.resolve()==recovery
     assert recovery.stat().st_uid==0 and recovery.stat().st_mode&0o777==0o600 and sha(recovery.read_bytes())==value['recoveryDatabaseSha256']
     media=release/'ops/castle-homes/media';manifest_raw=(media/'manifest.json').read_bytes()
@@ -239,6 +276,7 @@ def main():
       'hallHealthRepairVerified':health_repair,'historicalManifestsPreserved':True,
       'homesSoleAdministratorModerationVerified':homes_pilot and Path('/opt/wvh-castle-homes/private/moderation-deployment.json').exists(),
       'homesLosslessCachedMediaVerified':homes_pilot and Path('/opt/wvh-castle-homes/private/media-deployment.json').exists(),
+      'homesProgressiveRoomMediaVerified':homes_pilot and Path('/opt/wvh-castle-homes/private/progressive-deployment.json').exists(),
       'permissionsAndAuthenticationUnchanged':True,'stageStopped':True,'healthy':True,'loadApprovalFor400':False,
       'checkedAt':time.strftime('%Y-%m-%dT%H:%M:%SZ',time.gmtime())}
     ops['atomic'](private/'published-acceptance.json',result);print(json.dumps(result,indent=2))

@@ -99,10 +99,12 @@ test('a token that expires in the queue never reaches provider or school lookup'
 },{admissionOptions:{concurrency:1}}));
 
 test('disconnecting a queued HTTP request frees its place without creating or renewing a registration',async()=>fixture(async f=>{
- const block=f.block('a'),first=f.api('a');await block.entered.promise;
- const auth=await f.headers('b'),closed=deferred();f.server.on('request',(req,res)=>{if(req.headers.authorization===auth.Authorization)res.once('close',()=>closed.resolve());});
- const abort=new AbortController(),second=f.request('round-context',undefined,auth,{signal:abort.signal});await delay(20);abort.abort();
- await assert.rejects(second,error=>error.name==='AbortError');await closed.promise;
+ const block=f.block('a'),first=f.api('a');first.catch(()=>{});await block.entered.promise;
+ const auth=await f.headers('b'),closed=deferred(),received=deferred();f.server.on('request',(req,res)=>{if(req.headers.authorization===auth.Authorization){res.once('close',()=>closed.resolve());received.resolve();}});
+ const abort=new AbortController(),second=f.request('round-context',undefined,auth,{signal:abort.signal});second.catch(()=>{});
+ const bounded=async promise=>{let timer;try{return await Promise.race([promise,new Promise((_,reject)=>{timer=setTimeout(()=>reject(Error('Synthetic request lifecycle event was not observed')),5000);})]);}finally{clearTimeout(timer);}};
+ try{await bounded(received.promise);abort.abort();await assert.rejects(second,error=>error.name==='AbortError');await bounded(closed.promise);}
+ finally{abort.abort();}
  const third=f.api('c');await delay(20);block.release.resolve();assert.equal((await first).status,200);assert.equal((await third).status,200);
  assert.equal(f.graphCalls.get('b'),undefined);assert.equal(f.calls.get('b'),undefined);
 },{admissionOptions:{concurrency:1,maxPending:1}}));
