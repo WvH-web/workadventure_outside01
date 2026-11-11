@@ -113,9 +113,9 @@ Veroeffentlichungs-Arbeitskopie auf D: wurde nach geprueftem Push entfernt;
 Belege und benoetigte Endfassungen bleiben erhalten. Eine echte 400-Personen-
 Abnahme ist damit weiterhin nicht erbracht.
 
-Die native Aufstehen-Schaltflaeche ist insbesondere in der Handy-Kombination
-noch sehr dominant und ueberlagert teils den Seitenbereich. Die Aktivitaet ist
-scrollbar; eine kompaktere gemeinsame Sitzbedienung bleibt UI-Nacharbeit.
+Die zunaechst dominante native Aufstehen-Schaltflaeche ist inzwischen durch
+die gesondert live abgenommene kompakte Schloss-Sitzanzeige ersetzt. Siehe
+`schulschloss-sitzanzeige.md`. Die Aktivitaet bleibt unabhaengig davon scrollbar.
 
 ### Abnahme Am Normalen Tisch
 

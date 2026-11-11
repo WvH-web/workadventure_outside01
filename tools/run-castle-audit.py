@@ -3,6 +3,14 @@ import hashlib
 from pathlib import Path
 import runpy
 
+seat=Path('/opt/wvh-castle-seat-ui-retry/private')
+if (seat/'deployment.json').exists() and not (seat/'rollback.json').exists():
+    path=seat/'deployment-ops.py'
+    assert path.resolve()==path and path.stat().st_uid==0 and path.stat().st_mode&0o777==0o600
+    raw=path.read_bytes();assert hashlib.sha256(raw).hexdigest()=='f77faf75b39108d8d5d25e018b9d5a1d2430f2d83c6246e125fe38e1fac9fa1a'
+    scope={'__name__':'castle_seat_audit','__file__':str(path)};exec(compile(raw,str(path),'exec'),scope)
+    scope['main']('verify');raise SystemExit(0)
+
 stars=Path('/opt/wvh-castle-stars/private')
 if (stars/'publication-deployment.json').exists() and not (stars/'publication-rollback.json').exists():
     path=stars/'publication-ops.py'

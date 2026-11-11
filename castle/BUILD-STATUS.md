@@ -4,6 +4,20 @@ Das Gesamtziel bleibt aktiv. Dies ist keine Freigabe als fertiggestelltes
 Schloss oder fuer eine Veranstaltung mit 400 Personen. Das bisherige Schloss,
 Village und geschuetzte Lehrerzimmer werden nicht ersetzt.
 
+Aktueller Nachtrag vom 11. November: Die kompakte native Sitzanzeige ist in der
+neuen Vorschau live. Hinsetzen/Aufstehen bleiben auf Desktop und Touch-Handy
+144 x 44 Pixel gross; die normale Leertaste und einmalige fokussierte
+Leertaste-/Enter-Bedienung bleiben erhalten. Zwei normale Microsoft-
+Schultestkonten pruefen die echte Anzeige, das gemeinsame Seitenfenster,
+beidseitig dekodierten Tischton, Raumwechsel und normales Laufen danach.
+Die alten Karten und andere Meldungen behalten ihre bisherige Anzeige.
+Nur der Play-Client wurde mit ausdruecklicher Freigabe kurz aktualisiert;
+alle Kartenbytes und uebrigen Dienste bleiben unveraendert. Eine vorsorgliche
+Ruecksetzung des ersten Versuchs ist getrennt dokumentiert. Der aktuelle
+Betriebsnachweis und die anschliessende native Live-Abnahme bestehen.
+Alle 140 Python-Faelle und 568 Node-Faelle bestehen; zwei bisherige optionale
+Node-Auslassungen bleiben bestehen. Einzelheiten: `../docs/schulschloss-sitzanzeige.md`.
+
 Neuer Entwicklungsstand vom 11. November: Die kooperative Sternenmaschine ist
 jetzt am normalen Forschertisch der geschuetzten neuen Schloss-Sternwarte
 freigeschaltet. Auch der normale Zugang besteht mit zwei normalen Microsoft-

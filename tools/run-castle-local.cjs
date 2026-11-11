@@ -1,6 +1,7 @@
 'use strict';
 const cp=require('node:child_process');
 require('./castle-local-storage.cjs').configure();
+process.env.PYTHONDONTWRITEBYTECODE='1';
 const args=process.argv.slice(2);let executable=process.execPath;
 if(args[0]==='--exec'){args.shift();executable=args.shift();}
 if(!executable||!args.length)throw Error('Provide Node arguments, or --exec followed by a program and its arguments');
