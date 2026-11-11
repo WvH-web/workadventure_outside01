@@ -447,3 +447,77 @@ was stopped. It revalidates retained native piano/voice evidence, not a new
 post-maintenance multi-browser run. Locally, 398 Node cases passed and one
 optional widget browser case was skipped; seven operator scope/rollback cases
 also passed. The overall school-castle goal and full-capacity approval remain open.
+
+### Repeated Admission Measurement
+
+On 2026-11-11 the latest parallel local suite had one admission-load failure:
+286 successful requests and 114 bounded overload responses. That result remains
+recorded; earlier isolated passes do not invalidate it. A local CPU profile of
+a subsequent isolated pass spent about 1.76 seconds in Node's TCP connect path.
+This is a transport-cost observation, not proof of a Windows-only cause.
+
+`tools/measure-castle-admission-capacity.py` then ran three fixed repetitions of
+the original strict 400-request test on the VPS. All three returned 400 HTTP
+200 responses, with maximum Graph and profile concurrency of sixteen and no
+remaining active work. Reported test elapsed times were 7716, 6685 and 5695 ms;
+whole-container execution took 9.742, 8.338 and 7.090 seconds respectively.
+The original four-second queue deadline and success assertion were not relaxed.
+Linux used simultaneous fresh TCP connections, not preconnected sockets.
+
+Each disposable container used the production's exact Node image (v24.22.2),
+0.5 CPU and 256 MiB, with no network, credentials, production environment or
+real provider/database traffic. Both upstream reads were synthetic. The live
+release, services, permissions and maps were unchanged, and every measurement
+container was removed. The result is retained privately at
+`/opt/wvh-castle-school/private/admission-measure-20261111-attempt-2/result.json`.
+The earlier harness attempt failed to read its fixture because of directory
+permissions and is retained separately; it is not counted as an admission pass
+or failure. The source preflight also reviewed an exact archived-test difference
+limited to a later disconnect test and executed the retained original bytes.
+
+The JSONL reporter emits only synthetic counters and bounded failure metadata,
+not raw stderr or assertion values. Two reporter cases and three operator cases
+cover this evidence gate, finite distinct attempt names and archived-source
+validation. This is an admission component measurement, not approval for 400
+real Microsoft logins, database users, castle participants or media streams.
+
+### Round Recovery Candidate
+
+The source now contains a **not yet published** recovery candidate for the
+private membership bridge. It retains only an existing opaque lease/journey
+after a transient confirmation error. It retries only heartbeat/visit checks,
+with bounded exponential backoff, jitter and the server's `Retry-After` hint,
+and only until the last confirmed deadline. It never replays create, join,
+leave or link writes and never uses a cached permission or destination to move
+the player. Fresh successful heartbeat responses now update the local recovery
+deadline without rotating the lease. The server remains authoritative.
+
+An authentication denial, revoked/stale registration, expiry, account switch,
+page departure or failed leave does not trigger recovery. A school-profile
+lookup failure still revokes the server membership immediately; a later 409
+clears the retained client handle instead of creating a replacement. Invalid
+or expired journeys are discarded, and delayed old responses cannot erase a
+newer lease. Request timeouts normalize browser `AbortError` numeric codes to
+the transient error category without retrying the original request itself.
+
+Eleven focused cases exercise the actual client and presence source. The
+isolated three-pupil browser fixture also passes at 780/390/320 widths, including
+one explicitly intercepted pre-admission 503 followed by a real server renewal
+of the same lease. Normal departure, reentry nonce rotation, fresh cohort
+revocation and account-switch checks remain in that fixture. This is not native
+live acceptance of the candidate: no service, static route or published client
+has been changed for it. A separately guarded publication and real native probe
+are still required before describing this recovery as live.
+
+The full local regression was rerun serially (`--test-concurrency=1`) after
+these changes: 502 cases, 500 passes, two existing skips and no failures. Its
+unchanged 400-request test also passed, reporting 4838 ms and sixteen maximum
+workers. Serial test-file execution isolates that component from other local
+test workloads; it does not negate the earlier parallel-suite failure or prove
+real school/media capacity. The full live deployment audit passed again at
+07:48 UTC, including the sole-administrator moderation policy and the accepted
+museum transition; it does not include the unpublished recovery candidate.
+All 74 Python operator cases also pass. The first discovery attempt could not
+import the unchanged onboarding test because local PyYAML was absent; rerunning
+with PyYAML 6.0.3 in an output-only test dependency directory passed the whole
+suite without changing the system Python or server environment.

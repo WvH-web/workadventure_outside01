@@ -102,16 +102,25 @@ async function main(){
     await af.getByRole('button',{name:'Abmelden',exact:true}).click();await af.locator('#mine').waitFor({state:'hidden'});
     let next=await panel(b);await count(next,1);await layout(b,next,'rounds-390');
     const oldLease=await b.page.evaluate(()=>sessionStorage.getItem('castleRoundMembershipV1'));
-    await b.page.evaluate(()=>window.fixture.enter('bibliothek'));await b.page.waitForTimeout(1300);
-    assert.equal(await b.page.evaluate(()=>sessionStorage.getItem('castleRoundMembershipV1')),oldLease,'Recreated bridge keeps registration without rotating nonce');
+    await b.context.route(origin+'/castle-school/round-heartbeat',route=>route.fulfill({status:503,contentType:'application/json',
+      headers:{'Retry-After':'1'},body:JSON.stringify({error:'unavailable'})}),{times:1});
+    const overloaded=b.page.waitForResponse(response=>response.url()===origin+'/castle-school/round-heartbeat'&&response.status()===503);
+    await b.page.evaluate(()=>window.fixture.enter('bibliothek'));await (await overloaded).finished();
+    assert.equal(await b.page.evaluate(()=>sessionStorage.getItem('castleRoundMembershipV1')),oldLease,'A simulated pre-admission overload keeps only the previously confirmed opaque lease');
+    const recovered=b.page.waitForResponse(response=>response.url()===origin+'/castle-school/round-heartbeat'&&response.status()===200,{timeout:10000});
+    await (await recovered).finished();
+    await b.page.waitForFunction(before=>JSON.parse(sessionStorage.getItem('castleRoundMembershipV1')).confirmedUntil>before,JSON.parse(oldLease).confirmedUntil);
+    const leaseIdentity=raw=>{const {roundId,leaseId,scope}=JSON.parse(raw);return {roundId,leaseId,scope};};
+    assert.deepEqual(leaseIdentity(await b.page.evaluate(()=>sessionStorage.getItem('castleRoundMembershipV1'))),leaseIdentity(oldLease),'Recreated bridge renews the same registration without rotating nonce');
     next=await panel(b);await count(next,1);
     await next.locator('.round').getByRole('button',{name:'Zur Runde',exact:true}).click();await settled(b,2);
-    assert.notEqual(await b.page.evaluate(()=>sessionStorage.getItem('castleRoundMembershipV1')),oldLease,'Explicit return safely rotates the old nonce');
+    assert.notEqual(leaseIdentity(await b.page.evaluate(()=>sessionStorage.getItem('castleRoundMembershipV1'))).leaseId,leaseIdentity(oldLease).leaseId,'Explicit return safely rotates the old nonce');
     const heartbeat=b.page.waitForResponse(response=>response.url()===origin+'/castle-school/round-heartbeat'&&response.status()===200,{timeout:30000});
     assert.equal(await b.page.locator('#panel').count(),0);await (await heartbeat).finished();
     assert.ok(await b.page.evaluate(()=>Boolean(sessionStorage.getItem('castleRoundMembershipV1'))),'Closed directory keeps voluntary membership through the private bridge');
     results.push({case:'same-room',twoIndependentRegisteredPupils:true,visitorNotCounted:true,creatorCanLeave:true,
-      bridgeRecreatedWithoutReplayingTravel:true,explicitReentryRotatesLease:true,heartbeatWithoutOpenDirectory:true,normalClassRules:true,widths:[320,390,780]});
+      bridgeRecreatedWithoutReplayingTravel:true,simulatedPreAdmission503RecoversSameLease:true,expiryRenewedFromFreshResponse:true,
+      explicitReentryRotatesLease:true,heartbeatWithoutOpenDirectory:true,normalClassRules:true,widths:[320,390,780]});
     const otherId=await announce(a,'atelier-buchclub','draw');
     await a.page.waitForFunction(()=>window.fixture.room()==='atelier');
     assert.ok((await a.page.evaluate(()=>window.fixture.events)).some(event=>event.type==='travel'&&event.url.endsWith('/atelier.wam#start')));

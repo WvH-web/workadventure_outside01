@@ -349,6 +349,33 @@ Veroeffentlichung bestehen. Die normale Galerie ist mit sechs Desktop-/Mobil-
 Ansichten der veroeffentlichten Dateien nachgeprueft. Der oben genannte
 400-Anfragen-Fehler bleibt ausdruecklich offen und wird dadurch nicht umgedeutet.
 
+## Zugangs- und Rundenstabilitaet
+
+Drei feste, getrennte Servermessungen mit je 400 gleichzeitigen kuenstlichen
+Zugangspruefungen bestehen mit dem echten Node-Abbild und den bisherigen
+Ressourcen-/Wartezeitgrenzen. Die Container hatten keinen Netzzugang und
+verwendeten weder Schulkonten noch echte Datenbank-/Microsoft-Abfragen.
+Bestehende Dienste, Karten und Rechte blieben unveraendert. Der fruehere
+parallele lokale Lastfehler bleibt dokumentiert; die Gesamtfreigabe fuer
+400 echte Teilnehmer mit Audio/Video ist weiterhin offen.
+
+Eine Korrektur fuer freiwillige Rundenanmeldungen ist vorbereitet, aber noch
+nicht live: Nach voruebergehender Ueberlast prueft sie die vorhandene Anmeldung
+begrenzt erneut. Jede Bestaetigung erfolgt frisch auf dem Server, niemals aus
+gespeicherten Rechten. Abgelaufene/entzogene Freigaben, Kontowechsel und
+fehlgeschlagene Abmeldungen werden nicht automatisch wiederhergestellt.
+Elf neue Einzelfaelle und die getrennte Dreikonten-Browserprobe bestehen.
+Vor der Veroeffentlichung fehlt noch die native Live-Probe dieses Kandidaten.
+
+Die aktuelle serielle Node-Gesamtsuite umfasst 502 Faelle: 500 bestanden, zwei
+bisherige Auslassungen, keine Fehler. Der unveraenderte 400-Anfragen-Fall
+besteht darin ebenfalls. Die echte Serverpruefung um 07:48 UTC bestaetigt den
+unveraenderten Live-Stand einschliesslich der gezielten Administratormoderation
+und der Museumsrunde, nicht die noch unveroeffentlichte Rundenkorrektur.
+Alle 74 Python-Betriebspruefungen bestehen ebenfalls mit der nur lokal im
+Testordner ergaenzten YAML-Abhaengigkeit.
+Einzelheiten und Messgrenzen: `../ops/castle-school/README.md`.
+
 ## Geplante Portal-Aushaenge
 
 Die zeitlich freizugebenden Portal-Aushaenge sind in einem getrennten
