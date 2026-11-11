@@ -4,23 +4,26 @@ Das Gesamtziel bleibt aktiv. Dies ist keine Freigabe als fertiggestelltes
 Schloss oder fuer eine Veranstaltung mit 400 Personen. Das bisherige Schloss,
 Village und geschuetzte Lehrerzimmer werden nicht ersetzt.
 
-Neuer Entwicklungsstand vom 11. November: Die kooperative Sternenmaschine mit
-drei Himmelsbildern, unabhaengig synchronisierten Einstellringen, verteilten
-Hinweisen und einer eigenen Bitmap-Spielflaeche ist implementiert. Die native
-Online-Abnahme besteht jetzt mit zwei normalen Microsoft-Schultestkonten,
-eines mobil, ohne Netzwerkersatz: sieben Szenarien, alle drei Raetsel beidseitig
-geloest, gleichzeitige Ringwahl erhalten, Wiederbeitritt und frische leere Runde.
-An drei Punkten wird native Sprache in beide Richtungen dekodiert. Die einzelne
-geschuetzte Testkarte wurde wieder entfernt; die bestehenden 16 Karten und
-Dienste sind unveraendert und der bisherige Live-Nachweis besteht erneut.
-Nur acht zusaetzliche Dateien wurden oeffentlich bereitgestellt. Die normale
-Sternwarten-Aktivitaet ist noch nicht umgestellt; auch der dominante native
-Aufstehen-Knopf braucht noch UI-Nacharbeit. 19 fokussierte Faelle und die lokale
-Browserprobe auf vier Bildschirmgroessen bestehen ebenfalls.
+Neuer Entwicklungsstand vom 11. November: Die kooperative Sternenmaschine ist
+jetzt am normalen Forschertisch der geschuetzten neuen Schloss-Sternwarte
+freigeschaltet. Auch der normale Zugang besteht mit zwei normalen Microsoft-
+Schultestkonten, eines mobil, ohne Netzwerkersatz: sieben Szenarien, alle drei
+Raetsel beidseitig geloest, gleichzeitige Ringwahl erhalten, Wiederbeitritt,
+Fenster erneut oeffnen, gemeinsamer Reset und frische leere Runde. An drei
+Punkten wird native Sprache in beide Richtungen dekodiert. Nur diese eine
+Vorschau-WAM und ihr Manifest-Eintrag wurden umgestellt. Alle anderen Karten,
+geschuetzten Regeln und Dienste bleiben unveraendert; kein Dienstneustart.
+Der neue aktuelle Betriebsnachweis behaelt die bisherigen Abnahmen unveraendert
+als Vorgaenger und bestaetigt die echte neue Kartenfassung. Die oeffentliche
+kanonische TMJ und der lokale Builder stimmen bytegenau mit der schon zuvor
+getesteten Kandidatenfassung ueberein. Normale Abnahme und Quellsynchronisation
+sind erledigt. Der dominante native Aufstehen-Knopf braucht noch UI-Nacharbeit.
+19 fokussierte Faelle und die lokale Browserprobe auf vier Bildschirmgroessen
+bestehen ebenfalls.
 Die abschliessende Node-Suite besteht mit 568 bestandenen Faellen, zwei
 bisherigen optionalen Auslassungen und keinem Fehler (570 insgesamt).
-Alle 121 Python-Betriebsfaelle bestehen ebenfalls.
-Einzelheiten und verbleibende Aktivierung: `../docs/schulschloss-sternenmaschine.md`.
+Alle 127 Python-Betriebsfaelle bestehen ebenfalls.
+Einzelheiten und verbleibende UI-Arbeit: `../docs/schulschloss-sternenmaschine.md`.
 
 Aktueller Nachtrag vom 11. November: Die getrennte Filmprobe im wirklichen
 Schlosskino besteht mit zwei normal angemeldeten Microsoft-Schultestkonten,

@@ -1,8 +1,12 @@
 # Gemeinsame Sternenmaschine
 
-Stand: 11. November 2026. **Implementiert und in einem getrennten geschuetzten
-nativen Testraum abgenommen.** Die gewoehnliche Sternwarte ist noch nicht auf
-die neue Aktivitaet umgestellt. Der Gesamtausbau bleibt offen.
+Stand: 11. November 2026. **Am normalen Forschertisch der geschuetzten neuen
+Schloss-Sternwarte freigeschaltet und nativ abgenommen.** Die gesamte
+Schlosswelt ist damit noch nicht fertig; der Gesamtausbau bleibt offen.
+
+Normaler Zugang: https://together.deine-schule.com/~/castle-preview/sternwarte.wam
+Beim Hinsetzen waehlt die Tischrunde Sternenmaschine oder Sonnensystem.
+Nachzuegler erhalten dieselbe gewaehlte Aktivitaet und denselben Raetselstand.
 
 ## Aktivitaet
 
@@ -103,7 +107,7 @@ Lauf `2026-11-11T21-11-27-131Z` mit sieben Szenarien und drei Sprachmessungen.
 Die unveraenderlichen Serverbelege `stage.json`, `native-proof.json`,
 `native-acceptance.json` und `cleanup.json` liegen getrennt von den bisherigen
 Abnahmen unter `/opt/wvh-castle-stars/private/`. Historische Nachweise wurden
-nicht ersetzt. Alle 121 Python-Betriebsfaelle und erneut alle 570 Node-Faelle
+nicht ersetzt. Alle 127 Python-Betriebsfaelle und erneut alle 570 Node-Faelle
 (568 bestanden, zwei bestehende optionale Auslassungen) bestehen. Die temporaere
 Veroeffentlichungs-Arbeitskopie auf D: wurde nach geprueftem Push entfernt;
 Belege und benoetigte Endfassungen bleiben erhalten. Eine echte 400-Personen-
@@ -112,6 +116,39 @@ Abnahme ist damit weiterhin nicht erbracht.
 Die native Aufstehen-Schaltflaeche ist insbesondere in der Handy-Kombination
 noch sehr dominant und ueberlagert teils den Seitenbereich. Die Aktivitaet ist
 scrollbar; eine kompaktere gemeinsame Sitzbedienung bleibt UI-Nacharbeit.
+
+### Abnahme Am Normalen Tisch
+
+Nach der getrennten Probe wurde genau die normale `sternwarte.wam` umgestellt,
+zusammen mit ihrem einzelnen Hash im 16-Karten-Manifest. Ihre Bereiche,
+LiveKit-Raumnamen, Tueren und Metadaten bleiben gleich; nur die Kartenquelle
+wechselt auf die bereits akzeptierte unveraenderliche Kandidatendatei.
+
+Auch ueber den normalen Zugangslink bestehen alle sieben Szenarien mit zwei
+normal angemeldeten Microsoft-Schultestkonten, eines als Touch-Handy: drei
+vollstaendig geloeste Raetsel in beiden Clients, gleichzeitige Ringwahl,
+Nachzuegler, Aufstehen, Wiederbeitritt, Fenster schliessen/erneut oeffnen,
+gemeinsamer Reset und neue Runde nach leerem Tisch. Native Sprache wird an
+drei Punkten in beide Richtungen dekodiert. Kein Karten-, Anmelde-, Profil-,
+Medien- oder Spielaustausch durch den Browser-Test.
+
+Letzter normaler Lauf auf D: unter `star-machine-published-native`,
+`2026-11-11T21-39-58-557Z`. Serverbelege: `publication-stage.json`,
+`publication-deployment.json`, `publication-native-proof.json` und
+`publication-acceptance.json` im gleichen privaten Sternwarten-Ordner.
+Der neue aktuelle Betriebsnachweis bestaetigt die beiden tatsaechlichen
+Aenderungen und den unveraenderten Rest, einschliesslich 135 eingefrorener
+privater Nachweise und Konfigurationen. Historische Abnahmen bleiben erhalten.
+Keine Karte des bisherigen Schlosses und kein Dienst wurden ersetzt.
+
+Die oeffentliche kanonische `castle/sternwarte.tmj` wurde erst danach auf
+dieselben bereits laufenden Bytes nachgezogen: Veroeffentlichungscommit
+`fac92b49a4f1650bb295f96342bd9a48f61df4ff`, ausschliesslich diese eine Datei.
+Ihr SHA-256 ist wie beim akzeptierten Kandidaten
+`d819948afb8c186f4ca6138a6f931145e324e61fa352c6a4b0dceee47f9b6ac4`.
+Der aktuelle Nachweis meldet jetzt weder eine offene normale Browser-Abnahme
+noch eine offene kanonische Quellsynchronisation. Eine echte 400-Personen-
+Abnahme wird dadurch weiterhin nicht behauptet.
 
 ## Veroeffentlichung
 
@@ -136,14 +173,13 @@ Bereits als ausschliesslich zusaetzliche Dateien veroeffentlicht:
 
 Die temporaere WAM-Kopie mit eigener Sprachgruppe ist bereits geprueft und
 wieder entfernt. Vor und nach dieser Phase besteht der aktuelle Betriebsnachweis.
-Die gezielte Aktivierung der normalen Sternwarten-Aktivitaet steht noch aus:
-kanonische TMJ und Builder passend nachziehen, nur diese eine Vorschau-WAM
-umstellen, den vorigen Nachweis unveraendert als Vorgaenger behalten und den
-normalen Zugang nochmals ohne Testkarte pruefen. Keine anderen Karten, Dienste
-oder Spielefreigaben ersetzen. Die Aktivitaet ist kein Geheimgang; private
-Entdeckungsplaene und Codes werden nicht mitgeliefert.
+Die normale Sternwarten-Aktivitaet ist inzwischen aktiviert, die kanonische
+TMJ und ihr Builder sind nachgezogen und der normale Zugang ist ohne Testkarte
+geprueft. Andere Karten, Dienste und Spielefreigaben bleiben unveraendert.
+Die Aktivitaet ist kein Geheimgang; private Entdeckungsplaene und Codes werden
+nicht mitgeliefert.
 
-### Vorbereitete Normale Aktivierung
+### Aufbau Der Aktivierung
 
 Der lokale Builder erzeugt die kanonische `sternwarte.tmj` jetzt bytegenau wie
 die bereits nativ akzeptierte Kandidatendatei. Der eigene Controller ist nur
@@ -161,4 +197,4 @@ Nachweise, der unveraenderte Schuldienst und seine oeffentliche Zugangssperre
 geprueft. Alte Nachweise werden weder umgeschrieben noch mit vorgetaeuschten
 alten Live-Dateien ausgefuehrt. Die normale Browserprobe ist getrennt von der
 aufbewahrten Stage-Probe. Die kanonische Quellsynchronisation ist eine eigene,
-sichtbare Phase und wird nicht als bereits erledigt ausgegeben.
+sichtbare Phase; beide Phasen sind inzwischen jeweils eigenstaendig verifiziert.
