@@ -24,7 +24,7 @@ async function createHomeGateway({key,verify,lookup,createGame,origin,port=0,all
  if(typeof createGame!=='function'||typeof verify?.preflight!=='function'||!Array.isArray(trustedProxyIps))throw Error('Reviewed game factory and school verifier required');
  if(origin){const url=new URL(origin);if(url.origin!==origin||url.protocol!=='https:'&&!(allowInsecureLocal&&url.protocol==='http:'&&url.hostname==='127.0.0.1'))throw Error('Fixed HTTPS home origin required');}
  else if(!allowInsecureLocal)throw Error('Production home origin required');
- const staticPages=pages||new Map(['index.html','entry.js','entry.css','room.html','room.css','exit.html','exit.js'].map(name=>[name,fs.readFileSync(path.join(__dirname,'public',name))]));
+ const staticPages=pages||new Map(['index.html','entry.js','entry.css','room.html','room.css','exit.html','exit.js','moderation.html','moderation.js','moderation.css'].map(name=>[name,fs.readFileSync(path.join(__dirname,'public',name))]));
  if(!staticPages.has('icons.js'))staticPages.set('icons.js',fs.readFileSync(path.join(__dirname,'../hall-audio/public/vendor/lucide.min.js')));
  const entries=new Map(),views=new Map(),bySid=new Map(),limits=new Map(),connections=new Set(),controls=new Set(),logouts=new Set();
  let backend,game,assetPaths,roomSocial,closed=false,publicOrigin=origin;
@@ -81,7 +81,9 @@ async function createHomeGateway({key,verify,lookup,createGame,origin,port=0,all
   try{
    grant=await authority.open(req.headers.authorization,{previousSid:prior?.sid,signal:abort.signal});
    if(closed||abort.signal.aborted||entry.revision!==revision||entries.get(id)!==entry)fail(409,'superseded');
+   const claim=JSON.parse(Buffer.from(grant.ticket.split('.')[0],'base64url').toString('utf8')),moderator=claim.role==='teacher'&&claim.moderator===true;
    if(prior&&!prior.closed&&prior.sid===grant.sid){
+    prior.moderator=moderator;
     res.setHeader('Set-Cookie',setCookie(VIEW,grant.sid,BASE+'view/'+prior.id+'/',Math.max(0,Math.floor((grant.validUntil-clock())/1000))));
     send(res,200,{ready:true,view:prior.id,leaseMs:Math.max(0,grant.validUntil-clock())});return;
    }
@@ -91,8 +93,7 @@ async function createHomeGateway({key,verify,lookup,createGame,origin,port=0,all
    if(response.statusCode!==303||cookies.length!==2)fail(503,'unavailable');
    const selected=cookies.filter(value=>/^sternenhueter_school=[a-f0-9]{40};/.test(value));if(selected.length!==1)fail(503,'unavailable');gameCookie=selected[0].split(';')[0];
    if(closed||abort.signal.aborted||entry.revision!==revision||entries.get(id)!==entry||!authority.valid(grant.sid))fail(409,'superseded');
-   const claim=JSON.parse(Buffer.from(grant.ticket.split('.')[0],'base64url').toString('utf8'));
-   const view={id:crypto.randomUUID(),sid:grant.sid,browser:browserId,entry,gameCookie,actor:mac('game-actor\n'+claim.sub),resources:new Set(),closed:false};
+   const view={id:crypto.randomUUID(),sid:grant.sid,browser:browserId,entry,gameCookie,moderator,actor:mac('game-actor\n'+claim.sub),resources:new Set(),closed:false};
    entry.view=view;views.set(view.id,view);bySid.set(view.sid,view);gameCookie=null;
    res.setHeader('Set-Cookie',setCookie(VIEW,view.sid,BASE+'view/'+view.id+'/',Math.max(0,Math.floor((grant.validUntil-clock())/1000))));
    send(res,200,{ready:true,view:view.id,leaseMs:Math.max(0,grant.validUntil-clock())});
@@ -107,7 +108,7 @@ async function createHomeGateway({key,verify,lookup,createGame,origin,port=0,all
  function apiAllowed(route,method){return APIS.get(route)?.includes(method);}
  async function proxy(req,res,view,route,url){
   if(req.headers.origin&&req.headers.origin!==publicOrigin||req.headers['sec-fetch-site']==='cross-site')fail(403,'wrong_origin');
-  const api=route.startsWith('/api/');if(api){if(!apiAllowed(route,req.method)||url.search)fail(404,'not_found');if(req.method==='POST'){sameOrigin(req);if(!/^application\/json(?:;|$)/i.test(req.headers['content-type']||''))fail(415,'invalid_request');}}
+  const api=route.startsWith('/api/');if(api){if(!apiAllowed(route,req.method)||url.search)fail(404,'not_found');if(route==='/api/moderation/chat'&&!view.moderator)fail(403,'not_allowed');if(req.method==='POST'){sameOrigin(req);if(!/^application\/json(?:;|$)/i.test(req.headers['content-type']||''))fail(415,'invalid_request');}}
   else if(req.method!=='GET'||!assetPaths.has(route)||url.search)fail(404,'not_found');
   if(route==='/game/room-social.js'){res.writeHead(200,{'Content-Type':'text/javascript; charset=utf-8'});res.end(roomSocial);return;}
   const body=req.method==='POST'?await collect(req,16384):undefined;
@@ -149,6 +150,12 @@ async function createHomeGateway({key,verify,lookup,createGame,origin,port=0,all
    if(target==='/'&&req.method==='GET'&&!url.search){page(res,'exit.html');return;}
    if(target==='/exit.js'&&req.method==='GET'&&!url.search){page(res,'exit.js');return;}
    if(target==='/zimmer/'&&req.method==='GET'){rootQuery(url);page(res,'room.html');return;}
+   if(target.startsWith('/moderation/')||target==='/lehrer/'){
+    if(!view.moderator)fail(403,'not_allowed');if(req.method!=='GET'||url.search)fail(404,'not_found');
+    if(target==='/lehrer/'){res.writeHead(303,{Location:BASE+'view/'+view.id+'/moderation/'});res.end();return;}
+    const name=target==='/moderation/'?'moderation.html':target.slice('/moderation/'.length);
+    if(!['moderation.html','moderation.js','moderation.css'].includes(name))fail(404,'not_found');page(res,name);return;
+   }
    await proxy(req,res,view,target,url);
   }catch(error){const safe=error instanceof GatewayError?error:new GatewayError(503,'unavailable');if(!res.headersSent){if(safe.status===429||safe.status===503)res.setHeader('Retry-After','1');send(res,safe.status,{error:safe.code});}else res.destroy();}
   finally{res.removeListener('close',cancel);}

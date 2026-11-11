@@ -9,10 +9,14 @@ use PDO;
 /** Canonical Sternenhueter ownership identities, read from current school records only. */
 final class SchoolIdentity
 {
-    public function __construct(private PDO $db, private array $moderators = [], private ?string $date = null)
+    public function __construct(private PDO $db, private array $moderators = [], private ?string $date = null, private array $administratorModerators = [])
     {
         foreach ($moderators as $subject) {
             if (!is_string($subject) || !preg_match('/^wvh:staff:[1-9][0-9]{0,15}$/D', $subject)) throw new \InvalidArgumentException('Invalid moderator configuration');
+        }
+        if (count($administratorModerators) > 1) throw new \InvalidArgumentException('Only one explicitly approved administrator exception is supported');
+        foreach ($administratorModerators as $subject) {
+            if (!is_string($subject) || !in_array($subject, $moderators, true)) throw new \InvalidArgumentException('Administrator exception must also be an explicit moderator');
         }
         if ($date !== null && !self::validDate($date)) throw new \InvalidArgumentException('Invalid school date');
     }
@@ -74,10 +78,12 @@ final class SchoolIdentity
         if (count($staff) !== 1) return null;
         $roles = [(int)$staff[0]['role_id']];
         foreach ($this->rows('SELECT role_id FROM user_role_memberships WHERE user_id=?', [$id]) as $row) $roles[] = (int)$row['role_id'];
-        if (!in_array(3, $roles, true)) return null;
+        $administratorException = in_array($subject, $this->administratorModerators, true) && (bool)array_intersect($roles, [1, 2]);
+        if (!in_array(3, $roles, true) && !$administratorException) return null;
         if (array_intersect($roles, [1, 2])) {
             $lock = $this->rows("SELECT value FROM settings WHERE `key`='emergency_lock_active'", []);
-            if (count($lock) !== 1 || (string)$lock[0]['value'] !== '0') return null;
+            // Only the approved exception uses Auth's inactive default before the first saved setting.
+            if (count($lock) > 1 || (!$lock && !$administratorException) || ($lock && (string)$lock[0]['value'] !== '0')) return null;
         }
         return $this->result($subject, 'teacher', null, null, in_array($subject, $this->moderators, true));
     }

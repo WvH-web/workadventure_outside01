@@ -26,7 +26,7 @@ function castleHomesContextEndpoint(string $configPath): void
         $result = $protocol->handle($raw, $headers, $now, static function(string $identifier) use ($config): ?array {
             $db = new PDO($config['db']['dsn'], $config['db']['user'], $config['db']['password'], [PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION, PDO::ATTR_EMULATE_PREPARES => false]);
             $db->exec('SET TRANSACTION READ ONLY'); $db->beginTransaction();
-            try { $identity = (new \CastleHomes\SchoolIdentity($db, $config['moderators']))->resolve($identifier); $db->commit(); return $identity; }
+            try { $identity = (new \CastleHomes\SchoolIdentity($db, $config['moderators'], null, $config['administratorModerators'] ?? []))->resolve($identifier); $db->commit(); return $identity; }
             catch (Throwable $error) { $db->rollBack(); throw $error; }
         });
         header('X-Castle-Homes-Signature: '.$result['signature']); echo $result['body'];

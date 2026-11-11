@@ -1,0 +1,6 @@
+<!doctype html>
+<html lang="de"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Gemeldete Zimmergespr&auml;che</title><link rel="stylesheet" href="./moderation.css"><script src="/castle-homes/icons.js" defer></script><script src="./moderation.js" type="module"></script></head>
+<body><header><div><h1>Zimmergespr&auml;che</h1><p id="status" role="status">Meldungen werden geladen ...</p></div><button id="refresh" class="icon" title="Aktualisieren" aria-label="Aktualisieren"><i data-lucide="refresh-cw"></i></button></header>
+<main><aside aria-label="Meldungen"><div class="filters" role="group" aria-label="Meldungsstatus"><button id="open" aria-pressed="true">Offen</button><button id="handled" aria-pressed="false">Erledigt</button></div><ol id="reports"></ol><p id="empty" hidden>Keine offenen Meldungen.</p></aside>
+<section id="detail" aria-label="Gemeldeter Ausschnitt"><p class="placeholder">Meldung ausw&auml;hlen</p></section></main>
+<dialog id="confirm" aria-label="Massnahme bestaetigen"><p id="confirm-text"></p><div class="confirm-actions"><button id="confirm-cancel" type="button">Abbrechen</button><button id="confirm-yes" type="button">Bestaetigen</button></div></dialog></body></html>

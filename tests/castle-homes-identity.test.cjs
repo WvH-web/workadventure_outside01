@@ -68,7 +68,7 @@ function phpRuntime(){
 
 test('real PHP SQL fixtures and request-replay/budget checks pass without school data or school writes',()=>{
  const php=phpRuntime(),identities=php('castle-homes-identity.php'),protocol=php('castle-homes-protocol.php');
- assert.equal(identities.passed,59);assert.equal(identities.realStudentRowsRead,false);assert.equal(identities.schoolWrites,false);
+ assert.equal(identities.passed,74);assert.equal(identities.realStudentRowsRead,false);assert.equal(identities.schoolWrites,false);
  assert.ok(protocol.passed>=20);assert.equal(protocol.schoolResolverNeverCalledForInvalidRequests,true);assert.equal(protocol.schoolWrites,false);
 });
 
@@ -87,13 +87,14 @@ test('separate PHP workers cannot accept the same signed context request twice',
  const base=['-n',...(process.platform==='win32'?['-d','extension_dir='+path.join(path.dirname(binary),'ext')]:[]),'-d','extension=pdo_sqlite'];
  const directory=await fs.promises.mkdtemp(path.join(require('node:os').tmpdir(),'castle-home-nonce-')),database=path.join(directory,'nonces.sqlite');
  try{
-  execFileSync(binary,[...base,'-r',"new PDO('sqlite:'.$argv[1]);",database],{timeout:10000});
+  // Initialize the shared store before racing requests, not SQLite's first WAL-mode conversion.
+  execFileSync(binary,[...base,'-r',"require $argv[2];new \\CastleHomes\\ContextProtocol(str_repeat('a',64),new PDO('sqlite:'.$argv[1]));",database,path.resolve(__dirname,'../ops/castle-homes/ContextProtocol.php')],{timeout:10000});
   const raw=JSON.stringify({identifier:'pupil@invalid.local'}),timestamp=String(now/1000),nonce='c'.repeat(40),headers={timestamp,nonce,signature:mac(timestamp+'\n'+nonce+'\n'+raw)};
   const input=JSON.stringify({raw,headers,now}),request=()=>new Promise((resolve,reject)=>{
    const child=execFile(binary,[...base,path.join(__dirname,'castle-homes-protocol.php'),'--nonce',database],{encoding:'utf8',timeout:15000},(error,stdout)=>{
-    if(error){reject(error);return;}try{resolve(JSON.parse(stdout));}catch(error){reject(error);}
+    if(error){error.fixtureOutput=stdout;reject(error);return;}try{resolve(JSON.parse(stdout));}catch(error){reject(error);}
    });child.stdin.on('error',reject);child.stdin.end(input);
   });
   const results=await Promise.all([request(),request()]);assert.equal(results.filter(row=>row.rejected===true).length,1);assert.equal(results.filter(row=>typeof row.body==='string').length,1);
- }finally{await fs.promises.rm(directory,{recursive:true,force:true});}
+ }finally{assert.equal(path.dirname(await fs.promises.realpath(directory)),await fs.promises.realpath(require('node:os').tmpdir()));assert.ok(path.basename(directory).startsWith('castle-home-nonce-'));await fs.promises.rm(directory,{recursive:true,force:true,maxRetries:10,retryDelay:100});}
 });

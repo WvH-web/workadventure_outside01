@@ -3,8 +3,10 @@
 Status on 2026-11-10: authority, protected gateway and browser integration now
 include a **published two-test-account pilot**, not general school-room access.
 The signed context endpoint and separate persistent pilot database are installed.
-No published map action, portal login/logout hook, private-room media or moderation
-permission is activated. The colleague preview remains fictional and unchanged.
+No published map action, portal login/logout hook or private-room media is
+activated. One explicitly approved administrator now has report moderation,
+without changing the general school account role. The colleague preview remains
+fictional and unchanged.
 The full school-castle goal remains open.
 
 An isolated VPS runtime preflight also passes with ordinary Microsoft sessions
@@ -315,16 +317,65 @@ deadline once before a later candidate passed. This remains a release/performanc
 concern, not a 400-user approval; optimize delivery without changing visible
 pixels and rerun cold desktop/mobile entry before broader activation.
 
-Latest local regression: 437 Node cases, 436 passed, zero failed, one existing
-optional widget-browser skip. A single named moderator request is being resolved
-privately against fresh staff roles. No moderation permission was silently added.
+## Sole Administrator Moderation
+
+Release `ab1272f9dd94c61e` is live only in the isolated room pilot. The two approved
+synthetic pupils retain their existing access; one separately approved canonical
+staff subject is the entire moderator allowlist. Its current administrator role
+is checked in the database on every protected operation. An ordinary teacher or
+administrator role, token tag, browser setting or room configuration cannot grant
+moderation. No school account role or other school record was written.
+
+The selected administrator exception follows the portal's inactive default when
+the emergency setting has never been saved. An active, malformed or duplicate
+setting still denies access; database errors, inactive staff and ambiguous email
+matches also fail closed. The earlier non-exception guards remain unchanged.
+Seventy-four real SQL-derived fixtures cover the narrow exception and denials.
+
+The protected view at `/castle-homes/#moderation` lists only submitted reports and
+their already-delivered context, not a transcript of every private conversation.
+It supports resolving a report, a 15-minute sender writing pause and a 15-minute
+room-visit closure. Commands use the original report engine and fresh server
+moderator checks. Sandbox-compatible confirmation dialogs require no additional
+browser privileges. Untrusted notes are rendered as plain text.
+
+An isolated Chrome 157 browser test creates three synthetic reports from messages
+actually received by a second participant. Desktop/mobile layout, all commands,
+the sender restriction, guest removal and permission withdrawal pass. It uses no
+real pupil conversations or impersonated staff login. Both ordinary Microsoft
+pupil states separately pass the real public moderation denial without request
+interception. The selected real staff identity passes the signed public school
+context canary; its first ordinary Microsoft browser login is not yet tested.
+
+Deployment preserved the initial immutable release and receipt. Four changed
+pilot files have private byte-exact rollback snapshots and a consistent SQLite
+recovery copy. Only the room pilot restarted. Fourteen Linux gateway/service
+cases, 74 SQL identity fixtures and 21 protocol fixtures pass. All seven genuine
+public TLS/WebSocket/lease regression cases pass again. The historical castle
+audit validates the explicit transition without rewriting any old manifest;
+Nginx, all other services, school roles, maps and WAMs remain unchanged. Private
+receipt: `/opt/wvh-castle-homes/private/moderation-deployment.json`.
+
+A post-upgrade room-art browser check again exceeded the 30-second cold-load
+deadline. Public API/moderation acceptance is not a claim that this broader
+rendering/performance concern is solved; the 34 MB asset optimization remains open.
+A later run rendered the desktop room in about 17 seconds, then exposed a test
+toggle race on mobile: two unconditional clicks could close the asynchronously
+opened conversation panel. The harness now waits for the actual room state and
+opens the panel only when it is hidden; it does not alter the page's state.
+
+Local regression: 439 Node cases, 438 passed, zero failed, one existing optional
+widget-browser skip. The concurrent PHP nonce check initializes its shared store
+before racing signed requests, rather than racing SQLite's first WAL conversion.
+It still requires exactly one acceptance and one replay denial from two workers.
 
 Still required before school activation: publish the reviewed gateway with its
 broader approved admission policy, independent immutable game release and durable
 school-room operational lifecycle;
 verify native school visits and invitation withdrawal/recovery;
 provide correctly isolated, voluntary room voice without leaking into unrelated
-WorkAdventure table chats; approve explicit moderation; test normal Microsoft
+WorkAdventure table chats; test the approved moderator's ordinary Microsoft
+login; test normal Microsoft
 school entry, logout/account switching, desktop/mobile rendering, focus,
 reconnect/restart and backup/restore. Only then connect the preview castle's
 residential entrance. Old castle/Village and colleague test data stay untouched.

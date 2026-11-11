@@ -3,7 +3,7 @@ const test=require('node:test'),assert=require('node:assert/strict'),http=requir
 const {setTimeout:delay}=require('node:timers/promises');
 const {createHomeGateway,project,cookie}=require('../ops/castle-homes/gateway.cjs');
 const {GatewayError}=require('../ops/hall-audio/errors.cjs');
-const {client}=require('../tools/check-castle-home-gateway.cjs');
+const {client}=require('../tools/castle-home-test-client.cjs');
 const key='c'.repeat(64),pupil=id=>({sub:'wvh:student:'+id,role:'student',grade:3,age:9,moderator:false,read_only:false});
 const deferred=()=>{let resolve;const promise=new Promise(done=>resolve=done);return {promise,resolve};};
 async function fixture(run){
@@ -77,4 +77,13 @@ test('withdrawal closes a prior view and no alternate route or query parameter c
  await a.open();profiles.set('a@invalid.local',null);
  const denied=await a.request('session',{clientId:a.clientId,requestId:crypto.randomUUID()});assert.equal(denied.status,403);assert.equal((await a.api('bedroom')).status,401);
  for(const route of ['view/'+a.view+'/auth/bridge','view/'+a.view+'/api/state','view/'+a.view+'/api/bedroom?token=anything','../school/server.cjs'])assert.equal((await a.request(route)).status===200,false);
+}));
+test('moderation pages and API require the fresh private moderator capability and the correct browser binding',async()=>fixture(async({a,b,profiles})=>{
+ await a.open();await b.open();assert.equal((await a.request('view/'+a.view+'/moderation/')).status,403);assert.equal((await a.api('moderation/chat')).status,403);
+ profiles.set('a@invalid.local',{sub:'wvh:staff:70',role:'teacher',age:null,grade:null,moderator:true,read_only:false});await a.open();
+ const page=await a.request('view/'+a.view+'/moderation/');assert.equal(page.status,200);assert.match(page.value,/id="reports"/);
+ assert.equal((await a.request('view/'+a.view+'/moderation/moderation.js')).status,200);assert.equal((await a.api('moderation/chat')).status,200);
+ assert.equal((await b.request('view/'+a.view+'/moderation/')).status,401);
+ profiles.set('a@invalid.local',{sub:'wvh:staff:70',role:'teacher',age:null,grade:null,moderator:false,read_only:false});await a.renew();
+ assert.equal((await a.request('view/'+a.view+'/moderation/')).status,403);assert.equal((await a.api('moderation/chat')).status,403);
 }));

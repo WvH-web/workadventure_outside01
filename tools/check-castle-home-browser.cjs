@@ -31,7 +31,8 @@ async function main(){
    assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth>innerWidth),false);
    assert.equal(await frame.locator('body').evaluate(body=>body.scrollWidth>innerWidth+1),false,'Room content must fit the frame');
    await frame.locator('#walk-mode').click();await frame.locator('#edit-mode').click();
-   await frame.locator('.social-tab').click();await frame.locator('.social-tab').click();
+   await frame.locator('.social-status').filter({hasText:/Dein Zimmer.*1 von 8/}).waitFor();
+   if(!await frame.locator('.room-social-panel').isVisible())await frame.locator('.social-tab').click();
    await frame.locator('.room-social-panel').waitFor({state:'visible'});
    await page.screenshot({path:path.join(output,who==='a'?'desktop.private.png':'mobile.private.png'),fullPage:true});
    if(who==='b'){

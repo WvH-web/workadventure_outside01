@@ -5,6 +5,8 @@ class HomePage{
  constructor(){
   try{this.clientId=sessionStorage.getItem('castle-home-client-v1');if(!UUID.test(this.clientId)){this.clientId=crypto.randomUUID();sessionStorage.setItem('castle-home-client-v1',this.clientId);}}catch{this.clientId=crypto.randomUUID();}
   this.active=true;this.epoch=0;this.invitation=new URL(location.href).searchParams.get('besuch');if(!/^[A-F0-9]{10}$/.test(this.invitation||''))this.invitation=null;
+  this.moderation=location.hash==='#moderation';if(this.moderation){document.title='Gemeldete Zimmergespraeche';document.querySelector('h1').textContent='Gemeldete Zimmergespraeche';}
+  window.addEventListener('hashchange',()=>{if(this.moderation!==(location.hash==='#moderation'))location.reload();});
   $('retry').onclick=()=>{this.active=true;void this.authorize();};$('leave').onclick=()=>this.leave();
   window.addEventListener('storage',event=>{if(event.key==='authToken'||event.key===null){this.sync();if(this.active)void this.authorize();}});
   window.addEventListener('online',()=>{if(this.active)void this.authorize();});window.addEventListener('offline',()=>this.clear('Die Verbindung wurde unterbrochen.'));
@@ -27,15 +29,17 @@ class HomePage{
    const value=await response.json();if(this.closed||!this.active||epoch!==this.epoch||requestId!==this.requestId||token!==this.token())return;
    if(!response.ok)throw Object.assign(Error(),{code:value.error});if(value.ready!==true||!UUID.test(value.view)||!Number.isFinite(value.leaseMs)||value.leaseMs<=0||value.leaseMs>45000)throw Error('Invalid room response');
    const remaining=started+value.leaseMs-Date.now();if(remaining<=0)throw Error('Expired room response');
-   if(this.view!==value.view){this.frame?.remove();this.frame=document.createElement('iframe');this.frame.title='Dein Schlosszimmer';this.frame.allow='clipboard-write';
+   const destination=BASE+'view/'+value.view+(this.moderation?'/moderation/':'/zimmer/'+(this.invitation?'?besuch='+this.invitation:''));
+   if(this.moderation&&this.view!==value.view){const check=await fetch(destination,{credentials:'same-origin',cache:'no-store',signal:controller.signal});await check.body?.cancel();if(!check.ok){void this.release(value.view,requestId);throw Object.assign(Error(),{code:'not_allowed'});}}
+   if(this.view!==value.view){this.frame?.remove();this.frame=document.createElement('iframe');this.frame.title=this.moderation?'Gemeldete Zimmergespraeche':'Dein Schlosszimmer';this.frame.allow='clipboard-write';
     this.frame.setAttribute('sandbox','allow-scripts allow-same-origin allow-forms');this.frame.referrerPolicy='no-referrer';
-    this.frame.src=BASE+'view/'+value.view+'/zimmer/'+(this.invitation?'?besuch='+this.invitation:'');$('content').append(this.frame);this.view=value.view;}
+    this.frame.src=destination;$('content').append(this.frame);this.view=value.view;}
    $('message').hidden=true;$('connection').textContent='Mit deinem Schulzugang verbunden';this.failures=0;
    clearTimeout(this.expiry);this.expiry=setTimeout(()=>{this.clear(messages.session_expired);if(this.active)void this.authorize();},remaining);
    this.renew=setTimeout(()=>void this.authorize(),Math.min(20000,Math.max(1000,remaining/2)));
   }catch(error){
    if(this.closed||!this.active||epoch!==this.epoch||requestId!==this.requestId||token!==this.token())return;
-   this.clear(messages[error.code]||messages.unavailable);this.renew=setTimeout(()=>void this.authorize(),Math.min(15000,1500*2**Math.min(this.failures=(this.failures||0)+1,3)));
+   this.clear(messages[error.code]||messages.unavailable);if(error.code==='not_allowed')this.active=false;if(this.active)this.renew=setTimeout(()=>void this.authorize(),Math.min(15000,1500*2**Math.min(this.failures=(this.failures||0)+1,3)));
   }finally{clearTimeout(timeout);if(this.controller===controller)this.controller=null;}
  }
  release(view,requestId){if(!requestId)return Promise.resolve();return fetch(BASE+'leave',{method:'POST',credentials:'same-origin',keepalive:true,headers:{'Content-Type':'application/json'},body:JSON.stringify({clientId:this.clientId,requestId,view:view||null})}).catch(()=>{});}

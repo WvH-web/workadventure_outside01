@@ -60,8 +60,8 @@ function castleHomesIdentityFixtures(PDO $database): array
         ['sub'=>$sub,'role'=>$role,'grade'=>$grade,'age'=>$age,'moderator'=>$moderator,'read_only'=>false];
     $pupil = $identity('wvh:student:7','student',7,13); $family = $identity('wvh:family:11','parent'); $teacher = $identity('wvh:staff:70','teacher');
     $checks = [];
-    $check = static function(string $name, array $set, string $email, ?array $expected, array $moderators=[]) use ($database,&$checks): void {
-        $source = new \CastleHomes\SchoolIdentity(new CastleHomesFixturePDO($database,$set),$moderators,'2026-11-10');
+    $check = static function(string $name, array $set, string $email, ?array $expected, array $moderators=[], array $administratorModerators=[]) use ($database,&$checks): void {
+        $source = new \CastleHomes\SchoolIdentity(new CastleHomesFixturePDO($database,$set),$moderators,'2026-11-10',$administratorModerators);
         $actual = $source->resolve($email);
         if ($actual !== $expected) throw new RuntimeException('Identity fixture failed: '.$name);
         $checks[] = $name;
@@ -107,6 +107,21 @@ function castleHomesIdentityFixtures(PDO $database): array
     $check('additional-teacher-role-is-fresh',$additional,'teacher@invalid.local',$teacher);
     $additional['settings']['rows'][0]['value']='1';$check('emergency-lock-stops-privileged-teacher',$additional,'teacher@invalid.local',null);
     $additional['settings']['rows']=[];$check('missing-emergency-setting-fails-closed',$additional,'teacher@invalid.local',null);
+    foreach ([1,2] as $role) $check('explicit-single-admin-exception-'.$role,$change('users',['role_id'=>$role]),'teacher@invalid.local',$identity('wvh:staff:70','teacher',null,null,true),['wvh:staff:70'],['wvh:staff:70']);
+    $admin=$change('users',['role_id'=>1]);
+    $check('admin-moderator-list-alone-is-insufficient',$admin,'teacher@invalid.local',null,['wvh:staff:70']);
+    $check('another-allowlisted-admin-does-not-authorize-this-account',$admin,'teacher@invalid.local',null,['wvh:staff:71'],['wvh:staff:71']);
+    $check('exception-needs-a-current-admin-or-teacher-role',$change('users',['role_id'=>4]),'teacher@invalid.local',null,['wvh:staff:70'],['wvh:staff:70']);
+    $inactive=$admin;$inactive['users']['rows'][0]['is_active']=0;$check('exception-does-not-revive-inactive-staff',$inactive,'teacher@invalid.local',null,['wvh:staff:70'],['wvh:staff:70']);
+    foreach (['1','false',null] as $index=>$lock){$locked=$admin;$locked['settings']['rows'][0]['value']=$lock;$check('admin-exception-respects-emergency-lock-'.$index,$locked,'teacher@invalid.local',null,['wvh:staff:70'],['wvh:staff:70']);}
+    $missing=$admin;$missing['settings']['rows']=[];$check('missing-lock-setting-matches-portal-inactive-default',$missing,'teacher@invalid.local',$identity('wvh:staff:70','teacher',null,null,true),['wvh:staff:70'],['wvh:staff:70']);
+    $check('missing-lock-setting-does-not-grant-other-admins',$missing,'teacher@invalid.local',null);
+    $duplicate=$admin;$duplicate['settings']['rows'][]=$duplicate['settings']['rows'][0];$check('admin-exception-rejects-ambiguous-lock-setting',$duplicate,'teacher@invalid.local',null,['wvh:staff:70'],['wvh:staff:70']);
+    $duplicate=$admin;$duplicate['users']['rows'][]=array_replace($duplicate['users']['rows'][0],['id'=>71]);$check('admin-exception-does-not-guess-duplicate-email',$duplicate,'teacher@invalid.local',null,['wvh:staff:70'],['wvh:staff:70']);
+    foreach ([[[],['wvh:staff:70']],[['wvh:staff:70','wvh:staff:71'],['wvh:staff:70','wvh:staff:71']]] as $index=>[$mods,$exceptions]){
+        $rejected=false;try{new \CastleHomes\SchoolIdentity(new CastleHomesFixturePDO($database,$tables),$mods,'2026-11-10',$exceptions);}catch(\InvalidArgumentException){$rejected=true;}
+        if(!$rejected)throw new RuntimeException('Invalid administrator exception accepted');$checks[]='invalid-admin-exception-configuration-'.$index;
+    }
     $source = new \CastleHomes\SchoolIdentity(new CastleHomesFixturePDO($database,$tables),[],'2026-11-10');
     foreach (['wvh:student:0','wvh:staff:070','wvh:family:11?role=teacher','wvh:teacher:70'] as $subject) {
         if ($source->lookup($subject)!==null) throw new RuntimeException('Invalid subject accepted');

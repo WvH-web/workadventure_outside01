@@ -8,15 +8,16 @@ const SOURCE='/opt/wvh-sterne-kollegium/releases/20261109T191624Z';
 const MANIFEST_SHA='8718d84cb8b6ef283a08075598f1d3115574e38964247378e61f08ad53ce8aa6';
 const sha=raw=>crypto.createHash('sha256').update(raw).digest('hex');
 function configuration(value){
- const keys=['version','mode','origin','port','source','platformSecret','contextKey','bridgeKey','allowedSubjects'];
- if(!value||Array.isArray(value)||Object.keys(value).sort().join(',')!==keys.sort().join(',')||value.version!==1||value.mode!=='pilot'||value.origin!==ORIGIN||value.port!==PORT||value.source!==SOURCE||
+ const keys=['version','mode','origin','port','source','platformSecret','contextKey','bridgeKey','allowedSubjects','moderatorSubjects'];
+ if(!value||Array.isArray(value)||Object.keys(value).sort().join(',')!==keys.sort().join(',')||value.version!==2||value.mode!=='pilot'||value.origin!==ORIGIN||value.port!==PORT||value.source!==SOURCE||
   typeof value.platformSecret!=='string'||!value.platformSecret||!['contextKey','bridgeKey'].every(key=>/^[a-f0-9]{64}$/.test(value[key]||''))||new Set([value.platformSecret,value.contextKey,value.bridgeKey]).size!==3||
-  !Array.isArray(value.allowedSubjects)||value.allowedSubjects.length!==2||new Set(value.allowedSubjects).size!==2||value.allowedSubjects.some(id=>typeof id!=='string'||!/^wvh:student:[1-9][0-9]{0,15}$/.test(id)))throw Error('Invalid isolated pilot configuration');
- return Object.freeze({...value,allowedSubjects:Object.freeze([...value.allowedSubjects])});
+  !Array.isArray(value.allowedSubjects)||value.allowedSubjects.length!==2||new Set(value.allowedSubjects).size!==2||value.allowedSubjects.some(id=>typeof id!=='string'||!/^wvh:student:[1-9][0-9]{0,15}$/.test(id))||
+  !Array.isArray(value.moderatorSubjects)||value.moderatorSubjects.length>1||value.moderatorSubjects.some(id=>typeof id!=='string'||!/^wvh:staff:[1-9][0-9]{0,15}$/.test(id)))throw Error('Invalid isolated pilot configuration');
+ return Object.freeze({...value,allowedSubjects:Object.freeze([...value.allowedSubjects]),moderatorSubjects:Object.freeze([...value.moderatorSubjects])});
 }
-function pilotLookup(lookup,subjects){
- const allowed=new Set(subjects);
- return async identifier=>{const identity=await lookup(identifier);return identity?.role==='student'&&identity.read_only===false&&allowed.has(identity.sub)?identity:null;};
+function pilotLookup(lookup,subjects,moderators=[]){
+ const allowed=new Set(subjects),approved=new Set(moderators);
+ return async identifier=>{const identity=await lookup(identifier);return identity?.read_only===false&&(identity.role==='student'&&allowed.has(identity.sub)||identity.role==='teacher'&&identity.moderator===true&&approved.has(identity.sub))?identity:null;};
 }
 async function validateRuntimeFiles(root,files,{owner=0}={}){
  if(!files||Array.isArray(files)||Object.keys(files).length===0)throw Error('Reviewed runtime files required');
@@ -37,7 +38,7 @@ async function main(){
  const state=await fs.stat(process.env.STATE_DIRECTORY);if(!state.isDirectory()||state.uid!==process.getuid()||(state.mode&0o077)!==0)throw Error('Private persistent room directory required');
  const dbPath=path.join(process.env.STATE_DIRECTORY,'pilot.sqlite');
  const existing=await fs.lstat(dbPath).catch(error=>{if(error.code!=='ENOENT')throw error;return null;});if(existing&&!existing.isFile())throw Error('Room database cannot be redirected');
- const lookup=pilotLookup(createIdentityLookup({key:config.contextKey}),config.allowedSubjects);
+ const lookup=pilotLookup(createIdentityLookup({key:config.contextKey}),config.allowedSubjects,config.moderatorSubjects);
  const gateway=await createHomeGateway({key:config.bridgeKey,origin:config.origin,port:config.port,verify:createSchoolVerifier(config.platformSecret,{identityTtl:0}),lookup,
   createGame:await gameFactory(config.source,{dbPath,maxPlayers:8}),trustedProxyIps:['127.0.0.1','::1']});
  let stopping=false;
