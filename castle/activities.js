@@ -8,6 +8,7 @@ const gamesUrl='https://together.deine-schule.com/castle-school/games';
 const chessUrl='https://together.deine-schule.com/castle-chess/';
 const artUrl='https://together.deine-schule.com/castle-art/';
 const pianoUrl='https://together.deine-schule.com/castle-piano/';
+const museumTourUrl='https://together.deine-schule.com/castle-content/collection.html?kind=museum&shared=table';
 const allowedExternal=new Set([
   'https://musiclab.chromeexperiments.com/Song-Maker/',
   'https://eyes.nasa.gov/apps/solar-system/',
@@ -22,10 +23,11 @@ export function activitySettings(object){
   const story=['story.html','story.html?v=20261108-outdoors1'].some(page=>url.href===new URL(page,ownBase).href);
   const games=url.href===new URL('hall-games.html',ownBase).href||url.href===gamesUrl;
   const collection=['collection.html?kind=museum','collection.html?kind=music','expeditions.html'].some(page=>url.href===new URL(page,ownBase).href);
+  const museumTour=url.href===museumTourUrl;
   const character=characters.some(c=>url.href===new URL('characters.html?npc='+c.id,ownBase).href);
-  if(!story&&!tableStory&&!games&&!chessTable&&url.href!==chessUrl&&url.href!==artUrl&&url.href!==pianoUrl&&!collection&&!character&&!allowedExternal.has(url.href))throw Error('Unknown castle activity destination');
-  return {id:p.castleActivityId,label:p.castleActivityLabel,url:games?gamesUrl:url.href,api:(story||tableStory)&&p.castleActivityApi===true,
-    autoOnSit:p.castleActivityOnSit===true&&(story||tableStory||chessTable||url.href===chessUrl||url.href===artUrl||url.href===pianoUrl),
+  if(!story&&!tableStory&&!games&&!chessTable&&url.href!==chessUrl&&url.href!==artUrl&&url.href!==pianoUrl&&!collection&&!museumTour&&!character&&!allowedExternal.has(url.href))throw Error('Unknown castle activity destination');
+  return {id:p.castleActivityId,label:p.castleActivityLabel,url:games?gamesUrl:url.href,api:(story||tableStory||museumTour)&&p.castleActivityApi===true,
+    autoOnSit:p.castleActivityOnSit===true&&(story||tableStory||chessTable||museumTour||url.href===chessUrl||url.href===artUrl||url.href===pianoUrl),
     group:p.castleActivityGroup||null};
 }
 export class CastleActivities{

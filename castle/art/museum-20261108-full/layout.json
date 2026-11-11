@@ -4,7 +4,7 @@
     "height": 22,
     "tileSize": 32,
     "avatarPixels": 32,
-    "revision": "20261109-actions2",
+    "revision": "20261111-tour1",
     "entries": {
       "start": [
         13,
@@ -326,9 +326,9 @@
       {
         "id": "museum-collection",
         "group": "buchclub",
-        "label": "Unsere Ausstellung",
-        "url": "https://together.deine-schule.com/castle-content/collection.html?kind=museum",
-        "api": false
+        "label": "Gemeinsame Ausstellung",
+        "url": "https://together.deine-schule.com/castle-content/collection.html?kind=museum&shared=table",
+        "api": true
       },
       {
         "id": "museum-tour",

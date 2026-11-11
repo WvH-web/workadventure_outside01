@@ -312,7 +312,7 @@ Kameraproben bestehen. Alte Aufnahmen enden; neue Aufnahme bleibt freiwillig.
 Die anschliessende native Schloss-/Tischtonprobe besteht ebenfalls. Nur der
 Zimmerpilot wurde kurz gestartet, nicht WorkAdventure oder das alte Schloss.
 
-Die aktuelle lokale Gesamtsuite umfasst 479 Node-Faelle: 477 bestanden, keine
+Die aktuelle isolierte lokale Gesamtsuite umfasst 488 Node-Faelle: 486 bestanden, keine
 Fehler oder Abbrueche, zwei dokumentierte Auslassungen. Der vorangehende
 Zimmer-Meilenstein besteht zudem mit 62 Python- und 41 Linux-Faellen.
 Das sind weder eine echte Administrator-Anmeldeprobe noch eine Freigabe fuer
@@ -325,6 +325,16 @@ abschliessende native Kartenfreigabe. Der Gesamtausbau ist nicht abgeschlossen.
 Das bisherige Schloss, andere Karten und das Kollegiumsprojekt bleiben
 unveraendert. Einzelheiten und Nachweise:
 `ops/castle-homes/README.md`.
+
+## Gemeinsame Museumsrunde in Arbeit
+
+Eine gemeinsame Stationsauswahl am Ausstellungstisch ist implementiert und
+lokal geprueft, aber noch nicht live aktiviert. Sie uebernimmt den vorhandenen
+Verwaltungskatalog und synchronisiert nur die ausgewaehlte Station, nicht die
+Bedienung oder Filmposition fremder Inhalte. Der naechste Abnahmeschritt ist
+eine getrennte native Zweipersonenprobe ohne ersetzte Netzwerkantworten.
+Der bisherige Museumseingang bleibt bis dahin unveraendert. Einzelheiten:
+`ACTIVITIES.md`.
 
 ## Geplante Portal-Aushaenge
 

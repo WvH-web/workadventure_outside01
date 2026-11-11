@@ -1,5 +1,40 @@
 # Aktivitaeten im neuen Schloss
 
+## Gemeinsame Museumsrunde in Vorbereitung
+
+Der neue Ausstellungstisch bietet eine gemeinsam ausgewaehlte Station aus dem
+bestehenden oeffentlichen Museumskatalog. Die Auswahl oeffnet beim Hinsetzen;
+spaetere Teilnehmer uebernehmen denselben Beitrag. Beide Seiten koennen zur
+Galerie zurueckkehren oder einen anderen freigegebenen Beitrag auswaehlen.
+Das synchronisiert die Station, nicht die Filmposition, PDF-Seite oder den
+Scrollstand einer fremden Webseite. Die vorhandenen Tischgespraeche bleiben
+zustaendig fuer den Ton.
+
+Die Auswahl reist als kurzlebiger Zustand mit den sitzenden Teilnehmern.
+Sitzbesuch und gemeinsame Tischrunde begrenzen ihre Gueltigkeit. Wer aufsteht,
+beendet nicht die Runde der anderen; nach dem letzten Aufstehen beginnt die
+naechste Runde ohne alte Auswahl. Manuelles Schliessen des Seitenfensters
+loescht die Auswahl nicht, solange noch jemand an derselben Runde sitzt.
+Nur bekannte `show1` bis `show13` werden geteilt, keine Zieladressen, Namen,
+Geschichten oder Schulprofile. Bei gleichzeitiger Auswahl gibt es eine
+deterministische Zusammenfuehrung. Dies ist eine freiwillige gemeinsame
+Auswahl, kein gegen absichtliche Manipulation geschuetzter Fuehrungsmodus.
+
+Neun gezielte Zustandspruefungen und neun bestehende Galerie-Ansichten bestehen.
+Die Gesamtsuite besteht isoliert mit 488 Faellen: 486 bestanden, zwei bereits
+dokumentierte Auslassungen. Ein parallel zur echten Browserprobe ausgefuehrter
+400-Anfragen-Test erreichte sein Zeitlimit; ein weiterer Lauf erhielt 16
+Ueberlastantworten. Die Wiederholung ohne konkurrierende Browserprobe besteht
+unveraendert. Daraus folgt keine Freigabe fuer 400 echte Teilnehmer.
+
+Die native Browser-Substitution ist noch keine Abnahme: Sie ersetzte die Karte,
+aber nicht das in der opaken Skriptumgebung geladene alte Modul; deshalb wurde
+die neue Aktivitaet dort nicht gestartet. Auch das testweise Blockieren von
+Service Workern aenderte das nicht. Als naechstes folgt ein eigener geschuetzter
+Testraum mit versionierten Dateien und danach eine Probe ohne Substitution.
+Der bisherige Museumseingang und das alte Schloss sind noch nicht umgestellt.
+Quellen: `tour-state.js`, `collection.js`, `tools/check-castle-museum-tour.cjs`.
+
 ## Zusaetzlicher Innenausbau
 
 Die Fassung `20261108-expansion1` ergaenzt Oberstufe, Spielesaal, Museum,

@@ -22,7 +22,7 @@ async function main(){
       const page=await browser.newPage({viewport});page.on('pageerror',e=>errors.push(e.message));
       if(!live)await page.route(hosted+'**',route=>{
         const name=new URL(route.request().url()).pathname.slice('/castle-content/'.length);
-        const types={'collection.html':'text/html','collection.css':'text/css','collection.js':'text/javascript','catalog.js':'text/javascript','vendor/lucide.min.js':'text/javascript'};
+        const types={'collection.html':'text/html','collection.css':'text/css','collection.js':'text/javascript','catalog.js':'text/javascript','tour-state.js':'text/javascript','vendor/lucide.min.js':'text/javascript'};
         if(!Object.hasOwn(types,name))return route.fulfill({status:404,body:''});
         return route.fulfill({contentType:types[name],headers:{'x-frame-options':'SAMEORIGIN'},body:fs.readFileSync(path.join(root,'castle',name))});
       });
