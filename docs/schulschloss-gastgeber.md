@@ -7,7 +7,9 @@ Die Erweiterung ist implementiert und lokal geprueft, aber noch nicht live.
 ausgelassen. Die getrennte Zweibrowserprobe prueft 980, 390 und 320 Pixel.
 Die bisherigen Spielseiten/PIN-Eingaben bestehen ebenfalls. Ihre Anbieter-
 Antworten sind dabei synthetisch ersetzt, nicht als echte Partien getestet.
-Native Tischtonprobe, isolierte Linux-Vorpruefung und kontrollierte
+Die isolierte Linux-Vorpruefung besteht inzwischen mit 33 Faellen auf Node
+24.22.2, ohne Netz, Schulschluessel oder echte Schuldaten. Alle 91 lokalen
+Python-Betriebsfaelle bestehen ebenfalls. Native Tischtonprobe und kontrollierte
 Veroeffentlichung stehen noch aus. Der Benutzer hat den kurzen Neustart nur
 des Runden-/Schuldienstes am 11. November ausdruecklich genehmigt.
 
@@ -28,7 +30,9 @@ des Runden-/Schuldienstes am 11. November ausdruecklich genehmigt.
 
 Die Rundenliste zeigt den Stand als `Gastgeber bestaetigt` beziehungsweise
 `Gastgeber gesucht`. Das Spielefenster bleibt im selben Seitenfenster mit der
-Liste verbunden. Die bisherigen normalen Spielstarts ausserhalb einer
+Liste verbunden. Der Rueckweg dorthin wird nur beim Einstieg aus diesem
+Rundenfenster angeboten; ein direktes Spielefenster behauptet keinen eigenen
+Zugriff auf die Kartenschnittstelle. Die bisherigen normalen Spielstarts ausserhalb einer
 zugeordneten Gastgeberrunde bleiben erhalten. Innerhalb einer zugeordneten
 Runde werden Mitspielen/Kopieren frisch gegen deren Bestaetigung geprueft;
 der normale gespeicherte-Link-Start wird dort nicht als Ersatz angeboten.
@@ -70,7 +74,18 @@ Aktualisieren, Linkwechsel, Nachfolger, Navigation im gleichen Seitenfenster,
 Kontowechsel und abgelaufene Anmeldungen. Fehlversuche bleiben in eigenen
 D:-Verzeichnissen erhalten, erfolgreiche Berichte werden nicht daruebergelegt.
 
+Die abschliessende Linux-Vorpruefung des Kandidaten `3119b0c32934a5f1` besteht
+am 11. November um 17:11 UTC. Vorher und nachher bestaetigt die volle
+Server-Bestandspruefung gesunde bisherige Dienste einschliesslich der bereits
+akzeptierten Runden-Wiederverbindung. Der Testbehaelter ist entfernt; weder
+Karten noch Schulregeln oder laufende Dienstprozesse wurden geaendert.
+Der vorherige Kandidat und seine eigene Linux-Pruefung bleiben als Verlauf
+erhalten. Auch die vollstaendige HTML-Navigation in beide Richtungen wird
+isoliert ohne Ersetzen der echten Mitgliedschaftskennung geprueft.
+
 Quellen: `ops/castle-school/rounds.cjs`, `server.cjs`, `public/games.js`,
 `public/rounds.js`; Tests: `tests/castle-game-host*.test.cjs`,
 `tools/check-castle-game-host-browser.cjs` und die bestehende Spiele-Browserprobe.
+Linux-/Paketpruefung: `tools/check-castle-game-host-linux.py`,
+`tests/test_castle_game_host_linux.py` und `tools/package-castle-game-host-tests.cjs`.
 Dies ist keine neue Lastabnahme und keine Fertigmeldung des gesamten Schlosses.

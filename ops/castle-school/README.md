@@ -736,3 +736,75 @@ and failed browser evidence is retained, not treated as disposable scratch.
 This accepts bounded recovery of voluntary round registrations, not the full
 castle or a 400-person real Microsoft/media workload. External game-host link
 lifecycle, broad room admission and other remaining scope are still open.
+
+### Explicit External Game Hosts: Preflight Only
+
+The new source implements an explicit, membership-bound game-host confirmation
+for an ordinary conversation round. It references the existing central offer,
+revision and exact displayed target, never a second link database. Departure,
+expiry, explicit ending, same-account reentry or a central link save require a
+new confirmation. Other conversation members remain registered and are not
+automatically declared a successor host. Launch checks the actual membership,
+fresh school profile, current offer rule and exact current URL/revision. Public
+round summaries contain no external target, other member lease or identity;
+restricted games expose neither a title nor resource id. Missing catalogs do
+not extend game-host permission or stop an otherwise valid conversation.
+
+Eighteen added state/HTTP tests and the isolated two-browser fixture pass,
+including delayed older catalog replies, 980/390/320-pixel views, the existing
+PIN updater, a changed link, explicit successor, expiry and account switching.
+The old game-page browser suite also passes, including wrong PIN, provider/path
+restriction, dirty input preservation and permission loss. External provider
+responses are synthetic in these tests; no real game session is claimed.
+Source checkpoints are `43c6be3` and navigation correction `debe1cd`.
+
+The candidate school archive is
+`3119b0c32934a5f18d810571810dfdd2adf8e03594f677d6eaa20552f1cf2736`.
+The pinned, network-disabled Linux run passes 33 tests on the actual unchanged
+`v24.22.2` service image with 0.5 CPU/256 MiB, no real school keys, and no
+school/provider access. Its container is removed. The full existing-platform
+audit passes before and after, last at 17:11:03 UTC on 2026-11-11, with accepted
+round recovery still verified. Root-private receipt:
+`game-host-linux-3119b0c32934a5f1-attempt-1.json`. Four operator cases cover
+archive/descriptor integrity, traversal/symlinks and refusal to overwrite
+retained candidate bytes. Including the separate current-navigation check below,
+the full local Python suite passes 91 cases.
+
+The source archive, descriptor and separate tests now live under the managed
+D: output; `package-castle-school.cjs` no longer creates a C: upload archive.
+Both packagers require committed scoped source, record the source commit and
+exact file hashes, and keep intermediate test copies only in owned temporary
+storage. The first candidate's separate Linux result remains retained rather
+than being relabeled as the later navigation correction.
+
+This feature is **not published**. The user explicitly allowed a brief restart
+of only the school/round service on 2026-11-11, acknowledging voluntary round
+registration reset. That permission has not yet been used. Before publication:
+
+1. Run a native two-account preflight with decoded table audio before/during/
+   after the game panel, both directions of same-panel navigation, departure,
+   fresh permissions, normal movement and desktop/mobile canvas evidence.
+   Normal school authorization must not be replaced. If a synthetic approved
+   game catalog is needed in an isolated loopback stage, record that override
+   explicitly; it is not a real provider/student approval.
+2. Preserve the current accepted recovery and admission receipts. Do not rerun
+   the old one-shot admission updater: its pinned prior container is historical.
+   A reviewed new service transition must verify exact source changes, retain
+   the old container/manifest, preserve the static recovery routes and all
+   other processes/configuration/maps, and extend the full audit accordingly.
+   `/rounds` is independently aliased to the earlier accepted HTML, so replacing
+   the service alone does not publish the navigation change. Only that exact
+   HTML alias needs a reviewed immutable target update, preserving its existing
+   headers/method guards and both other old UI aliases. Historical UI hashes
+   and the earlier one-shot updater must remain unchanged. Their Python test
+   verifies the pinned Git snapshot; a separate case permits only the reviewed
+   current navigation replacement.
+3. Publish only after the preflight, then verify actual published routes,
+   rejected pupil access to all seven still-draft offers, fresh permissions and
+   native conversations. Roll back the scoped service if these gates fail.
+
+No provider rule, pupil publication, map, secret, media policy or actual live
+service has been changed by this preflight. A WorkAdventure host confirmation
+is a voluntary declaration, not proof that a cross-origin provider room exists;
+a host remaining in WorkAdventure must explicitly end it after closing only
+the external game. Details: `docs/schulschloss-gastgeber.md`.

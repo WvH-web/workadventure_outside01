@@ -94,6 +94,10 @@ weiter offen. Einzelheiten: `../ops/castle-school/README.md`.
   des zentralen Links, keine automatische Gastgebernachfolge, Ende bei Abmelden
   oder Ablauf und neue Bestaetigung nach Linkwechsel. 18 neue Zustands-/HTTP-
   Faelle und die getrennte Zweibrowserprobe mit 980/390/320 Pixeln bestehen.
+  Auch die isolierte Linux-Vorpruefung des Kandidaten `3119b0c32934a5f1`
+  besteht mit 33 Faellen ohne Netz oder Schuldaten; alle 91 lokalen Python-
+  Betriebsfaelle bestehen. Alte/neue Karten und bestehende Dienste sind
+  anschliessend vollstaendig unveraendert nachgeprueft.
   Freigabe, native Vorpruefung und Betrieb bleiben offen; Einzelheiten:
   `../docs/schulschloss-gastgeber.md`.
   Die eigene gemeinsame Rundenliste fuer 49 echte Gespraechsbereiche ist
