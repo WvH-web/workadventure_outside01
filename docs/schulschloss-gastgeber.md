@@ -125,7 +125,7 @@ als temporaere Dateien geloescht.
 
 ## Gebuendelter Rundenstatus
 
-Die folgende Verbesserung ist ein neuer, noch nicht nativ abgenommener Kandidat:
+Die folgende Verbesserung bildet den neuen Kandidaten `8dc68e99c36dabfe`:
 Das Spielefenster erhaelt seine eigene Runde mit der vorhandenen Link-/Kontext-
 Antwort, ohne zusaetzliche regelmaessige Rundenabfrage. Je Antwort genuegt eine
 frische Schul- und Katalogpruefung. Es werden weder Rechte zwischengespeichert
@@ -149,7 +149,16 @@ Lastpfad wurde durch diese Verbesserung nicht geaendert; die schwankenden
 Windows-Laufzeiten sind dennoch kein belastbarer 400-Personen-Nachweis.
 Alle 97 Python-Betriebsfaelle bestehen.
 
-Die native Abnahme oben bleibt ausschliesslich der Nachweis fuer Kandidat
-`3119b0c32934a5f1`, nicht fuer diese neuere Fassung. Vor dem erlaubten kurzen
-Live-Neustart braucht sie eigene Linux-/Native-Nachweise und die kontrollierte
-Veroeffentlichung einschliesslich der bestehenden separaten HTML-Route.
+Die erste native Abnahme oben bleibt der Nachweis fuer Kandidat
+`3119b0c32934a5f1`. Die neuere Fassung besteht inzwischen separat mit 41 Linux-
+Faellen auf der unveraenderten echten Node-Laufzeit und zwei frisch normal
+angemeldeten Microsoft-Schultestkonten im nativen WorkAdventure. Die drei
+Szenarien und vier beidseitigen Tischtonproben bestehen erneut einschliesslich
+mobiler Touchbedienung. Nur der isolierte Anbieterinhalt/Katalog ist kuenstlich.
+Die volle Serverpruefung besteht nach beendetem Testdienst um 18:26:50 UTC;
+Testumgebung und Tunnel sind entfernt. Alle 100 Python-Betriebsfaelle bestehen.
+
+Die getrennten privaten Abnahmebelege beider Kandidaten bleiben erhalten.
+Weiter offen ist die kontrollierte Veroeffentlichung einschliesslich der
+bestehenden separaten HTML-Route. Der erlaubte kurze Live-Neustart wurde noch
+nicht genutzt; weder reale Spielraumlinks noch Anbieterfreigaben wurden geaendert.

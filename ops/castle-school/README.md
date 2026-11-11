@@ -878,3 +878,31 @@ This candidate is not published or covered by the earlier native receipt for
 `3119b0c32934a5f1`. Package its committed source and the expanded five-file test
 bundle on D:, run its own Linux/native preflight, and preserve the earlier
 candidate/receipts when preparing the narrowly scoped service/HTML transition.
+
+### Bundled Candidate Preflight Accepted
+
+The new archive `8dc68e99c36dabfebc0714ec7124aaa7b19d935a130fcd3052fdf6a6229a6355`
+comes from committed application source `53aa200`. The separate five-file test
+archive includes the four display snapshot cases, not the earlier subset.
+Its pinned network-disabled run passes all 41 cases in the real `v24.22.2`
+image at 0.5 CPU/256 MiB without school keys or real provider/database access.
+The temporary container is removed; full platform checks before/after pass.
+
+Its independent native preflight also passes all three scenarios with two
+fresh normal Microsoft pupil-test logins, one using mobile touch. The actual
+WorkAdventure map and school lookup remain untouched. Only the isolated
+loopback service uses the explicitly synthetic catalog/updater, restricted to
+those two approved accounts. Four samples again show bidirectional decoded
+table audio while changing links and navigating between both panels. Provider
+requests have no Authorization header; the provider frame has no map API.
+Source bytes are checked against this exact candidate in both native contexts.
+
+The running stage, temporary identifier environment and SSH tunnel are actually
+stopped; the full live audit passes again at 18:26:50 UTC. Root-private receipt
+`game-host-native-acceptance-8dc68e99c36dabfe.json` binds the new Linux/stage/
+teardown/native chain. The earlier `3119b0c32934a5f1` records remain unchanged.
+All 100 local Python operator cases pass. Neither candidate is published yet,
+the restart approval is unused, and seven real provider rules remain drafts.
+The next operation is a reviewed current-state service/HTML transition, not a
+blind rerun of historical admission/deployment commands. There is still no
+400-person real Microsoft/database/media capacity approval.

@@ -108,7 +108,11 @@ weiter offen. Einzelheiten: `../ops/castle-school/README.md`.
   Rundenabfrage; Browser und 540 von 542 lokalen Node-Faellen bestehen
   (zwei bisherige Auslassungen), ebenso 97 Python-Faelle. Ein frueherer
   Windows-Lastfehler ist mit seinen spaeteren erfolgreichen Wiederholungen
-  erhalten. Fuer diese Fassung fehlen noch eigene Linux-/Native-Nachweise.
+  erhalten. Die Fassung `8dc68e99c36dabfe` besteht nun auch separat mit 41
+  Linux-Faellen sowie der nativen Zweikontenprobe und vier beidseitigen
+  Tischtonmessungen. Testdienst, Kontoumgebung und Tunnel sind entfernt;
+  die volle Live-Bestandspruefung besteht um 18:26 UTC. 100 Python-Faelle
+  bestehen. Die kontrollierte Veroeffentlichung steht noch aus.
   Freigabe, native Vorpruefung und Betrieb bleiben offen; Einzelheiten:
   `../docs/schulschloss-gastgeber.md`.
   Die eigene gemeinsame Rundenliste fuer 49 echte Gespraechsbereiche ist
