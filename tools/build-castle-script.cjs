@@ -21,5 +21,6 @@ function bundle(entryName,outputName){
 function buildCastleScript(){return [bundle('npcs','expansion'),bundle('outdoors','outdoors')];}
 function buildCastleHomeScript(){return [bundle('gallery','upper-gallery')];}
 function buildCastleMuseumScript(){return [bundle('museum','museum-tour')];}
-module.exports={buildCastleScript,buildCastleHomeScript,buildCastleMuseumScript};
-if(require.main===module)console.log(JSON.stringify((process.argv.includes('--homes')?buildCastleHomeScript():process.argv.includes('--museum')?buildCastleMuseumScript():buildCastleScript()).map(result=>({output:result.output,bytes:result.bytes,sourceModules:result.sources.length,runtimeModuleRequests:1}))));
+function buildCastlePuzzleScript(){return [bundle('npcs','puzzle-preview')];}
+module.exports={buildCastleScript,buildCastleHomeScript,buildCastleMuseumScript,buildCastlePuzzleScript};
+if(require.main===module)console.log(JSON.stringify((process.argv.includes('--homes')?buildCastleHomeScript():process.argv.includes('--museum')?buildCastleMuseumScript():process.argv.includes('--puzzle')?buildCastlePuzzleScript():buildCastleScript()).map(result=>({output:result.output,bytes:result.bytes,sourceModules:result.sources.length,runtimeModuleRequests:1}))));

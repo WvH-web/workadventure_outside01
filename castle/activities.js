@@ -20,14 +20,15 @@ export function activitySettings(object){
   const p=props(object),url=new URL(p.castleActivityUrl,ownBase);
   const chessTable=url.origin===new URL(chessUrl).origin&&url.pathname===new URL(chessUrl).pathname&&/^#table=tisch-[123]$/.test(url.hash)&&!url.search;
   const tableStory=url.href===new URL('story.html#table',ownBase).href;
+  const puzzle=url.href===new URL('puzzle.html',ownBase).href;
   const story=['story.html','story.html?v=20261108-outdoors1'].some(page=>url.href===new URL(page,ownBase).href);
   const games=url.href===new URL('hall-games.html',ownBase).href||url.href===gamesUrl;
   const collection=['collection.html?kind=museum','collection.html?kind=music','expeditions.html'].some(page=>url.href===new URL(page,ownBase).href);
   const museumTour=url.href===museumTourUrl;
   const character=characters.some(c=>url.href===new URL('characters.html?npc='+c.id,ownBase).href);
-  if(!story&&!tableStory&&!games&&!chessTable&&url.href!==chessUrl&&url.href!==artUrl&&url.href!==pianoUrl&&!collection&&!museumTour&&!character&&!allowedExternal.has(url.href))throw Error('Unknown castle activity destination');
-  return {id:p.castleActivityId,label:p.castleActivityLabel,url:games?gamesUrl:url.href,api:(story||tableStory||museumTour)&&p.castleActivityApi===true,
-    autoOnSit:p.castleActivityOnSit===true&&(story||tableStory||chessTable||museumTour||url.href===chessUrl||url.href===artUrl||url.href===pianoUrl),
+  if(!story&&!tableStory&&!puzzle&&!games&&!chessTable&&url.href!==chessUrl&&url.href!==artUrl&&url.href!==pianoUrl&&!collection&&!museumTour&&!character&&!allowedExternal.has(url.href))throw Error('Unknown castle activity destination');
+  return {id:p.castleActivityId,label:p.castleActivityLabel,url:games?gamesUrl:url.href,api:(story||tableStory||puzzle||museumTour)&&p.castleActivityApi===true,
+    autoOnSit:p.castleActivityOnSit===true&&(story||tableStory||puzzle||chessTable||museumTour||url.href===chessUrl||url.href===artUrl||url.href===pianoUrl),
     group:p.castleActivityGroup||null};
 }
 export class CastleActivities{

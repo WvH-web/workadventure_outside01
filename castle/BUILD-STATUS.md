@@ -4,6 +4,18 @@ Das Gesamtziel bleibt aktiv. Dies ist keine Freigabe als fertiggestelltes
 Schloss oder fuer eine Veranstaltung mit 400 Personen. Das bisherige Schloss,
 Village und geschuetzte Lehrerzimmer werden nicht ersetzt.
 
+Neuer Entwicklungsstand vom 11. November: Die kooperative Sternenmaschine mit
+drei Himmelsbildern, unabhaengig synchronisierten Einstellringen, verteilten
+Hinweisen und einer eigenen Bitmap-Spielflaeche ist implementiert. 19 fokussierte
+Faelle und die lokale Browserprobe auf vier Bildschirmgroessen bestehen.
+Dies ist noch keine native Online-Abnahme: Die ersten Versuche haben den alten
+Raumcontroller im Testbrowser nicht zuverlaessig ersetzt und zaehlen nicht als
+Erfolg. Ein eigener geschuetzter nativer Testraum wird deshalb vorbereitet.
+Die bestehenden 16 Karten und Dienste wurden dafuer nicht geaendert.
+Die abschliessende Node-Suite besteht mit 568 bestandenen Faellen, zwei
+bisherigen optionalen Auslassungen und keinem Fehler (570 insgesamt).
+Einzelheiten und verbleibende Abnahme: `../docs/schulschloss-sternenmaschine.md`.
+
 Aktueller Nachtrag vom 11. November: Die getrennte Filmprobe im wirklichen
 Schlosskino besteht mit zwei normal angemeldeten Microsoft-Schultestkonten,
 eines mobil. Der echte oeffentliche Wartebereich ist eingebettet geprueft;

@@ -4,6 +4,12 @@ Recherche und technischer Vorabcheck: 7. November 2026.
 Inhaltliche Vertiefung, Anbieterbedingungen und Browserprobe: 8. November 2026.
 Ergaenzung zum [Raumkonzept](schulschloss-konzept.md).
 
+Eigener Ausbau vom 11. November: Die [kooperative Sternenmaschine](schulschloss-sternenmaschine.md)
+ist als gemeinsame schulinterne Aktivitaet implementiert und lokal mit mehreren
+synthetischen Teilnehmern sowie auf Desktop/Mobil geprueft. Sie ist noch nicht
+live freigeschaltet; die native Mehrspieler-Abnahme steht aus. Die bestehenden
+Entwurfs-/Altersfreigaben fremder Spiele werden dadurch nicht geaendert.
+
 ## Entscheidung fuer den Ausbau
 
 Das Schloss soll ein gemeinsamer Freizeitort werden, kein Aufgabenportal und

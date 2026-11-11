@@ -1,0 +1,23 @@
+<!doctype html>
+<html lang="de"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="referrer" content="no-referrer"><title>Sternenmaschine</title>
+<link rel="stylesheet" href="puzzle.css?v=20261111-puzzle1">
+<script defer src="vendor/lucide.min.js"></script><script type="module" src="puzzle.js?v=20261111-puzzle1"></script></head>
+<body><header><i data-lucide="orbit" aria-hidden="true"></i><h1>Sternenmaschine</h1>
+<button id="retry" hidden title="Erneut verbinden" aria-label="Erneut verbinden"><i data-lucide="rotate-cw"></i></button>
+<button id="restart" disabled title="Runde zuruecksetzen" aria-label="Runde zuruecksetzen"><i data-lucide="rotate-ccw"></i></button></header>
+<main><div class="round-heading"><div><p id="connection" role="status">Verbinden ...</p><h2 id="puzzle-title">Nacht am See</h2></div><span id="step">1 / 3</span></div>
+<figure id="machine" aria-label="Astronomische Maschine mit drei Einstellringen">
+<img src="art/sternmaschine-20261111/machine.webp" alt="Messingfarbene Sternenmaschine mit drei konzentrischen Ringen">
+<img class="rotor outer" src="art/sternmaschine-20261111/machine.webp" alt="" aria-hidden="true">
+<img class="rotor middle" src="art/sternmaschine-20261111/machine.webp" alt="" aria-hidden="true">
+<img class="rotor inner" src="art/sternmaschine-20261111/machine.webp" alt="" aria-hidden="true">
+<span id="solved" hidden><i data-lucide="check"></i>Gel&#246;st</span></figure>
+<section id="rings" aria-label="Einstellringe"></section>
+<section class="clues" aria-labelledby="clue-title"><div class="clue-heading"><h2 id="clue-title">Meine Hinweise</h2>
+<button id="all-clues" type="button" aria-pressed="false" title="Alle Hinweise" aria-label="Alle Hinweise"><i data-lucide="eye"></i></button></div>
+<ol id="clues"></ol><p id="no-clue" hidden>Die drei Hinweise liegen bei deiner Tischrunde.</p></section>
+<footer><p id="status" role="status" aria-live="polite"></p><button id="next" hidden>Weiter<i data-lucide="arrow-right"></i></button></footer></main>
+<dialog id="confirmation" aria-labelledby="confirm-title"><h2 id="confirm-title">Gemeinsame Runde zur&#252;cksetzen?</h2><div class="dialog-actions">
+<button id="cancel" autofocus>Abbrechen</button><button id="confirm-reset">Zur&#252;cksetzen<i data-lucide="rotate-ccw"></i></button></div></dialog>
+</body></html>

@@ -1,0 +1,54 @@
+{
+  "version": 1,
+  "compiler": {
+    "name": "esbuild",
+    "version": "0.17.17"
+  },
+  "entry": "castle/npcs.js",
+  "output": "castle/puzzle-preview.bundle.js",
+  "bytes": 43037,
+  "sha256": "c4091bc59d183a00c5c602689b6cd2ed09de5552ae798273b32c4f401b12d888",
+  "runtimeModuleRequests": 1,
+  "sources": [
+    {
+      "path": "castle/activities.js?v=20261109-atelier1",
+      "sha256": "1505df1cc632ec797ee37a234acb6e183f5aeca2b6a7299ca0cf32a0a4b9b96b"
+    },
+    {
+      "path": "castle/catalog.js?v=20261108-expansion1",
+      "sha256": "e6687cf5a1105dd763c10fcc113f80311c85e06e3804def64d41273b06775156"
+    },
+    {
+      "path": "castle/characters-data.js?v=20261108-characters1",
+      "sha256": "a41dd61b5efaa6c02b20e1431aea7c904883e840181aa295445ec1084762af77"
+    },
+    {
+      "path": "castle/community.js?v=20261109-rounds1",
+      "sha256": "4f53059a9db658853fcd7343e63bde7a2758e2b2413e85bb4d1b34d975106891"
+    },
+    {
+      "path": "castle/displays.js?v=20261109-atelier1",
+      "sha256": "4dff6991afa2396929c6869080b3bb6fdb9135fc2e9e345b978e4dfc2e1aad83"
+    },
+    {
+      "path": "castle/npcs.js",
+      "sha256": "6e4d6e124cd03bf93a88a5c72a5f2cef5ed75bcc5e1f2dc96daf9c63db4b9bf1"
+    },
+    {
+      "path": "castle/room.js?v=20261109-rounds1",
+      "sha256": "b77136fa20c3f2a02a4808e026553d505db64749933e9b44b376a13522d7be76"
+    },
+    {
+      "path": "castle/table-round.js",
+      "sha256": "53945a38cf6a06b99feab5358eef2c83bba93102c545f7d256a984b937df6b6c"
+    },
+    {
+      "path": "castle/ui-ids.js?v=20261109-rounds1",
+      "sha256": "100b9bf77acc5317b7927579f0af011677c8df318f8ae42f19587513567c2d36"
+    },
+    {
+      "path": "castle/ui-lifecycle.js?v=20261109-rounds1",
+      "sha256": "a8cdd3b9fbf5215273d090ac504b878f9459f7cd617fa84f12aae13e77cfa924"
+    }
+  ]
+}
