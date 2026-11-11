@@ -22,11 +22,14 @@ async function gameFactory(root,{dbPath,maxPlayers=100}={}){
  assetPaths.add('/zimmer/castle-room-media.js');
  const callPanel=await fs.readFile(path.join(__dirname,'public/room-call.js'),'utf8');
  const callSource=await fs.readFile(path.join(base,'public/proximity.js'),'utf8');
+ const callSession=await fs.readFile(path.join(base,'public/proximity-session.js'));
+ const callControl=await fs.readFile(path.join(__dirname,'public/room-control.js'),'utf8');
  const callManifest=await fs.readFile(path.join(__dirname,'game.manifest.json'));
  if(crypto.createHash('sha256').update(callManifest).digest('hex')!==require('./runtime.cjs').OWNED_SHA||crypto.createHash('sha256').update(callSource).digest('hex')!==JSON.parse(callManifest).sourceFiles['dorfplatz/public/proximity.js'])throw Error('Review the changed proximity panel before adapting it');
+ if(crypto.createHash('sha256').update(callSession).digest('hex')!==JSON.parse(callManifest).sourceFiles['dorfplatz/public/proximity-session.js'])throw Error('Review the changed proximity session before adapting control renewal');
  return options=>{
   const assets=new Set(assetPaths),overrides=new Map(assetOverrides);
-  if(options.media){assets.add('/castle-room-proximity-original.js');overrides.set('/castle-room-proximity-original.js',callSource);overrides.set('/proximity.js',callPanel);}
+  if(options.media){assets.add('/castle-room-proximity-original.js');assets.add('/castle-room-control.js');overrides.set('/castle-room-proximity-original.js',callSource);overrides.set('/proximity.js',callPanel);overrides.set('/castle-room-control.js',callControl);}
   return {game:createVillage({...options,dbPath,maxPlayers}),assetPaths:assets,roomSocial,assetOverrides:overrides};
  };
 }

@@ -427,8 +427,13 @@ des externen Shared Piano.
 4. Freigegebene Themenrotation und Aushang automatisieren. Eine private
    Raumadresse ist bei externen Diensten kein Zugriffsschutz durch unser Portal.
 5. Billard, weitere selbst betriebene Spiele und private Sternenhueter-Zimmer erst
-   nach eigener Integration und Abnahme aktivieren. Die Schulbruecke der Zimmer
-   ist derzeit lokal, nicht bereits produktiv angebunden.
+   nach eigener Integration und Abnahme aktivieren. Die Zimmer-Schulbruecke ist
+   inzwischen als getrennter, eng begrenzter Pilot auf dem VPS angebunden und
+   im neuen Wandelgang erreichbar. Zwei ausdruecklich dafuer eingerichtete
+   Schueler-Testkonten und das einzeln freigegebene Administratorkonto sind
+   zugelassen, nicht bereits alle Schueler. Gemeinsame Besuche und freiwillige
+   Zimmergespraeche bestehen die native Zweipersonenprobe. Breitere Freigabe,
+   echte Punkteanbindung und Lastabnahme bleiben eigene offene Schritte.
 
 Externe Inhalte erst auf bewussten Aufruf laden, nicht unsichtbar beim Betreten
 aller Karten. Kamera und Mikrofon nicht an fremde Spielseiten durchreichen.

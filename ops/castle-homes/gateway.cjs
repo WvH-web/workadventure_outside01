@@ -201,7 +201,7 @@ async function createHomeGateway({key,verify,lookup,createGame,origin,port=0,all
    cookiePath:BASE,trustProxy:true,requireSchool:true,media:calls,testMode:false});
   game=value.game;assetPaths=value.assetPaths;roomSocial=value.roomSocial;
   if(!game?.server||typeof game.close!=='function'||!(assetPaths instanceof Set)||assetPaths.size>400||typeof roomSocial!=='string')throw Error('Reviewed room assets required');
-  assetOverrides=new Map(value.assetOverrides||[]);if(assetOverrides.size>(calls?5:3)||[...assetOverrides].some(([route,source])=>!['/zimmer/app.js','/zimmer/renderer.js','/zimmer/castle-room-media.js',...(calls?['/proximity.js','/castle-room-proximity-original.js']:[])].includes(route)||!assetPaths.has(route)||typeof source!=='string'||source.length>100000))throw Error('Reviewed room-media modules required');
+  assetOverrides=new Map(value.assetOverrides||[]);if(assetOverrides.size>(calls?6:3)||[...assetOverrides].some(([route,source])=>!['/zimmer/app.js','/zimmer/renderer.js','/zimmer/castle-room-media.js',...(calls?['/proximity.js','/castle-room-proximity-original.js','/castle-room-control.js']:[])].includes(route)||!assetPaths.has(route)||typeof source!=='string'||source.length>100000))throw Error('Reviewed room-media modules required');
   await new Promise((resolve,reject)=>{game.server.once('error',reject);game.server.listen(0,'127.0.0.1',resolve);});backend='http://127.0.0.1:'+game.server.address().port;
   timer=setInterval(()=>{authority.sweep();for(const [id,entry]of entries)if(!entry.view&&clock()-entry.last>60000)entries.delete(id);},1000);timer.unref();
   return {server,url:publicOrigin+BASE,close,inspectForTest:()=>({views:views.size,entries:entries.size})};

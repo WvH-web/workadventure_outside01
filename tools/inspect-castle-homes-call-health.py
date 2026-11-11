@@ -21,6 +21,9 @@ assert expected==before
 config=(private/'service.json').read_bytes()
 assert hashlib.sha256(config).hexdigest()==record['configAfterSha256']
 checks={}
+renewal=private/'control-renewal-deployment.json'
+renewed=json.loads(renewal.read_text()) if renewal.exists() else None
+if renewed:assert renewed['passed'] and renewed['before']==renewed['after']==before and renewed['configSha256']==record['configAfterSha256']
 for name in ['wvh-castle-homes.service','wvh-castle-homes-control.service']:
     raw=subprocess.check_output(['systemctl','show',name,'--property=MainPID,ActiveState,SubState,MemoryCurrent,MemoryPeak,NRestarts'],text=True,timeout=10)
     values=dict(line.split('=',1) for line in raw.splitlines())
@@ -29,7 +32,8 @@ for name in ['wvh-castle-homes.service','wvh-castle-homes-control.service']:
     process=Path('/proc')/values['MainPID']
     uid=int(next(line for line in (process/'status').read_text().splitlines() if line.startswith('Uid:')).split()[1])
     assert (uid==0)==name.endswith('-control.service')
-    assert record['release'].encode() in (process/'cmdline').read_bytes()
+    release=renewed['release'] if renewed and name=='wvh-castle-homes.service' else record['release']
+    assert release.encode() in (process/'cmdline').read_bytes()
     checks[name]={'active':True,'rootControlOnly':uid==0,'memoryBytes':int(values['MemoryCurrent']),
         'peakBytes':int(values['MemoryPeak']),'automaticRestarts':int(values['NRestarts'])}
 for url in ['https://together.deine-schule.com/castle-homes/health','http://127.0.0.1:13252/health']:

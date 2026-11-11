@@ -53,11 +53,65 @@ def verify_school_admission(ops,expected):
     assert not ops['run']('ss','-ltnH','sport = :13212').strip()
     return after,True
 
+def homes_control_processes(ops,native):
+    private=Path('/opt/wvh-castle-homes/private');expected=native['processes'];calls=json.loads((private/'calls-deployment.json').read_text());sha=ops['sha']
+    previous=None
+    for number in [1,2]:
+        path=private/('control-renewal-rollback-'+str(number)+'.json')
+        if not path.exists():break
+        raw=path.read_bytes();value=json.loads(raw)
+        assert path.resolve()==path and path.stat().st_mode&0o777==0o600 and value['passed'] and value['restored']
+        assert value['baseline']==native['after'] and value['beforeProcesses']==expected
+        assert value['unitSha256']==calls['unitAfterSha256'] and value['configSha256']==calls['configAfterSha256'] and value['oldRelease']==calls['release']
+        assert all(item==value['afterProcesses'][name] for name,item in expected.items() if name!='wvh-castle-homes.service')
+        if number==1:
+            assert sha((private/'control-first-attempt.py').read_bytes())==value['failedHelperSha256']=='37c1ed19c8f2ba0261029a8048748c2de8a99e997731bf52f68b15a139968d9c'
+            assert sha((private/'control-first-live.private.json').read_bytes())==value['publicMediaProofSha256']
+        else:assert value['previousRollbackSha256']==previous
+        expected=value['afterProcesses'];previous=sha(raw)
+    return expected
+
+
+def homes_control_transition(ops,calls,calls_raw):
+    private=Path('/opt/wvh-castle-homes/private');path=private/'control-renewal-deployment.json';sha=ops['sha']
+    if not path.exists():return lambda name:Path(name).read_bytes()
+    value=json.loads(path.read_text());assert value['passed'] and value['callsReceiptSha256']==sha(calls_raw)
+    native_raw=(private/'native-entry-deployment.json').read_bytes();native=json.loads(native_raw)
+    assert value['nativeEntryReceiptSha256']==sha(native_raw) and value['before']==value['after']==native['after']
+    archive=value['archiveSha256'];assert archive=='1b28495f0e9dfb1e8b8d51cae702de8b767a6c83e2377236e6e83d9465231495'
+    release=Path(value['release']);assert release==private.parent/'releases'/archive[:16] and release.resolve()==release
+    assert not any(item.is_symlink() for item in release.rglob('*'))
+    assert {item.relative_to(release).as_posix() for item in release.rglob('*') if item.is_file()}==set(value['files']) and len(value['files'])==71
+    assert all(sha((release/name).read_bytes())==digest for name,digest in value['files'].items())
+    additions={'ops/castle-homes/public/room-control.js','tests/castle-home-control.test.mjs'}
+    changes={'ops/castle-homes/public/room-call.js','ops/castle-homes/game-adapter.cjs','ops/castle-homes/gateway.cjs','tests/castle-home-calls.test.cjs'}
+    assert set(value['files'])==set(calls['files'])|additions and all(value['files'][name]==digest for name,digest in calls['files'].items() if name not in changes)
+    backup=private/'before-control-renewal-2';unit=Path('/etc/systemd/system/wvh-castle-homes.service')
+    assert value['unitBeforeFile']==str(backup/'service.snapshot') and backup.resolve()==backup and backup.stat().st_mode&0o777==0o700
+    old=(backup/'service.snapshot').read_bytes();assert sha(old)==value['unitBeforeSha256']==calls['unitAfterSha256']
+    assert unit.read_bytes()==old.replace(str(Path(calls['release'])/'ops/castle-homes/service.cjs').encode(),str(release/'ops/castle-homes/service.cjs').encode())
+    assert sha(unit.read_bytes())==value['unitAfterSha256'] and sha((private/'service.json').read_bytes())==value['configSha256']==calls['configAfterSha256']
+    assert value['recoveryDatabaseFile']==str(backup/'pilot.sqlite') and sha((backup/'pilot.sqlite').read_bytes())==value['recoveryDatabaseSha256']
+    helper=Path('/tmp/wvh-deploy-castle-homes-control.py');assert helper.resolve()==helper and sha(helper.read_bytes())=='60f004b6953efcd0322763184254cdc7fc6db1ba3305cfadb3b462de716fbb9f'
+    check=runpy.run_path(str(helper))['proof']
+    hashes={'proximity.js':value['files']['ops/castle-homes/public/room-call.js'],'castle-room-control.js':value['files']['ops/castle-homes/public/room-control.js']}
+    for number,digest in enumerate(value['candidateProofs'],1):
+        raw=(private/('control-candidate-'+str(number)+'.private.json')).read_bytes();assert sha(raw)==digest;candidate=json.loads(raw);check(candidate,True);assert candidate['candidateSources']==hashes
+    assert len(value['candidateProofs'])==2
+    raw=(private/'control-renewal-browser.private.json').read_bytes();assert sha(raw)==value['publicBrowserProofSha256'];browser=json.loads(raw);check(browser,False);assert browser['servedModuleSha256']==hashes
+    assert sha((private/'control-renewal-linux-tests.private.log').read_bytes())==value['linuxTestLogSha256']
+    assert value['rollbackReceiptSha256']==sha((private/'control-renewal-rollback-1.json').read_bytes()) and not (private/'control-renewal-rollback-2.json').exists()
+    assert value['processesBefore']==homes_control_processes(ops,native) and all(item==value['processesAfter'][name] for name,item in value['processesBefore'].items() if name!='wvh-castle-homes.service')
+    assert value['originalEngineFilesUnchanged'] and value['schoolKeysSubjectsAndSoleModeratorUnchanged'] and value['onlyRoomPilotRestarted'] and value['allOtherServicesAndMapsUnchanged'] and not value['loadApprovalFor400']
+    return lambda name:old if Path(name)==unit else Path(name).read_bytes()
+
+
 def homes_calls_transition(ops,owned,owned_raw):
     root=Path('/opt/wvh-castle-homes');private=root/'private';path=private/'calls-deployment.json';sha=ops['sha']
     if not path.exists():return lambda name:Path(name).read_bytes()
     assert path.resolve()==path and path.stat().st_mode&0o777==0o600
     value=json.loads(path.read_text());assert value['passed'] and value['ownedReceiptSha256']==sha(owned_raw)
+    effective=homes_control_transition(ops,value,path.read_bytes())
     assert value['before']==value['after']==owned['after']
     archive=value['archiveSha256'];assert re.fullmatch('[a-f0-9]{64}',archive)
     release=Path(value['release']);assert release==root/'releases'/archive[:16] and release.resolve()==release
@@ -82,7 +136,7 @@ def homes_calls_transition(ops,owned,owned_raw):
     assert sha(original)==value['unitBeforeSha256']==owned['unitAfterSha256'] and sha(original_config)==value['configBeforeSha256']==owned['configAfterSha256']
     expected=original.replace(str(Path(owned['release'])/'ops/castle-homes/service.cjs').encode(),str(release/'ops/castle-homes/service.cjs').encode())
     expected=expected.replace(b'[Unit]\n',b'[Unit]\nWants=wvh-castle-homes-control.service\nAfter=wvh-castle-homes-control.service\n')
-    assert unit.read_bytes()==expected and sha(expected)==value['unitAfterSha256']
+    assert effective(unit)==expected and sha(expected)==value['unitAfterSha256']
     current_config=credential.read_bytes();assert sha(current_config)==value['configAfterSha256']
     config=json.loads(current_config);calls=config['calls']
     assert config=={**json.loads(original_config),'version':4,'calls':calls}
@@ -388,7 +442,9 @@ def verify_homes_native_entry(ops,expected):
     assert len(files)==6 and files['castle/obergeschoss-homes.tmj']==value['sourceSha256'] and files['castle/upper-gallery.bundle.js']==value['entryScriptSha256']
     for name,digest in files.items():
         with urllib.request.urlopen('https://wvh-web.github.io/workadventure_outside01/'+name+'?v=20261111-homes2',timeout=20) as response:assert sha(response.read(2000000))==digest
-    assert functions['processes']()==value['processes']
+    control=private/'control-renewal-deployment.json'
+    processes=json.loads(control.read_text())['processesAfter'] if control.exists() else homes_control_processes(ops,value)
+    assert functions['processes']()==processes
     return after,True
 
 
@@ -458,6 +514,7 @@ def main():
       'homesIndependentRuntimeVerified':homes_pilot and Path('/opt/wvh-castle-homes/private/owned-runtime-deployment.json').exists(),
       'homesIsolatedRuntimeRecoveryVerified':homes_pilot and Path('/opt/wvh-castle-homes/private/owned-runtime-recovery.json').exists(),
       'homesOptionalPrivateCallsVerified':homes_pilot and Path('/opt/wvh-castle-homes/private/calls-deployment.json').exists(),
+      'homesIndependentControlRenewalVerified':homes_pilot and Path('/opt/wvh-castle-homes/private/control-renewal-deployment.json').exists(),
       'permissionsAndAuthenticationUnchanged':not Path('/opt/wvh-castle-homes/private/calls-deployment.json').exists(),
       'schoolPermissionsAndAuthenticationUnchanged':True,
       'mediaPermissionsChangedOnlyInRoomPilot':Path('/opt/wvh-castle-homes/private/calls-deployment.json').exists(),

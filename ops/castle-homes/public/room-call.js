@@ -1,4 +1,5 @@
 import {ProximityPanel as OriginalPanel} from './castle-room-proximity-original.js';
+import {installRoomControl} from './castle-room-control.js';
 function icon(button,name,label,{text=false}={}){
  const glyph=document.createElement('i');glyph.dataset.lucide=name;glyph.setAttribute('aria-hidden','true');
  const caption=document.createElement('span');caption.textContent=label;caption.hidden=!text;
@@ -8,7 +9,7 @@ export class ProximityPanel extends OriginalPanel{
  constructor(options){
   super(options);this.panel.dataset.roomCall='true';this.mini.dataset.roomCall='true';this.reportDialog.dataset.roomCall='true';
   this.note.hidden=true;this.modeBox.hidden=true;this.policy.textContent='Keine Aufzeichnung. Meldungen sieht nur die freigeschaltete Moderation.';
-  this.session.chooseMode('group');
+  installRoomControl(this.session);this.session.chooseMode('group');
   icon(this.panel.querySelector('header button'),'x','Gespraech zuklappen');
   this.panel.addEventListener('pointerdown',options.onFocus||(()=>{}));
  }

@@ -70,6 +70,9 @@ test('real engine assigns a fixed room group only after connected visits, with s
  for(const c of [a,b])assert.equal((await c.api('moderation/proximity')).status,403);
  assert.equal((await b.api('proximity',{...join(),surface:'village'})).status,400);assert.equal((await b.api('proximity',{...join(),mode:'nearby'})).status,400);
  assert.equal((await a.request('view/'+a.view+'/proximity.js')).status,200);assert.equal((await a.request('view/'+a.view+'/castle-room-proximity-original.js')).status,200);
+  const control=await a.request('view/'+a.view+'/castle-room-control.js');assert.equal(control.status,200);assert.match(control.value,/refreshRoomControl/);
+  assert.equal((await b.request('view/'+a.view+'/castle-room-control.js')).status,401);
+  assert.equal((await a.request('view/'+a.view+'/castle-room-control.js?role=teacher')).status,404);
  const shell=await a.request('');assert.equal(shell.headers.get('permissions-policy'),'camera=(self), microphone=(self), display-capture=()');assert.match(shell.value,/data-room-calls="enabled"/);
  assert.equal(rehearsal.requests.some(row=>row.path==='/api/proximity'&&row.authorizationForwarded),false);
 }));

@@ -666,9 +666,9 @@ cancellations, the same two documented skips. The control-relay and school-
 withdrawal/epoch/failure cases use isolated simulated control responses, not
 pretended real SFU load. The two real media probes are recorded separately.
 
-Still open: active call account/device transfer, offline/reconnect and restart
-episodes; broader
-age/class admission; the approved administrator's actual login; genuine points
+The subsequent Control Renewal milestone below verifies live account/device
+transfer and offline/reconnect. Still open: an active-call service-restart
+episode; broader age/class admission; the approved administrator's actual login; genuine points
 integration; complete data/key disaster recovery and fleet/load acceptance.
 Two-participant media evidence is not an eight-person or 400-person load approval.
 The post-test read-only observation found about 205MiB current / 230MiB peak for
@@ -686,3 +686,69 @@ isolated PyYAML 6.0.3 test directory; no global or server dependency changes.
 Post-entry health shows about 209MiB current / 230MiB peak for the
 room process, about 15MiB / 27MiB for the control relay and zero automatic
 restarts. Broader admission still requires resource sizing and load tests.
+
+## Control Renewal
+
+Release `1b28495f0e9dfb1e` fixes a reproduced browser-side renewal blockage
+without changing the pinned original game engine, school policy, nine-second
+media lease or 45-second SFU grant. A real camera/device-transfer probe first
+timed out, while its repeated run passed. The focused counterfactual then
+reproduced the specific blockage in the exact pinned original session: pending
+camera publication held the next control renewal behind it. This demonstrates
+a real renewal defect; it does not prove that every earlier intermittent
+transport failure had this single cause.
+
+The owned room panel installs a small separate renewal path. Control requests
+remain bounded to one per generation, but camera negotiation cannot prevent
+the next fresh server decision. Old-generation completions cannot clear a newer
+request or revive a stopped call. Denial, zero remaining lease and lost game
+connection still stop actual tracks immediately. The original media session,
+permissions, owner epochs, capture consent and SFU engine remain unchanged.
+The new module is served only inside an authenticated, browser-bound private
+view. Foreign views and query-based access are rejected. No extra public API,
+media capability, role or admitted subject was added.
+
+Two candidate runs substitute only the two owned browser modules; both pass.
+They are explicitly not unmodified publication acceptance. The actual public
+release then passes without response substitution in three separate Chrome
+157 browser processes with the two normal Microsoft pupil-test accounts.
+Normal Microsoft login was refreshed once before this test series; its genuine
+states were reused, not replaced with fabricated school identities. The proof's
+`normalLoginRepeated` refers to that pre-series refresh, not a sign-in inside
+each probe. Only browser-provided fake microphones/cameras were captured.
+
+All six episodes pass: actual offline network emulation, online reauthorization,
+opening a second device without taking over, explicit call transfer, account
+switch and logout. Ten remote microphone samples and ten actual 320x180 video
+decodes cover both participants before and after reconnect/transfer. Old audio
+and video tracks end, new devices start with capture off, and leaving the former
+device does not end the current call. A switched account opens its own room and
+cannot use the former protected view. No JavaScript errors or unexpected resource
+failures occur. Known SDK compatibility 404s, retired-call rejection and deliberate
+old-view denial are recorded separately. This is not a real staff-login or load test.
+
+The first publication automatically reverted because it observed an SFTP proof
+file after 16KB, before transfer completion. The actual media probe had passed;
+publication was correctly refused. Its original script, full proof and explicit
+rollback receipt remain private. The corrected handover uploads under a distinct
+staging name, checks complete bytes, hash and proof, and only then atomically
+exposes the ready file. Partial JSON, rejected proof and an existing target have
+dedicated regression cases. A new public probe was performed after retry, not
+reused from the rolled-back process.
+
+The final acceptance is `control-renewal-deployment.json`; it preserves both
+candidate proofs, the new public proof and a consistent private SQLite backup.
+The historical audit follows the explicit rollback/process transition rather
+than rewriting old manifests. Only the room pilot restarted. Its configuration,
+the control relay, all other services, all maps and the old castle remain unchanged.
+Forty-one Linux cases pass before activation. Wider admission, real points,
+complete data/key recovery and full fleet/load acceptance remain open.
+
+The fresh post-publication native castle probe also passes with two ordinary
+Microsoft pupils: actual table speech before/after, private speech decoded in
+both directions, a quiet entry, actual track termination and desktop/mobile
+rendering. It grants no map API and substitutes no responses. Its separate
+`control-renewal-native-acceptance.json` binds the proof to this release's
+acceptance and unchanged service processes; the old gallery proof is retained.
+The complete local regression passes 472 Node cases (470 passed, no failures,
+the same two documented skips) and all 62 Python operational cases.

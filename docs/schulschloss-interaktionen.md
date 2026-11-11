@@ -23,6 +23,16 @@ Ergaenzung vom 9. November 2026. Das alte Schloss bleibt bestehen.
 
 ## Tatsaechlicher Stand
 
+- 11. November, Zimmergespraeche: Die neue Fassung `1b28495f0e9dfb1e`
+  trennt die Erneuerung der Schul-/Gespraechsfreigabe vom moeglicherweise
+  langsamen Kameraaufbau. Der Fehler ist mit dem unveraenderten Originalmodul
+  reproduziert; Sicherheitsfristen und Rollen bleiben unveraendert.
+  Zwei Schueler-Testkonten auf drei getrennten Browsergeraeten bestehen mit
+  simulierten Browser-Mikrofonen und -Kameras: Internetausfall, erneute Verbindung,
+  zweites Geraet, ausdrueckliche Uebernahme, Kontowechsel und Abmelden.
+  Keine heimliche Wiederaufnahme, keine weiterlaufenden alten Medien.
+  Die anschliessende native Tisch-/Zimmer-/Tisch-Probe besteht ebenfalls.
+  Das ist weiterhin ein kleiner Pilot, keine breite Schueler- oder Lastfreigabe.
 - 11. November: Der Wandelgang der neuen Vorschau oeffnet in seinem getrennten
   ruhigen Zugangsbereich das persoenliche Schlosszimmer automatisch seitlich.
   Der Zugang bleibt auf den bestehenden kleinen Pilotkreis begrenzt; andere
