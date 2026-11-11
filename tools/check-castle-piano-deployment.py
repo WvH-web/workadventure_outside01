@@ -383,8 +383,9 @@ def verify_homes_pilot(ops,expected):
       '    proxy_set_header X-Real-IP $remote_addr;\n    proxy_set_header Upgrade $http_upgrade;\n'
       '    proxy_set_header Connection "upgrade";\n    proxy_buffering off;\n    proxy_read_timeout 65s;\n'
       '    client_max_body_size 16k;\n}\n# END WVH CASTLE HOMES PILOT '+archive[:16]+'\n')
-    assert value['route']==route and Path(nginx).read_bytes()==old+b'\n'+route.encode()
-    assert sha(Path(nginx).read_bytes())==value['nginxAfterSha256']==after['files'][nginx]
+    historical_nginx=ops.get('historical_nginx',lambda:Path(nginx).read_bytes())()
+    assert value['route']==route and historical_nginx==old+b'\n'+route.encode()
+    assert sha(historical_nginx)==value['nginxAfterSha256']==after['files'][nginx]
     assert sha(original('/etc/systemd/system/wvh-castle-homes.service'))==value['serviceUnitSha256']
     credential=path.with_name('service.json');assert credential.resolve()==credential and credential.stat().st_mode&0o777==0o600 and sha(original(credential))==value['privateCredentialSha256']
     config=json.loads(original(credential));assert config['version']==1 and config['mode']=='pilot' and config['origin']=='https://together.deine-schule.com' and config['port']==3251
@@ -461,6 +462,9 @@ def verify_homes_native_entry(ops,expected):
 
 def main():
     os.umask(0o077);ops=runpy.run_path('/tmp/wvh-castle-piano-ops.py');wam=runpy.run_path('/tmp/wvh-deploy-castle-piano-wam.py');sha=ops['sha'];private=ops['PRIVATE']
+    actual_ops=ops;recovery_helper=Path('/tmp/wvh-castle-round-recovery-ops.py');assert recovery_helper.resolve()==recovery_helper
+    assert sha(recovery_helper.read_bytes())=='e18032485cfb84d658c3514e5cea1e2a7d4429fb402f1745c3d77f44f35c7eba'
+    recovery_functions=runpy.run_path(str(recovery_helper));ops,recovery=recovery_functions['historical'](ops)
     deployment=json.loads((private/'deployment.json').read_text());wrapped=json.loads((private/'music-wrapper-deployment.json').read_text())
     ui=json.loads(Path('/opt/wvh-castle-school/private/round-ui-events-deployment.json').read_text())
     native_path=Path('/home/wilhelm/.cache/wvh-school-qa/piano-native-live-proof.private.json')
@@ -498,6 +502,9 @@ def main():
     museum=Path('/tmp/wvh-check-castle-museum-deployment.py');assert museum.resolve()==museum
     assert sha(museum.read_bytes())=='7ea09b480cfddae730ebdcc2b8638811cf904a52c81bd8a573346aef5f740203'
     expected,museum_tour=runpy.run_path(str(museum))['verify'](ops,expected)
+    if recovery is not None:
+        assert expected==recovery['before'];recovery_functions['verified'](actual_ops)
+        expected=recovery['after'];ops=actual_ops
     assert ops['baseline']()==expected,'An unrelated protected file or existing service changed'
     assert ui['nginx_before_sha256']==deployment['nginx_after_sha256']
     for route,name in [('presence','presence.html'),('rounds','rounds.html'),('unowned-ui.js','unowned-ui.js')]:
@@ -530,6 +537,7 @@ def main():
       'homesOptionalPrivateCallsVerified':homes_pilot and Path('/opt/wvh-castle-homes/private/calls-deployment.json').exists(),
       'homesIndependentControlRenewalVerified':homes_pilot and Path('/opt/wvh-castle-homes/private/control-renewal-deployment.json').exists(),
       'museumSharedSelectionVerified':museum_tour,
+      'roundRecoveryBrowserModulesVerified':recovery is not None,
       'permissionsAndAuthenticationUnchanged':not Path('/opt/wvh-castle-homes/private/calls-deployment.json').exists(),
       'schoolPermissionsAndAuthenticationUnchanged':True,
       'mediaPermissionsChangedOnlyInRoomPilot':Path('/opt/wvh-castle-homes/private/calls-deployment.json').exists(),

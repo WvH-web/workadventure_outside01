@@ -521,3 +521,60 @@ All 74 Python operator cases also pass. The first discovery attempt could not
 import the unchanged onboarding test because local PyYAML was absent; rerunning
 with PyYAML 6.0.3 in an output-only test dependency directory passed the whole
 suite without changing the system Python or server environment.
+
+### Native Recovery Preflight And Reverted Publication
+
+The two-normal-Microsoft-account native candidate passed on 2026-11-11, with
+one mobile participant, real bidirectional decoded table audio before and after
+an explicitly injected pre-admission 503, the same retained lease, fresh real
+server renewal, normal grade filtering, creator departure, reentry and cross-map
+cleanup. Only the two reviewed JavaScript responses were substituted in those
+test browsers; maps and school decisions were not replaced. That candidate is
+not published acceptance.
+
+`tools/castle-round-recovery-ops.py` prepares two exact static JavaScript routes
+with the existing no-store/frame/content/media policy. It does not restart any
+service, reset registrations, modify maps, change school rules or rewrite the
+School release. Nine operator tests cover exact file hashes and route scope,
+native evidence, unchanged services/keys/maps, historical audit projection,
+failed-publication rollback, refusal to overwrite a foreign web change, refusal
+to roll back an accepted release, and bounded readiness of known old modules.
+The full Python operator suite passed 83 cases; 34 focused Node round cases pass.
+
+The first static publication failed an immediate assertion and restored the
+exact previous routing. Its original helper, auditor and failure receipt are
+retained, not relabeled as successful. Improved diagnostics in the second
+attempt observed one response containing the exact old module before the new
+route became ready. Only that known old-module response may wait, for at most
+20 seconds; unexpected bytes, headers, status codes or permissions fail closed.
+The second static publication passed as provisional release `8d43adfc183ce631`.
+
+Its first published native probe did **not** pass: the test waited only 15
+seconds for an injected fault despite the normal 20-23 second heartbeat period.
+The candidate's artificial storage event could race the preceding heartbeat's
+completion. The corrected probe waits for the next natural heartbeat for up to
+30 seconds; its separate 12-second recovery limit is unchanged. The failed
+published probe remains in its original private output directory. Numbered
+attempt directories now prevent an explicit retry from overwriting that result.
+
+Before rerunning, local drive C: reached zero free bytes. A failed patch write
+truncated the native test file; it was restored from the committed base plus
+this turn's changes and passed syntax checking. The pending server routes were
+then explicitly rolled back. The full live audit passed at 08:22:29 UTC with
+`roundRecoveryBrowserModulesVerified: false`; all prior castle functionality,
+roles, maps and service processes remain unchanged. There is **no accepted
+recovery deployment**. The provisional stage and explicit rollback receipts
+remain private at `round-recovery-stage.json` and `round-recovery-rollback.json`;
+`round-recovery-deployment.json` does not exist. Do not rerun the current deploy
+or accept commands blindly: a new publication plan must account for that
+retained rollback and stage history.
+
+The recovery probe now refuses to start browsers below 1 GiB of local free
+space, before touching prior results. It correctly refused the attempted retry.
+At least 2 GiB should be freed before further browser work. Only this project's
+reinstallable local load-test CLI cache was removed to recover writing space:
+the duplicate 41,868,548-byte download was first checked against its extracted
+executable; the 104,142,336-byte executable was later removed after verifying
+that no CLI process was active. `tools/castle-capacity/install-cli.cjs` reinstalls
+it from the pinned official release. No school data, source artwork, map,
+credential, acceptance proof or server file was deleted for this local cleanup.

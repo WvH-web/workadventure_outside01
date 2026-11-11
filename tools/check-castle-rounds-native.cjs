@@ -3,12 +3,18 @@ const fs=require('node:fs'),path=require('node:path'),assert=require('node:asser
 const {chromium}=require('./castle-deps.cjs')('playwright'),sharp=require('./castle-deps.cjs')('sharp');
 const {join,stats,writeAudio,audioFixture}=require('./check-cinema-live.cjs');
 const {revision}=require('./build-castle-expansion.cjs');
-const brothers=process.argv.includes('--brother-probe'),live=process.argv.includes('--live')||brothers;
+const candidate=process.argv.includes('--recovery-candidate'),recovery=process.argv.includes('--recovery-published')||candidate;
+const brothers=process.argv.includes('--brother-probe'),live=process.argv.includes('--live')||brothers||recovery;
+const attemptArg=process.argv.find(arg=>arg.startsWith('--attempt='));assert.ok(!attemptArg||recovery&&/^--attempt=[1-9]$/.test(attemptArg));
+const suffix=attemptArg&&attemptArg!=='--attempt=1'?'-attempt-'+attemptArg.split('=')[1]:'';
 const root=path.resolve(__dirname,'..'),privateRoot=path.join(process.env.USERPROFILE,'.codex/private/workadventure-school-test-accounts');
-const output=path.join(privateRoot,'qa/rounds-native-'+(brothers?'brothers':live?'live':'stage')),origin='https://together.deine-schule.com';
+const output=path.join(privateRoot,'qa/rounds-native-'+(recovery?'recovery-'+(candidate?'candidate':'published')+suffix:brothers?'brothers':live?'live':'stage')),origin='https://together.deine-schule.com';
 const prefix='https://wvh-web.github.io/workadventure_outside01/castle/';
+const crypto=require('node:crypto'),sha=raw=>crypto.createHash('sha256').update(raw).digest('hex');
+const modules=Object.fromEntries(['presence.js','round-client.js'].map(name=>[name,fs.readFileSync(path.join(root,'ops/castle-school/public',name))]));
 async function main(){
-  fs.mkdirSync(output,{recursive:true});fs.rmSync(path.join(output,'result.json'),{force:true});writeAudio();let stage='entry';const users=[],results=[];
+  if(recovery){const disk=fs.statfsSync(root);if(disk.bavail*disk.bsize<1024**3)throw Object.assign(Error('Insufficient local space for two browser profiles'),{code:'INSUFFICIENT_DISK_SPACE'});}
+  fs.mkdirSync(output,{recursive:true});fs.rmSync(path.join(output,'result.json'),{force:true});writeAudio();let stage='entry',recoveryAudio;const users=[],results=[],served=[],roundRequests=[];
   const browser=await chromium.launch({channel:'chrome',headless:true,args:['--use-fake-ui-for-media-stream','--use-fake-device-for-media-stream',
     '--use-file-for-fake-audio-capture='+audioFixture,'--use-gl=angle','--use-angle=swiftshader','--enable-unsafe-swiftshader']});
   async function routes(context){
@@ -27,13 +33,25 @@ async function main(){
       return route.fulfill({contentType:name.endsWith('.tmj')?'application/json':'text/javascript',headers:{'access-control-allow-origin':'*'},body});
     });
   }
+  const contextNumbers=new Map();
+  async function recoveryRoutes(context){
+    if(candidate)for(const [name,body]of Object.entries(modules))await context.route(origin+'/castle-school/'+name,route=>route.fulfill({contentType:'text/javascript',body}));
+    context.on('request',request=>{if(request.url().startsWith(origin+'/castle-school/round-')&&!request.url().endsWith('.js'))roundRequests.push({number:contextNumbers.get(context),route:new URL(request.url()).pathname});});
+    context.on('response',response=>{const name=new URL(response.url()).pathname.slice('/castle-school/'.length);
+      if(response.url()===origin+'/castle-school/'+name&&Object.hasOwn(modules,name)){
+        const pending=response.body().then(raw=>{assert.equal(response.status(),200);assert.equal(sha(raw),sha(modules[name]));return sha(raw);});
+        pending.catch(()=>{});served.push([contextNumbers.get(context)+':'+name,pending]);
+      }
+    });
+  }
   async function enter(number){
     const map=JSON.parse(fs.readFileSync(path.join(root,'castle/bibliothek.tmj')));
     const user=await join(browser,number,{roomId:'bibliothek',roomUrl:origin+'/~/castle-preview/bibliothek.wam#start',outputDir:output,
       label:'Rundenprobe',seats:13,groups:3,revision:map.properties.find(property=>property.name==='castleRevision').value,
       schoolStorageState:path.join(privateRoot,'qa/sso-'+(number===1||brothers?'A':'B')+'.private.json'),mobile:number===2,
       allowDuplicateTestSession:brothers&&number===2,
-      parking:[[96,432],[800,432]],characterTextureId:'wvh-event-mira-v1',...(live?{}:{configureContext:routes})});
+      parking:[[96,432],[800,432]],characterTextureId:'wvh-event-mira-v1',
+      ...(recovery?{configureContext:async context=>{contextNumbers.set(context,number);await recoveryRoutes(context);}}:live?{}:{configureContext:routes})});
     users.push(user);await user.script.waitForFunction(()=>window.castleRoom.community?.bridge,undefined,{polling:200,timeout:20000});return user;
   }
   async function controller(user,id){
@@ -118,9 +136,27 @@ async function main(){
     await refresh(bf);await count(bf,1);
     const oldLease=await b.page.evaluate(()=>sessionStorage.getItem('castleRoundMembershipV1'));
     await bf.locator('.round').getByRole('button',{name:'Zur Runde',exact:true}).click();await arrived(b,'bibliothek');
-    assert.notEqual(await b.page.evaluate(()=>sessionStorage.getItem('castleRoundMembershipV1')),oldLease);
+    const renewed=await b.page.evaluate(()=>JSON.parse(sessionStorage.getItem('castleRoundMembershipV1')));
+    assert.notEqual(renewed.leaseId,JSON.parse(oldLease).leaseId,'Explicit reentry rotates the lease, not just its timestamp');
     const heartbeat=b.page.waitForResponse(response=>response.url()===origin+'/castle-school/round-heartbeat'&&response.status()===200,{timeout:30000});
     await (await heartbeat).finished();
+    if(recovery){
+      stage='bounded-recovery';let injected=0;const checkpoint=roundRequests.length;
+      await b.page.context().route(origin+'/castle-school/round-heartbeat',route=>{injected++;return route.fulfill({status:503,contentType:'application/json',headers:{'Retry-After':'1'},body:'{"error":"unavailable"}'});},{times:1});
+      const before=await b.page.evaluate(()=>JSON.parse(sessionStorage.getItem('castleRoundMembershipV1')));
+      const failed=b.page.waitForResponse(response=>response.url()===origin+'/castle-school/round-heartbeat'&&response.status()===503,{timeout:30000});
+      await (await failed).finished();
+      const held=await b.page.evaluate(()=>JSON.parse(sessionStorage.getItem('castleRoundMembershipV1')));
+      assert.equal(held.leaseId,before.leaseId);assert.equal(held.confirmedUntil,before.confirmedUntil);
+      const fresh=b.page.waitForResponse(response=>response.url()===origin+'/castle-school/round-heartbeat'&&response.status()===200,{timeout:12000});
+      await (await fresh).finished();await b.page.waitForFunction(before=>JSON.parse(sessionStorage.getItem('castleRoundMembershipV1')).confirmedUntil>before,before.confirmedUntil);
+      const after=await b.page.evaluate(()=>JSON.parse(sessionStorage.getItem('castleRoundMembershipV1')));assert.equal(after.leaseId,before.leaseId);assert.equal(injected,1);
+      assert.deepEqual(roundRequests.slice(checkpoint).filter(row=>row.number===2).map(row=>row.route),['/castle-school/round-heartbeat','/castle-school/round-heartbeat']);
+      recoveryAudio=await sample(a,b);
+      bf=await panel(b);await refresh(bf);await count(bf,1);await b.script.evaluate(()=>castleRoom.community.closePanel());
+      results.push({case:'bounded-recovery',oneExplicitPreAdmission503:true,sameLeaseRetained:true,noCachedDeadlineExtension:true,
+        freshRealServerRenewal:true,noCreateOrJoinReplay:true,noModuleInterception:!candidate});
+    }
     results.push({case:'native-library',normalMicrosoftPupils:2,oneMobileTouch:true,tableAudioDecodedBoth:true,
       directoryDoesNotMuteConversation:true,onePixelPrivateBridge:true,
       ...(live?{realGradeFiltering:true,stageClassOverrideNotPublished:true}:{realGradeAndClassFiltering:true}),
@@ -144,6 +180,13 @@ async function main(){
     const errors=users.flatMap(user=>user.errors);assert.deepEqual(errors,[]);
     const proof={passed:true,results,errors,stageOnly:!live,realNativeWorkAdventure:true,mapsModifiedOnlyInsideTestBrowsers:!live,
       productionSchoolAndWebConfigChanged:false,realClassOverrideOnlyInStage:!live,publishedPreview:live,loadApprovalFor400:false,audio};
+    if(recovery){
+      const observed={};for(const [key,pending]of served)observed[key]=await pending;
+      for(const number of [1,2])for(const [name,body]of Object.entries(modules))assert.equal(observed[number+':'+name],sha(body));
+      proof.recovery={candidate,moduleInterception:candidate,mapInterception:false,schoolDecisionInterception:false,
+        explicitFaultInjection:{route:'round-heartbeat',status:503,count:1},naturalHeartbeatFault:true,
+        moduleSha256:Object.fromEntries(Object.entries(modules).map(([name,body])=>[name,sha(body)])),observed,audio:recoveryAudio};
+    }
     fs.writeFileSync(path.join(output,'result.json'),JSON.stringify(proof,null,2)+'\n');console.log(JSON.stringify({...proof,audio:undefined},null,2));
   }catch(error){
     const state=[];
@@ -160,4 +203,4 @@ async function main(){
     console.error(JSON.stringify({passed:false,stage,errorType:error.name}));process.exitCode=1;
   }finally{await browser.close();}
 }
-main().catch(error=>{console.error('Native round probe stopped: '+error.name);process.exitCode=1;});
+main().catch(error=>{console.error('Native round probe stopped: '+(error.code||error.name));process.exitCode=1;});

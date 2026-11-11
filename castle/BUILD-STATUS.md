@@ -376,6 +376,18 @@ Alle 74 Python-Betriebspruefungen bestehen ebenfalls mit der nur lokal im
 Testordner ergaenzten YAML-Abhaengigkeit.
 Einzelheiten und Messgrenzen: `../ops/castle-school/README.md`.
 
+Die native Zweikonten-Vorprobe der Rundenkorrektur besteht inzwischen,
+einschliesslich echtem Tischton vor/nach einer ausdruecklich simulierten
+Ueberlast. Der anschliessende Veroeffentlichungsversuch ist jedoch wieder
+zurueckgesetzt: Die erste Live-Probe scheiterte an einer zu kurzen Testwartezeit.
+Vor deren Korrekturprobe lief das lokale Laufwerk C: voll. Die betroffene lokale
+Testdatei ist wiederhergestellt; weitere Browserproben starten bei zu wenig
+Platz nicht mehr. Der Server ist um 08:22 UTC vollstaendig im bisherigen Zustand
+nachgeprueft, ohne Neustart, Kartenersatz oder Rechteaenderung. Die Korrektur
+bleibt **nicht live abgenommen**. Fehlversuche und Ruecksetzbelege sind erhalten.
+Alle 83 Python-Betriebspruefungen und 34 gezielte Node-Rundenfaelle bestehen.
+Fuer weitere native Proben werden mindestens 2 GiB freier lokaler Platz benoetigt.
+
 ## Geplante Portal-Aushaenge
 
 Die zeitlich freizugebenden Portal-Aushaenge sind in einem getrennten
