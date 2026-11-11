@@ -364,10 +364,68 @@ toggle race on mobile: two unconditional clicks could close the asynchronously
 opened conversation panel. The harness now waits for the actual room state and
 opens the panel only when it is hidden; it does not alter the page's state.
 
-Local regression: 439 Node cases, 438 passed, zero failed, one existing optional
-widget-browser skip. The concurrent PHP nonce check initializes its shared store
+The concurrent PHP nonce check initializes its shared store
 before racing signed requests, rather than racing SQLite's first WAL conversion.
 It still requires exactly one acceptance and one replay denial from two workers.
+
+## Lossless Cached Media
+
+Room pilot release `a07797165557cc82` serves the same 19 generic room images through
+content-addressed URLs. The reviewed image/source hashes, dimensions and encoding
+choices are in `media.manifest.json`; the service pins its exact manifest hash.
+Original game code, images, saved rooms, inventories, ownership and school
+permissions are unchanged. The only live configuration change is the pilot's
+service executable path. Old releases, receipts, unit bytes and a consistent
+SQLite recovery copy are retained privately.
+
+Transparent furniture/avatar sheets stay PNG; four opaque room/floor images use
+lossless WebP. A WebP-only candidate passed the server-side raw-pixel comparison
+but failed Chrome's actual canvas comparison for transparent pixels and was
+never published. The final mixed set passes both checks for all 19 images:
+identical dimensions, every visible RGB value and every alpha value, including
+the furniture hit-test alpha data. No resizing, palette quantization or visible
+quality tradeoff was used. The build requires the pinned original image bytes
+and leaves them untouched. Original encoded bytes: 34,169,550; final: 30,386,384,
+an 11.1% reduction. Decoded image memory is not reduced by this encoding change.
+
+Only these pre-reviewed generic images are publicly cacheable, under their exact
+hash filenames with immutable caching and same-origin resource policy. No
+personal render, layout, account, report or API response is cacheable. The
+original image aliases remain behind the browser-bound room grant and redirect
+without caching the grant. Expired/foreign views still fail closed. A hash URL
+reveals only the same generic artwork after departure, never the former user's
+room state. Unknown media names, queries, source files and traversal are denied.
+
+The isolated Linux media/gateway/service suite passed 18 cases before publication.
+All 19 real HTTPS image bodies and cache headers were then checked against their
+pinned hashes, including 304 revalidation and absence of cookies. The seven
+genuine two-pupil HTTPS/WebSocket/45-second-lease cases passed again. The historical
+castle audit verifies the explicit unit-only transition without rewriting prior
+receipts. Moderation, PHP, credentials, existing services, Nginx, maps and WAMs
+remain unchanged. Private receipt: `media-deployment.json` in the pilot directory.
+
+Normal Microsoft states were freshly obtained for both authorized synthetic
+pupils. A real Chrome 157 observation, without request interception, measured cold
+standalone entry at about 14.5 seconds for both; a second protected view in the
+same browser took 5.3/5.9 seconds and reused all 19 images from disk cache. Warm
+desktop/mobile canvases were genuinely nonblank. Earlier unoptimized observations
+were 36.3/20.4 seconds. These are individual network observations, not a controlled
+speedup factor or a latency guarantee. A separate full public UI run passed at
+1000/390/320 pixels, including invitations, received phrases, account switching,
+remaining-device isolation, rendering and no JavaScript/resource errors. Its
+desktop/mobile first-ready timings were 28.9/20.1 seconds, demonstrating that cold
+latency still varies. Both pupil accounts also remain excluded from moderation.
+
+Latest full local regression: 444 cases, 443 passed, no failures, one existing
+optional widget-browser skip, with test files isolated by `--test-concurrency=1`.
+The 400-request admission burst remains internally simultaneous. A prior run
+with competing test files hit the existing four-second queue deadline for some
+synthetic requests; no production deadlines or admission rules were relaxed.
+
+Before broader activation, reduce the mandatory first-load image set rather than
+assuming caching solves cold entry, verify additional browser/device behavior,
+and complete the independent production-runtime lifecycle and native entry.
+This is not private-room voice, broad school admission or approval for 400 users.
 
 Still required before school activation: publish the reviewed gateway with its
 broader approved admission policy, independent immutable game release and durable

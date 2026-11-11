@@ -3,6 +3,7 @@ const fs=require('node:fs/promises'),path=require('node:path'),crypto=require('n
 const {createHomeGateway}=require('./gateway.cjs'),{gameFactory}=require('./game-adapter.cjs');
 const {createSchoolVerifier}=require('../castle-school/identity.cjs');
 const {createIdentityLookup}=require('./identity-lookup.cjs');
+const {loadHomeMedia}=require('./media.cjs');
 const ORIGIN='https://together.deine-schule.com',PORT=3251;
 const SOURCE='/opt/wvh-sterne-kollegium/releases/20261109T191624Z';
 const MANIFEST_SHA='8718d84cb8b6ef283a08075598f1d3115574e38964247378e61f08ad53ce8aa6';
@@ -35,12 +36,13 @@ async function main(){
  if(sha(manifestRaw)!==MANIFEST_SHA)throw Error('Reviewed runtime manifest changed');
  const manifest=JSON.parse(manifestRaw);if(manifest.version!==1||manifest.sourceRelease!==config.source||Object.keys(manifest.files).length!==107)throw Error('Reviewed game release required');
  await validateRuntimeFiles(config.source,manifest.files);
+ const media=await loadHomeMedia(path.join(__dirname,'media'),{sourceFiles:manifest.files});
  const state=await fs.stat(process.env.STATE_DIRECTORY);if(!state.isDirectory()||state.uid!==process.getuid()||(state.mode&0o077)!==0)throw Error('Private persistent room directory required');
  const dbPath=path.join(process.env.STATE_DIRECTORY,'pilot.sqlite');
  const existing=await fs.lstat(dbPath).catch(error=>{if(error.code!=='ENOENT')throw error;return null;});if(existing&&!existing.isFile())throw Error('Room database cannot be redirected');
  const lookup=pilotLookup(createIdentityLookup({key:config.contextKey}),config.allowedSubjects,config.moderatorSubjects);
  const gateway=await createHomeGateway({key:config.bridgeKey,origin:config.origin,port:config.port,verify:createSchoolVerifier(config.platformSecret,{identityTtl:0}),lookup,
-  createGame:await gameFactory(config.source,{dbPath,maxPlayers:8}),trustedProxyIps:['127.0.0.1','::1']});
+  createGame:await gameFactory(config.source,{dbPath,maxPlayers:8}),trustedProxyIps:['127.0.0.1','::1'],media});
  let stopping=false;
  const close=async()=>{if(stopping)return;stopping=true;await gateway.close();};
  process.once('SIGTERM',()=>void close());process.once('SIGINT',()=>void close());

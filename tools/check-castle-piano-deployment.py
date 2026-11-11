@@ -52,11 +52,49 @@ def verify_school_admission(ops,expected):
     assert not ops['run']('ss','-ltnH','sport = :13212').strip()
     return after,True
 
+def homes_media_transition(ops,moderation,moderation_raw):
+    root=Path('/opt/wvh-castle-homes');private=root/'private';path=private/'media-deployment.json';sha=ops['sha']
+    if not path.exists():return lambda name:Path(name).read_bytes()
+    assert path.resolve()==path and path.stat().st_mode&0o777==0o600
+    value=json.loads(path.read_text());assert value['passed'] and value['moderationReceiptSha256']==sha(moderation_raw)
+    assert value['before']==value['after']==moderation['after']
+    archive=value['archiveSha256'];assert re.fullmatch('[a-f0-9]{64}',archive)
+    release=Path(value['release']);assert release==root/'releases'/archive[:16] and release.resolve()==release
+    assert not any(item.is_symlink() for item in release.rglob('*'))
+    assert {item.relative_to(release).as_posix() for item in release.rglob('*') if item.is_file()}==set(value['files']) and len(value['files'])==54
+    assert all(sha((release/name).read_bytes())==digest for name,digest in value['files'].items())
+    backup=Path(value['unitBeforeFile']);assert backup.resolve()==backup and backup.parent.parent==private and backup.parent.name.startswith('before-media-') and backup.name=='service.snapshot'
+    assert backup.stat().st_uid==0 and backup.stat().st_mode&0o777==0o600
+    original=backup.read_bytes();unit=Path('/etc/systemd/system/wvh-castle-homes.service')
+    assert sha(original)==value['unitBeforeSha256']==moderation['changedFiles'][str(unit)]
+    expected=original.replace(str(Path(moderation['release'])/'ops/castle-homes/service.cjs').encode(),str(release/'ops/castle-homes/service.cjs').encode())
+    assert unit.read_bytes()==expected and sha(expected)==value['unitAfterSha256']
+    recovery=Path(value['recoveryDatabaseFile']);assert recovery==backup.parent/'pilot.sqlite' and recovery.resolve()==recovery
+    assert recovery.stat().st_uid==0 and recovery.stat().st_mode&0o777==0o600 and sha(recovery.read_bytes())==value['recoveryDatabaseSha256']
+    media=release/'ops/castle-homes/media';manifest_raw=(media/'manifest.json').read_bytes()
+    assert sha(manifest_raw)==value['mediaManifestSha256']=='242a42c7c40827e681c92fea56fe1d2d9886cab9fe8cd6279107af981e676909'
+    manifest=json.loads(manifest_raw);assert manifest['codec']=='lossless-mixed' and len(manifest['images'])==19 and not manifest['sourceImagesChanged']
+    assert manifest['originalBytes']==value['originalImageBytes']==34169550 and manifest['bytes']==value['optimizedImageBytes']==30386384
+    proof_raw=(media/'browser-fidelity.json').read_bytes();assert sha(proof_raw)==value['browserFidelityProofSha256']
+    proof=json.loads(proof_raw);assert proof['passed'] and proof['manifestSha256']==value['mediaManifestSha256'] and len(proof['comparisons'])==19
+    assert proof['browserVersion'].startswith('157.') and all(row['sameDimensions'] and row['alphaDifferences']==row['visibleRgbDifferences']==0 for row in proof['comparisons'])
+    assert not proof['publicDeploymentTested'] and not proof['sourceImagesChanged']
+    assert len(value['publicImages'])==19 and {row['sha256'] for row in value['publicImages']}=={row['sha256'] for row in manifest['images']}
+    assert all(row['publicTlsHashAndCacheVerified'] for row in value['publicImages'])
+    assert sha((private/'media-linux-tests.private.log').read_bytes())==value['linuxTestLogSha256']
+    acceptance=value['acceptance'];assert acceptance['passed'] and len(acceptance['checks'])==7 and acceptance['realPublicTls'] and acceptance['realPublicContextEndpoint'] and acceptance['realPublicWebSockets'] and acceptance['realLeaseClock']
+    assert not acceptance['networkInterception']
+    assert value['onlyRoomPilotRestarted'] and value['privateAuthorityAndModerationUnchanged'] and value['sourceImagesUnchanged'] and value['existingServicesAndMapsUnchanged']
+    assert not value['broadSchoolRoomAccess'] and not value['voiceEnabled']
+    return lambda name:original if Path(name)==unit else Path(name).read_bytes()
+
+
 def homes_moderation_transition(ops,initial,initial_raw):
     root=Path('/opt/wvh-castle-homes');private=root/'private';path=private/'moderation-deployment.json';sha=ops['sha']
     if not path.exists():return lambda name:Path(name).read_bytes()
     assert path.resolve()==path and path.stat().st_mode&0o777==0o600
-    value=json.loads(path.read_text());assert value['passed'] and value['version']==2 and value['initialReceiptSha256']==sha(initial_raw)
+    moderation_raw=path.read_bytes();value=json.loads(moderation_raw);assert value['passed'] and value['version']==2 and value['initialReceiptSha256']==sha(initial_raw)
+    previous=homes_media_transition(ops,value,moderation_raw)
     assert value['before']==value['after']==initial['after']
     archive=value['archiveSha256'];assert re.fullmatch('[a-f0-9]{64}',archive)
     release=Path(value['release']);assert release==root/'releases'/archive[:16] and release.resolve()==release
@@ -72,10 +110,10 @@ def homes_moderation_transition(ops,initial,initial_raw):
         target=Path(backup['file']);assert target.resolve()==target and target.parent==private/'before-moderation'
         assert target.stat().st_uid==0 and target.stat().st_mode&0o777==0o600
         raw=target.read_bytes();assert sha(raw)==backup['sha256'];originals[name]=raw
-        current=Path(name);assert current.resolve()==current and sha(current.read_bytes())==value['changedFiles'][name]
+        current=Path(name);assert current.resolve()==current and sha(previous(name))==value['changedFiles'][name]
         stat=current.stat();assert (stat.st_mode&0o777,stat.st_uid,stat.st_gid)==(backup['mode'],backup['uid'],backup['gid'])
     old_release=Path(initial['release'])
-    assert unit.read_bytes()==originals[str(unit)].replace(str(old_release/'ops/castle-homes/service.cjs').encode(),str(release/'ops/castle-homes/service.cjs').encode())
+    assert previous(unit)==originals[str(unit)].replace(str(old_release/'ops/castle-homes/service.cjs').encode(),str(release/'ops/castle-homes/service.cjs').encode())
     subjects=value['moderatorSubjects'];assert len(subjects)==1 and re.fullmatch('wvh:staff:[1-9][0-9]{0,15}',subjects[0])
     old_config=json.loads(originals[str(credential)]);config=json.loads(credential.read_text())
     assert config=={**old_config,'version':2,'moderatorSubjects':subjects}
@@ -200,6 +238,7 @@ def main():
       'allOtherServicesPreservedExceptVerifiedMaintenance':True,'schoolAdmissionVerified':school_admission,'homesPilotVerified':homes_pilot,
       'hallHealthRepairVerified':health_repair,'historicalManifestsPreserved':True,
       'homesSoleAdministratorModerationVerified':homes_pilot and Path('/opt/wvh-castle-homes/private/moderation-deployment.json').exists(),
+      'homesLosslessCachedMediaVerified':homes_pilot and Path('/opt/wvh-castle-homes/private/media-deployment.json').exists(),
       'permissionsAndAuthenticationUnchanged':True,'stageStopped':True,'healthy':True,'loadApprovalFor400':False,
       'checkedAt':time.strftime('%Y-%m-%dT%H:%M:%SZ',time.gmtime())}
     ops['atomic'](private/'published-acceptance.json',result);print(json.dumps(result,indent=2))

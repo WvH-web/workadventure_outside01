@@ -20,7 +20,7 @@ function project(value){
  return Object.fromEntries(Object.entries(value).filter(([key])=>!privateKeys.has(key)).map(([key,item])=>[key,project(item)]));
 }
 
-async function createHomeGateway({key,verify,lookup,createGame,origin,port=0,allowInsecureLocal=false,clock=Date.now,trustedProxyIps=[],pages,admissionOptions}={}){
+async function createHomeGateway({key,verify,lookup,createGame,origin,port=0,allowInsecureLocal=false,clock=Date.now,trustedProxyIps=[],pages,admissionOptions,media}={}){
  if(typeof createGame!=='function'||typeof verify?.preflight!=='function'||!Array.isArray(trustedProxyIps))throw Error('Reviewed game factory and school verifier required');
  if(origin){const url=new URL(origin);if(url.origin!==origin||url.protocol!=='https:'&&!(allowInsecureLocal&&url.protocol==='http:'&&url.hostname==='127.0.0.1'))throw Error('Fixed HTTPS home origin required');}
  else if(!allowInsecureLocal)throw Error('Production home origin required');
@@ -110,6 +110,7 @@ async function createHomeGateway({key,verify,lookup,createGame,origin,port=0,all
   if(req.headers.origin&&req.headers.origin!==publicOrigin||req.headers['sec-fetch-site']==='cross-site')fail(403,'wrong_origin');
   const api=route.startsWith('/api/');if(api){if(!apiAllowed(route,req.method)||url.search)fail(404,'not_found');if(route==='/api/moderation/chat'&&!view.moderator)fail(403,'not_allowed');if(req.method==='POST'){sameOrigin(req);if(!/^application\/json(?:;|$)/i.test(req.headers['content-type']||''))fail(415,'invalid_request');}}
   else if(req.method!=='GET'||!assetPaths.has(route)||url.search)fail(404,'not_found');
+  const image=!api&&media?.redirect(route);if(image){res.writeHead(302,{Location:BASE+image});res.end();return;}
   if(route==='/game/room-social.js'){res.writeHead(200,{'Content-Type':'text/javascript; charset=utf-8'});res.end(roomSocial);return;}
   const body=req.method==='POST'?await collect(req,16384):undefined;
   await new Promise((resolve,reject)=>{
@@ -135,6 +136,13 @@ async function createHomeGateway({key,verify,lookup,createGame,origin,port=0,all
   try{
    const url=publicUrl(req),route=url.pathname.slice(BASE.length);
    if(route==='health'&&req.method==='GET'&&!url.search){send(res,200,{ready:!!backend&&!closed});return;}
+   if(route.startsWith('media/')){
+    const image=media?.get(route);if(!image||req.method!=='GET'||url.search)fail(404,'not_found');
+    res.setHeader('Cache-Control','public, max-age=31536000, immutable');res.setHeader('ETag',image.etag);
+    res.setHeader('Cross-Origin-Resource-Policy','same-origin');
+    if(req.headers['if-none-match']===image.etag){res.writeHead(304);res.end();return;}
+    res.writeHead(200,{'Content-Type':image.type,'Content-Length':image.body.length});res.end(image.body);return;
+   }
    if(route==='authority/check'){
     if(req.method!=='POST'||url.search)fail(404,'not_found');const raw=(await collect(req,8192)).toString('utf8');
     const result=await authority.check(raw,Object.fromEntries(['timestamp','nonce','signature'].map(name=>[name,req.headers['x-sterne-'+name]])));

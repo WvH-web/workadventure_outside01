@@ -2,7 +2,7 @@
 const crypto=require('node:crypto'),path=require('node:path'),fs=require('node:fs/promises'),os=require('node:os');
 const {createHomeGateway}=require('../ops/castle-homes/gateway.cjs'),{gameFactory}=require('../ops/castle-homes/game-adapter.cjs');
 const {createSchoolVerifier}=require('../ops/castle-school/identity.cjs'),{SignJWT}=require('../ops/hall-audio/node_modules/jose');
-async function createRehearsal({port=0,origin,clock=Date.now,moderationFixture=false}={}){
+async function createRehearsal({port=0,origin,clock=Date.now,moderationFixture=false,media}={}){
  const directory=await fs.mkdtemp(path.join(os.tmpdir(),'castle-home-gateway-')),key=crypto.randomBytes(32).toString('hex'),secret=crypto.randomBytes(32).toString('hex');
  const source=path.resolve(process.env.STERNENHUETER_SOURCE||path.join(__dirname,'../../sternenhueter'));
  const profiles=new Map([['a@invalid.local',{sub:'wvh:student:7',role:'student',grade:3,age:9,moderator:false,read_only:false}],
@@ -12,7 +12,7 @@ async function createRehearsal({port=0,origin,clock=Date.now,moderationFixture=f
  async function cleanup(){const resolved=await fs.realpath(directory),temporary=await fs.realpath(os.tmpdir());if(path.dirname(resolved)!==temporary||!path.basename(resolved).startsWith('castle-home-gateway-'))throw Error('Unsafe local fixture cleanup');await fs.rm(directory,{recursive:true,force:true});}
  try{
   const factory=await gameFactory(source,{dbPath:path.join(directory,'synthetic.sqlite')});
-  gateway=await createHomeGateway({port,origin,allowInsecureLocal:true,key,clock,verify:createSchoolVerifier(secret,{clock}),lookup:async identifier=>profiles.get(identifier)??null,
+  gateway=await createHomeGateway({port,origin,allowInsecureLocal:true,key,clock,media,verify:createSchoolVerifier(secret,{clock}),lookup:async identifier=>profiles.get(identifier)??null,
    createGame:options=>{const value=factory(options);game=value.game;
     game.server.prependListener('request',req=>requests.push({path:req.url,authorizationForwarded:!!req.headers.authorization,
      unrelatedCookieForwarded:!!req.headers.cookie?.includes('unrelated'),hasGameCookie:!!req.headers.cookie?.includes('sternenhueter_school=')}));return value;}});

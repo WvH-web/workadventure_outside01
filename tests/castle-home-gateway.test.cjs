@@ -6,11 +6,11 @@ const {GatewayError}=require('../ops/hall-audio/errors.cjs');
 const {client}=require('../tools/castle-home-test-client.cjs');
 const key='c'.repeat(64),pupil=id=>({sub:'wvh:student:'+id,role:'student',grade:3,age:9,moderator:false,read_only:false});
 const deferred=()=>{let resolve;const promise=new Promise(done=>resolve=done);return {promise,resolve};};
-async function fixture(run){
+async function fixture(run,options={}){
  const seen=[],profiles=new Map([['a@invalid.local',pupil(7)],['b@invalid.local',pupil(8)]]);let lookup=async id=>profiles.get(id)??null;
  const preflight=async header=>{if(!['Bearer a','Bearer b'].includes(header))throw new GatewayError(401,'unauthorized');return {identifier:header.slice(7)+'@invalid.local'};};
  const verify=Object.assign(async header=>({...await preflight(header),expiresAt:Date.now()+3600000}),{preflight});
- const app=await createHomeGateway({key,verify,lookup:id=>lookup(id),allowInsecureLocal:true,createGame:options=>{
+ const app=await createHomeGateway({key,verify,lookup:id=>lookup(id),allowInsecureLocal:true,media:options.media,createGame:options=>{
   assert.equal(options.testMode,false);assert.equal(options.requireSchool,true);assert.equal(options.media,null);
   const server=http.createServer(async(req,res)=>{
    let raw='';for await(const chunk of req)raw+=chunk;seen.push({path:req.url,cookie:req.headers.cookie,authorization:req.headers.authorization,raw});
@@ -21,7 +21,7 @@ async function fixture(run){
    res.writeHead(200,{'Content-Type':'application/json'});res.end(JSON.stringify({me:{id:'opaque-game-person',name:'Schlossfreund',grade:3,age:9},account:{role:'student',canModerate:false},
     players:[{name:'Unrelated hidden village member'}],subject:'wvh:student:7',email:'private@invalid.local',nested:{accessToken:'private',birthdate:'2017-01-01'},room:{placed:[]}}));
   });
-  return {game:{server,async close(){server.closeAllConnections();await new Promise(resolve=>server.close(resolve));}},assetPaths:new Set(['/zimmer/app.js']),roomSocial:'// reviewed fixture'};
+  return {game:{server,async close(){server.closeAllConnections();await new Promise(resolve=>server.close(resolve));}},assetPaths:new Set(['/zimmer/app.js','/bilder/leer.png']),roomSocial:'// reviewed fixture'};
  }});
  try{await run({app,seen,profiles,setLookup:next=>lookup=next,a:client(app.url,'a'),b:client(app.url,'b')});}finally{await app.close();}
 }
@@ -31,7 +31,23 @@ test('strict projection and duplicate cookie rejection do not expose school or u
  assert.equal(cookie('view=first; view=second','view'),null);assert.equal(cookie('other=x; view=one','view'),'one');assert.equal(cookie('prefixview=one','view'),null);
 });
 
-test('only the owned public shell is anonymous, and session input is exact and origin-bound',async()=>fixture(async({a})=>{
+test('only pinned generic image hashes are cacheable; protected views, API and unknown files remain private',async()=>{
+ const url='media/'+'d'.repeat(64)+'.webp',image={body:Buffer.from('reviewed generic image fixture'),type:'image/webp',etag:'"'+'d'.repeat(64)+'"'};
+ const media={redirect:route=>route==='/bilder/leer.png'?url:undefined,get:route=>route===url?image:undefined};
+ await fixture(async({a,seen})=>{
+  const anonymous=await a.request(url);assert.equal(anonymous.status,200);assert.equal(anonymous.headers.get('content-type'),'image/webp');
+  assert.equal(anonymous.headers.get('cache-control'),'public, max-age=31536000, immutable');assert.equal(anonymous.headers.get('set-cookie'),null);
+  assert.equal((await a.request(url,undefined,{'If-None-Match':image.etag})).status,304);
+  for(const route of ['media/manifest.json','media/../api/bedroom',url+'?token=private'])assert.equal((await a.request(route)).status,404);
+  assert.equal((await a.request(url,{})).status,404);await a.open();
+  const redirect=await a.request('view/'+a.view+'/bilder/leer.png');assert.equal(redirect.status,302);assert.equal(redirect.headers.get('location'),'/castle-homes/'+url);
+  assert.equal(redirect.headers.get('cache-control'),'no-store, private');assert.equal(seen.some(row=>row.path==='/bilder/leer.png'),false);
+  assert.equal((await a.api('bedroom')).headers.get('cache-control'),'no-store, private');await a.leave();
+  assert.equal((await a.request('view/'+a.view+'/bilder/leer.png')).status,401);assert.equal((await a.api('bedroom')).status,401);assert.equal((await a.request(url)).status,200);
+ },{media});
+});
+
+test('the public shell is anonymous, protected views are not, and session input is exact and origin-bound',async()=>fixture(async({a})=>{
  assert.equal((await a.request('')).status,200);assert.equal((await a.request('entry.js')).status,200);
  assert.equal((await a.request('view/'+crypto.randomUUID()+'/zimmer/')).status,401);
  assert.equal((await a.request('session',{clientId:a.clientId,requestId:crypto.randomUUID(),role:'teacher'})).status,400);
