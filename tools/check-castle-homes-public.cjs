@@ -6,7 +6,7 @@ const BASE='https://together.deine-schule.com/castle-homes/';let stage='configur
 async function main(){
  assert.ok(process.env.CREDENTIALS_DIRECTORY);const config=JSON.parse(await fs.readFile(path.join(process.env.CREDENTIALS_DIRECTORY,'accounts.json'),'utf8'));
  assert.equal(config.version,1);assert.deepEqual(config.accounts.map(row=>row.key),['A','B']);
- const WS=require('/opt/wvh-sterne-kollegium/releases/20261109T191624Z/dorfplatz/node_modules/ws');
+ const WS=require('ws');
  const a=client(BASE,config.accounts[0].token),b=client(BASE,config.accounts[1].token);let a2,as,bs;
  const checks=[],passed=name=>checks.push(name);
  try{

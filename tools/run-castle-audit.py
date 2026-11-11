@@ -5,5 +5,5 @@ from pathlib import Path
 path=Path('/tmp/wvh-check-castle-piano-deployment.py')
 assert path.resolve()==path and path.is_file()
 raw=path.read_bytes()
-assert hashlib.sha256(raw).hexdigest()=='e45bd6af93b7d0698823cac8d75a774644f20ccdccc1bc0fec57d49e811efc3d'
+assert hashlib.sha256(raw).hexdigest()=='1840d81f91287a1ca169632ac4ca3c2ca0246bc14084525b86257c4d06e0bbcf'
 exec(compile(raw,str(path),'exec'),{'__name__':'__main__','__file__':str(path)})

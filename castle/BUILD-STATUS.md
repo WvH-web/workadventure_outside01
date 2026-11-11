@@ -269,8 +269,25 @@ normalen Microsoft-Testanmeldungen ist ebenfalls bestanden. Einzelmessungen
 lagen bei etwa 5-6 Sekunden fuer den ersten Aufruf und 3-4 Sekunden fuer einen
 erneuten Besuch; das ist keine feste Ladezeit- oder 400-Personen-Zusage.
 
-Offen bleiben insbesondere die unabhaengige produktive Spiel-Laufzeit,
-abgesicherte freiwillige Zimmergespraeche per Mikrofon, Wiederherstellungs- und
+Der getrennte Zimmerpilot verwendet jetzt eine eigene unveraenderliche
+Programmgrundlage statt des Kollegiumsprojekts. Alle 4.869 benoetigten Dateien
+werden beim Start geprueft; das alte Projekt ist fuer diesen Dienst gesperrt.
+Die echte Zweipersonenprobe sowie Desktop-/Mobilbrowser bestehen weiterhin.
+Nur der Zimmerpilot wurde kurz neu gestartet, nicht WorkAdventure oder das
+bisherige Schloss. Die Freigaben und Schluessel bleiben unveraendert.
+
+Eine Wiederherstellung aus dem Programmarchiv ist mit zwei kuenstlichen
+Teilnehmern in einer abgeschotteten Kopie bestanden. Die konsistent gesicherten
+Zimmerdaten wurden getrennt wiederhergestellt und vollstaendig verglichen,
+ohne Live-Daten zu ersetzen. Eine gepruefte reine Programmkopie liegt auch
+ausserhalb des Servers; das ersetzt noch keine vollstaendige Notfallprobe mit
+echten Schulanmeldungen und gesicherter Daten-/Schluesselwiederherstellung.
+Die letzte lokale Gesamtsuite: 456 Faelle, 454 bestanden, keine Fehler oder
+Abbrueche, zwei begruendete Auslassungen. Die Linux-Dateirechte sind separat
+auf dem Server geprueft. Das ist keine 400-Personen-Freigabe.
+
+Offen bleiben insbesondere abgesicherte freiwillige Zimmergespraeche per
+Mikrofon, breitere Schulfreigabe, vollstaendige Wiederherstellungs- und
 Lastnachweise und die abschliessende native Kartenfreigabe. Der Gesamtausbau
 ist damit nicht abgeschlossen. Das bisherige Schloss, andere Karten und das
 Kollegiumsprojekt bleiben unveraendert. Einzelheiten und Nachweise:

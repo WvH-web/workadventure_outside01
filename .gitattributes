@@ -6,3 +6,4 @@ ops/castle-art/upstream/** -text
 ops/castle-piano/vendor/** -text
 ops/castle-piano/public/vendor/** -text
 ops/castle-piano/public/samples/** -text
+ops/castle-homes/game.manifest.json -text

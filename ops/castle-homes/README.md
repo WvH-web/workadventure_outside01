@@ -492,8 +492,7 @@ burst still runs simultaneously and passes without provider/database simulation
 being mislabelled as a real 400-pupil production approval.
 
 Still required before school activation: publish the reviewed gateway with its
-broader approved admission policy, independent immutable game release and durable
-school-room operational lifecycle;
+broader approved admission policy and complete the durable school-room operational lifecycle;
 verify native school visits and invitation withdrawal/recovery;
 provide correctly isolated, voluntary room voice without leaking into unrelated
 WorkAdventure table chats; test the approved moderator's ordinary Microsoft
@@ -501,3 +500,62 @@ login; test normal Microsoft
 school entry, logout/account switching, desktop/mobile rendering, focus,
 reconnect/restart and backup/restore. Only then connect the preview castle's
 residential entrance. Old castle/Village and colleague test data stay untouched.
+
+## Independent Runtime And Recovery
+
+The isolated pilot now runs service release `4846d94ddfe65cc2` against its own
+immutable game tree `8a7b5a2e1bf03405`, not the colleague project's release.
+The complete generic tree is pinned in `game.manifest.json`: 162 source files
+(the original 107 plus 55 shared program modules), 4,706 installed dependency
+files and 30 package versions checked against the original lockfile. No package
+upgrade, school database, upload, identity or credential was copied. Licenses
+remain in the copied packages. The two trees use different file inodes.
+
+The service validates the exact 4,869-file inventory, including its manifest,
+before importing the game. Missing/changed files, unexpected shadow modules,
+symbolic links, writable directories and unsafe file ownership fail closed.
+Configuration version 3 accepts only the fixed owned tree. The service namespace
+also makes the complete colleague project inaccessible. The original source
+descriptor remains provenance, not an executable fallback.
+
+Thirty-one Linux service/gateway/media/progressive/runtime cases pass with that
+old project hidden. The actual engine and native image codec also pass there
+with two disposable synthetic participants, a shared visit and a received
+phrase. Only the room pilot restarted. The unit changed its executable,
+dependency path and isolation rule; private configuration changed only version
+and source. All keys, pupil identifiers, moderator policy, PHP, Nginx, old maps,
+WAMs and other services are preserved. Explicit private receipt:
+`owned-runtime-deployment.json`; earlier receipts are retained unchanged.
+
+All seven genuine public TLS/context/WebSocket/lease cases pass again with the
+ordinary Microsoft test states. Chrome 157 passes public desktop/mobile entry,
+320px catalog, invitations, messages, account switching and remaining-device
+isolation, with no JavaScript or resource errors and no network interception.
+The latest full local run reports 456 cases: 454 passed, zero failures or
+cancellations, two skips (the optional widget browser and Linux-only filesystem
+permissions on Windows). Linux separately exercises the latter. An earlier
+combined run timed out in the synthetic 400-request transport fixture; both
+the isolated fixture and the final complete run pass without changing production
+limits or test deadlines. This is still not real 400-pupil approval.
+
+Recovery was rehearsed, not merely archived. The generic 84,095,464-byte archive
+was safely reconstructed into a temporary tree, all 4,869 regular files were
+verified, and that recovered tree was bound read-only into an isolated engine
+probe with the old project hidden. Two new synthetic participants visited and
+exchanged a phrase. The private consistent SQLite snapshot was separately
+restored offline, passed integrity checks and matched every SQL object and row;
+it was never applied over live rooms. Temporary restored data was removed.
+Private receipt: `owned-runtime-recovery.json`. This is not yet a complete
+authenticated pupil session against a restored production database.
+
+The software-only archive was also downloaded off-server and verified locally,
+including every archived file. Archive SHA-256:
+`a3b7e21e359445f6fb42dc692ffc1f90fb27b5bb0260101166730891fc27d0b5`.
+Local verification: `tools/check-castle-homes-backup.py`. The temporary SFTP
+export was removed; the root-only server archive remains. No school database or
+key was exported. This one verified software copy is not a recurring backup
+policy for pupil data or a complete VPS disaster-recovery rehearsal.
+
+Private-room voice remains disabled. Broader pupil admission, genuine native
+castle entry, ordinary administrator-login moderation and full operational/load
+acceptance remain open. The existing castle is not replaced.
