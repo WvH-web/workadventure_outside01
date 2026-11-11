@@ -67,7 +67,8 @@ function createWam(map) {
     visible:true,properties:[{id:uuid(id+'/'+group.id+'/meeting'),type:'livekitRoomProperty',
       roomName:'school-castle-v2-'+id+'-'+group.id}],
   }));
-  const sourceUrl=new URL(id+'.tmj',mapBase);
+  const sourceFile=id==='sternwarte'&&settings.script?.split('?')[0]==='puzzle-preview.bundle.js'?'sternwarte-puzzle-preview.tmj':id+'.tmj';
+  const sourceUrl=new URL(sourceFile,mapBase);
   const revision=mapVersion(map);if(revision)sourceUrl.searchParams.set('v',revision);
   return {version:'2.1.0',mapUrl:sourceUrl.href,entities:{},areas,entityCollections:[],
     settings:{megaphone:{enabled:false,title:'',scope:'ROOM'}},

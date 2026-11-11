@@ -4,7 +4,7 @@
     "height": 22,
     "tileSize": 32,
     "avatarPixels": 32,
-    "revision": "20261109-actions2",
+    "revision": "20261111-puzzle1",
     "entries": {
       "start": [
         13,
@@ -326,9 +326,22 @@
       {
         "id": "stars-solar",
         "group": "buchclub",
-        "label": "Sonnensystem",
-        "url": "https://eyes.nasa.gov/apps/solar-system/",
-        "api": false
+        "label": "Sternenwerkstatt",
+        "url": "puzzle.html",
+        "api": true,
+        "choices": [
+          {
+            "id": "machine",
+            "label": "Sternenmaschine",
+            "url": "puzzle.html",
+            "api": true
+          },
+          {
+            "id": "solar",
+            "label": "Sonnensystem",
+            "url": "https://eyes.nasa.gov/apps/solar-system/"
+          }
+        ]
       },
       {
         "id": "stars-tours",

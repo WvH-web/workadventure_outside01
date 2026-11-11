@@ -142,3 +142,23 @@ umstellen, den vorigen Nachweis unveraendert als Vorgaenger behalten und den
 normalen Zugang nochmals ohne Testkarte pruefen. Keine anderen Karten, Dienste
 oder Spielefreigaben ersetzen. Die Aktivitaet ist kein Geheimgang; private
 Entdeckungsplaene und Codes werden nicht mitgeliefert.
+
+### Vorbereitete Normale Aktivierung
+
+Der lokale Builder erzeugt die kanonische `sternwarte.tmj` jetzt bytegenau wie
+die bereits nativ akzeptierte Kandidatendatei. Der eigene Controller ist nur
+fuer die Sternwarte als Einstieg erlaubt. Die WAM verwendet dieselbe akzeptierte
+Aliasdatei, damit das spaetere Nachziehen der oeffentlichen kanonischen TMJ
+keinen halbfertigen Karten-/Scriptwechsel ausloest. Alle Grafiken bleiben gleich.
+Die alten Testeingaben liegen als festgehaltene Fixtures vor, nicht als neue
+erlaubte Ziele des historischen Einmal-Stage-Operators.
+
+Die neue Umschaltung behandelt ausschliesslich `sternwarte.wam` und ihren
+einzelnen Eintrag im 16-Karten-Manifest. Vorher wird der aktuelle vollstaendige
+Vorgaengernachweis wirklich ausgefuehrt. Danach werden reale neue Sollwerte,
+laufende Container/Prozesse, unveraenderte andere Karten, eingefrorene private
+Nachweise, der unveraenderte Schuldienst und seine oeffentliche Zugangssperre
+geprueft. Alte Nachweise werden weder umgeschrieben noch mit vorgetaeuschten
+alten Live-Dateien ausgefuehrt. Die normale Browserprobe ist getrennt von der
+aufbewahrten Stage-Probe. Die kanonische Quellsynchronisation ist eine eigene,
+sichtbare Phase und wird nicht als bereits erledigt ausgegeben.

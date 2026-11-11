@@ -1,0 +1,69 @@
+{
+  "version": "2.1.0",
+  "mapUrl": "https://wvh-web.github.io/workadventure_outside01/castle/sternwarte.tmj?v=20261109-actions2-20261109-rounds1",
+  "entities": {},
+  "areas": [
+    {
+      "id": "633e945d-46b8-4a77-a181-8e90b067a6e2",
+      "name": "Sternengeschichten",
+      "x": 64,
+      "y": 272,
+      "width": 288,
+      "height": 256,
+      "visible": true,
+      "properties": [
+        {
+          "id": "65c0c823-e99c-4a74-865a-33fdbefb6956",
+          "type": "livekitRoomProperty",
+          "roomName": "school-castle-v2-sternwarte-area-lesekamin"
+        }
+      ]
+    },
+    {
+      "id": "d20852e2-f775-4a4d-916a-52c8bad79880",
+      "name": "Fenster zum All",
+      "x": 656,
+      "y": 176,
+      "width": 176,
+      "height": 176,
+      "visible": true,
+      "properties": [
+        {
+          "id": "bdad63a9-d2b4-4460-a15e-50183643a0a8",
+          "type": "livekitRoomProperty",
+          "roomName": "school-castle-v2-sternwarte-area-fensterleser"
+        }
+      ]
+    },
+    {
+      "id": "6534dbf2-fc13-4548-880c-44892d43f81a",
+      "name": "Forschergruppe",
+      "x": 544,
+      "y": 400,
+      "width": 288,
+      "height": 240,
+      "visible": true,
+      "properties": [
+        {
+          "id": "a4141b8e-506a-4d85-a22f-0ec3e76765fe",
+          "type": "livekitRoomProperty",
+          "roomName": "school-castle-v2-sternwarte-area-buchclub"
+        }
+      ]
+    }
+  ],
+  "entityCollections": [],
+  "settings": {
+    "megaphone": {
+      "enabled": false,
+      "title": "",
+      "scope": "ROOM"
+    }
+  },
+  "metadata": {
+    "name": "Sternwarte",
+    "description": "Sternwarte mit drei getrennten Gespraechsrunden und passenden Aktivitaeten.",
+    "copyright": "Original room artwork generated for deine Schule; approved 32px-avatar seating and book-club furniture; village fire animation.",
+    "thumbnail": "https://wvh-web.github.io/workadventure_outside01/castle/art/sternwarte-20261108-full/floor.png"
+  }
+}

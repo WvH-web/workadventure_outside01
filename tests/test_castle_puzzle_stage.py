@@ -10,7 +10,7 @@ ops=runpy.run_path(str(ROOT/'tools/castle-puzzle-stage.py'))
 
 class PuzzleStageTest(unittest.TestCase):
     def test_wrapper_changes_only_map_and_voice_namespace(self):
-        source=json.loads((ROOT/'castle/sternwarte.wam').read_text())
+        source=json.loads((ROOT/'tests/fixtures/sternwarte-before-puzzle.wam').read_text())
         before=copy.deepcopy(source);after=ops['wrapper'](source)
         self.assertEqual(source,before)
         self.assertIn('/sternwarte-puzzle-preview.tmj?',after['mapUrl'])
@@ -23,7 +23,7 @@ class PuzzleStageTest(unittest.TestCase):
         after['mapUrl']=before['mapUrl'];self.assertEqual(changes,3);self.assertEqual(after,before)
 
     def test_other_map_or_mixed_conversation_namespace_is_rejected(self):
-        source=json.loads((ROOT/'castle/sternwarte.wam').read_text())
+        source=json.loads((ROOT/'tests/fixtures/sternwarte-before-puzzle.wam').read_text())
         for patch in [{'mapUrl':'https://evil.invalid/sternwarte.tmj'},{'extra':'x'}]:
             with self.assertRaises(AssertionError):ops['wrapper']({**source,**patch})
         source['areas'][0]['properties'][0]['roomName']='school-castle-v2-museum-area-buchclub'

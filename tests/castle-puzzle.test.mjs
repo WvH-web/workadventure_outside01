@@ -7,9 +7,11 @@ import {activitySettings} from '../castle/activities.js';
 const require=createRequire(import.meta.url),{candidate,revision}=require('../tools/prepare-castle-puzzle.cjs');
 const uuid=()=>crypto.randomUUID(),target={seats:['a','b','c','d'],choice:'machine'};
 test('the dedicated candidate changes only astronomy activity settings and its controller, not furnishings, voices or exits',()=>{
-  const source=JSON.parse(fs.readFileSync(new URL('../castle/sternwarte.tmj',import.meta.url))),copy=candidate(source);
+  const source=JSON.parse(fs.readFileSync(new URL('./fixtures/sternwarte-before-puzzle.tmj',import.meta.url))),copy=candidate(source);
   const stored=JSON.parse(fs.readFileSync(new URL('../castle/sternwarte-puzzle-preview.tmj',import.meta.url)));
   assert.deepEqual(copy,stored);assert.equal(copy.properties.find(p=>p.name==='castleRevision').value,revision);
+  assert.deepEqual(JSON.parse(fs.readFileSync(new URL('../castle/sternwarte.tmj',import.meta.url))),stored);
+  assert.deepEqual(candidate(stored),stored);
   assert.equal(puzzleTarget(copy).seats.length,4);assert.throws(()=>puzzleTarget(source));
   const area=copy.layers.flatMap(l=>l.objects||[]).find(o=>o.properties?.some(p=>p.name==='castleActivityId'&&p.value==='stars-solar'));
   const settings=activitySettings(area);assert.equal(settings.api,true);assert.equal(settings.autoOnSit,true);
@@ -21,7 +23,7 @@ test('only the exact owned puzzle page may receive the map API',()=>{
   assert.equal(activitySettings(object('puzzle.html')).api,true);
   for(const url of ['puzzle.html?preview=1','puzzle.html#outside','https://evil.invalid/puzzle.html','puzzle.html?url=https://evil.invalid'])assert.throws(()=>activitySettings(object(url)));
 });
-test('the dedicated puzzle controller records every source hash without changing the old map entry',()=>{
+test('the dedicated puzzle controller records every reviewed source hash independently',()=>{
   const manifest=JSON.parse(fs.readFileSync(new URL('../castle/puzzle-preview.bundle.manifest.json',import.meta.url)));
   const digest=bytes=>crypto.subtle.digest('SHA-256',bytes).then(hash=>Buffer.from(hash).toString('hex'));
   return (async()=>{

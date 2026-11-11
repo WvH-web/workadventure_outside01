@@ -9,7 +9,7 @@ function property(object,name,value){
 function candidate(source){
   if(properties(source).castleMapId!=='sternwarte')throw Error('Only the existing observatory is eligible');
   const map=structuredClone(source),area=map.layers.flatMap(layer=>layer.objects||[]).find(object=>properties(object).castleActivityId==='stars-solar');
-  if(!area||properties(area).castleActivityGroup!=='buchclub'||properties(area).castleActivityUrl!=='https://eyes.nasa.gov/apps/solar-system/')throw Error('Original astronomy table missing or changed');
+  if(!area||properties(area).castleActivityGroup!=='buchclub'||!['https://eyes.nasa.gov/apps/solar-system/','puzzle.html'].includes(properties(area).castleActivityUrl))throw Error('Original astronomy table missing or changed');
   property(area,'castleActivityLabel','Sternenwerkstatt');property(area,'castleActivityUrl','puzzle.html');
   property(area,'castleActivityApi',true);property(area,'castleActivityOnSit',true);
   property(area,'castleActivityChoices',JSON.stringify([{id:'machine',label:'Sternenmaschine',url:'puzzle.html',api:true},

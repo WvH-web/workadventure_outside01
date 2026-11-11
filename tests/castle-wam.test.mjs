@@ -17,7 +17,7 @@ test('all registered native wrappers refer to the existing artwork and rebuild d
     assert.deepEqual(wam,createWam(map));
     assert.deepEqual(createWam(map),createWam(map));
     assert.equal(wam.version,'2.1.0');
-    const expectedSource=new URL('https://wvh-web.github.io/workadventure_outside01/castle/'+world.id+'.tmj');
+    const expectedSource=new URL('https://wvh-web.github.io/workadventure_outside01/castle/'+(world.id==='sternwarte'?'sternwarte-puzzle-preview':world.id)+'.tmj');
     const revision=[properties(map).castleRevision,properties(map).castleRuntimeRevision].filter(Boolean).join('-');
     if(revision)expectedSource.searchParams.set('v',revision);
     assert.equal(wam.mapUrl,expectedSource.href);

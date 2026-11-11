@@ -32,8 +32,9 @@ const rooms=[
       activity('music-compose','fensterleser','Song Maker','https://musiclab.chromeexperiments.com/Song-Maker/')]},
   {id:'atelier',name:'Schlossatelier',parent:'erdgeschoss',key:'Atelier',labels:['Ideenrunde','Zeichen- und Klangnische','Werkstatttisch'],
     activities:[activity('atelier-story','lesekamin','Ideenkarten',own+'story.html',true),activity('atelier-draw','buchclub','Gemeinsam zeichnen','https://together.deine-schule.com/castle-art/'),activity('atelier-music','fensterleser','Klangentwurf','https://musiclab.chromeexperiments.com/Song-Maker/')]},
-  {id:'sternwarte',name:'Sternwarte',parent:'obergeschoss',key:'Stars',labels:['Sternengeschichten','Fenster zum All','Forschergruppe'],
-    activities:[activity('stars-story','lesekamin','Sternengeschichten',own+'story.html',true),activity('stars-solar','buchclub','Sonnensystem','https://eyes.nasa.gov/apps/solar-system/'),activity('stars-tours','fensterleser','Weltraum-Expeditionen',own+'expeditions.html')]},
+  {id:'sternwarte',name:'Sternwarte',parent:'obergeschoss',key:'Stars',revision:'20261111-puzzle1',bundle:'puzzle-preview.bundle.js',labels:['Sternengeschichten','Fenster zum All','Forschergruppe'],
+    activities:[activity('stars-story','lesekamin','Sternengeschichten',own+'story.html',true),{...activity('stars-solar','buchclub','Sternenwerkstatt','puzzle.html',true),choices:[
+      {id:'machine',label:'Sternenmaschine',url:'puzzle.html',api:true},{id:'solar',label:'Sonnensystem',url:'https://eyes.nasa.gov/apps/solar-system/'}]},activity('stars-tours','fensterleser','Weltraum-Expeditionen',own+'expeditions.html')]},
 ];
 function roomScene(config){
   const scene=JSON.parse(fs.readFileSync(path.join(root,'castle/art/bibliothek-20261108/scene.json')));

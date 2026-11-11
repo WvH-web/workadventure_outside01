@@ -21,7 +21,7 @@ for(const id of [...rooms.map(r=>r.id),'erdgeschoss','obergeschoss']){
     assert.deepEqual([map.width,map.height,map.tilewidth],[hub?40:28,22,32]);assert.equal(props(map).castleRevision,rooms.find(room=>room.id===id)?.revision||revision);
     assert.equal(world.illustrated,true);assert.deepEqual(world.seats,layout.seats);assert.equal(layout.seats.length,hub?10:12);
     assert.equal(layout.returnLabel,hub?'Grosse Halle':['oberstufe','sternwarte'].includes(id)?'Obere Galerie':'Wandelgang');
-    const entry=new URL(props(map).script,'https://map.invalid/');assert.equal(entry.searchParams.get('room'),id);assert.equal(entry.pathname,id==='museum'?'/museum-tour.bundle.js':'/expansion.bundle.js');
+    const entry=new URL(props(map).script,'https://map.invalid/');assert.equal(entry.searchParams.get('room'),id);assert.equal(entry.pathname,'/'+(rooms.find(room=>room.id===id)?.bundle||'expansion.bundle.js'));
     assert.equal(createWam(map).areas.length,hub?2:3);
     for(const seat of layout.seats){
       const group=layout.groups.find(g=>g.group===seat.audioGroup);assert.ok(group);
@@ -31,7 +31,7 @@ for(const id of [...rooms.map(r=>r.id),'erdgeschoss','obergeschoss']){
     for(const object of map.layers.flatMap(l=>l.objects||[]).filter(o=>props(o).castleActivityId)){
       const config=activitySettings(object),raw=props(object).castleActivityUrl;
       if(!raw.startsWith('https://'))assert.ok(fs.existsSync(new URL(raw.split('?')[0],base)),raw);
-      if(!config.url.endsWith('/story.html')&&!config.url.endsWith('/collection.html?kind=museum&shared=table'))assert.equal(config.api,false);
+      if(!config.url.endsWith('/story.html')&&!config.url.endsWith('/puzzle.html')&&!config.url.endsWith('/collection.html?kind=museum&shared=table'))assert.equal(config.api,false);
     }
     for(const link of world.links){
       const dest=manifest.worlds.find(w=>w.id+'.tmj'===link.target);assert.ok(dest,link.target);assert.ok(dest.entries[link.entry||'start']);
