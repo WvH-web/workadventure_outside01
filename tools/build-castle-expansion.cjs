@@ -110,7 +110,9 @@ async function buildCastleExpansion({only}={}){
       description:'Eingerichteter Schlossgang mit acht beschrifteten Tueren und zwei getrennten Gespraechsgruppen.',overlays:[plaques(scene)]}));
   }
   require('./build-castle-ui.cjs').buildCastleUi();require('./build-castle-script.cjs').buildCastleScript();
-  require('./build-castle-script.cjs').buildCastleMuseumScript();return results;
+  require('./build-castle-script.cjs').buildCastleMuseumScript();
+  if(!only||only==='museum')fs.copyFileSync(path.join(root,'castle/museum.tmj'),path.join(root,'castle/museum-tour-preview.tmj'));
+  return results;
 }
 module.exports={buildCastleExpansion,roomScene,corridorScene,rooms,revision};
 if(require.main===module)buildCastleExpansion({only:process.argv.find(arg=>arg.startsWith('--only='))?.slice('--only='.length)}).then(results=>{

@@ -49,7 +49,7 @@ async function connectTour(){
   }finally{clearTimeout(timeout);}
   const target=tourTarget(await WA.room.getTiledMap());await WA.players.configureTracking({players:true,movement:false});
   if(closed)return;
-  $('shared').hidden=false;icons();tour=new MuseumTour(WA,target,sharedRender).start();window.castleMuseumTour=tour;
+  $('shared').removeAttribute('hidden');icons();tour=new MuseumTour(WA,target,sharedRender).start();window.castleMuseumTour=tour;
   tourTimer=setInterval(()=>tour.refresh(),500);
 }
 async function refresh(){

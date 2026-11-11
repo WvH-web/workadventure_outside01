@@ -17,13 +17,19 @@ if native.exists():
     assert transition['passed'] and not transition['provisional'] and transition['before']==expected
     assert transition['previewMapsChanged']==['obergeschoss.wam'] and transition['allOtherMapsAndServicesUnchanged']
     expected=transition['after']
+home_baseline=expected
+museum=Path('/opt/wvh-castle-content/private/museum-tour-deployment.json')
+if museum.exists():
+    helper=Path('/tmp/wvh-check-castle-museum-deployment.py');assert helper.resolve()==helper
+    assert hashlib.sha256(helper.read_bytes()).hexdigest()=='7ea09b480cfddae730ebdcc2b8638811cf904a52c81bd8a573346aef5f740203'
+    expected,accepted=runpy.run_path(str(helper))['verify'](ops,expected,fetch_public=False);assert accepted
 assert expected==before
 config=(private/'service.json').read_bytes()
 assert hashlib.sha256(config).hexdigest()==record['configAfterSha256']
 checks={}
 renewal=private/'control-renewal-deployment.json'
 renewed=json.loads(renewal.read_text()) if renewal.exists() else None
-if renewed:assert renewed['passed'] and renewed['before']==renewed['after']==before and renewed['configSha256']==record['configAfterSha256']
+if renewed:assert renewed['passed'] and renewed['before']==renewed['after']==home_baseline and renewed['configSha256']==record['configAfterSha256']
 for name in ['wvh-castle-homes.service','wvh-castle-homes-control.service']:
     raw=subprocess.check_output(['systemctl','show',name,'--property=MainPID,ActiveState,SubState,MemoryCurrent,MemoryPeak,NRestarts'],text=True,timeout=10)
     values=dict(line.split('=',1) for line in raw.splitlines())

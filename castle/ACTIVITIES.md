@@ -1,6 +1,6 @@
 # Aktivitaeten im neuen Schloss
 
-## Gemeinsame Museumsrunde in Vorbereitung
+## Gemeinsame Museumsrunde
 
 Der neue Ausstellungstisch bietet eine gemeinsam ausgewaehlte Station aus dem
 bestehenden oeffentlichen Museumskatalog. Die Auswahl oeffnet beim Hinsetzen;
@@ -21,19 +21,43 @@ deterministische Zusammenfuehrung. Dies ist eine freiwillige gemeinsame
 Auswahl, kein gegen absichtliche Manipulation geschuetzter Fuehrungsmodus.
 
 Neun gezielte Zustandspruefungen und neun bestehende Galerie-Ansichten bestehen.
-Die Gesamtsuite besteht isoliert mit 488 Faellen: 486 bestanden, zwei bereits
-dokumentierte Auslassungen. Ein parallel zur echten Browserprobe ausgefuehrter
-400-Anfragen-Test erreichte sein Zeitlimit; ein weiterer Lauf erhielt 16
-Ueberlastantworten. Die Wiederholung ohne konkurrierende Browserprobe besteht
-unveraendert. Daraus folgt keine Freigabe fuer 400 echte Teilnehmer.
+Ein frueher isolierter Gesamtlauf bestand mit 488 Faellen: 486 bestanden, zwei
+bereits dokumentierte Auslassungen. Der 400-Anfragen-Test ist auf diesem
+Windows-Rechner jedoch nicht reproduzierbar gruen: Er erreichte einmal sein
+Zeitlimit, erhielt in einem weiteren Lauf 16 Ueberlastantworten und in der
+letzten Gesamtwiederholung 114. Diese letzte Fassung umfasst 489 Faelle:
+486 bestanden, ein Lastfall fehlgeschlagen, zwei Auslassungen. Der Museums-
+Ausbau aendert die Anfrageverarbeitung nicht; deren Kapazitaet bleibt vor
+einem breiten Schulstart weiter zu untersuchen. Erfolgreiche Einzelwiederholungen
+ersetzen keinen Lastnachweis fuer 400 echte Teilnehmer.
 
-Die native Browser-Substitution ist noch keine Abnahme: Sie ersetzte die Karte,
+Die erste native Browser-Substitution war keine Abnahme: Sie ersetzte die Karte,
 aber nicht das in der opaken Skriptumgebung geladene alte Modul; deshalb wurde
 die neue Aktivitaet dort nicht gestartet. Auch das testweise Blockieren von
-Service Workern aenderte das nicht. Als naechstes folgt ein eigener geschuetzter
-Testraum mit versionierten Dateien und danach eine Probe ohne Substitution.
-Der bisherige Museumseingang und das alte Schloss sind noch nicht umgestellt.
-Quellen: `tour-state.js`, `collection.js`, `tools/check-castle-museum-tour.cjs`.
+Service Workern aenderte das nicht. Der anschliessende getrennte native
+Testraum ist mit zwei normalen Microsoft-Schultestkonten ohne Substitution
+bestanden. Ein dabei gefundener unsichtbarer SVG-Statusmarker ist korrigiert;
+die urspruenglichen Protokolle und Programmstaende bleiben erhalten.
+
+Die gemeinsame Runde ist nun im Museum der neuen Schlossvorschau aktiv.
+Die erneute Zweipersonenprobe besteht dort ebenfalls ohne Testumleitungen:
+automatisches Oeffnen, beidseitige Stationswahl, spaeter Beitritt, weiterlaufende
+Auswahl nach dem Aufstehen des Auswaehlenden, manuelles Schliessen aller
+Fenster und Wiedereroeffnen am selben Tisch sowie eine neue leere Runde nach
+dem letzten Aufstehen. Acht empfangene Audio-Messreihen an vier Zeitpunkten
+bestaetigen wirklichen nativen Tischton bei geoeffneter Galerie und Beitraegen.
+Die echten unveraenderten Katalog- und Beitragsendpunkte sind erreichbar.
+Desktop und Mobil haben sichtbare Spielgrafik und keinen horizontalen Ueberlauf.
+Filmwiedergabe und gemeinsame Filmposition werden dadurch nicht behauptet.
+
+Nur der Museum-Wrapper in `castle-preview` verwendet jetzt die dedizierte
+Museumsfassung; seine drei Gespraechsbereiche und die Einrichtung sind
+unveraendert. Der zusaetzliche Testraum wurde entfernt. Keine anderen Karten,
+Schulrollen, Anmelderegeln, Serverdienste oder das alte Schloss wurden ersetzt.
+Die sechs Galerie-Regressionsansichten mit den wirklich veroeffentlichten
+Dateien und kuenstlichen Katalogdaten bestehen ebenfalls. Das ist weiterhin
+kein Lastnachweis fuer 400 Personen. Betrieb und Nachweise:
+`../ops/castle-content/README.md`.
 
 ## Zusaetzlicher Innenausbau
 

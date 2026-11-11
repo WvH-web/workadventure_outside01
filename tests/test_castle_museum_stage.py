@@ -4,9 +4,17 @@ import runpy
 import unittest
 
 module=runpy.run_path(str(Path(__file__).resolve().parents[1]/'tools/stage-castle-museum-tour.py'))
+review_marker=runpy.run_path(str(Path(__file__).resolve().parents[1]/'tools/repair-castle-museum-marker.py'))['reviewed_marker']
 
 
 class MuseumStageTests(unittest.TestCase):
+    def test_marker_repair_cannot_change_the_state_module_or_native_map_sources(self):
+        before={name:'old' for name in module['FILES']};after={**before,'collection.html':'new','collection.js':'new'}
+        publication={'head':'same','publicFiles':{'map.tmj':'unchanged'}};review_marker(before,after,publication,publication)
+        for files,receipt in [({**after,'tour-state.js':'changed'},publication),(after,{**publication,'head':'other'}),
+                (after,{**publication,'publicFiles':{'map.tmj':'changed'}})]:
+            with self.assertRaises(AssertionError):review_marker(before,files,publication,receipt)
+
     def test_only_two_existing_files_and_one_new_module_may_change(self):
         before={name:'old' for name in module['LEGACY']};after={**before,'tour-state.js':'new'}
         for name in ['collection.html','collection.js']:after[name]='new'

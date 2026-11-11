@@ -1,10 +1,25 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
+import crypto from 'node:crypto';
 import {MuseumTour,tourTarget,tourSelection,TOUR_STATE} from '../castle/tour-state.js';
 import {activitySettings} from '../castle/activities.js';
 const map=JSON.parse(fs.readFileSync(new URL('../castle/museum.tmj',import.meta.url))),target=tourTarget(map);
 const same=(a,b)=>JSON.stringify(a)===JSON.stringify(b);
+
+test('the published museum source is a reproducible copy with one dedicated, integrity-checked controller',()=>{
+  const raw=fs.readFileSync(new URL('../castle/museum.tmj',import.meta.url));
+  assert.deepEqual(fs.readFileSync(new URL('../castle/museum-tour-preview.tmj',import.meta.url)),raw);
+  const activity=map.layers.flatMap(layer=>layer.objects||[]).find(object=>object.properties?.some(p=>p.name==='castleActivityId'&&p.value==='museum-collection'));
+  const settings=activitySettings(activity);assert.equal(settings.api,true);assert.equal(settings.autoOnSit,true);assert.equal(settings.group,'buchclub');
+  assert.ok(map.properties.find(p=>p.name==='script').value.startsWith('museum-tour.bundle.js?v='));
+  const manifest=JSON.parse(fs.readFileSync(new URL('../castle/museum-tour.bundle.manifest.json',import.meta.url))),digest=raw=>crypto.createHash('sha256').update(raw).digest('hex');
+  const bundle=fs.readFileSync(new URL('../castle/museum-tour.bundle.js',import.meta.url));
+  assert.equal(manifest.entry,'castle/museum.js');assert.equal(manifest.sha256,digest(bundle));assert.equal(manifest.bytes,bundle.length);
+  assert.equal(manifest.runtimeModuleRequests,1);
+  for(const source of manifest.sources)assert.equal(source.sha256,digest(fs.readFileSync(new URL('../'+source.path.split('?')[0],import.meta.url))));
+  for(const name of ['room.js','activities.js','displays.js','characters-data.js'])assert.equal(manifest.sources.filter(source=>source.path.split('?')[0]==='castle/'+name).length,1);
+});
 function setup(){
   const users=[],writes=[];
   function add(id,round=users[0]?.wa.player.state.castleTableRoundV1.round.id||crypto.randomUUID()){

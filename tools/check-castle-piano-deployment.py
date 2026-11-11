@@ -422,7 +422,18 @@ def verify_homes_native_entry(ops,expected):
     original=json.loads((backup/'obergeschoss.wam').read_text());original['mapUrl']=functions['SOURCE']
     assert json.loads(target.read_text())==original and sha(target.read_bytes())==value['newWamSha256']
     original_manifest=json.loads((backup/'manifest.json').read_text());original_manifest['files']['obergeschoss.wam']=value['newWamSha256']
-    assert json.loads(manifest.read_text())==original_manifest and sha(manifest.read_bytes())==value['manifestAfterSha256']
+    manifest_raw=manifest.read_bytes()
+    museum=Path('/opt/wvh-castle-content/private/museum-tour-deployment.json')
+    if museum.exists():
+        addition=json.loads(museum.read_text());assert addition['passed'] and addition['provisional'] is False
+        previous=Path('/opt/wvh-castle-content/private/before-museum-tour/manifest.json');assert previous.resolve()==previous and previous.stat().st_mode&0o777==0o600
+        archived=previous.read_bytes();assert sha(archived)==addition['manifestBeforeSha256'] and sha(manifest_raw)==addition['manifestAfterSha256']
+        projected=json.loads(archived);projected['files']['museum.wam']=addition['newWamSha256']
+        assert json.loads(manifest_raw)==projected
+        # Verify the earlier gallery milestone against its exact retained manifest;
+        # the separate museum verifier below checks the accepted current transition.
+        manifest_raw=archived
+    assert json.loads(manifest_raw)==original_manifest and sha(manifest_raw)==value['manifestAfterSha256']
     after=json.loads(json.dumps(expected));after['files'][str(target)]=value['newWamSha256'];after['files'][str(manifest)]=value['manifestAfterSha256']
     assert value['after']==after and value['previewMapsChanged']==['obergeschoss.wam']
     stage_raw=(private/'native-entry-stage.json').read_bytes();staged=json.loads(stage_raw)
@@ -484,6 +495,9 @@ def main():
     expected,school_admission=verify_school_admission(ops,expected)
     expected,homes_pilot=verify_homes_pilot(ops,expected)
     expected,homes_native=verify_homes_native_entry(ops,expected)
+    museum=Path('/tmp/wvh-check-castle-museum-deployment.py');assert museum.resolve()==museum
+    assert sha(museum.read_bytes())=='7ea09b480cfddae730ebdcc2b8638811cf904a52c81bd8a573346aef5f740203'
+    expected,museum_tour=runpy.run_path(str(museum))['verify'](ops,expected)
     assert ops['baseline']()==expected,'An unrelated protected file or existing service changed'
     assert ui['nginx_before_sha256']==deployment['nginx_after_sha256']
     for route,name in [('presence','presence.html'),('rounds','rounds.html'),('unowned-ui.js','unowned-ui.js')]:
@@ -515,6 +529,7 @@ def main():
       'homesIsolatedRuntimeRecoveryVerified':homes_pilot and Path('/opt/wvh-castle-homes/private/owned-runtime-recovery.json').exists(),
       'homesOptionalPrivateCallsVerified':homes_pilot and Path('/opt/wvh-castle-homes/private/calls-deployment.json').exists(),
       'homesIndependentControlRenewalVerified':homes_pilot and Path('/opt/wvh-castle-homes/private/control-renewal-deployment.json').exists(),
+      'museumSharedSelectionVerified':museum_tour,
       'permissionsAndAuthenticationUnchanged':not Path('/opt/wvh-castle-homes/private/calls-deployment.json').exists(),
       'schoolPermissionsAndAuthenticationUnchanged':True,
       'mediaPermissionsChangedOnlyInRoomPilot':Path('/opt/wvh-castle-homes/private/calls-deployment.json').exists(),

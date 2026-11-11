@@ -312,8 +312,11 @@ Kameraproben bestehen. Alte Aufnahmen enden; neue Aufnahme bleibt freiwillig.
 Die anschliessende native Schloss-/Tischtonprobe besteht ebenfalls. Nur der
 Zimmerpilot wurde kurz gestartet, nicht WorkAdventure oder das alte Schloss.
 
-Die aktuelle isolierte lokale Gesamtsuite umfasst 488 Node-Faelle: 486 bestanden, keine
-Fehler oder Abbrueche, zwei dokumentierte Auslassungen. Der vorangehende
+Die letzte lokale Gesamtsuite umfasst 489 Node-Faelle: 486 bestanden, ein
+fehlgeschlagener 400-Anfragen-Lastfall und zwei dokumentierte Auslassungen.
+In diesem Lauf wurden 286 Anfragen erfolgreich beantwortet und 114 mit Ueberlast abgewiesen;
+fruehere isolierte Laeufe bestanden. Die Kapazitaet ist damit nicht verlaesslich
+abgenommen. Der vorangehende
 Zimmer-Meilenstein besteht zudem mit 62 Python- und 41 Linux-Faellen.
 Das sind weder eine echte Administrator-Anmeldeprobe noch eine Freigabe fuer
 acht gemeinsame Zimmerkameras oder 400 gleichzeitige Teilnehmer.
@@ -326,15 +329,25 @@ Das bisherige Schloss, andere Karten und das Kollegiumsprojekt bleiben
 unveraendert. Einzelheiten und Nachweise:
 `ops/castle-homes/README.md`.
 
-## Gemeinsame Museumsrunde in Arbeit
+## Gemeinsame Museumsrunde
 
-Eine gemeinsame Stationsauswahl am Ausstellungstisch ist implementiert und
-lokal geprueft, aber noch nicht live aktiviert. Sie uebernimmt den vorhandenen
+Die gemeinsame Stationsauswahl am Ausstellungstisch ist in der separaten
+Schlossvorschau live und mit zwei normalen Microsoft-Schultestkonten geprueft.
+Sie uebernimmt den vorhandenen
 Verwaltungskatalog und synchronisiert nur die ausgewaehlte Station, nicht die
-Bedienung oder Filmposition fremder Inhalte. Der naechste Abnahmeschritt ist
-eine getrennte native Zweipersonenprobe ohne ersetzte Netzwerkantworten.
-Der bisherige Museumseingang bleibt bis dahin unveraendert. Einzelheiten:
-`ACTIVITIES.md`.
+Bedienung oder Filmposition fremder Inhalte. Automatisches Oeffnen beim Sitzen,
+beidseitige Auswahl, spaeter Beitritt, Weiterlaufen ohne den Auswaehlenden,
+manuelles Schliessen und Wiedereroeffnen sowie Neustart nach dem letzten
+Aufstehen bestehen ohne ersetzte Netzwerkantworten. Nativer Tischton kommt
+an vier Zeitpunkten bei beiden Teilnehmern an. Nur der Museum-Wrapper der
+neuen Vorschau wurde umgestellt; Einrichtung, Hoergruppen und alle anderen
+Karten bleiben unveraendert. Der getrennte Testraum ist entfernt. Einzelheiten:
+`ACTIVITIES.md` und `../ops/castle-content/README.md`.
+
+Alle 71 lokalen Python-Betriebspruefungen sowie die echte Serverpruefung der
+Veroeffentlichung bestehen. Die normale Galerie ist mit sechs Desktop-/Mobil-
+Ansichten der veroeffentlichten Dateien nachgeprueft. Der oben genannte
+400-Anfragen-Fehler bleibt ausdruecklich offen und wird dadurch nicht umgedeutet.
 
 ## Geplante Portal-Aushaenge
 

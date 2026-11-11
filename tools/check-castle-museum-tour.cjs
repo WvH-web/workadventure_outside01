@@ -5,7 +5,8 @@ const {join,sit,stats,writeAudio,audioFixture}=require('./check-cinema-live.cjs'
 const root=path.resolve(__dirname,'..'),origin='https://together.deine-schule.com',web='https://wvh-web.github.io/workadventure_outside01/castle/';
 const hosted=origin+'/castle-content/',candidate=process.argv.includes('--candidate'),staged=process.argv.includes('--stage');
 const privateRoot=path.join(process.env.USERPROFILE,'.codex/private/workadventure-school-test-accounts');
-const output=path.join(privateRoot,'qa/museum-tour-'+(candidate?'candidate':staged?'staged':'published'));
+const attempt=process.argv.find(arg=>/^--attempt=[2-9]$/.test(arg))?.split('=')[1];
+const output=path.join(privateRoot,'qa/museum-tour-'+(candidate?'candidate':staged?'staged':'published')+(attempt?'-attempt-'+attempt:''));
 const sha=raw=>crypto.createHash('sha256').update(raw).digest('hex');
 async function main(){
  fs.mkdirSync(output,{recursive:true});writeAudio();const routed=[],users=[],media=[],portalResponses=[];let stage='entry';
@@ -41,7 +42,7 @@ async function main(){
  async function panel(user){
   for(let n=0;n<100;n++){
    const frame=user.page.frames().find(frame=>frame.url()===hosted+'collection.html?kind=museum&shared=table');
-   if(frame){await frame.waitForFunction(()=>window.castleMuseumTour?.value?.active,{},{timeout:20000});await frame.locator('.exhibit').first().waitFor();return frame;}
+   if(frame){await frame.waitForFunction(()=>window.castleMuseumTour?.value?.active,{},{timeout:20000});await frame.locator('.exhibit').first().waitFor({state:'attached'});return frame;}
    await user.page.waitForTimeout(250);
   }throw Error('Automatic shared museum panel missing');
  }
@@ -91,6 +92,13 @@ async function main(){
   stage='late-return';await sit(a,'buchclub-n0');pa=await panel(a);await selected(pa,boards[0]);await speech('late-return');
   stage='shared-back';await pb.getByRole('button',{name:'Zur Ausstellung',exact:true}).click();await selected(pa,null);await selected(pb,null);
   await pb.locator('.exhibit[data-board="'+boards[1]+'"]').click();await selected(pa,boards[1]);await selected(pb,boards[1]);
+  stage='manual-panel-close';for(const user of users)await user.script.evaluate(()=>castleActivities.website.close());
+  for(const user of users){
+   for(let n=0;n<50&&user.page.frames().some(frame=>frame.url().startsWith(hosted+'collection.html'));n++)await user.page.waitForTimeout(100);
+   assert.equal(user.page.frames().some(frame=>frame.url().startsWith(hosted+'collection.html')),false);
+   await user.script.evaluate(()=>castleActivities.open());
+  }
+  pa=await panel(a);pb=await panel(b);await selected(pa,boards[1]);await selected(pb,boards[1]);
   for(const [index,user]of users.entries()){
    const frame=index?pb:pa;assert.equal(await frame.evaluate(()=>document.documentElement.scrollWidth>innerWidth+1),false);
    assert.equal(await frame.locator('#shared').isVisible(),true);
@@ -110,7 +118,7 @@ async function main(){
   const proof={passed:true,browserVersion:browser.version(),normalMicrosoftPupils:2,realNativeWorkAdventure:true,
    onlySyntheticApprovedPupils:true,realPublicCatalogUnmodified:true,portalViewerReached:true,tableSpeechDecodedAtFourStages:true,
    automaticPanelOnSeating:true,bothDirectionsShareBoardAndGallery:true,chooserMayLeave:true,lateReturnSeesSelection:true,
-   unchangedRefreshKeepsContent:true,emptyTableStartsNewRound:true,movementAfterStanding:true,desktopAndMobileCanvasNonblank:true,
+   unchangedRefreshKeepsContent:true,manualCloseKeepsRound:true,emptyTableStartsNewRound:true,movementAfterStanding:true,desktopAndMobileCanvasNonblank:true,
    noHorizontalOverflow:true,onlyBoardIdentifiersShared:true,filmPositionAndScrollSynchronized:false,mediaPlaybackNotAsserted:true,
    candidateStaticSourcesOnlyInsideTestBrowsers:candidate,isolatedStageMap:staged,networkResponsesSubstituted:candidate,publishedMapsChanged:false,
    mapSha256:sha(Buffer.from(JSON.stringify(map)+'\n')),publishedMapSha256,scriptSha256:sha(bundle),routed:[...new Set(routed)].sort(),media,errors,loadApprovalFor400:false};
