@@ -1,7 +1,7 @@
 const fs=require('node:fs'),path=require('node:path'),assert=require('node:assert/strict');
 const {chromium}=require('./castle-deps.cjs')('playwright');
 const sharp=require('./castle-deps.cjs')('sharp');
-const out=path.resolve(__dirname,'../../output/cinema-live-qa');
+const out=process.platform==='win32'?require('./castle-local-storage.cjs').outputPath('cinema-live-qa'):path.resolve(__dirname,'../../output/cinema-live-qa');
 const url='https://together.deine-schule.com/~/castle-preview/kino.wam';
 const filmUrl='https://deutsche-online-schule.com/kino/public/kino.php';
 fs.mkdirSync(out,{recursive:true});
@@ -29,7 +29,7 @@ async function join(browser,number,options={}){
     assert.ok(path.resolve(schoolStorage).startsWith(path.resolve(privateRoot)+path.sep));
     assert.equal(JSON.parse(fs.readFileSync(path.join(privateRoot,'handoff.json'),'utf8')).contains_real_pupil_data,false);
   }
-  const qaToken=schoolStorage?null:JSON.parse(fs.readFileSync(path.resolve(out,'../hall-qa.private.json')))[String(number)];
+  const qaToken=schoolStorage?null:JSON.parse(fs.readFileSync(path.resolve(__dirname,'../../output/hall-qa.private.json')))[String(number)];
   const context=await browser.newContext({permissions:['microphone','camera'],viewport:number===1?{width:1440,height:1000}:{width:800,height:700},
     ...(options.mobile?{isMobile:true,hasTouch:true,viewport:{width:390,height:844}}:{}),
     ...(schoolStorage?{storageState:schoolStorage}:fs.existsSync(storage)?{storageState:storage}:{})});

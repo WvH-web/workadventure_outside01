@@ -388,6 +388,21 @@ bleibt **nicht live abgenommen**. Fehlversuche und Ruecksetzbelege sind erhalten
 Alle 83 Python-Betriebspruefungen und 34 gezielte Node-Rundenfaelle bestehen.
 Fuer weitere native Proben werden mindestens 2 GiB freier lokaler Platz benoetigt.
 
+Die lokale Speicherblockade ist inzwischen behoben. Neue Browserprofile,
+temporaere Testlaeufe, Kapazitaets-Werkzeuge und die aktuellen Paket-Ausgaben
+nutzen die geschuetzte Ablage `D:\CodexScratch\WorkAdventure`. Beendete eigene
+Temp-Laeufe werden nach Sicherheitspruefung automatisch entfernt; Nachweise
+bleiben erhalten. Ein echter Desktop-/Mobilbrowserlauf prueft diese Trennung.
+Zwei aeltere QA-Verzeichnisse liegen nach vollstaendigem Dateivergleich auf D:,
+ihre bisherigen C:-Pfade funktionieren weiter. Drei erledigte Upload-ZIPs sind
+nach frischer Nur-Lese-Pruefung der erhaltenen Serverfassungen entfernt.
+Hardlink-bereinigt sind damit 506.658.816 Bytes belegter Dateispeicher auf C:
+verlagert oder entfernt; andere gleichzeitig stattfindende Bereinigungen sind
+darin nicht eingerechnet. Erforderliche Ruecksetzstaende bleiben erhalten.
+Der aktuelle serielle Node-Gesamtlauf besteht mit 511 bestandenen Faellen und
+zwei vorhandenen Auslassungen; die 83 Python-Betriebsfaelle bestehen ebenfalls.
+Das ist keine nachtraegliche Freigabe der noch offenen Runden-Liveabnahme.
+
 ## Geplante Portal-Aushaenge
 
 Die zeitlich freizugebenden Portal-Aushaenge sind in einem getrennten

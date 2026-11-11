@@ -594,3 +594,96 @@ or the cinema helper; an unused room-builder import was removed. One additional
 VM test exercises zero space, 1 KiB and just below the 1 GiB limit and proves
 that no browser dependency is loaded and no result/audio write is attempted.
 This focused test passes; it is not a rerun of the blocked live acceptance.
+
+### Managed Local Storage On D
+
+The user authorized D: for project scratch work. On 2026-11-11 the private
+`D:\CodexScratch\WorkAdventure` root was initialized with inheritance disabled
+and exactly three access grants: the current user, SYSTEM and Administrators.
+Its machine-local marker records the currently configured bundled Node module
+directory; source no longer hard-codes a removed runtime version. The repository
+and existing credential locations were not relocated. Canonical source artwork
+and required backups remain available. The later, explicitly reviewed migration
+of two legacy QA directories is recorded below; their original paths still work.
+
+`castle-local-storage.cjs` directs new Playwright profiles and child-process
+temporary files to uniquely marked D: runs before loading browser dependencies.
+Project npm/pip/browser download caches are process-scoped on D:, not global
+Windows settings. The native round/cinema evidence, capacity CLI/results and
+the two round/admission packagers also use D:. Packaging intermediates live
+only in the temporary run, not as another retained source copy.
+
+At normal process exit an owned run is removed only after its exact resolved
+boundary, ownership marker, absence of links and absence of active browser/tool
+processes are verified. A failed safety query retains the directory. Later runs
+can sweep stopped, marked runs older than 24 hours; unknown and active folders
+are skipped. Output/evidence directories are never part of that sweep.
+
+Use `node tools/run-castle-local.cjs <Node arguments>` for other local tests, or
+`--exec <program> <arguments>` for tools such as Python. This gives child
+processes the same D: temporary environment and cleans only the parent-owned
+run after the child has ended. If a runtime update changes bundled dependencies,
+rerun `initialize-castle-local-storage.ps1` with the current configured directory.
+The initialized root must exist; unavailable D: is not a reason to fill C:.
+
+Six new filesystem cases pass, including traversal, junctions, foreign markers,
+live owners, active browser paths, recent runs and retained evidence. A real
+Chrome check with independent desktop/mobile contexts confirmed actual profiles
+on D:, refusal to remove an active browser and successful removal after closure.
+Its screenshots and proof remain at `output/local-storage-check` on D:.
+The serial complete Node run passed 507 of 509 cases with two existing optional
+skips and zero failures; all 83 Python operator cases also pass through the new
+temporary environment. Both packagers wrote their artifacts on D:, the official
+CLI install passed, and a second invocation reused its verified cached binary.
+The temporary root was empty after these completed checks.
+
+The separate guarded legacy-profile cleanup removed eight old, inactive C:
+test profiles totaling 105,263,079 logical bytes. Recent profiles, active paths,
+linked content and installed/shared browser caches were not removed. Its
+per-action report is on D:. No school account data or server configuration was
+changed, and this local storage acceptance is not the still-open native
+publication acceptance of round recovery. Project work rules now preserve this
+storage/cleanup policy in `AGENTS.md`.
+
+### Reviewed Legacy Cleanup
+
+Two inactive legacy visual-QA directories were transferred to the private
+`output/legacy-output` on D: after complete SHA-256/file-list/empty-directory
+comparison. Their C: paths are now junctions to the verified D: copies. The
+retired C: data was removed only after another comparison; no second backup was
+created. Sources modified within 24 hours, links, active-database extensions,
+credential-like filenames and existing/foreign destinations are refused.
+Four additional cases cover migration, traversal, conflicting destinations,
+changed data and correct hardlink allocation. An idempotent recheck preserved
+the original migration receipt rather than replacing it with a no-op result.
+
+Measured allocated file data removed from C:, not sums of logical/hardlinked
+file sizes:
+
+- `schulschloss-20261107`: 373 retained files, 372,711,424 allocated bytes moved.
+- `teacher-lounge-20261107`: 60 retained files, 42,090,496 allocated bytes moved.
+- Three completed upload ZIPs: 91,856,896 allocated bytes removed. Each archive
+  matched its private accepted VPS receipt, and every retained release file was
+  freshly hash-verified read-only before the local duplicate was unlinked.
+- Total measured allocated file data removed from C: 506,658,816 bytes, about
+  483.19 MiB. Directory metadata is not included. Concurrent work can change the
+  overall drive free-space delta, so that delta is recorded but not attributed
+  wholly to these operations. File identity and link counts prevent credit for
+  storage still retained through another hardlink.
+
+Allocation is measured from the filesystem's
+[`fs.Stats.blocks`](https://nodejs.org/api/fs.html#statsblocks), device/inode
+identity and link counts, not from summed apparent file lengths.
+
+The nonmatching `wvh-castle-homes-calls.zip` was kept; it was not assumed safe to
+delete. The required off-server `8a7b5a2e1bf03405.tar.gz` runtime backup remains
+untouched. No pupil data, active database, credential, map, server service or
+other project's cache was altered. The previously removed eight inactive
+browser profiles had 105,263,079 logical bytes; that is **not** added to the
+allocated-data total because their allocation was not measured before deletion.
+
+Private receipts are under `output/legacy-migrations`,
+`output/completed-upload-cleanup` and `output/legacy-profile-cleanup` on D:.
+The final serial Node regression passed 511 of 513 cases, with two existing
+optional skips and no failures. The 83 Python operator checks also pass. This
+cleanup does not publish a new map or service release.

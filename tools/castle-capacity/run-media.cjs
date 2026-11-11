@@ -2,8 +2,8 @@
 const fs=require('node:fs'),path=require('node:path'),cp=require('node:child_process'),os=require('node:os'),crypto=require('node:crypto');
 const {parseReport}=require('./report.cjs');
 const workspace=path.resolve(__dirname,'../../..'),privateRoot=path.join(os.homedir(),'.codex/private/workadventure-school-test-accounts/qa');
-const handoff=path.join(privateRoot,'capacity-handoff.private.json'),output=path.join(privateRoot,'capacity');
-const cli=path.join(workspace,'output/castle-capacity/private/bin/lk.exe');
+const handoff=path.join(privateRoot,'capacity-handoff.private.json'),output=require('../castle-local-storage.cjs').outputPath('castle-capacity/media');
+const cli=path.join(require('../castle-local-storage.cjs').outputPath('castle-capacity/private/bin'),'lk.exe');
 let runOutput=output;
 const pause=ms=>new Promise(resolve=>setTimeout(resolve,ms));
 async function remote(operation,room){

@@ -1,7 +1,8 @@
 'use strict';
 const fs=require('node:fs'),path=require('node:path'),crypto=require('node:crypto'),cp=require('node:child_process');
-const root=path.resolve(__dirname,'..'),folder=path.resolve(root,'../output/castle-capacity/admission-profile-20261111');
-const staging=path.join(folder,'tests'),files={'castle-admission.test.cjs':'tests/castle-admission.test.cjs',
+const storage=require('./castle-local-storage.cjs');
+const root=path.resolve(__dirname,'..'),folder=storage.outputPath('castle-capacity/admission-profile-20261111');
+const staging=path.join(storage.configure().directory,'tests'),files={'castle-admission.test.cjs':'tests/castle-admission.test.cjs',
  'castle-admission-http.test.cjs':'tests/castle-admission-http.test.cjs','fixtures/castle-offers.cjs':'tests/fixtures/castle-offers.cjs',
  'reporter.cjs':'tools/castle-admission-reporter.cjs'};
 const sha=raw=>crypto.createHash('sha256').update(raw).digest('hex');

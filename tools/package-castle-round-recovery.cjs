@@ -1,6 +1,7 @@
 'use strict';
 const fs=require('node:fs'),path=require('node:path'),crypto=require('node:crypto'),cp=require('node:child_process');
-const root=path.resolve(__dirname,'..'),folder=path.resolve(root,'../output/castle-rounds-recovery-20261111'),staging=path.join(folder,'files');
+const storage=require('./castle-local-storage.cjs');
+const root=path.resolve(__dirname,'..'),folder=storage.outputPath('castle-rounds-recovery-20261111'),staging=path.join(storage.configure().directory,'files');
 const sha=raw=>crypto.createHash('sha256').update(raw).digest('hex');
 fs.mkdirSync(staging,{recursive:true});const files={};
 for(const name of ['presence.js','round-client.js']){const raw=fs.readFileSync(path.join(root,'ops/castle-school/public',name));files[name]=sha(raw);fs.writeFileSync(path.join(staging,name),raw);}

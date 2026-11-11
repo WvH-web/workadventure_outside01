@@ -19,6 +19,16 @@ Both release archives are SHA-256 checked; nothing is installed globally:
 - Windows v2.19.2: `3a76873bd0a593d03b1305499ae0e468a242742eb3bfbfac737f27f1d00be139`.
 - Linux v2.19.2: `a234a95b9cd54303330e59eaf32da953cbfd2b74dbdabd69acae7aa5ff377c8e`.
 
+On the local Windows workstation the CLI now lives under the private managed
+`D:\CodexScratch\WorkAdventure\output\castle-capacity\private\bin` directory.
+Successful extraction retains a binary hash/version receipt and removes the
+duplicate download ZIP. A repeated install verifies that receipt and reuses the
+same executable without downloading another copy. New external-generator logs
+use the managed D: output as well. The existing small credential handoff remains
+at its original approved private location; no credential is relocated by this
+storage change. The local initialization and cleanup rules are in
+`AGENTS.md` and `ops/castle-school/README.md`.
+
 The Windows generator requires 1.5 GiB free local RAM. Its private handoff is
 read once and removed; keys go through the child environment, never command
 arguments, a browser, a map variable or public Git. The server handoff is also

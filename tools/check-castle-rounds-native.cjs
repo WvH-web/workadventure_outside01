@@ -5,12 +5,14 @@ const brothers=process.argv.includes('--brother-probe'),live=process.argv.includ
 const attemptArg=process.argv.find(arg=>arg.startsWith('--attempt='));assert.ok(!attemptArg||recovery&&/^--attempt=[1-9]$/.test(attemptArg));
 const suffix=attemptArg&&attemptArg!=='--attempt=1'?'-attempt-'+attemptArg.split('=')[1]:'';
 const root=path.resolve(__dirname,'..'),privateRoot=path.join(process.env.USERPROFILE,'.codex/private/workadventure-school-test-accounts');
-const output=path.join(privateRoot,'qa/rounds-native-'+(recovery?'recovery-'+(candidate?'candidate':'published')+suffix:brothers?'brothers':live?'live':'stage')),origin='https://together.deine-schule.com';
+const outputName='rounds-native-'+(recovery?'recovery-'+(candidate?'candidate':'published')+suffix:brothers?'brothers':live?'live':'stage');
+let output=path.join(privateRoot,'qa',outputName);const origin='https://together.deine-schule.com';
 const prefix='https://wvh-web.github.io/workadventure_outside01/castle/';
 const crypto=require('node:crypto'),sha=raw=>crypto.createHash('sha256').update(raw).digest('hex');
 const modules=Object.fromEntries(['presence.js','round-client.js'].map(name=>[name,fs.readFileSync(path.join(root,'ops/castle-school/public',name))]));
 async function main(){
   if(recovery){const disk=fs.statfsSync(root);if(disk.bavail*disk.bsize<1024**3)throw Object.assign(Error('Insufficient local space for two browser profiles'),{code:'INSUFFICIENT_DISK_SPACE'});}
+  if(process.platform==='win32')output=require('./castle-local-storage.cjs').outputPath(outputName);
   const {chromium}=require('./castle-deps.cjs')('playwright'),sharp=require('./castle-deps.cjs')('sharp');
   const {join,stats,writeAudio,audioFixture}=require('./check-cinema-live.cjs');
   fs.mkdirSync(output,{recursive:true});fs.rmSync(path.join(output,'result.json'),{force:true});writeAudio();let stage='entry',recoveryAudio;const users=[],results=[],served=[],roundRequests=[];

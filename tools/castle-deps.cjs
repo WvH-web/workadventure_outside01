@@ -1,12 +1,13 @@
 const path = require("node:path");
 const { createRequire } = require("node:module");
 module.exports = function dependency(name) {
+  if (name === 'playwright' && process.platform === 'win32') require('./castle-local-storage.cjs').configure();
   try {
     return require(name);
   } catch (original) {
     const candidates = [
       process.env.CODEX_NODE_MODULES,
-      "C:/Program Files/WindowsApps/OpenAI.CodexPrimaryRuntime.v26-1104-2876-0_26.1104.2876.0_x64__3k8sg7r9htsxt/dependencies/node/node_modules",
+      require('./castle-local-storage.cjs').dependencyDirectory(),
     ];
     for (const directory of candidates.filter(Boolean)) {
       try {
