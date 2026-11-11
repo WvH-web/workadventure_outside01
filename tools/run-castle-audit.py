@@ -6,6 +6,12 @@ import runpy
 private=Path('/opt/wvh-castle-school/private')
 published=private/'game-host-deployment.json'
 rollback=private/'game-host-publication-rollback.json'
+if published.exists() and (private/'game-host-published-acceptance.json').exists():
+    path=private/'game-host-published-proof-ops.py'
+    assert path.resolve()==path and path.stat().st_uid==0 and path.stat().st_mode&0o777==0o600
+    assert hashlib.sha256(path.read_bytes()).hexdigest()=='61a1f36fd958040b603cac9a5425290062776c773d19f01a842cdf793a755c86'
+    runpy.run_path(str(path))['main']('verify')
+    raise SystemExit(0)
 if published.exists() or rollback.exists():
     path=private/'game-host-publication-ops.py'
     assert path.resolve()==path and path.stat().st_uid==0 and path.stat().st_mode&0o777==0o600

@@ -936,3 +936,56 @@ the unavoidable changed start timestamp of the restored original service.
 Native acceptance of the actual published routes is still a separate gate;
 the loopback synthetic-provider success is not relabeled as production proof.
 No real provider/student approval or full 400-person approval is implied.
+
+### Published Host Candidate Accepted
+
+Release `8dc68e99c36dabfe` is now published. Only `wvh-castle-school` was
+replaced with the reviewed immutable source; voluntary registrations reset
+as explicitly approved. Exactly the existing `/rounds` HTML alias changed.
+Both accepted recovery JavaScript aliases, every other running container's
+identity/start/configuration, the three existing systemd processes, protected
+maps/files and 122 predecessor evidence files remain unchanged. The old school
+container, manifest, configuration, source and successful auditor are retained.
+
+The actual published native probe passes four scenarios with two fresh normal
+Microsoft pupil-test logins, one mobile. It does not forward school requests to
+a stage, replace maps/profiles, approve providers or replace provider content.
+Eight exact published sources are observed in both participants. Both directions
+of sidebar navigation preserve the existing lease without a new tab. Own-round
+status travels with the existing context. Both pupils are denied all seven real
+draft launches without target disclosure; explicit host confirmation cannot
+bypass the draft boundary, and an unstarted game is not invented. Native table
+audio still decodes after returning, and ordinary create/join/leave/reentry,
+cross-map travel, movement and mobile canvas checks pass.
+
+The same actual live run also passes the bounded-recovery test with exactly one
+explicitly injected pre-admission heartbeat 503. Source, school/profile and map
+responses are not intercepted. Inbound bytes and decoded audio energy increase
+in both participants before and after that recovery; after-panel-return audio
+is also asserted by the pinned probe. This is not a real external game or a
+400-person Microsoft/database/media approval.
+
+Root-private `game-host-published-acceptance.json` was accepted at
+2026-11-11T18:57:06Z, separately from the historical provisional publication
+receipt. `run-castle-audit.py` now verifies this actual accepted head, not the
+obsolete predecessor's live container expectation. The latter source and all
+its receipts remain immutable. The repeat live audit passes with native
+acceptance no longer pending. All 113 Python operator cases pass. The final
+application regression remains 540 passes, two existing optional skips, no
+failures; application bytes have not changed since that run.
+
+Local native evidence is retained on D: under
+`rounds-native-game-host-published/2026-11-11T18-52-29-084Z`. The ordinary test
+browser processes have terminated and managed run cleanup applies. A fresh
+earlier crashed-run temporary directory remains protected by the standard
+age/process checks; do not force-delete it or call the temp tree empty.
+
+Retain the qualification from the refresh before publication: both Microsoft
+logins completed, but the first helper reported a downstream chess-access
+assertion failure for B without its exact response. Independent actual school
+contexts recognized both pupils and denied all seven drafts; the full fresh
+login/chess-access repeat then passed. The original helper overwrote its small
+fixed result, so the D: observation note explicitly is not its original bytes.
+It now retains timestamped result/attention files on D:, preserves the previous
+small result there, reports sanitized access fields on failure, and exits
+nonzero on unsuccessful checks. No cause or silent role change is asserted.

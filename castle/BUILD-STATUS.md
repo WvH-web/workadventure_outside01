@@ -4,7 +4,28 @@ Das Gesamtziel bleibt aktiv. Dies ist keine Freigabe als fertiggestelltes
 Schloss oder fuer eine Veranstaltung mit 400 Personen. Das bisherige Schloss,
 Village und geschuetzte Lehrerzimmer werden nicht ersetzt.
 
-Aktueller Nachtrag vom 11. November: Die begrenzte Wiederverbindung freiwilliger
+Aktueller Nachtrag vom 11. November, 18:57 UTC: Die Gastgeber-Verwaltung mit
+gebuendeltem Rundenstatus ist in der getrennten Vorschau veroeffentlicht und
+mit zwei normal angemeldeten Microsoft-Schultestkonten live abgenommen, eines
+mobil. Beide Wege zwischen Runden- und Spieleseite bleiben im selben
+Seitenfenster und erhalten die Anmeldung. Beidseitiger nativer Tischton,
+Raumwechsel, Wiederbeitritt und die begrenzte Erholung nach genau einem
+simulierten 503 bestehen. Alle acht betroffenen Browserdateien sind in beiden
+Teilnehmern gegen die veroeffentlichte Fassung geprueft. Die sieben echten
+Spieleangebote bleiben Entwuerfe; auch direkte Starts und eine Gastgeber-
+Bestaetigung umgehen diese Schuelersperre nicht. Eine echte Partie beim
+Fremdanbieter wird dadurch nicht behauptet.
+
+Nur der getrennte Schul-/Rundendienst wurde mit ausdruecklicher Erlaubnis
+ersetzt; freiwillige Anmeldungen wurden dabei zurueckgesetzt. Eine einzelne
+HTML-Route wurde angepasst. Das bisherige Schloss, Karten, Schulregeln,
+laufende Gespraechsdienste und die bereits akzeptierte Wiederverbindung
+blieben unveraendert. Der alte Dienst und die bisherigen privaten Nachweise
+bleiben als Ruecksetzstand erhalten. Neue Paket-, Browser- und Pruefdaten
+liegen auf D:. Der Gesamtausbau und eine echte 400-Personen-Abnahme bleiben
+offen. Einzelheiten: `../docs/schulschloss-gastgeber.md`.
+
+Voriger Nachtrag vom 11. November: Die begrenzte Wiederverbindung freiwilliger
 Runden ist jetzt in der getrennten Vorschau live abgenommen. Zwei normal
 angemeldete Microsoft-Schultestkonten, eines mobil, bestaetigen nach einer
 ausdruecklich simulierten kurzen Ueberlast dieselbe serverseitig erneuerte

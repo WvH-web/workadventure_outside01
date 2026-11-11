@@ -2,16 +2,23 @@
 
 ## Stand
 
-Die Erweiterung ist implementiert und lokal geprueft, aber noch nicht live.
+Die Fassung `8dc68e99c36dabfe` ist seit dem 11. November in der getrennten
+Schlossvorschau live und um 18:57 UTC mit zwei regulaer ueber Microsoft
+angemeldeten Schultestkonten abgenommen, eines mobil. Das bisherige Schloss
+wird nicht ersetzt. Nur der getrennte Schul-/Rundendienst wurde mit der
+ausdruecklichen Erlaubnis kurz neu gestartet; freiwillige Anmeldungen mussten
+danach neu gesetzt werden. Die sieben realen Anbieterregeln bleiben Entwuerfe.
+
+Die zugrunde liegende vollstaendige Node-Suite umfasst 542 Faelle:
 540 von 542 Node-Faellen bestehen; zwei bisherige optionale Faelle sind
 ausgelassen. Die getrennte Zweibrowserprobe prueft 980, 390 und 320 Pixel.
 Die bisherigen Spielseiten/PIN-Eingaben bestehen ebenfalls. Ihre Anbieter-
 Antworten sind dabei synthetisch ersetzt, nicht als echte Partien getestet.
-Die isolierte Linux-Vorpruefung besteht inzwischen mit 33 Faellen auf Node
-24.22.2, ohne Netz, Schulschluessel oder echte Schuldaten. Die native
-Zweikonten-Vorpruefung ist fuer Kandidat `3119b0c32934a5f1` ebenfalls bestanden;
-die kontrollierte Veroeffentlichung steht noch aus. Der Benutzer hat den kurzen Neustart nur
-des Runden-/Schuldienstes am 11. November ausdruecklich genehmigt.
+Die isolierte Linux-Vorpruefung der veroeffentlichten Fassung besteht mit
+41 Faellen auf Node 24.22.2, ohne Netz, Schulschluessel oder echte Schuldaten.
+Ihr eigener nativer Zweikontentest besteht ebenfalls mit kuenstlichem
+Anbieterkatalog in einem ausschliesslich lokalen Testdienst. Die fruehere
+Abnahme von `3119b0c32934a5f1` bleibt gesonderter historischer Nachweis.
 
 ## Ablauf
 
@@ -159,6 +166,47 @@ Die volle Serverpruefung besteht nach beendetem Testdienst um 18:26:50 UTC;
 Testumgebung und Tunnel sind entfernt. Alle 100 Python-Betriebsfaelle bestehen.
 
 Die getrennten privaten Abnahmebelege beider Kandidaten bleiben erhalten.
-Weiter offen ist die kontrollierte Veroeffentlichung einschliesslich der
-bestehenden separaten HTML-Route. Der erlaubte kurze Live-Neustart wurde noch
-nicht genutzt; weder reale Spielraumlinks noch Anbieterfreigaben wurden geaendert.
+Die kontrollierte Veroeffentlichung einschliesslich der bestehenden separaten
+HTML-Route und des erlaubten kurzen Neustarts ist inzwischen erfolgt. Weder
+reale Spielraumlinks noch Anbieterfreigaben wurden dabei geaendert.
+
+## Abgenommene Veroeffentlichung
+
+Die echte Live-Probe ersetzt keine Karten, Schulprofile, Anbieterregeln oder
+Anbieterantworten. Sie prueft gemeinsame normale Gespraechsrunden, Hin- und
+Rueckweg zum Spielefenster ohne neue Browserfenster oder Mitgliedschafts-
+kennung, frischen eigenen Rundenstatus, Klassenfilter, expliziten Wiederbeitritt,
+Raumwechsel, letztes Verlassen und freie Bewegung. Alle acht Browserdateien
+entsprechen bei beiden Teilnehmern der geprueften Fassung. Desktop und Mobil
+sind ohne horizontalen Ueberlauf abgebildet. Nativer Tischton wird beidseitig
+dekodiert, auch nach der Fensterrueckkehr. Genau eine absichtlich simulierte
+503-Antwort prueft erneut die begrenzte, frisch bestaetigte Erholung.
+
+Alle sieben echten Entwuerfe verweigern beiden Schuelerkonten direkte Starts
+ohne Offenlegung einer Zieladresse. Auch eine ausdrueckliche Gastgebermeldung
+umgeht die Entwurfssperre nicht; ein ungestartetes Spiel wird nicht als laufend
+behauptet. Die produktive Probe bestaetigt diese reale Schutzgrenze, nicht eine
+Partie beim Fremdanbieter. Dessen vollstaendiger Link-/Gastgeberablauf bleibt
+durch die gesonderte, ausdruecklich kuenstliche Vorprobe nachgewiesen.
+
+Vor der Umstellung bestand die bisherige volle Serverpruefung. Die neue
+Bestandspruefung bindet deren unveraenderten privaten Ruecksetzstand an die
+wirkliche neue Dienstkennung, die einzelne HTML-Alias-Aenderung, alle
+geschuetzten Karten/Dateien, uebrigen Dienste/Konfigurationen und 122 vorhandene
+Nachweisdateien. Alte Abnahmen werden weder umgeschrieben noch als neuer
+Live-Zustand ausgegeben. Der neue private Live-Beleg ist um 18:57:06 UTC
+akzeptiert; die anschliessende erneute Bestandspruefung besteht.
+
+Alle 113 lokalen Python-Betriebsfaelle bestehen. Neue Browser-/Paketnachweise
+und temporaere Profile liegen auf D:. Ein sicherheitshalber beibehaltener
+frischer Tempbereich des vorigen Abbruchs ist kein geloeschter Nachweis und
+wird nicht unter Umgehung der Schutzpruefung entfernt. Eine erste aktuelle
+SSO-Hilfsprobe hatte trotz zweier erfolgreicher Microsoft-Anmeldungen einen
+nicht naeher protokollierten Schach-Zugriffsassertionsfehler beim zweiten Konto;
+die getrennte Schul-Kontextpruefung und der komplette Wiederholungslauf
+bestanden. Die Ursache ist nicht nachtraeglich als geklaert ausgegeben.
+Der Hilfstest bewahrt kuenftig auch diese Ergebnisse zeitgestempelt auf D:
+und liefert bei Fehlschlag einen Fehlerstatus.
+
+Die allgemeine Schuelerfreigabe der Fremdangebote, echte Anbieterpartien und
+eine 400-Personen-Lastabnahme bleiben offen. Das Gesamtziel ist nicht erledigt.
