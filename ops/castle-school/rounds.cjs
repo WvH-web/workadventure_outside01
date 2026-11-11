@@ -2,9 +2,11 @@
 const crypto=require('node:crypto');
 const {validateProfile,validateRules,decision}=require('./policy.cjs');
 const {GatewayError}=require('../hall-audio/errors.cjs');
+const {offerDecision,offerMetadata,target:offerUrl}=require('./offers.cjs');
 const KINDS=Object.freeze({talk:'Gespraechsrunde',read:'Leserunde',story:'Erzaehlkarten',chess:'Schach',draw:'Gemeinsam zeichnen'});
 const TOKEN=/^[a-f0-9]{48}$/;
 const ID=/^[a-f0-9]{8}-[a-f0-9]{4}-4[a-f0-9]{3}-[89ab][a-f0-9]{3}-[a-f0-9]{12}$/;
+const gameDigest=offer=>crypto.createHash('sha256').update(offerUrl(offer.targetUrl)?.href||'').digest('hex');
 function validateTargets(input){
   if(!Array.isArray(input)||!input.length||input.length>100)throw Error('Invalid round catalog');
   const seen=new Set();
@@ -41,6 +43,7 @@ class RoundBoard{
     const member=this.members.get(id);if(!member)return;
     this.members.delete(id);const round=this.rounds.get(member.roundId);if(!round)return;
     round.members.delete(id);if(!round.members.size){this.rounds.delete(round.id);this.slots.delete(round.targetId);}
+    else if(round.game?.host?.id===id)round.game.host=null;
   }
   revoke(auth){this.remove(this.principal(auth));}
   sweep(){
@@ -63,18 +66,38 @@ class RoundBoard{
     if(!target||!decision(profile,target.rule).allowed)throw new GatewayError(403,'not_allowed');
     return target;
   }
-  visible(round,id){
+  gameHost(round){
+    const host=round.game?.host,member=host&&round.members.get(host.id);
+    return Boolean(member&&member.lease===host.lease&&member.until>this.clock()&&round.endsAt>this.clock());
+  }
+  gameSummary(round,id,profile,offers){
+    if(!round.game)return null;
+    if(!offers)return {state:'unavailable'};
+    const offer=offers.find(offer=>offer.id===round.game.resourceId);
+    if(!offer||!offerDecision(profile,offer,this.clock()).allowed)return {state:'restricted'};
+    const confirmed=offer.revision===round.game.revision&&gameDigest(offer)===round.game.digest&&this.gameHost(round);
+    return {resourceId:offer.id,title:offer.title,state:confirmed?'confirmed':'waiting',mineHost:confirmed&&round.game.host.id===id};
+  }
+  hasGames(){this.sweep();return [...this.rounds.values()].some(round=>round.game);}
+  hostsGame(auth){
+    this.sweep();const id=this.principal(auth),member=this.members.get(id),round=member&&this.rounds.get(member.roundId);
+    return Boolean(round&&this.gameHost(round)&&round.game.host.id===id);
+  }
+  gameVersion(auth){const member=this.members.get(this.principal(auth));return this.rounds.get(member?.roundId)?.game||null;}
+  invalidateGame(resourceId){for(const round of this.rounds.values())if(round.game?.resourceId===resourceId)round.game.host=null;}
+  visible(round,id,profile,offers){
     const target=this.byTarget.get(round.targetId),members=[...round.members.values()];
     return {id:round.id,targetId:target.id,kind:round.kind,title:KINDS[round.kind],location:target.location,label:target.label,
       mapId:target.mapId,capacity:round.capacity,registered:members.length,staffRegistered:members.some(member=>member.staff),
-      mine:round.members.has(id),hosting:round.members.keys().next().value===id,createdAt:round.createdAt,endsAt:round.endsAt};
+      mine:round.members.has(id),hosting:round.members.keys().next().value===id,createdAt:round.createdAt,endsAt:round.endsAt,
+      ...(round.game?{game:this.gameSummary(round,id,profile,offers)}:{})};
   }
-  context(auth,profile){
+  context(auth,profile,offers){
     const id=this.caller(auth,profile),targets=this.targets.filter(target=>decision(profile,target.rule).allowed);
     const allowed=new Set(targets.map(target=>target.id));
     return {account:{kind:profile.kind,schoolAccount:true},kinds:KINDS,
       targets:targets.map(({id,mapId,location,label,capacity,kinds})=>({id,mapId,location,label,capacity,kinds})),
-      rounds:[...this.rounds.values()].filter(round=>allowed.has(round.targetId)).map(round=>this.visible(round,id)),
+      rounds:[...this.rounds.values()].filter(round=>allowed.has(round.targetId)).map(round=>this.visible(round,id,profile,offers)),
       me:this.members.has(id)?{roundId:this.members.get(id).roundId}:null,checkedAt:this.clock()};
   }
   attach(auth,profile,id,round){
@@ -82,6 +105,8 @@ class RoundBoard{
     if(previous&&previous.roundId!==round.id)throw new GatewayError(409,'already_joined');
     if(!previous&&this.members.size>=this.maxMembers)throw new GatewayError(503,'unavailable');
     if(!previous&&round.members.size>=round.capacity)throw new GatewayError(409,'round_full');
+    // Explicit reentry rotates the membership nonce; it must not silently revive a game host.
+    if(round.game?.host?.id===id)round.game.host=null;
     const member={roundId:round.id,lease:crypto.randomBytes(24).toString('hex'),
       until:Math.min(this.clock()+this.leaseMs,auth.expiresAt,round.endsAt),staff:profile.kind==='staff'};
     this.members.set(id,member);round.members.set(id,member);return this.membership(id,member);
@@ -115,13 +140,46 @@ class RoundBoard{
     if(!ID.test(roundId)||!round)throw new GatewayError(404,'round_missing');
     this.target(profile,round.targetId);return this.attach(auth,profile,id,round);
   }
-  current(auth,profile,{leaseId},renew){
+  current(auth,profile,{leaseId},renew,offers,observedGame){
     const id=this.caller(auth,profile),member=this.members.get(id);
     if(!TOKEN.test(leaseId)||!member||member.lease!==leaseId)throw new GatewayError(409,'stale_membership');
-    if(renew){member.until=Math.min(this.clock()+this.leaseMs,auth.expiresAt,this.rounds.get(member.roundId).endsAt);member.staff=profile.kind==='staff';}
+    if(renew){
+      const round=this.rounds.get(member.roundId);
+      if(round.game?.host?.id===id&&round.game===observedGame){
+        const offer=offers?.find(offer=>offer.id===round.game.resourceId);
+        if(!offer||!offerDecision(profile,offer,this.clock()).allowed||offer.revision!==round.game.revision||gameDigest(offer)!==round.game.digest)round.game.host=null;
+      }
+      member.until=Math.min(this.clock()+this.leaseMs,auth.expiresAt,round.endsAt);member.staff=profile.kind==='staff';
+    }
     return this.membership(id,member);
   }
-  heartbeat(auth,profile,body){return this.current(auth,profile,body,true);}
+  heartbeat(auth,profile,body,offers,observedGame=this.gameVersion(auth)){return this.current(auth,profile,body,true,offers,observedGame);}
+  confirmGame(auth,profile,{leaseId,resourceId,revision,targetUrl},offers){
+    const membership=this.current(auth,profile,{leaseId},false),id=this.principal(auth),round=this.rounds.get(membership.round.id);
+    const offer=offers?.find(offer=>offer.id===resourceId);
+    if(round.kind!=='talk'||!offer||!offerDecision(profile,offer,this.clock()).allowed)throw new GatewayError(403,'not_allowed');
+    if(offer.revision!==revision||offerUrl(targetUrl)?.href!==offerUrl(offer.targetUrl)?.href)throw new GatewayError(409,'game_changed');
+    if(this.gameHost(round)&&round.game.host.id!==id)throw new GatewayError(409,'game_hosted');
+    round.game={resourceId,revision,digest:gameDigest(offer),host:{id,lease:leaseId}};
+    return {confirmed:true,roundId:round.id,game:this.gameSummary(round,id,profile,offers),checkedAt:this.clock()};
+  }
+  endGame(auth,profile,{leaseId}){
+    const membership=this.current(auth,profile,{leaseId},false),id=this.principal(auth),round=this.rounds.get(membership.round.id);
+    if(!this.gameHost(round)||round.game.host.id!==id)throw new GatewayError(409,'game_not_host');
+    round.game.host=null;return {ended:true,roundId:round.id,checkedAt:this.clock()};
+  }
+  launchGame(auth,profile,{roundId},offers){
+    const id=this.caller(auth,profile),round=this.rounds.get(roundId);
+    if(!ID.test(roundId)||!round)throw new GatewayError(404,'round_missing');
+    this.target(profile,round.targetId);
+    if(!round.members.has(id))throw new GatewayError(403,'not_allowed');
+    const summary=this.gameSummary(round,id,profile,offers);
+    if(summary?.state==='restricted')throw new GatewayError(403,'not_allowed');
+    if(!summary||summary.state!=='confirmed')throw new GatewayError(409,'game_not_ready');
+    const offer=offers.find(offer=>offer.id===summary.resourceId),metadata=offerMetadata(profile,offer,this.clock());
+    return {id:offer.id,title:offer.title,targetUrl:offerUrl(offer.targetUrl).href,presentation:offer.presentation,
+      revision:offer.revision,mode:metadata.mode,roundId,checkedAt:this.clock()};
+  }
   leave(auth,profile,body){const member=this.current(auth,profile,body,false);this.remove(this.principal(auth));return {left:true,roundId:member.round.id};}
   close(auth,profile,{roundId}){
     this.caller(auth,profile);if(profile.kind!=='staff')throw new GatewayError(403,'not_allowed');

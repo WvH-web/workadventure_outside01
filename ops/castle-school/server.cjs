@@ -15,13 +15,17 @@ const { RoundBoard, KINDS } = require('./rounds.cjs');
 const { AdmissionGate } = require('./admission.cjs');
 const PREFIX = '/castle-school/';
 const roundRoutes=new Map([['round-context',null],['round-create','create'],['round-join','join'],
-  ['round-visit','visit'],['round-heartbeat','heartbeat'],['round-leave','leave'],['round-close','close']]);
+  ['round-visit','visit'],['round-heartbeat','heartbeat'],['round-leave','leave'],['round-close','close'],
+  ['round-game-confirm','confirmGame'],['round-game-end','endGame'],['round-game-launch','launchGame']]);
 function validateRoundBody(route,body){
   const keys=Object.keys(body).sort().join(',');
-  if(route==='round-create'){
+  if(route==='round-game-confirm'){
+    if(keys==='leaseId,resourceId,revision,targetUrl'&&typeof body.leaseId==='string'&&/^[a-f0-9]{48}$/.test(body.leaseId)&&
+      IDS.includes(body.resourceId)&&Number.isSafeInteger(body.revision)&&body.revision>=1&&body.revision<=4294967295&&target(body.targetUrl))return;
+  }else if(route==='round-create'){
     if(keys==='capacity,kind,targetId'&&typeof body.targetId==='string'&&/^[a-z0-9][a-z0-9-]{0,63}$/.test(body.targetId)&&
       typeof body.kind==='string'&&Object.hasOwn(KINDS,body.kind)&&Number.isInteger(body.capacity)&&body.capacity>=2&&body.capacity<=12)return;
-  }else if(['round-join','round-visit','round-close'].includes(route)){
+  }else if(['round-join','round-visit','round-close','round-game-launch'].includes(route)){
     if(keys==='roundId'&&typeof body.roundId==='string'&&/^[a-f0-9]{8}-[a-f0-9]{4}-4[a-f0-9]{3}-[89ab][a-f0-9]{3}-[a-f0-9]{12}$/.test(body.roundId))return;
   }else if(keys==='leaseId'&&typeof body.leaseId==='string'&&/^[a-f0-9]{48}$/.test(body.leaseId))return;
   throw new GatewayError(400,'invalid_request');
@@ -119,9 +123,16 @@ function createSchoolServer({config, lookup, getOffers, updateRoomLink, roundTar
         let profile;
         try{profile=validateProfile(await lookup(auth.schoolIdentifier??auth.identifier),clock());}
         catch(error){rounds.revoke(auth);throw error;}
+        let offers;const observedGame=rounds.gameVersion(auth);
+        const required=['round-game-confirm','round-game-launch'].includes(route);
+        if(required||route==='round-context'&&rounds.hasGames()||route==='round-heartbeat'&&rounds.hostsGame(auth)){
+          try{offers=await getOffers({fresh:route!=='round-context'});}
+          catch(error){if(required)throw error;}
+        }
         await fresh();
         if(route==='round-create')limit('round-create:'+opaque(auth.identifier),6);
-        const value=route==='round-context'?rounds.context(auth,profile):rounds[roundRoutes.get(route)](auth,profile,body);
+        if(route==='round-game-confirm')limit('round-game-confirm:'+opaque(auth.identifier),12);
+        const value=route==='round-context'?rounds.context(auth,profile,offers):rounds[roundRoutes.get(route)](auth,profile,body,offers,observedGame);
         send(200,value);return;
       }
       const results=await Promise.allSettled([Promise.resolve().then(()=>lookup(auth.schoolIdentifier??auth.identifier)),Promise.resolve().then(()=>getOffers({fresh:route!=='context'}))]);
@@ -139,7 +150,7 @@ function createSchoolServer({config, lookup, getOffers, updateRoomLink, roundTar
         if(route==='room-link'){
           if(!approvedRoomChange(profile,selected,body.targetUrl,clock()))throw new GatewayError(403,'unreviewed_target');
           limit('edit-id:'+opaque(auth.identifier),6);limit('edit-ip:'+opaque(clientIp(req,config)),30);
-          await updateRoomLink(body);getOffers.invalidate?.();
+          await updateRoomLink(body);getOffers.invalidate?.();rounds.invalidateGame(body.resourceId);
           send(200,{updated:true,checkedAt:clock()});return;
         }
         send(200,{id:selected.id,title:selected.title,targetUrl:target(selected.targetUrl).href,presentation:selected.presentation,

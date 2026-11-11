@@ -8,6 +8,7 @@
 </head>
 <body>
   <header><div class="heading"><i data-lucide="dices" aria-hidden="true"></i><h1>Spielrunden</h1></div>
+    <a class="icon-button" href="/castle-school/rounds" title="Treffpunktrunden" aria-label="Treffpunktrunden"><i data-lucide="users-round" aria-hidden="true"></i></a>
     <button class="icon-button" id="refresh" type="button" title="Neu pr&uuml;fen" aria-label="Neu pr&uuml;fen"><i data-lucide="refresh-cw" aria-hidden="true"></i></button>
   </header>
   <div id="account" class="account" role="status">Schulzugang wird gepr&uuml;ft &hellip;</div>
@@ -19,6 +20,7 @@
       <div class="detail-heading"><h2 id="detail-title">Keine Runde ge&ouml;ffnet</h2><span id="mode" class="badge" hidden></span></div>
       <p id="availability" class="muted"></p>
       <div id="lobby" hidden>
+        <h3 class="link-label">Gespeicherter Raumlink</h3>
         <div class="room-link"><span id="current-url" dir="ltr"></span><button class="icon-button" id="copy" type="button" title="Aktuellen Raumlink kopieren" aria-label="Aktuellen Raumlink kopieren"><i data-lucide="copy" aria-hidden="true"></i></button></div>
         <div class="commands"><button class="primary" id="join" type="button"><i data-lucide="play" aria-hidden="true"></i><span>Spiel &ouml;ffnen</span></button>
           <button id="external" type="button" hidden><i data-lucide="external-link" aria-hidden="true"></i><span>Neuer Tab</span></button></div>
@@ -29,6 +31,12 @@
               <button id="save" type="submit"><i data-lucide="check" aria-hidden="true"></i>Speichern</button></div>
           </form>
         </details>
+        <section class="round-host" aria-labelledby="round-host-title">
+          <h3 id="round-host-title">Treffpunktrunde</h3><p id="round-place"></p><p id="round-game-state" role="status"></p>
+          <div class="commands"><button id="join-game" class="primary" type="button" hidden><i data-lucide="gamepad-2" aria-hidden="true"></i>Mitspielen</button>
+            <button id="confirm-game" type="button" disabled><i data-lucide="user-round-check" aria-hidden="true"></i>Gastgeber best&auml;tigen</button>
+            <button id="end-game" class="icon-button" type="button" hidden title="Gastgeber-Best&auml;tigung beenden" aria-label="Gastgeber-Best&auml;tigung beenden"><i data-lucide="square" aria-hidden="true"></i></button></div>
+        </section>
       </div>
       <section id="viewer" aria-label="Ge&ouml;ffnetes Spiel" hidden>
         <div class="viewer-heading"><span id="viewer-title"></span><button id="close-viewer" class="icon-button" type="button" title="Spiel schlie&szlig;en" aria-label="Spiel schlie&szlig;en"><i data-lucide="x" aria-hidden="true"></i></button></div>

@@ -89,7 +89,13 @@ weiter offen. Einzelheiten: `../ops/castle-school/README.md`.
   Einzelheiten stehen in den unten verlinkten Fachnachweisen. Die
   Spielrundenliste verwendet die sieben vorhandenen Verwaltungsangebote
   und deren aktuelle Links; redaktionelle Schuelerfreigaben bleiben offen.
-- Gastgeberpflege und zeitlich ablaufende externe Spiellinks bleiben offen.
+- Gastgeberpflege und zeitlich ablaufende externe Spiellinks sind jetzt als
+  Erweiterung implementiert, aber noch nicht live: ausdrueckliche Bestaetigung
+  des zentralen Links, keine automatische Gastgebernachfolge, Ende bei Abmelden
+  oder Ablauf und neue Bestaetigung nach Linkwechsel. 18 neue Zustands-/HTTP-
+  Faelle und die getrennte Zweibrowserprobe mit 980/390/320 Pixeln bestehen.
+  Freigabe, native Vorpruefung und Betrieb bleiben offen; Einzelheiten:
+  `../docs/schulschloss-gastgeber.md`.
   Die eigene gemeinsame Rundenliste fuer 49 echte Gespraechsbereiche ist
   in allen 16 Vorschaukarten live. Sie zeigt freiwillige
   Anmeldungen, keine behauptete Belegung oder laufenden Fremdspiele.

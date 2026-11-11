@@ -6,7 +6,7 @@ const {createSchoolServer}=require('../ops/castle-school/server.cjs');
 const {offerCatalog}=require('../tests/fixtures/castle-offers.cjs');
 const {validateOffers}=require('../ops/castle-school/offers.cjs');
 const {GatewayError}=require('../ops/hall-audio/errors.cjs');
-const output=path.resolve(__dirname,'../../output/castle-games');fs.mkdirSync(output,{recursive:true});
+const output=require('./castle-local-storage.cjs').outputPath('castle-games/'+new Date().toISOString().replace(/[:.]/g,'-'));
 async function main(){
  const secret='synthetic-browser-fixture-secret-not-a-school-key',profiles=new Map(),errors=[],results=[];
  let input=offerCatalog(Date.now()),updates=0,holdNext=false,held,release;

@@ -33,11 +33,16 @@ function render(){
       const content=document.createElement('div'),title=document.createElement('h2'),place=document.createElement('p'),state=document.createElement('small'),buttons=document.createElement('div');
       title.textContent=round.title;place.textContent=round.location+' \u00b7 '+round.label;
       state.textContent=round.registered+' von '+round.capacity+' Pl\u00e4tzen angemeldet';content.append(title,place,state);
+      if(round.game){const game=document.createElement('small');game.className='game-status';game.textContent=round.game.state==='confirmed'?
+        round.game.title+' \u00b7 Gastgeber best\u00e4tigt':round.game.state==='waiting'?round.game.title+' \u00b7 Gastgeber gesucht':
+        round.game.state==='restricted'?'Spielangebot nicht freigegeben':'Spielstatus gerade nicht erreichbar';content.append(game);}
       if(round.staffRegistered){const staff=document.createElement('small');staff.className='staff';staff.textContent='Mit Lehrkraft angemeldet';content.append(staff);}
       buttons.className='commands';const join=command(round.mine?'map-pin':'user-round-plus',round.mine?'Zur Runde':'Mitmachen',()=>void action(round.mine?'return':'join',round.id));
       join.dataset.roundCommand='join';
       join.disabled=pending||(!round.mine&&round.registered>=round.capacity);buttons.append(join);
       buttons.append(command('eye','Treffpunkt besuchen',()=>void action('visit',round.id)));
+      if(round.mine&&round.game?.resourceId){const gameLink=document.createElement('a');gameLink.href='/castle-school/games#'+round.game.resourceId;
+        gameLink.className='icon-button';gameLink.title='Spielangebot';gameLink.setAttribute('aria-label','Spielangebot');gameLink.append(icon('gamepad-2'));buttons.append(gameLink);}
       if(data.account?.kind==='staff')buttons.append(command('x','Runde schliessen',()=>{if(window.confirm('Diese Runde f\u00fcr alle abmelden?'))void action('close',round.id);}));
       row.append(image,content,buttons);fragment.append(row);
     }$('round-list').replaceChildren(fragment);fingerprint=next;icons();
