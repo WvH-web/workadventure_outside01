@@ -66,6 +66,7 @@ async function main(){
     async function play(p,code){const popup=p.context.waitForEvent('page');await p.page.locator('#join-game').click();const page=await popup;
       await page.waitForURL('https://games.example.test/room/?code='+code);assert.equal(await page.evaluate(()=>opener),null);await page.close();}
     const a=await participant('a',980),b=await participant('b',390);
+    assert.equal(await a.page.locator('#back-rounds').isVisible(),false,'Direct game panels do not pretend to have the map API for a return trip');
     const made=await api(a,'round-create',{targetId:'spielesaal-lesekamin',kind:'talk',capacity:4});assert.equal(made.status,200);
     const roundId=made.value.round.id,joined=await api(b,'round-join',{roundId});assert.equal(joined.status,200);
     await remember(a,made.value);await remember(b,joined.value);await ready(a);await ready(b);
@@ -88,8 +89,13 @@ async function main(){
     await api(a,'round-leave',{leaseId:made.value.leaseId});await waiting(b);
     await b.page.goto(origin+'/castle-school/rounds');await b.page.locator('.game-status').filter({hasText:'Gastgeber gesucht'}).waitFor();
     assert.equal(await b.page.locator('.round').count(),1);await b.page.getByRole('link',{name:'Spielangebot',exact:true}).click();
+    await b.page.locator('#back-rounds').waitFor({state:'visible'});
     await b.page.locator('#confirm-game:not([disabled])').waitFor();await b.page.locator('#confirm-game').click();await confirmed(b);
     await b.page.setViewportSize({width:320,height:820});await layout(b,'replacement-host-320');await play(b,'two');
+    const beforeNavigation=await b.page.evaluate(()=>sessionStorage.getItem('castleRoundMembershipV1'));
+    await b.page.locator('#back-rounds').click();await b.page.locator('.game-status').filter({hasText:'Gastgeber best\u00e4tigt'}).waitFor();
+    await b.page.getByRole('link',{name:'Spielangebote',exact:true}).click();await b.page.locator('#offer-select').selectOption('gamesarea01');await confirmed(b);
+    assert.equal(await b.page.evaluate(()=>sessionStorage.getItem('castleRoundMembershipV1')),beforeNavigation,'Both directions preserve the same nonce, not an implicit reentry');
     results.push({case:'link-and-host-lifecycle',existingPinUpdaterReused:true,changedUrlInvalidatesConfirmation:true,staleDisplayCannotConfirmNewUrl:true,
       automaticDepartureUpdate:true,noAutomaticSuccessor:true,explicitReplacement:true,samePanelRoundNavigation:true,widths:[980,390,320]});
     let entered;const caught=new Promise(resolve=>{entered=resolve;});holdContext={id:'b',entered};

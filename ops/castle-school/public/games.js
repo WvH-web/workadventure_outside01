@@ -15,7 +15,9 @@ class GamesPage {
     this.ui=Object.fromEntries(['account','message','games-list','offer-select','detail-title','mode','availability','lobby','current-url','copy','join','external','host','room-form','room-url','pin','save','refresh','viewer','viewer-title','frame-slot','close-viewer',
       'round-place','round-game-state','confirm-game','end-game','join-game'].map(id=>[id,document.getElementById(id)]));
     this.roundClient=new RoundClient();this.roundGeneration=0;this.nextRound=0;
-    this.initialSelection=ids.includes(location.hash.slice(1))?location.hash.slice(1):null;
+    const hash=location.hash.slice(1),fromRounds=hash==='rounds'||hash.startsWith('rounds/');
+    const selection=fromRounds?hash.slice(7):hash;this.initialSelection=ids.includes(selection)?selection:null;
+    document.getElementById('back-rounds').hidden=!fromRounds;
     this.auth=undefined;this.epoch=0;this.generation=0;this.offers=[];this.requests=new Set();this.closed=false;this.nextContext=0;
     this.ui.refresh.addEventListener('click',()=>void this.refresh());
     this.ui['offer-select'].addEventListener('change',()=>void this.select(this.ui['offer-select'].value));

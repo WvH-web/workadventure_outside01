@@ -41,7 +41,7 @@ function render(){
       join.dataset.roundCommand='join';
       join.disabled=pending||(!round.mine&&round.registered>=round.capacity);buttons.append(join);
       buttons.append(command('eye','Treffpunkt besuchen',()=>void action('visit',round.id)));
-      if(round.mine&&round.game?.resourceId){const gameLink=document.createElement('a');gameLink.href='/castle-school/games#'+round.game.resourceId;
+      if(round.mine&&round.game?.resourceId){const gameLink=document.createElement('a');gameLink.href='/castle-school/games#rounds/'+round.game.resourceId;
         gameLink.className='icon-button';gameLink.title='Spielangebot';gameLink.setAttribute('aria-label','Spielangebot');gameLink.append(icon('gamepad-2'));buttons.append(gameLink);}
       if(data.account?.kind==='staff')buttons.append(command('x','Runde schliessen',()=>{if(window.confirm('Diese Runde f\u00fcr alle abmelden?'))void action('close',round.id);}));
       row.append(image,content,buttons);fragment.append(row);
