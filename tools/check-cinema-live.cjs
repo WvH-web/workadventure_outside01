@@ -20,7 +20,19 @@ function writeAudio(){
   }
   fs.writeFileSync(audioFixture,data);
 }
+async function roomController(frames,id,{milliseconds=750,onProbe}={}){
+  for(const frame of frames){
+    let timer,timedOut=false;
+    const found=await Promise.race([frame.evaluate(id=>window.castleRoom?.layout.id===id,id).catch(()=>false),
+      new Promise(resolve=>{timer=setTimeout(()=>{timedOut=true;resolve(false);},milliseconds);})]).finally(()=>clearTimeout(timer));
+    let url;try{const value=new URL(frame.url());url=value.origin+value.pathname;}catch{url='new-frame';}
+    onProbe?.({url,timedOut,found});if(found)return frame;
+  }
+  return null;
+}
 async function join(browser,number,options={}){
+  const step=name=>options.onPhase?.(name);
+  step('context-create');
   const roomId=options.roomId||'kino',directory=options.outputDir||out;
   const name=(options.label||'Kinoprobe')+' '+number,storage=path.join(directory,`participant-${number}.private.json`);
   const schoolStorage=options.schoolStorageState;
@@ -33,12 +45,16 @@ async function join(browser,number,options={}){
   const context=await browser.newContext({permissions:['microphone','camera'],viewport:number===1?{width:1440,height:1000}:{width:800,height:700},
     ...(options.mobile?{isMobile:true,hasTouch:true,viewport:{width:390,height:844}}:{}),
     ...(schoolStorage?{storageState:schoolStorage}:fs.existsSync(storage)?{storageState:storage}:{})});
-  if(options.configureContext)await options.configureContext(context);
+  if(options.configureContext){step('context-configure');await options.configureContext(context);}
   let filmRequests=0;
-  await context.route('https://deutsche-online-schule.com/kino/**',route=>{
-    filmRequests++;
-    return route.fulfill({contentType:'text/html',body:'<!doctype html><title>Kino-Test</title><h1>Kino-Test ohne Filmstart</h1><script>window.instance=crypto.randomUUID()</script>'});
+  if(options.stubCinema===false)context.on('request',request=>{
+    const requested=new URL(request.url());
+    if(request.isNavigationRequest()&&requested.origin==='https://deutsche-online-schule.com'&&requested.pathname==='/kino/public/kino.php')filmRequests++;
   });
+  else await context.route('https://deutsche-online-schule.com/kino/**',route=>{
+      filmRequests++;
+      return route.fulfill({contentType:'text/html',body:'<!doctype html><title>Kino-Test</title><h1>Kino-Test ohne Filmstart</h1><script>window.instance=crypto.randomUUID()</script>'});
+    });
   await context.addInitScript(({token,name,characterTextureId})=>{
     if(location.origin==='https://together.deine-schule.com'&&window.top===window){
       if(token)localStorage.setItem('authToken',token);localStorage.setItem('playerName',name);
@@ -77,7 +93,7 @@ async function join(browser,number,options={}){
     if(['error','warning'].includes(message.type()))diagnostics.push({type:message.type(),message:message.text().replace(/(access_token=)[^&'"\s]+/g,'$1[redacted]')});
   });
   page.on('requestfailed',r=>diagnostics.push({request:new URL(r.url()).pathname,error:r.failure()?.errorText}));
-  await page.goto(options.roomUrl||url,{waitUntil:'domcontentloaded',timeout:60000});
+  step('native-page-load');await page.goto(options.roomUrl||url,{waitUntil:'domcontentloaded',timeout:60000});
   let ready=false;
   for(let n=0;n<40;n++){
     if(await page.getByTestId('microphone-button').isVisible().catch(()=>false)){ready=true;break}
@@ -87,6 +103,7 @@ async function join(browser,number,options={}){
     await page.waitForTimeout(1800);
   }
   assert.ok(ready,'Native cinema entry '+number);
+  step('native-controls-ready');
   if(options.allowDuplicateTestSession){
     assert.ok(schoolStorage,'Only explicit synthetic school sessions may accept the duplicate-session notice');
     const notice=page.locator('[role="alertdialog"][aria-labelledby="duplicate-user-title"]');
@@ -102,8 +119,9 @@ async function join(browser,number,options={}){
     if(state!==wanted){const b=page.getByTestId(testId);if(await b.isVisible().catch(()=>false))await b.click();}
   }
   let script;
+  step('controller-discovery');
   for(let n=0;n<60&&!script;n++){
-    for(const frame of page.frames())if(await frame.evaluate(id=>window.castleRoom?.layout.id===id,roomId).catch(()=>false))script=frame;
+    script=await roomController(page.frames(),roomId,{onProbe:options.onFrameProbe});
     if(!script)await page.waitForTimeout(500);
   }
   if(!script){
@@ -111,14 +129,17 @@ async function join(browser,number,options={}){
       frames:page.frames().map(f=>{try{const u=new URL(f.url());return u.origin+u.pathname}catch{return 'unknown'}})},null,2));
   }
   assert.ok(script,roomId+' controller loaded');
+  step('controller-seat-metadata');
   assert.equal(await script.evaluate(()=>window.castleRoom.layout.seats.length),options.seats??64);
   assert.equal(await script.evaluate(()=>window.castleRoom.layout.groups.length),options.groups??4);
-  assert.equal(await script.evaluate(async()=> (await WA.room.getTiledMap()).properties.find(p=>p.name==='castleRevision')?.value),options.revision||'20261108-kino6');
+  step('controller-map-api');assert.equal(await script.evaluate(async()=> (await WA.room.getTiledMap()).properties.find(p=>p.name==='castleRevision')?.value),options.revision||'20261108-kino6');
+  step('cinema-controller-ready');
   if(roomId==='kino')await script.waitForFunction(()=>Boolean(window.castleCinema),undefined,{polling:200,timeout:30000});
   // Keep entrants apart while the remaining profiles load, rather than creating a four-way call at the door.
   const parking=options.parking?.[number-1]||[240+number*64,400];
+  step('native-parking-and-audio');
   await script.evaluate(async p=>{await WA.player.teleport(p[0],p[1]);await castleRoom.syncPosition()},parking);
-  await context.storageState({path:storage});
+  step('storage-snapshot');await context.storageState({path:storage});step('entered');
   console.log((schoolStorage?'Authorized school test':'Synthetic')+' '+roomId+' participant '+number+' entered.');
   return {context,page,script,errors,diagnostics,scriptLoads,get filmRequests(){return filmRequests}};
 }
@@ -239,5 +260,5 @@ async function main(){
     throw e;
   }finally{await browser.close()}
 }
-module.exports={join,sit,stats,move,writeAudio,audioFixture};
+module.exports={join,sit,stats,move,writeAudio,audioFixture,roomController};
 if(require.main===module)main().catch(e=>{console.error(e.stack);process.exitCode=1});
