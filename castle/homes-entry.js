@@ -1,9 +1,11 @@
 const HOME='https://together.deine-schule.com/castle-homes/';
+export const HOME_ENTRY_VERSION='20261111-homes2';
+export const HOME_MEDIA_POLICY='microphone; camera; clipboard-write';
 const props=object=>Object.fromEntries((object.properties||[]).map(p=>[p.name,p.value]));
 const overlap=(a,b)=>a.x<b.x+b.width&&a.x+a.width>b.x&&a.y<b.y+b.height&&a.y+a.height>b.y;
 const inside=(p,a)=>Number.isFinite(p?.x)&&Number.isFinite(p?.y)&&p.x>=a.x&&p.y>=a.y&&p.x<a.x+a.width&&p.y<a.y+a.height;
 export function homeEntryArea(map){
- const p=props(map);if(p.castleMapId!=='obergeschoss'||p.castleHomesPilot!=='20261110-homes1')return null;
+ const p=props(map);if(p.castleMapId!=='obergeschoss'||p.castleHomesPilot!==HOME_ENTRY_VERSION)return null;
  const objects=[];function walk(layers){for(const layer of layers||[]){if(layer.layers)walk(layer.layers);objects.push(...(layer.objects||[]));}}walk(map.layers);
  const entries=objects.filter(o=>props(o).castleHomeEntry===true);if(entries.length!==1)throw Error('One reviewed home entry required');
  const area=entries[0];if(area.name!=='castle-home-entry'||area.type!=='area'||props(area).silent!==true||
@@ -27,7 +29,7 @@ export class CastleHomeEntry{
   const epoch=this.epoch;
   if(this.pending)return this.pending.catch(()=>null).then(()=>!this.closed&&this.active&&epoch===this.epoch?this.open():null);
   this.pending=(async()=>{
-   const website=await this.wa.nav.openCoWebSite(HOME,false,'',65,undefined,true,false);
+   const website=await this.wa.nav.openCoWebSite(HOME,false,HOME_MEDIA_POLICY,65,undefined,true,false);
    if(this.closed||!this.active||epoch!==this.epoch){await website.close();return null;}this.website=website;return website;
   })().finally(()=>{this.pending=null;});return this.pending;
  }

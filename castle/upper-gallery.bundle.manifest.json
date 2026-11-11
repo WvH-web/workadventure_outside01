@@ -6,8 +6,8 @@
   },
   "entry": "castle/gallery.js",
   "output": "castle/upper-gallery.bundle.js",
-  "bytes": 45406,
-  "sha256": "4fb1a6e11e9af0e7b55d941b2831641af9e5cf0afeebe10b7f769753398b4661",
+  "bytes": 45453,
+  "sha256": "bf056ad2b69c89195e81259f9e16b48768cd17e832fda81b40da493e2b114221",
   "runtimeModuleRequests": 1,
   "sources": [
     {
@@ -32,11 +32,11 @@
     },
     {
       "path": "castle/gallery.js",
-      "sha256": "a6d4bd1c7a92c783039aa6fd9298990e3216c142a25c9d93ab4a4dc0baa11b34"
+      "sha256": "5ab046c1f1038b4909673543e1b8db2ca6e9e9f9b4991e1987aaa049ababec2f"
     },
     {
-      "path": "castle/homes-entry.js?v=20261110-homes1",
-      "sha256": "9dcc565bf841387e7dd82e18b15dfbc29baba6000ad7bf8952227325b831266c"
+      "path": "castle/homes-entry.js?v=20261111-homes2",
+      "sha256": "532508d5629825166e0df5e6f084e702fbfb0d9b9c62b258c23ebf6e9ee515ae"
     },
     {
       "path": "castle/npcs.js?v=20261108-focus1",

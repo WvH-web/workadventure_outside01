@@ -351,6 +351,47 @@ def verify_homes_pilot(ops,expected):
     return after,True
 
 
+def verify_homes_native_entry(ops,expected):
+    private=Path('/opt/wvh-castle-homes/private');path=private/'native-entry-deployment.json';sha=ops['sha']
+    if not path.exists():return expected,False
+    assert path.resolve()==path and path.stat().st_uid==0 and path.stat().st_mode&0o777==0o600
+    value=json.loads(path.read_text());assert value['passed'] and not value['provisional'] and value['before']==expected
+    assert value['nativeMapEntryEnabled'] and value['twoNormalMicrosoftParticipants'] and value['nativePrivateAudioSeparationVerified']
+    assert value['allNativeVoiceAreasUnchanged'] and value['allOtherMapsAndServicesUnchanged'] and value['noServiceRestart']
+    assert not value['oldCastleReplaced'] and not value['broadSchoolRoomAccess'] and not value['loadApprovalFor400']
+    helper=Path('/tmp/wvh-deploy-castle-home-entry.py');assert helper.resolve()==helper
+    assert sha(helper.read_bytes())=='7866c65e54385a0e789568e60f76bd9e69816345caede525467d60d5b5e4c8d1'
+    functions=runpy.run_path(str(helper));target=functions['TARGET'];manifest=functions['MANIFEST'];backup=private/'before-native-entry'
+    assert value['backup']==str(backup) and backup.resolve()==backup and backup.stat().st_mode&0o777==0o700
+    for name,digest in [('obergeschoss.wam',value['oldWamSha256']),('manifest.json',value['manifestBeforeSha256']),('probe.private.json',value['probeProofSha256'])]:
+        item=backup/name;assert item.resolve()==item and item.stat().st_mode&0o777==0o600 and sha(item.read_bytes())==digest
+    original=json.loads((backup/'obergeschoss.wam').read_text());original['mapUrl']=functions['SOURCE']
+    assert json.loads(target.read_text())==original and sha(target.read_bytes())==value['newWamSha256']
+    original_manifest=json.loads((backup/'manifest.json').read_text());original_manifest['files']['obergeschoss.wam']=value['newWamSha256']
+    assert json.loads(manifest.read_text())==original_manifest and sha(manifest.read_bytes())==value['manifestAfterSha256']
+    after=json.loads(json.dumps(expected));after['files'][str(target)]=value['newWamSha256'];after['files'][str(manifest)]=value['manifestAfterSha256']
+    assert value['after']==after and value['previewMapsChanged']==['obergeschoss.wam']
+    stage_raw=(private/'native-entry-stage.json').read_bytes();staged=json.loads(stage_raw)
+    assert sha(stage_raw)==value['stageReceiptSha256'] and staged['provisional'] and staged['before']==expected and staged['after']==after
+    assert all(value[key]==item for key,item in staged.items() if key!='provisional')
+    probe_raw=(private/'native-probe.json').read_bytes();probe=json.loads(probe_raw)
+    cleanup_raw=(private/'native-probe-cleanup.json').read_bytes();cleanup=json.loads(cleanup_raw)
+    assert sha(probe_raw)==value['probeStageSha256'] and probe['original']==expected
+    assert sha(cleanup_raw)==value['probeCleanupSha256'] and cleanup['stageReceiptSha256']==sha(probe_raw)
+    assert cleanup['passed'] and cleanup['stopped'] and cleanup['probeRemoved'] and cleanup['existingMapsAndServicesUnchanged']
+    assert not (functions['STORAGE']/'zimmerprobe.wam').exists()
+    functions['proof'](json.loads((backup/'probe.private.json').read_text()))
+    browser_raw=(private/'native-entry-browser.private.json').read_bytes();browser=json.loads(browser_raw)
+    assert sha(browser_raw)==value['publicNativeBrowserProofSha256'];functions['proof'](browser,preview=True)
+    assert browser['candidateMapSha256']==value['sourceSha256'] and browser['entryScriptSha256']==value['entryScriptSha256']
+    files={**probe['sourcePublication']['files'],**value['publication']['files']}
+    assert len(files)==6 and files['castle/obergeschoss-homes.tmj']==value['sourceSha256'] and files['castle/upper-gallery.bundle.js']==value['entryScriptSha256']
+    for name,digest in files.items():
+        with urllib.request.urlopen('https://wvh-web.github.io/workadventure_outside01/'+name+'?v=20261111-homes2',timeout=20) as response:assert sha(response.read(2000000))==digest
+    assert functions['processes']()==value['processes']
+    return after,True
+
+
 def main():
     os.umask(0o077);ops=runpy.run_path('/tmp/wvh-castle-piano-ops.py');wam=runpy.run_path('/tmp/wvh-deploy-castle-piano-wam.py');sha=ops['sha'];private=ops['PRIVATE']
     deployment=json.loads((private/'deployment.json').read_text());wrapped=json.loads((private/'music-wrapper-deployment.json').read_text())
@@ -386,6 +427,7 @@ def main():
         expected=after;health_repair=True
     expected,school_admission=verify_school_admission(ops,expected)
     expected,homes_pilot=verify_homes_pilot(ops,expected)
+    expected,homes_native=verify_homes_native_entry(ops,expected)
     assert ops['baseline']()==expected,'An unrelated protected file or existing service changed'
     assert ui['nginx_before_sha256']==deployment['nginx_after_sha256']
     for route,name in [('presence','presence.html'),('rounds','rounds.html'),('unowned-ui.js','unowned-ui.js')]:
@@ -405,7 +447,8 @@ def main():
     ops['atomic'](private/'accepted-native-live-proof.json',native)
     result={'passed':True,'release':deployment['release'],'helperRelease':ui['release'],'sourceCommit':publication['head'],
       'nativeLiveProofSha256':sha(native_raw),'normalMicrosoftPupils':2,'mouseAndMobileTouch':True,'parallelTableSpeechDecodedBoth':True,
-      'onlyMusicPreviewWrapperChanged':True,'existingContainersAndOtherMapsUnchanged':not health_repair and not school_admission,
+      'onlyMusicPreviewWrapperChanged':not homes_native,'homesNativePreviewEntryVerified':homes_native,
+      'onlyAcceptedPreviewWrapperTransitions':True,'existingContainersAndOtherMapsUnchanged':not health_repair and not school_admission and not homes_native,
       'allOtherServicesPreservedExceptVerifiedHallHealthRepair':not school_admission,
       'allOtherServicesPreservedExceptVerifiedMaintenance':True,'schoolAdmissionVerified':school_admission,'homesPilotVerified':homes_pilot,
       'hallHealthRepairVerified':health_repair,'historicalManifestsPreserved':True,

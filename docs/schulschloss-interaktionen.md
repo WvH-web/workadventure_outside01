@@ -23,6 +23,21 @@ Ergaenzung vom 9. November 2026. Das alte Schloss bleibt bestehen.
 
 ## Tatsaechlicher Stand
 
+- 11. November: Der Wandelgang der neuen Vorschau oeffnet in seinem getrennten
+  ruhigen Zugangsbereich das persoenliche Schlosszimmer automatisch seitlich.
+  Der Zugang bleibt auf den bestehenden kleinen Pilotkreis begrenzt; andere
+  Schueler erhalten dadurch noch keine Freigabe. Das alte Schloss bleibt
+  unveraendert. Die bestehenden Tischgruppen im Wandelgang bleiben erhalten.
+- Zwei normale Microsoft-Testkonten bestehen die veroeffentlichte Probe in
+  Chrome 157: Tischgespraech, gemeinsamer privater Zimmerbesuch mit freiwilligem
+  Mikrofon und danach wieder Tischgespraech. Keine doppelte Tonverbindung,
+  keine automatische Aufnahme beim Beitritt; beim Verlassen enden die echten
+  privaten Mikrofonspuren. Desktop und Mobil funktionieren ohne ausgetauschte
+  Karten-/Skriptantworten. Die zusaetzliche Vorpruefkarte ist wieder entfernt.
+- Gemeldete Ausschnitte bleiben allein fuer das ausdruecklich freigegebene
+  Administratorkonto zugaenglich. Keine allgemeine Lehrerrolle wurde hinzugefuegt.
+  Die echte Anmeldung dieses Administrators bleibt noch separat zu pruefen;
+  dies ist keine Lastfreigabe fuer acht oder 400 gleichzeitige Teilnehmer.
 - Geschuetztes Schach und WBO funktionieren mit zwei regulaer angemeldeten
   Microsoft-Schueler-Testkonten auf ihren echten Spielseiten.
 - Die Atelier-Verknuepfung ist in der separaten Vorschau veroeffentlicht.

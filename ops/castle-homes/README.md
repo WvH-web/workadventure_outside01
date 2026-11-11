@@ -284,33 +284,55 @@ old service and map stays identical; the exact new Nginx block is appended to th
 preserved original bytes. New release/context/unit/credential hashes are checked
 without rewriting old manifests or calling old audio evidence a fresh test.
 
-## Native Entry Candidate
+## Native Entry
 
 `homes-entry.js` and the dedicated `upper-gallery.bundle.js` prepare automatic
 entry from one disjoint native silent area in the upper gallery. The fixed owned
-room URL gets no map-API or media permission. Departure/disposal closes only its
+room URL gets no map API. Optional microphone/camera and invitation-code copying
+are permitted only for this first-party panel; capture still requires explicit
+separate device clicks. Departure/disposal closes only its
 owned panel; late openings are closed, rapid reentry is serialized, manual closure
 is respected and late initial positions cannot override newer movement.
 
-Seven local cases cover these boundaries and prove the new dedicated bundle
-retains every original controller source. Existing shared expansion/outdoor
-bundles and all published maps remain unchanged. `--homes` builds only the new
-gallery bundle. The native browser probe substitutes candidate map/controller
-bytes only inside its two test browsers. This is not published map activation.
-The actual two-user candidate now passes with the bundled Chromium 151:
-automatic real first-party panels, nonblank desktop/mobile rooms, invitations
-and received phrases, no native conversation in the quiet entry, unchanged
-microphone preference, owned-panel closure and decoded native table speech both
-before and after the visit. No school permission is overridden. Only candidate
-map/controller responses are substituted; the room service, school context,
-WebSockets and native audio are real public endpoints.
+Nine local cases cover these boundaries, prove the dedicated bundle retains
+every original controller source and compare both generated map sources with
+the untouched original gallery. Existing shared expansion/outdoor bundles,
+artwork, furniture, exits and native table groups remain unchanged. `--homes`
+builds only the dedicated gallery bundle; `build-castle-home-entry.cjs` adds
+the two reviewed sources without editing the original Tiled gallery.
 
-Candidate routing of the hidden opaque-origin script frame did not take effect
-with system Chrome 157 in this harness; that failed injection is not counted as
-native acceptance. Public standalone room UI does pass on Chrome 157. A final
-unmodified Chrome 157 map entry remains required after publication. Candidate
-proof: `qa/homes-native-candidate/result.json` in the authorized private folder.
-No private-room voice is enabled and no candidate is yet connected to public maps.
+The earlier Chromium 151 candidate used browser response substitutions; the
+opaque-origin candidate injection failed in Chrome 157 and is not acceptance.
+On 11 November, the new public sources and a separately namespaced temporary
+WAM passed in ordinary system Chrome 157 with two normal Microsoft test pupils.
+No map/script/provider response was substituted. Real private microphones
+decoded both ways, while native table/proximity audio was absent in the quiet
+entry. The actual held microphone tracks ended when the owned panel closed;
+native book-club speech decoded both before and after the visit. Desktop and
+390px mobile canvases were nonblank, with unchanged microphone preference.
+An anonymous browser was redirected to normal Microsoft authentication.
+The owned temporary WAM was then removed, restoring the exact sixteen-map
+inventory and unchanged service processes. Private proof:
+`qa/homes-native-calls/result.private.json`.
+
+The same probe subsequently passed against the actual new-preview gallery,
+without request substitution or a service restart. Only `obergeschoss.wam`
+changed its source URL to `obergeschoss-homes.tmj`; its voice areas and all
+fifteen sibling maps remain byte-identical. The original wrapper and manifest
+are backed up privately, and the historical audit validates this explicit
+transition rather than overwriting earlier manifests. Optional private speech
+decoded at RMS 0.1804 / 0.1656, with no native speech crossing into the visit.
+Private proof: `qa/homes-native-preview/result.private.json`; root receipt:
+`native-entry-deployment.json`. Only the existing two synthetic pupils and
+sole approved administrator can use personal rooms. This does not broaden
+school admission or replace the old castle.
+
+Static publication adds six files only. GitHub's dynamic Pages job associated
+the second build with its parent commit; this is recorded separately from the
+published source commit. Acceptance additionally checks every public file's
+exact bytes against its committed source, not just a successful job badge.
+Three focused deployment cases reject missing media/boundary proof and test
+atomic writes without replacing another operation's staging file.
 
 The measured unoptimized room load transfers about 34 MB of approved static
 artwork per fresh view. Native mobile first load exceeded the 30-second test
@@ -568,7 +590,8 @@ Pilot release `dde4ccfa91500283` enables voluntary audio/video using the exact
 owned game's existing proximity, visit, safety-report and LiveKit modules. Only
 the already admitted two synthetic pupil accounts and sole approved administrator
 can enter. No additional pupil, family, staff or global role was admitted.
-The actual private-room map entrance remains off.
+At this deployment the private-room map entrance remained off; the later
+Native Entry transition above activates only the new-preview gallery.
 
 Every join is forced to the fixed bedroom group: the browser cannot claim a
 village, nearby mode, owner, group id or room scope. The original authoritative
@@ -643,8 +666,8 @@ cancellations, the same two documented skips. The control-relay and school-
 withdrawal/epoch/failure cases use isolated simulated control responses, not
 pretended real SFU load. The two real media probes are recorded separately.
 
-Still open: native castle entry with isolation from native table audio; active
-call account/device transfer, offline/reconnect and restart episodes; broader
+Still open: active call account/device transfer, offline/reconnect and restart
+episodes; broader
 age/class admission; the approved administrator's actual login; genuine points
 integration; complete data/key disaster recovery and fleet/load acceptance.
 Two-participant media evidence is not an eight-person or 400-person load approval.
@@ -655,3 +678,11 @@ and retested before broad admission; these figures are not a capacity guarantee.
 The one explicitly synthetic report submitted by this publication's approved
 test pair was removed after a private consistent backup. Other reports and
 school roles were not changed.
+
+The native-entry follow-up passes 464 Node cases (462 passed, no failures,
+the same two documented skips). All 57 Python operational cases, including
+the three focused entry-deployment cases, also pass. Local Python uses an
+isolated PyYAML 6.0.3 test directory; no global or server dependency changes.
+Post-entry health shows about 209MiB current / 230MiB peak for the
+room process, about 15MiB / 27MiB for the control relay and zero automatic
+restarts. Broader admission still requires resource sizing and load tests.

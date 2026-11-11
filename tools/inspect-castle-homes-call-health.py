@@ -10,7 +10,14 @@ ops=runpy.run_path('/tmp/wvh-castle-piano-ops.py')
 before=ops['baseline']()
 private=Path('/opt/wvh-castle-homes/private')
 record=json.loads((private/'calls-deployment.json').read_text())
-assert record['passed'] and record['before']==record['after']==before
+assert record['passed'] and record['before']==record['after']
+expected=record['after'];native=private/'native-entry-deployment.json'
+if native.exists():
+    transition=json.loads(native.read_text())
+    assert transition['passed'] and not transition['provisional'] and transition['before']==expected
+    assert transition['previewMapsChanged']==['obergeschoss.wam'] and transition['allOtherMapsAndServicesUnchanged']
+    expected=transition['after']
+assert expected==before
 config=(private/'service.json').read_bytes()
 assert hashlib.sha256(config).hexdigest()==record['configAfterSha256']
 checks={}
