@@ -1,8 +1,8 @@
 # Gemeinsame Sternenmaschine
 
-Stand: 11. November 2026. **Implementiert und lokal geprueft, noch nicht in der
-Schlossvorschau freigeschaltet.** Eine bestandene native Mehrspieler-Abnahme
-liegt fuer diese neue Aktivitaet noch nicht vor. Der Gesamtausbau bleibt offen.
+Stand: 11. November 2026. **Implementiert und in einem getrennten geschuetzten
+nativen Testraum abgenommen.** Die gewoehnliche Sternwarte ist noch nicht auf
+die neue Aktivitaet umgestellt. Der Gesamtausbau bleibt offen.
 
 ## Aktivitaet
 
@@ -70,13 +70,48 @@ abgeschirmten Frame; diese Testoption wurde wieder entfernt. Dazu existiert eine
 [primaere Playwright-Fehlermeldung](https://github.com/microsoft/playwright/issues/43113).
 Weder die Frame-Abschirmung noch Anmeldung oder Serverantworten wurden gelockert.
 
-Die Abnahme wird stattdessen mit zusaetzlich veroeffentlichten, hashgeprueften
-Dateien und einem getrennten geschuetzten `sternprobe.wam` vorbereitet.
-`tools/check-castle-puzzle-native.cjs --stage` verlangt diese echte Bereitstellung,
-zwei zugelassene normale Microsoft-Testkonten, einen eigenen Gespraechsnamensraum
-und unveraenderte alte Karte. Es ersetzt keinerlei Netzwerkantworten. Ausstehend:
-tatsaechliches gemeinsames Loesen, Sprache in beide Richtungen, Aufstehen,
-Wiederbeitritt, leere Runde und Bewegung in genau diesem nativen Testraum.
+Die anschliessende Abnahme besteht mit zusaetzlich veroeffentlichten,
+hashgeprueften Dateien und einem getrennten geschuetzten `sternprobe.wam`.
+Veroeffentlichungscommit: `2202ba1205c44364206496fddb4623d5fd6eefc9`.
+Dieser Commit fuegt genau acht Dateien hinzu und ersetzt keine vorhandene.
+
+`tools/check-castle-puzzle-native.cjs --stage` besteht mit zwei zugelassenen
+normalen Microsoft-Schultestkonten, eines als Touch-Handy. Es ersetzt keine
+Karten-, Anmelde-, Schulprofil-, Medien- oder Spielantworten. Geprueft sind:
+
+- Sichtbare gemeinsame Auswahl und automatisches Oeffnen fuer Nachzuegler.
+- Komplementaere Hinweise und tatsaechliche Aenderungen in beide Richtungen.
+- Alle drei Raetsel in beiden wirklichen Clients bis zum Ende geloest.
+- Gleichzeitige Aenderungen an zwei verschiedenen Ringen bleiben erhalten.
+- Aufstehen des Auswaehlenden, Wiederbeitritt und gleicher erhaltener Spielstand.
+- Manuelles Schliessen und Wiedereroeffnen des Seitenfensters ohne neue Runde.
+- Bestaetigtes gemeinsames Zuruecksetzen und frischer Beginn nach leerem Tisch.
+- Dekodierte native Sprache in beide Richtungen an drei Punkten: synthetisches
+  Sprachsignal ueber echte Medienverbindungen, kein Ersatz des Sprachdienstes.
+- Nichtleere Spielgrafik und Karten-Canvas, kein waagerechter Handy-Ueberlauf
+  und normale Tastaturbewegung nach dem Aufstehen.
+
+Der eigens getrennte Gespraechsnamensraum verhindert Kontakt mit den normalen
+Sternwarten-Gruppen. Die neue Testkarte verlangte weiterhin die normale
+Pflichtanmeldung. Sie wurde nach Abnahme wieder entfernt. Die urspruenglichen
+16 Karten, alle erfassten laufenden Container und geschuetzten Dienste sowie
+ihre Konfigurationen bleiben unveraendert; kein Dienst wurde neu gestartet.
+Der vorherige vollstaendige Live-Betriebsnachweis besteht danach erneut.
+
+Private Belege liegen auf D: unter `star-machine-native`, letzter bestandener
+Lauf `2026-11-11T21-11-27-131Z` mit sieben Szenarien und drei Sprachmessungen.
+Die unveraenderlichen Serverbelege `stage.json`, `native-proof.json`,
+`native-acceptance.json` und `cleanup.json` liegen getrennt von den bisherigen
+Abnahmen unter `/opt/wvh-castle-stars/private/`. Historische Nachweise wurden
+nicht ersetzt. Alle 121 Python-Betriebsfaelle und erneut alle 570 Node-Faelle
+(568 bestanden, zwei bestehende optionale Auslassungen) bestehen. Die temporaere
+Veroeffentlichungs-Arbeitskopie auf D: wurde nach geprueftem Push entfernt;
+Belege und benoetigte Endfassungen bleiben erhalten. Eine echte 400-Personen-
+Abnahme ist damit weiterhin nicht erbracht.
+
+Die native Aufstehen-Schaltflaeche ist insbesondere in der Handy-Kombination
+noch sehr dominant und ueberlagert teils den Seitenbereich. Die Aktivitaet ist
+scrollbar; eine kompaktere gemeinsame Sitzbedienung bleibt UI-Nacharbeit.
 
 ## Veroeffentlichung
 
@@ -88,7 +123,7 @@ Fremdseiten, Query-Varianten und beliebige Zieladressen bekommen keinen API-Zuga
 Die anderen generierten Controller wurden lediglich mit dieser gemeinsamen
 Quellaenderung reproduzierbar neu gebaut, nicht live ersetzt.
 
-Fuer die naechste Probe nur die acht zusaetzlichen Dateien veroeffentlichen:
+Bereits als ausschliesslich zusaetzliche Dateien veroeffentlicht:
 
 - `castle/sternwarte-puzzle-preview.tmj`
 - `castle/puzzle-preview.bundle.js`
@@ -99,9 +134,11 @@ Fuer die naechste Probe nur die acht zusaetzlichen Dateien veroeffentlichen:
 - `castle/puzzle-state.js`
 - `castle/art/sternmaschine-20261111/machine.webp`
 
-Danach eine einzelne temporaere WAM-Kopie mit eigener Sprachgruppe einrichten,
-die bestehende Pflichtanmeldung verifizieren, nativ pruefen und die Probe wieder
-entfernen. Vor und nach dieser Phase den aktuellen Betriebsnachweis ausfuehren.
-Erst nach Abnahme darf die konkrete Sternwarten-Aktivitaet gezielt aktiviert werden.
-Keine anderen Karten, Dienste oder Spielefreigaben ersetzen. Die Aktivitaet ist
-kein Geheimgang; private Entdeckungsplaene und Codes werden nicht mitgeliefert.
+Die temporaere WAM-Kopie mit eigener Sprachgruppe ist bereits geprueft und
+wieder entfernt. Vor und nach dieser Phase besteht der aktuelle Betriebsnachweis.
+Die gezielte Aktivierung der normalen Sternwarten-Aktivitaet steht noch aus:
+kanonische TMJ und Builder passend nachziehen, nur diese eine Vorschau-WAM
+umstellen, den vorigen Nachweis unveraendert als Vorgaenger behalten und den
+normalen Zugang nochmals ohne Testkarte pruefen. Keine anderen Karten, Dienste
+oder Spielefreigaben ersetzen. Die Aktivitaet ist kein Geheimgang; private
+Entdeckungsplaene und Codes werden nicht mitgeliefert.

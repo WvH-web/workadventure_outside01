@@ -87,6 +87,17 @@ async function main(){
   await a.script.evaluate(()=>castleActivities.website.close());await a.page.waitForTimeout(1200);assert.equal(a.page.frames().some(f=>f.url()===web+'puzzle.html'),false);
   await a.script.evaluate(()=>castleActivities.open());pa=await panel(a);await values(pa,[2,0,0]);
   cases.push('manual side-panel close respected; reopening keeps seated state');
+  phase='all-three-puzzles-and-concurrent-rings';progress();
+  await pb.getByRole('radiogroup',{name:'Mitte',exact:true}).getByRole('radio',{name:'Blatt',exact:true}).tap();await values(pa,[2,3,0]);
+  await pa.getByRole('radiogroup',{name:'Au\u00dfen',exact:true}).getByRole('radio',{name:'Flamme',exact:true}).click();await wait(pa,()=>castleStarMachine.value.solved);await wait(pb,()=>castleStarMachine.value.solved);
+  await pa.getByRole('button',{name:'Weiter',exact:true}).click();await wait(pa,()=>castleStarMachine.value.index===2);await wait(pb,()=>castleStarMachine.value.index===2);
+  await Promise.all([
+   pa.getByRole('radiogroup',{name:'Innen',exact:true}).getByRole('radio',{name:'Welle',exact:true}).click(),
+   pb.getByRole('radiogroup',{name:'Au\u00dfen',exact:true}).getByRole('radio',{name:'Blatt',exact:true}).tap()
+  ]);await values(pa,[4,0,3]);await values(pb,[4,0,3]);
+  await pb.getByRole('radiogroup',{name:'Mitte',exact:true}).getByRole('radio',{name:'Mond',exact:true}).tap();await wait(pa,()=>castleStarMachine.value.solved);await wait(pb,()=>castleStarMachine.value.solved);
+  for(const frame of [pa,pb]){assert.equal(await frame.locator('#next').isVisible(),false);assert.equal(await frame.locator('#status').innerText(),'Alle drei Himmelsbilder sind gel\u00f6st.');}
+  await speech('completed-puzzles');cases.push('all three puzzles solved in both actual clients; concurrent distinct ring edits preserved');
   phase='confirmed-shared-reset';progress();await pb.getByRole('button',{name:'Runde zuruecksetzen',exact:true}).tap();await pb.getByRole('button',{name:'Zur\u00fccksetzen',exact:true}).tap();
   await values(pa,[0,0,0]);await values(pb,[0,0,0]);await wait(pa,()=>castleStarMachine.value.index===0);cases.push('confirmed reset reaches both participants');
   phase='screens-and-movement';progress();
@@ -104,6 +115,7 @@ async function main(){
   const current=await fetch(web+'sternwarte.tmj',{signal:AbortSignal.timeout(15000)});assert.equal(sha(Buffer.from(await current.arrayBuffer())),sha(publishedRaw));
   assert.ok(requests.every(request=>!request.authorizationPresent));const errors=users.flatMap(user=>user.errors);assert.deepEqual(errors,[]);
   const proof={passed:true,cases,normalMicrosoftPupils:2,syntheticApprovedAccountsOnly:true,desktopAndTouchMobile:true,nativeAudioMeasurements:audio,
+   allThreePuzzlesSolvedInBothClients:true,concurrentDistinctRingsPreserved:true,
    isolatedProtectedStage:true,networkResponsesSubstituted:false,authorizationResponsesSubstituted:false,publishedOriginalMapsChanged:false,publishedOriginalMapSha256:sha(publishedRaw),candidateBundleSha256:sha(bundle),
    fileHashes,requests,errors,loadApprovalFor400:false};
   fs.writeFileSync(path.join(output,'result.json'),JSON.stringify(proof,null,2)+'\n');console.log(JSON.stringify({...proof,nativeAudioMeasurements:audio.length,output}));

@@ -5,10 +5,12 @@ Inhaltliche Vertiefung, Anbieterbedingungen und Browserprobe: 8. November 2026.
 Ergaenzung zum [Raumkonzept](schulschloss-konzept.md).
 
 Eigener Ausbau vom 11. November: Die [kooperative Sternenmaschine](schulschloss-sternenmaschine.md)
-ist als gemeinsame schulinterne Aktivitaet implementiert und lokal mit mehreren
-synthetischen Teilnehmern sowie auf Desktop/Mobil geprueft. Sie ist noch nicht
-live freigeschaltet; die native Mehrspieler-Abnahme steht aus. Die bestehenden
-Entwurfs-/Altersfreigaben fremder Spiele werden dadurch nicht geaendert.
+ist als gemeinsame schulinterne Aktivitaet implementiert und im getrennten
+geschuetzten Testraum mit zwei normalen Microsoft-Schultestkonten auf Desktop
+und Touch-Handy abgenommen: alle drei Raetsel, gleichzeitige Eingaben,
+Wiederbeitritt und native Sprache in beide Richtungen. Die Testkarte ist wieder
+entfernt; die Aktivierung am normalen Sternwartentisch steht noch aus. Die
+bestehenden Entwurfs-/Altersfreigaben fremder Spiele bleiben unveraendert.
 
 ## Entscheidung fuer den Ausbau
 

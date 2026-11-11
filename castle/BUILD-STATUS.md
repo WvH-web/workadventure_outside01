@@ -6,15 +6,21 @@ Village und geschuetzte Lehrerzimmer werden nicht ersetzt.
 
 Neuer Entwicklungsstand vom 11. November: Die kooperative Sternenmaschine mit
 drei Himmelsbildern, unabhaengig synchronisierten Einstellringen, verteilten
-Hinweisen und einer eigenen Bitmap-Spielflaeche ist implementiert. 19 fokussierte
-Faelle und die lokale Browserprobe auf vier Bildschirmgroessen bestehen.
-Dies ist noch keine native Online-Abnahme: Die ersten Versuche haben den alten
-Raumcontroller im Testbrowser nicht zuverlaessig ersetzt und zaehlen nicht als
-Erfolg. Ein eigener geschuetzter nativer Testraum wird deshalb vorbereitet.
-Die bestehenden 16 Karten und Dienste wurden dafuer nicht geaendert.
+Hinweisen und einer eigenen Bitmap-Spielflaeche ist implementiert. Die native
+Online-Abnahme besteht jetzt mit zwei normalen Microsoft-Schultestkonten,
+eines mobil, ohne Netzwerkersatz: sieben Szenarien, alle drei Raetsel beidseitig
+geloest, gleichzeitige Ringwahl erhalten, Wiederbeitritt und frische leere Runde.
+An drei Punkten wird native Sprache in beide Richtungen dekodiert. Die einzelne
+geschuetzte Testkarte wurde wieder entfernt; die bestehenden 16 Karten und
+Dienste sind unveraendert und der bisherige Live-Nachweis besteht erneut.
+Nur acht zusaetzliche Dateien wurden oeffentlich bereitgestellt. Die normale
+Sternwarten-Aktivitaet ist noch nicht umgestellt; auch der dominante native
+Aufstehen-Knopf braucht noch UI-Nacharbeit. 19 fokussierte Faelle und die lokale
+Browserprobe auf vier Bildschirmgroessen bestehen ebenfalls.
 Die abschliessende Node-Suite besteht mit 568 bestandenen Faellen, zwei
 bisherigen optionalen Auslassungen und keinem Fehler (570 insgesamt).
-Einzelheiten und verbleibende Abnahme: `../docs/schulschloss-sternenmaschine.md`.
+Alle 121 Python-Betriebsfaelle bestehen ebenfalls.
+Einzelheiten und verbleibende Aktivierung: `../docs/schulschloss-sternenmaschine.md`.
 
 Aktueller Nachtrag vom 11. November: Die getrennte Filmprobe im wirklichen
 Schlosskino besteht mit zwei normal angemeldeten Microsoft-Schultestkonten,
