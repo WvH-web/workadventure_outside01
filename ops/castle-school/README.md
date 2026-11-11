@@ -906,3 +906,33 @@ the restart approval is unused, and seven real provider rules remain drafts.
 The next operation is a reviewed current-state service/HTML transition, not a
 blind rerun of historical admission/deployment commands. There is still no
 400-person real Microsoft/database/media capacity approval.
+
+### Reviewed Publication Checkpoint
+
+The non-disruptive publication stage passed on 2026-11-11 at 18:45:32 UTC.
+It reran the complete predecessor platform auditor, verified this exact
+candidate's Linux/native receipts, and saved a root-private checkpoint of 122
+existing evidence/configuration files, the protected map/file baseline, every
+running container's identity/start/configuration, and the three existing
+systemd services. No live service has been replaced by this stage.
+
+`castle-game-host-deployment-ops.py` is a new one-shot transition, not a rerun
+of the historical admission updater. It retains the original container, full
+private container snapshot, manifest, web configuration, audit source and
+successful audit result. The replacement clones the existing environment,
+healthcheck, limits, rules mount and network; only its immutable source mount
+and release label change. The web change substitutes exactly the existing
+`/rounds` HTML alias. Recovery JavaScript aliases and all guards stay intact.
+
+After publication the audit entry point verifies the new actual head against
+that accepted predecessor checkpoint. It does not impersonate the old service
+or rewrite historical receipts to make the obsolete live-state checker pass.
+It rechecks all protected files/maps, other runtime/configuration fingerprints,
+retained evidence, predecessor and current source, all 27 public school assets,
+headers and unauthenticated API boundaries. The old auditor remains immutable
+and independently inspectable. A rollback is separately receipted, including
+the unavoidable changed start timestamp of the restored original service.
+
+Native acceptance of the actual published routes is still a separate gate;
+the loopback synthetic-provider success is not relabeled as production proof.
+No real provider/student approval or full 400-person approval is implied.
