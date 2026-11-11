@@ -483,7 +483,7 @@ real Microsoft logins, database users, castle participants or media streams.
 
 ### Round Recovery Candidate
 
-The source now contains a **not yet published** recovery candidate for the
+The following records the original **not yet published** recovery candidate for the
 private membership bridge. It retains only an existing opaque lease/journey
 after a transient confirmation error. It retries only heartbeat/visit checks,
 with bounded exponential backoff, jitter and the server's `Retry-After` hint,
@@ -562,8 +562,8 @@ truncated the native test file; it was restored from the committed base plus
 this turn's changes and passed syntax checking. The pending server routes were
 then explicitly rolled back. The full live audit passed at 08:22:29 UTC with
 `roundRecoveryBrowserModulesVerified: false`; all prior castle functionality,
-roles, maps and service processes remain unchanged. There is **no accepted
-recovery deployment**. The provisional stage and explicit rollback receipts
+roles, maps and service processes remain unchanged. At that checkpoint there was
+**no accepted recovery deployment**. The provisional stage and explicit rollback receipts
 remain private at `round-recovery-stage.json` and `round-recovery-rollback.json`;
 `round-recovery-deployment.json` does not exist. Do not rerun the current deploy
 or accept commands blindly: a new publication plan must account for that
@@ -687,3 +687,52 @@ Private receipts are under `output/legacy-migrations`,
 The final serial Node regression passed 511 of 513 cases, with two existing
 optional skips and no failures. The 83 Python operator checks also pass. This
 cleanup does not publish a new map or service release.
+
+### Accepted Native Recovery Publication
+
+The corrected native preflight and the subsequent published probe both passed
+on 2026-11-11. Each used two independently signed-in, approved Microsoft school
+test accounts, including a mobile participant. The probe waits until a previous
+heartbeat has actually updated the confirmed lease before injecting one 503
+into the next natural heartbeat. The fault-observation window is 30 seconds;
+the separate 12-second recovery bound was not relaxed. The same membership is
+renewed by the real server, without extending a cached deadline or replaying
+create/join. Real decoded native table audio increases in both directions
+before and after the fault. Grade filtering, creator departure, explicit
+reentry and cross-map cleanup also pass.
+
+The fresh candidate substituted only the two exact JavaScript modules inside
+the test browsers. The published probe substituted neither modules, maps nor
+school decisions. Both browsers fetched the accepted module hashes directly
+from the public preview routes. Its retained result is
+`D:\CodexScratch\WorkAdventure\output\rounds-native-recovery-published-attempt-2\result.json`.
+No real pupil data or test credentials are published with these sources.
+
+Before republishing, `rearm-castle-round-recovery.py` preserved the previous
+provisional stage, explicit rollback, original candidate, pinned operator/audit
+sources and a sanitized fact describing the failed 15-second probe. The
+root-private `round-recovery-history-1.json` binds that exact restored history;
+the original failure evidence is not overwritten or relabeled. Three new
+operator cases cover rearming, refusal of unrolled-back state and refusal of
+tampered history. The full Python operator suite passed 86 cases.
+
+Release `8d43adfc183ce631`, packaged from source commit `322d456`, is now accepted
+in `round-recovery-deployment.json` with `provisional: false`. The full live audit
+passed at 16:32:03 UTC with `roundRecoveryBrowserModulesVerified: true`.
+The separate read-only homes health check confirms healthy enabled services,
+zero automatic restarts and preserved existing maps/services. Publication
+changed only the two static module routes, without a service restart, reset of
+registrations, map replacement, school-policy change or relaxed media headers.
+Earlier receipts remain intact and are checked as history before the actual
+current baseline is verified. Already-open browser realms keep their loaded
+module until ordinary reentry/reload; existing sessions were not forcibly closed.
+
+After acceptance, the complete serial Node regression passed 511 of 513 cases
+with the same two optional skips and no failures; all 86 Python operator cases
+passed again. The D: temporary root was empty after both test runners ended.
+Distinct private logs remain next to the publication package on D:; accepted
+and failed browser evidence is retained, not treated as disposable scratch.
+
+This accepts bounded recovery of voluntary round registrations, not the full
+castle or a 400-person real Microsoft/media workload. External game-host link
+lifecycle, broad room admission and other remaining scope are still open.

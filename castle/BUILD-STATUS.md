@@ -4,6 +4,16 @@ Das Gesamtziel bleibt aktiv. Dies ist keine Freigabe als fertiggestelltes
 Schloss oder fuer eine Veranstaltung mit 400 Personen. Das bisherige Schloss,
 Village und geschuetzte Lehrerzimmer werden nicht ersetzt.
 
+Aktueller Nachtrag vom 11. November: Die begrenzte Wiederverbindung freiwilliger
+Runden ist jetzt in der getrennten Vorschau live abgenommen. Zwei normal
+angemeldete Microsoft-Schultestkonten, eines mobil, bestaetigen nach einer
+ausdruecklich simulierten kurzen Ueberlast dieselbe serverseitig erneuerte
+Anmeldung und weiterlaufenden Tischton in beide Richtungen. Die Serverpruefung
+um 16:32 UTC besteht einschliesslich der bisherigen Museums-/Zimmerfunktionen.
+Kein Dienstneustart, Kartenersatz oder geaenderter Schulzugang. Die nachfolgenden
+aelteren Zwischenstaende bleiben als Verlauf erhalten; der Gesamtausbau ist
+weiter offen. Einzelheiten: `../ops/castle-school/README.md`.
+
 ## Eingerichtete Innenwelt
 
 - Grosse Halle mit 42 Sitzen, Gemeinschaftstafel, sechs Gespraechsbereichen,
@@ -384,7 +394,8 @@ Vor deren Korrekturprobe lief das lokale Laufwerk C: voll. Die betroffene lokale
 Testdatei ist wiederhergestellt; weitere Browserproben starten bei zu wenig
 Platz nicht mehr. Der Server ist um 08:22 UTC vollstaendig im bisherigen Zustand
 nachgeprueft, ohne Neustart, Kartenersatz oder Rechteaenderung. Die Korrektur
-bleibt **nicht live abgenommen**. Fehlversuche und Ruecksetzbelege sind erhalten.
+war zu diesem Zeitpunkt **nicht live abgenommen**. Fehlversuche und
+Ruecksetzbelege sind erhalten.
 Alle 83 Python-Betriebspruefungen und 34 gezielte Node-Rundenfaelle bestehen.
 Fuer weitere native Proben werden mindestens 2 GiB freier lokaler Platz benoetigt.
 
@@ -402,6 +413,22 @@ darin nicht eingerechnet. Erforderliche Ruecksetzstaende bleiben erhalten.
 Der aktuelle serielle Node-Gesamtlauf besteht mit 511 bestandenen Faellen und
 zwei vorhandenen Auslassungen; die 83 Python-Betriebsfaelle bestehen ebenfalls.
 Das ist keine nachtraegliche Freigabe der noch offenen Runden-Liveabnahme.
+
+Die anschliessende erneute Kandidatenprobe und die echte veroeffentlichte
+Zweipersonenprobe sind inzwischen bestanden. Beide warten auf den natuerlichen
+naechsten Herzschlag der Rundenanmeldung; die eigentliche Erholungsfrist bleibt
+unveraendert. Die Veroeffentlichungsprobe ersetzt weder Browsermodule, Karten
+noch Schulentscheidungen. Auch Klassenfilter, Wiederbeitritt, Raumwechsel und
+der weiterlaufende echte Tischton bestehen. Die statische Fassung
+`8d43adfc183ce631` ist nun endgueltig abgenommen. Die vorherige Ruecksetzung ist
+mit ihren unveraenderten Belegen gesondert archiviert und bleibt Teil der
+Bestandspruefung. Alle 86 Python-Betriebsfaelle bestehen. Die gesonderte
+Nur-Lese-Gesundheitspruefung bestaetigt gesunde Zimmerdienste ohne automatische
+Neustarts. Der erneute vollstaendige serielle Node-Lauf nach der Abnahme
+besteht mit 511 bestandenen Faellen, zwei bisherigen optionalen Auslassungen
+und keinem Fehler. Der D:-Tempordner ist nach den beendeten Pruefungen leer;
+Pruefnachweise bleiben erhalten. Das ist weiterhin keine 400-Personen- oder
+Gesamtschloss-Freigabe.
 
 ## Geplante Portal-Aushaenge
 
