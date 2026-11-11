@@ -9,6 +9,10 @@ const credentials=JSON.parse(fs.readFileSync(handoff.credentialsFile,'utf8')),ou
 const origin='https://together.deine-schule.com';
 async function main(){
   fs.mkdirSync(output,{recursive:true});const results=[];
+  const evidenceDir=process.platform==='win32'?require('./castle-local-storage.cjs').outputPath('school-sso/'+new Date().toISOString().replace(/[:.]/g,'-')):output;
+  fs.mkdirSync(evidenceDir,{recursive:true});
+  const previous=path.join(output,'sso-result.json');
+  if(evidenceDir!==output&&fs.existsSync(previous))fs.copyFileSync(previous,path.join(evidenceDir,'previous-result.json'));
   const browser=await chromium.launch({channel:'chrome',headless:true,args:['--use-fake-device-for-media-stream','--use-fake-ui-for-media-stream']});
   try{for(const account of handoff.accounts){
     assert.equal(account.microsoftAccountEnabled,true);const key=account.key,credential=credentials.accounts[key];assert.equal(credential.upn,account.loginUpn);
@@ -16,7 +20,7 @@ async function main(){
     await context.addInitScript(key=>{if(location.origin==='https://together.deine-schule.com'){
       localStorage.setItem('playerName','Schul-SSO-Test '+key);localStorage.setItem('requestedCameraStateKey','false');localStorage.setItem('requestedMicrophoneStateKey','false');
     }},key);
-    let stage='starting',signedIn=false;
+    let stage='starting',signedIn=false,access;
     try{
       await page.goto(handoff.workAdventurePreview,{waitUntil:'domcontentloaded',timeout:60000});
       await page.locator('input[name=loginfmt]').waitFor({state:'visible',timeout:40000});
@@ -39,7 +43,7 @@ async function main(){
       }
       if(signedIn){
         await context.storageState({path:path.join(output,'sso-'+key+'.private.json')});
-        const access=await page.evaluate(async()=>{
+        access=await page.evaluate(async()=>{
           const headers={Authorization:'Bearer '+localStorage.getItem('authToken'),'Content-Type':'application/json'};
           const response=await fetch('/castle-chess/session',{method:'POST',headers,body:'{}'}),value=await response.json();
           if(response.ok)await fetch('/castle-chess/leave',{method:'POST',headers:{...headers,'X-Chess-Session':value.sessionId},body:'{}'});
@@ -50,14 +54,17 @@ async function main(){
       }else{
         const state={account:key,stage,origin:new URL(page.url()).origin,path:new URL(page.url()).pathname,
           visibleText:(await page.locator('body').innerText()).slice(0,5000)};
-        fs.writeFileSync(path.join(output,'sso-'+key+'-attention.private.json'),JSON.stringify(state,null,2)+'\n');
-        await page.screenshot({path:path.join(output,'sso-'+key+'-attention.private.png'),mask:[page.locator('input[type=password]')]});
+        fs.writeFileSync(path.join(evidenceDir,'sso-'+key+'-attention.private.json'),JSON.stringify(state,null,2)+'\n');
+        await page.screenshot({path:path.join(evidenceDir,'sso-'+key+'-attention.private.png'),mask:[page.locator('input[type=password]')]});
         results.push({account:key,normalMicrosoftLogin:false,stage});
       }
-    }catch(error){results.push({account:key,normalMicrosoftLogin:signedIn,stage,errorType:error.name});}
+    }catch(error){results.push({account:key,normalMicrosoftLogin:signedIn,stage,errorType:error.name,
+      ...(access?{access:{status:access.status,staff:access.staff,tableCount:access.tableCount}}:{})});}
     finally{await context.close();}
   }}finally{await browser.close();}
   const evidence={passed:results.length===2&&results.every(result=>result.freshPupilAccess),results,credentialsPrinted:false,securityPoliciesChanged:false};
   fs.writeFileSync(path.join(output,'sso-result.json'),JSON.stringify(evidence,null,2)+'\n');console.log(JSON.stringify(evidence,null,2));
+  if(evidenceDir!==output)fs.writeFileSync(path.join(evidenceDir,'result.json'),JSON.stringify(evidence,null,2)+'\n');
+  if(!evidence.passed)process.exitCode=1;
 }
 main().catch(error=>{console.error('School SSO probe stopped: '+error.name);process.exitCode=1;});
