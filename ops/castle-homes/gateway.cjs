@@ -2,9 +2,10 @@
 const http=require('node:http'),crypto=require('node:crypto'),fs=require('node:fs'),path=require('node:path'),net=require('node:net');
 const {createHomeAuthority}=require('./authority.cjs');
 const {GatewayError}=require('../hall-audio/errors.cjs');
+const {checkedCalls,checkedCallBody}=require('./calls.cjs');
 const UUID=/^[a-f0-9]{8}-[a-f0-9]{4}-4[a-f0-9]{3}-[89ab][a-f0-9]{3}-[a-f0-9]{12}$/;
 const BASE='/castle-homes/',BROWSER='wvh_home_browser',VIEW='wvh_home_view';
-const APIS=new Map([['/api/guest',['POST']],['/api/bedroom',['GET','POST']],['/api/visits',['GET','POST']],['/api/proximity',['GET','POST']],['/api/moderation/chat',['GET','POST']]]);
+const APIS=new Map([['/api/guest',['POST']],['/api/bedroom',['GET','POST']],['/api/visits',['GET','POST']],['/api/proximity',['GET','POST']],['/api/proximity/reports',['GET','POST']],['/api/moderation/proximity',['GET','POST']],['/api/moderation/chat',['GET','POST']]]);
 const fail=(status,code)=>{throw new GatewayError(status,code);};
 const equal=(a,b)=>typeof a==='string'&&typeof b==='string'&&a.length===b.length&&crypto.timingSafeEqual(Buffer.from(a),Buffer.from(b));
 function cookie(raw,name){const values=(raw||'').split(';').map(value=>value.trim()).filter(value=>value.startsWith(name+'='));return values.length===1?values[0].slice(name.length+1):null;}
@@ -20,7 +21,8 @@ function project(value){
  return Object.fromEntries(Object.entries(value).filter(([key])=>!privateKeys.has(key)).map(([key,item])=>[key,project(item)]));
 }
 
-async function createHomeGateway({key,verify,lookup,createGame,origin,port=0,allowInsecureLocal=false,clock=Date.now,trustedProxyIps=[],pages,admissionOptions,media}={}){
+async function createHomeGateway({key,verify,lookup,createGame,origin,port=0,allowInsecureLocal=false,clock=Date.now,trustedProxyIps=[],pages,admissionOptions,media,calls}={}){
+ calls=checkedCalls(calls,{allowInsecureLocal});
  if(typeof createGame!=='function'||typeof verify?.preflight!=='function'||!Array.isArray(trustedProxyIps))throw Error('Reviewed game factory and school verifier required');
  if(origin){const url=new URL(origin);if(url.origin!==origin||url.protocol!=='https:'&&!(allowInsecureLocal&&url.protocol==='http:'&&url.hostname==='127.0.0.1'))throw Error('Fixed HTTPS home origin required');}
  else if(!allowInsecureLocal)throw Error('Production home origin required');
@@ -37,11 +39,12 @@ async function createHomeGateway({key,verify,lookup,createGame,origin,port=0,all
  function issueBrowser(res){const nonce=crypto.randomBytes(20).toString('hex');res.setHeader('Set-Cookie',setCookie(BROWSER,nonce+'.'+mac('binder\n'+nonce),BASE,7200));}
  function headers(res){
   res.setHeader('Cache-Control','no-store, private');res.setHeader('X-Content-Type-Options','nosniff');res.setHeader('X-Frame-Options','SAMEORIGIN');res.setHeader('Referrer-Policy','no-referrer');
-  res.setHeader('X-Robots-Tag','noindex, nofollow, noarchive');res.setHeader('Permissions-Policy','camera=(), microphone=(), display-capture=()');
-  res.setHeader('Content-Security-Policy',"default-src 'none'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; connect-src 'self'; frame-src 'self'; frame-ancestors 'self'; base-uri 'none'; form-action 'self'; object-src 'none'; worker-src 'none'");
+  res.setHeader('X-Robots-Tag','noindex, nofollow, noarchive');res.setHeader('Permissions-Policy',calls?'camera=(self), microphone=(self), display-capture=()':'camera=(), microphone=(), display-capture=()');
+  const connect=calls?' '+new URL(calls.url).origin+' '+new URL(calls.url.replace(/^ws/,'http')).origin:'';
+  res.setHeader('Content-Security-Policy',"default-src 'none'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; media-src 'self' blob:; connect-src 'self'"+connect+"; frame-src 'self'; frame-ancestors 'self'; base-uri 'none'; form-action 'self'; object-src 'none'; worker-src 'none'");
  }
  function send(res,status,value){if(res.destroyed)return;res.writeHead(status,{'Content-Type':'application/json; charset=utf-8'});res.end(JSON.stringify(value));}
- function page(res,name){const value=staticPages.get(name);if(!value)fail(404,'not_found');res.writeHead(200,{'Content-Type':name.endsWith('.js')?'text/javascript; charset=utf-8':name.endsWith('.css')?'text/css; charset=utf-8':'text/html; charset=utf-8'});res.end(value);}
+ function page(res,name){let value=staticPages.get(name);if(!value)fail(404,'not_found');if(calls&&['index.html','room.html','moderation.html'].includes(name)){value=value.toString().replace('<html lang="de"','<html data-room-calls="enabled" lang="de"');if(name==='room.html')value=value.replace('<head>','<head><script defer src="/castle-homes/icons.js"></script>');}res.writeHead(200,{'Content-Type':name.endsWith('.js')?'text/javascript; charset=utf-8':name.endsWith('.css')?'text/css; charset=utf-8':'text/html; charset=utf-8'});res.end(value);}
  function ip(req){const peer=(req.socket.remoteAddress||'').replace(/^::ffff:/,'');return trustedProxyIps.includes(peer)&&net.isIP(req.headers['x-real-ip']||'')?req.headers['x-real-ip']:peer;}
  function rate(req,max=2000){const id=mac('rate\n'+ip(req)),now=clock();let row=limits.get(id);
   if(!row||row.until<=now){if(limits.size>=5000)for(const [id,value]of limits)if(value.until<=now)limits.delete(id);if(limits.size>=5000)fail(503,'unavailable');row={until:now+60000,count:0};limits.set(id,row);}
@@ -108,19 +111,22 @@ async function createHomeGateway({key,verify,lookup,createGame,origin,port=0,all
  function apiAllowed(route,method){return APIS.get(route)?.includes(method);}
  async function proxy(req,res,view,route,url){
   if(req.headers.origin&&req.headers.origin!==publicOrigin||req.headers['sec-fetch-site']==='cross-site')fail(403,'wrong_origin');
-  const api=route.startsWith('/api/');if(api){if(!apiAllowed(route,req.method)||url.search)fail(404,'not_found');if(route==='/api/moderation/chat'&&!view.moderator)fail(403,'not_allowed');if(req.method==='POST'){sameOrigin(req);if(!/^application\/json(?:;|$)/i.test(req.headers['content-type']||''))fail(415,'invalid_request');}}
+  const api=route.startsWith('/api/');if(api){if(!apiAllowed(route,req.method)||url.search)fail(404,'not_found');if(route.startsWith('/api/moderation/')&&!view.moderator)fail(403,'not_allowed');if(!calls&&(route==='/api/proximity/reports'||route==='/api/moderation/proximity'))fail(404,'not_found');if(req.method==='POST'){sameOrigin(req);if(!/^application\/json(?:;|$)/i.test(req.headers['content-type']||''))fail(415,'invalid_request');}}
   else if(req.method!=='GET'||!assetPaths.has(route)||url.search)fail(404,'not_found');
   const image=!api&&media?.redirect(route);if(image){res.writeHead(302,{Location:BASE+image});res.end();return;}
   if(!api&&assetOverrides.has(route)){res.writeHead(200,{'Content-Type':'text/javascript; charset=utf-8'});res.end(assetOverrides.get(route));return;}
   if(route==='/game/room-social.js'){res.writeHead(200,{'Content-Type':'text/javascript; charset=utf-8'});res.end(roomSocial);return;}
   const body=req.method==='POST'?await collect(req,16384):undefined;
+  if(req.method==='POST'&&['/api/proximity','/api/proximity/reports','/api/moderation/proximity'].includes(route)){
+   if(!calls)fail(404,'not_found');checkedCallBody(body,route);
+  }
   await new Promise((resolve,reject)=>{
    const upstream=http.request(backend+route,{method:req.method,headers:backendHeaders(req,view)},async incoming=>{
     try{
      if(view.closed||!authority.valid(view.sid)){incoming.destroy();fail(401,'session_expired');}
      const type=incoming.headers['content-type']||'application/octet-stream';
      if(api){const raw=await collect(incoming,512*1024);if(view.closed||!authority.valid(view.sid))fail(401,'session_expired');
-      let value;try{value=project(JSON.parse(raw.toString('utf8')));if(route==='/api/guest'&&incoming.statusCode===200)value={me:value.me,account:value.account,loginURL:publicOrigin+BASE,mediaProbe:false};}catch{fail(503,'unavailable');}
+      let value;try{value=project(JSON.parse(raw.toString('utf8')));if(route==='/api/guest'&&incoming.statusCode===200)value={me:value.me,account:value.account,loginURL:publicOrigin+BASE,mediaProbe:false};if(route==='/api/proximity'&&Array.isArray(value.modes))value.modes=value.modes.filter(mode=>mode==='group');}catch{fail(503,'unavailable');}
       send(res,incoming.statusCode,value);resolve();
      }else{
       res.writeHead(incoming.statusCode,{'Content-Type':type,...(incoming.headers['content-length']?{'Content-Length':incoming.headers['content-length']}:{})});incoming.pipe(res);incoming.once('end',resolve);incoming.once('error',reject);
@@ -192,10 +198,10 @@ async function createHomeGateway({key,verify,lookup,createGame,origin,port=0,all
  try{
   await new Promise((resolve,reject)=>{server.once('error',reject);server.listen(port,'127.0.0.1',resolve);});publicOrigin||='http://127.0.0.1:'+server.address().port;
   const value=await createGame({school:{secret:key,portalOrigin:publicOrigin,loginURL:publicOrigin+BASE,introspectionURL:publicOrigin+BASE+'authority/check',...(allowInsecureLocal?{allowInsecureLocal:true}:{})},
-   cookiePath:BASE,trustProxy:true,requireSchool:true,media:null,testMode:false});
+   cookiePath:BASE,trustProxy:true,requireSchool:true,media:calls,testMode:false});
   game=value.game;assetPaths=value.assetPaths;roomSocial=value.roomSocial;
   if(!game?.server||typeof game.close!=='function'||!(assetPaths instanceof Set)||assetPaths.size>400||typeof roomSocial!=='string')throw Error('Reviewed room assets required');
-  assetOverrides=new Map(value.assetOverrides||[]);if(assetOverrides.size>3||[...assetOverrides].some(([route,source])=>!['/zimmer/app.js','/zimmer/renderer.js','/zimmer/castle-room-media.js'].includes(route)||!assetPaths.has(route)||typeof source!=='string'||source.length>100000))throw Error('Reviewed room-media modules required');
+  assetOverrides=new Map(value.assetOverrides||[]);if(assetOverrides.size>(calls?5:3)||[...assetOverrides].some(([route,source])=>!['/zimmer/app.js','/zimmer/renderer.js','/zimmer/castle-room-media.js',...(calls?['/proximity.js','/castle-room-proximity-original.js']:[])].includes(route)||!assetPaths.has(route)||typeof source!=='string'||source.length>100000))throw Error('Reviewed room-media modules required');
   await new Promise((resolve,reject)=>{game.server.once('error',reject);game.server.listen(0,'127.0.0.1',resolve);});backend='http://127.0.0.1:'+game.server.address().port;
   timer=setInterval(()=>{authority.sweep();for(const [id,entry]of entries)if(!entry.view&&clock()-entry.last>60000)entries.delete(id);},1000);timer.unref();
   return {server,url:publicOrigin+BASE,close,inspectForTest:()=>({views:views.size,entries:entries.size})};

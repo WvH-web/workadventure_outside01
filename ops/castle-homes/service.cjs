@@ -6,13 +6,14 @@ const {createIdentityLookup}=require('./identity-lookup.cjs');
 const {loadHomeMedia}=require('./media.cjs');
 const ORIGIN='https://together.deine-schule.com',PORT=3251;
 const {SOURCE,MANIFEST_SHA,reviewedRuntime,validateRuntimeFiles}=require('./runtime.cjs');
+const {checkedCalls}=require('./calls.cjs');
 function configuration(value){
- const keys=['version','mode','origin','port','source','platformSecret','contextKey','bridgeKey','allowedSubjects','moderatorSubjects'];
- if(!value||Array.isArray(value)||Object.keys(value).sort().join(',')!==keys.sort().join(',')||value.version!==3||value.mode!=='pilot'||value.origin!==ORIGIN||value.port!==PORT||value.source!==SOURCE||
+ const keys=['version','mode','origin','port','source','platformSecret','contextKey','bridgeKey','allowedSubjects','moderatorSubjects','calls'];
+ if(!value||Array.isArray(value)||Object.keys(value).sort().join(',')!==keys.sort().join(',')||value.version!==4||value.mode!=='pilot'||value.origin!==ORIGIN||value.port!==PORT||value.source!==SOURCE||
   typeof value.platformSecret!=='string'||!value.platformSecret||!['contextKey','bridgeKey'].every(key=>/^[a-f0-9]{64}$/.test(value[key]||''))||new Set([value.platformSecret,value.contextKey,value.bridgeKey]).size!==3||
   !Array.isArray(value.allowedSubjects)||value.allowedSubjects.length!==2||new Set(value.allowedSubjects).size!==2||value.allowedSubjects.some(id=>typeof id!=='string'||!/^wvh:student:[1-9][0-9]{0,15}$/.test(id))||
   !Array.isArray(value.moderatorSubjects)||value.moderatorSubjects.length>1||value.moderatorSubjects.some(id=>typeof id!=='string'||!/^wvh:staff:[1-9][0-9]{0,15}$/.test(id)))throw Error('Invalid isolated pilot configuration');
- return Object.freeze({...value,allowedSubjects:Object.freeze([...value.allowedSubjects]),moderatorSubjects:Object.freeze([...value.moderatorSubjects])});
+ return Object.freeze({...value,calls:checkedCalls(value.calls),allowedSubjects:Object.freeze([...value.allowedSubjects]),moderatorSubjects:Object.freeze([...value.moderatorSubjects])});
 }
 function pilotLookup(lookup,subjects,moderators=[]){
  const allowed=new Set(subjects),approved=new Set(moderators);
@@ -30,11 +31,11 @@ async function main(){
  const existing=await fs.lstat(dbPath).catch(error=>{if(error.code!=='ENOENT')throw error;return null;});if(existing&&!existing.isFile())throw Error('Room database cannot be redirected');
  const lookup=pilotLookup(createIdentityLookup({key:config.contextKey}),config.allowedSubjects,config.moderatorSubjects);
  const gateway=await createHomeGateway({key:config.bridgeKey,origin:config.origin,port:config.port,verify:createSchoolVerifier(config.platformSecret,{identityTtl:0}),lookup,
-  createGame:await gameFactory(config.source,{dbPath,maxPlayers:8}),trustedProxyIps:['127.0.0.1','::1'],media});
+  createGame:await gameFactory(config.source,{dbPath,maxPlayers:8}),trustedProxyIps:['127.0.0.1','::1'],media,calls:config.calls});
  let stopping=false;
  const close=async()=>{if(stopping)return;stopping=true;await gateway.close();};
  process.once('SIGTERM',()=>void close());process.once('SIGINT',()=>void close());
- console.log('Isolated school-room pilot ready; microphone and camera disabled');
+ console.log('Isolated school-room pilot ready; media devices remain voluntary');
 }
 if(require.main===module)main().catch(()=>{console.error('Isolated school-room service could not start');process.exitCode=1;});
 module.exports={configuration,pilotLookup,validateRuntimeFiles,ORIGIN,PORT,SOURCE,MANIFEST_SHA};

@@ -53,11 +53,77 @@ def verify_school_admission(ops,expected):
     assert not ops['run']('ss','-ltnH','sport = :13212').strip()
     return after,True
 
+def homes_calls_transition(ops,owned,owned_raw):
+    root=Path('/opt/wvh-castle-homes');private=root/'private';path=private/'calls-deployment.json';sha=ops['sha']
+    if not path.exists():return lambda name:Path(name).read_bytes()
+    assert path.resolve()==path and path.stat().st_mode&0o777==0o600
+    value=json.loads(path.read_text());assert value['passed'] and value['ownedReceiptSha256']==sha(owned_raw)
+    assert value['before']==value['after']==owned['after']
+    archive=value['archiveSha256'];assert re.fullmatch('[a-f0-9]{64}',archive)
+    release=Path(value['release']);assert release==root/'releases'/archive[:16] and release.resolve()==release
+    assert not any(item.is_symlink() for item in release.rglob('*'))
+    assert {item.relative_to(release).as_posix() for item in release.rglob('*') if item.is_file()}==set(value['files']) and len(value['files'])==69
+    assert all(sha((release/name).read_bytes())==digest for name,digest in value['files'].items())
+    stage_raw=(private/'calls-stage.json').read_bytes();stage=json.loads(stage_raw)
+    accepted_raw=(private/'calls-stage-acceptance.json').read_bytes();accepted=json.loads(accepted_raw)
+    assert sha(stage_raw)==value['stageReceiptSha256'] and sha(accepted_raw)==value['stageAcceptanceSha256']
+    assert stage['passed'] and stage['before']==stage['after']==owned['after'] and len(stage['files'])==68
+    assert accepted['passed'] and accepted['stopped'] and accepted['stageReceiptSha256']==sha(stage_raw) and accepted['stageCredentialRemoved']
+    stage_release=Path(stage['release']);assert stage_release==root/'releases'/stage['archiveSha256'][:16] and stage_release.resolve()==stage_release
+    assert all(sha((stage_release/name).read_bytes())==digest for name,digest in stage['files'].items())
+    assert set(value['files'])==set(stage['files'])|{'ops/castle-homes/control.service'}
+    assert all(value['files'][name]==digest for name,digest in stage['files'].items() if name!='tools/check-castle-homes-public.cjs')
+    unit=Path('/etc/systemd/system/wvh-castle-homes.service');credential=private/'service.json';control=Path('/etc/systemd/system/wvh-castle-homes-control.service')
+    backup=Path(value['unitBeforeFile']);config_backup=Path(value['configBeforeFile'])
+    assert backup.resolve()==backup and backup.parent.parent==private and backup.parent.name.startswith('before-calls-') and backup.name=='service.snapshot'
+    assert config_backup==backup.parent/'config.snapshot' and config_backup.resolve()==config_backup
+    assert all(item.stat().st_uid==0 and item.stat().st_mode&0o777==0o600 for item in [backup,config_backup,credential])
+    original=backup.read_bytes();original_config=config_backup.read_bytes()
+    assert sha(original)==value['unitBeforeSha256']==owned['unitAfterSha256'] and sha(original_config)==value['configBeforeSha256']==owned['configAfterSha256']
+    expected=original.replace(str(Path(owned['release'])/'ops/castle-homes/service.cjs').encode(),str(release/'ops/castle-homes/service.cjs').encode())
+    expected=expected.replace(b'[Unit]\n',b'[Unit]\nWants=wvh-castle-homes-control.service\nAfter=wvh-castle-homes-control.service\n')
+    assert unit.read_bytes()==expected and sha(expected)==value['unitAfterSha256']
+    current_config=credential.read_bytes();assert sha(current_config)==value['configAfterSha256']
+    config=json.loads(current_config);calls=config['calls']
+    assert config=={**json.loads(original_config),'version':4,'calls':calls}
+    assert set(calls)=={'url','apiURL','apiKey','apiSecret','namespace','roles','fixedGroups'}
+    assert calls['url']=='wss://together.deine-schule.com' and calls['apiURL']=='http://127.0.0.1:13252' and calls['namespace']=='sterne-video-castle-homes'
+    assert calls['roles']==['student','teacher'] and calls['fixedGroups'] is True and calls['apiKey'] and len(calls['apiSecret'])>=32
+    template=(release/'ops/castle-homes/control.service').read_bytes();assert template.count(b'@RELEASE@')==1
+    assert control.resolve()==control and str(control)==value['controlUnit'] and control.stat().st_uid==0 and control.stat().st_mode&0o777==0o644
+    assert control.read_bytes()==template.replace(b'@RELEASE@',str(release).encode()) and sha(control.read_bytes())==value['controlUnitSha256'] and value['controlUnitPreviouslyAbsent']
+    assert ops['run']('systemctl','is-active','wvh-castle-homes-control.service').strip()=='active'
+    assert ops['run']('systemctl','is-enabled','wvh-castle-homes-control.service').strip()=='enabled'
+    listener=ops['run']('ss','-ltnH','sport = :13252');assert len(listener.strip().splitlines())==1 and '127.0.0.1:13252' in listener
+    assert not ops['run']('ss','-ltnH','sport = :13251').strip() and not Path('/run/wvh-homes-calls-stage').exists() and not Path(stage['credentialFile']).exists()
+    database=Path(value['recoveryDatabaseFile']);assert database==backup.parent/'pilot.sqlite' and database.resolve()==database
+    assert database.stat().st_mode&0o777==0o600 and sha(database.read_bytes())==value['recoveryDatabaseSha256']
+    for name,key in [('calls-live-linux-tests.private.log','linuxTestLogSha256'),('calls-live-public.private.log','publicApiLogSha256')]:
+        assert sha((private/name).read_bytes())==value[key]
+    for name,key,live in [('calls-stage-browser.private.json','stageBrowserProofSha256',False),('calls-public-browser.private.json','publicBrowserProofSha256',True)]:
+        raw=(private/name).read_bytes();assert sha(raw)==value[key];proof=json.loads(raw)
+        assert proof['passed'] and proof['browserVersion'].startswith('157.') and proof['ordinaryMicrosoftStatesUsed'] and proof['syntheticPupilAccountsOnly']
+        assert proof['realPublicSchoolContext'] and proof['realPublicSfu'] and proof['livePublicGateway']==live and proof['loopbackGatewayThroughPinnedSsh']!=live
+        assert not proof['networkInterception'] and proof['browserFakeDevicesOnly'] and proof['noHumanMicrophoneOrCameraUsed']
+        assert len(proof['decodedRemoteMicrophonesBoth'])==2 and all(row['rms']>.002 and row['remoteAudioTracks']==1 for row in proof['decodedRemoteMicrophonesBoth'])
+        assert len(proof['decodedRemoteOptionalCamera'])==1 and all(row['width']>0 and row['height']>0 and row['decodedFrames']>0 for row in proof['decodedRemoteOptionalCamera'])
+        assert proof['separateOwnerRoomsIsolated'] and proof['joinDoesNotCaptureDevices'] and proof['microphoneAndCameraRequireSeparateClicks'] and proof['roomChangeStopsCapture']
+        assert proof['desktopAnd390And320Fit'] and proof['receivedContactReportSubmitted'] and proof['pupilModerationDenied'] and proof['ownerClosureStopsCaptureAndRemotes']
+        assert not proof['errors'] and proof['unexpectedResourceFailures']==0 and not proof['nativeWorkAdventureTested'] and not proof['realAdministratorLoginTested']
+    acceptance=value['acceptance'];assert acceptance['passed'] and len(acceptance['checks'])==7 and acceptance['realPublicTls'] and acceptance['realPublicContextEndpoint'] and acceptance['realPublicWebSockets'] and acceptance['realLeaseClock'] and acceptance['voiceEnabled']
+    assert not acceptance['networkInterception'] and not acceptance['actualVoiceMediaTested']
+    assert value['voiceEnabled'] and value['voiceOptionalAndRoomBound'] and value['keysSubjectsAndSoleModeratorPreserved'] and value['existingServicesAndMapsUnchanged'] and value['onlyExistingRestartWasRoomPilot']
+    assert not value['broadSchoolRoomAccess'] and not value['nativeMapEntryEnabled'] and not value['realAdministratorLoginTested'] and not value['loadApprovalFor400']
+    assert not Path('/home/wilhelm/.cache/wvh-school-qa/homes-calls-live-proof.private.json').exists()
+    return lambda name:original if Path(name)==unit else original_config if Path(name)==credential else Path(name).read_bytes()
+
+
 def homes_owned_transition(ops,progressive,progressive_raw):
     root=Path('/opt/wvh-castle-homes');private=root/'private';path=private/'owned-runtime-deployment.json';sha=ops['sha']
     if not path.exists():return lambda name:Path(name).read_bytes()
     assert path.resolve()==path and path.stat().st_uid==0 and path.stat().st_mode&0o777==0o600
-    value=json.loads(path.read_text());assert value['passed'] and value['progressiveReceiptSha256']==sha(progressive_raw)
+    owned_raw=path.read_bytes();value=json.loads(owned_raw);assert value['passed'] and value['progressiveReceiptSha256']==sha(progressive_raw)
+    previous=homes_calls_transition(ops,value,owned_raw)
     assert value['before']==value['after']==progressive['after']
     archive=value['archiveSha256'];assert re.fullmatch('[a-f0-9]{64}',archive)
     release=Path(value['release']);assert release==root/'releases'/archive[:16] and release.resolve()==release
@@ -87,9 +153,9 @@ def homes_owned_transition(ops,progressive,progressive_raw):
     expected=original.replace(str(Path(progressive['release'])/'ops/castle-homes/service.cjs').encode(),str(release/'ops/castle-homes/service.cjs').encode())
     expected=expected.replace(str(old/'dorfplatz/node_modules').encode(),str(source/'dorfplatz/node_modules').encode())
     expected=expected.replace(b'[Service]\n',b'[Service]\nInaccessiblePaths=/opt/wvh-sterne-kollegium\n')
-    assert unit.read_bytes()==expected and sha(expected)==value['unitAfterSha256']
-    assert sha(credential.read_bytes())==value['configAfterSha256']
-    assert json.loads(credential.read_bytes())=={**json.loads(original_config),'version':3,'source':str(source)}
+    assert previous(unit)==expected and sha(expected)==value['unitAfterSha256']
+    assert sha(previous(credential))==value['configAfterSha256']
+    assert json.loads(previous(credential))=={**json.loads(original_config),'version':3,'source':str(source)}
     stage_raw=(private/'owned-runtime-stage.json').read_bytes();stage=json.loads(stage_raw)
     assert sha(stage_raw)==value['stageReceiptSha256'] and stage['passed'] and not stage['credentialsAndDataCopied'] and stage['independentFileInodes']
     recovery=Path(stage['archive']);assert recovery==private/'runtime-backups'/(value['runtimeManifestSha256'][:16]+'.tar.gz') and recovery.resolve()==recovery
@@ -348,7 +414,11 @@ def main():
       'homesProgressiveRoomMediaVerified':homes_pilot and Path('/opt/wvh-castle-homes/private/progressive-deployment.json').exists(),
       'homesIndependentRuntimeVerified':homes_pilot and Path('/opt/wvh-castle-homes/private/owned-runtime-deployment.json').exists(),
       'homesIsolatedRuntimeRecoveryVerified':homes_pilot and Path('/opt/wvh-castle-homes/private/owned-runtime-recovery.json').exists(),
-      'permissionsAndAuthenticationUnchanged':True,'stageStopped':True,'healthy':True,'loadApprovalFor400':False,
+      'homesOptionalPrivateCallsVerified':homes_pilot and Path('/opt/wvh-castle-homes/private/calls-deployment.json').exists(),
+      'permissionsAndAuthenticationUnchanged':not Path('/opt/wvh-castle-homes/private/calls-deployment.json').exists(),
+      'schoolPermissionsAndAuthenticationUnchanged':True,
+      'mediaPermissionsChangedOnlyInRoomPilot':Path('/opt/wvh-castle-homes/private/calls-deployment.json').exists(),
+      'stageStopped':True,'healthy':True,'loadApprovalFor400':False,
       'checkedAt':time.strftime('%Y-%m-%dT%H:%M:%SZ',time.gmtime())}
     ops['atomic'](private/'published-acceptance.json',result);print(json.dumps(result,indent=2))
 if __name__=='__main__':main()

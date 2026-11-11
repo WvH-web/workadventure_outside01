@@ -1,7 +1,7 @@
 'use strict';
 const test=require('node:test'),assert=require('node:assert/strict'),crypto=require('node:crypto'),fs=require('node:fs/promises'),os=require('node:os'),path=require('node:path');
 const {configuration,pilotLookup,validateRuntimeFiles,ORIGIN,PORT,SOURCE}=require('../ops/castle-homes/service.cjs');
-const fixture=()=>({version:3,mode:'pilot',origin:ORIGIN,port:PORT,source:SOURCE,platformSecret:'separate synthetic platform secret',contextKey:'1'.repeat(64),bridgeKey:'2'.repeat(64),allowedSubjects:['wvh:student:7','wvh:student:8'],moderatorSubjects:[]});
+const fixture=()=>({version:4,mode:'pilot',origin:ORIGIN,port:PORT,source:SOURCE,platformSecret:'separate synthetic platform secret',contextKey:'1'.repeat(64),bridgeKey:'2'.repeat(64),allowedSubjects:['wvh:student:7','wvh:student:8'],moderatorSubjects:[],calls:null});
 test('the service accepts only the isolated two-pupil pilot and copies its private configuration',()=>{
  const value=fixture(),checked=configuration(value);value.allowedSubjects.push('wvh:student:9');assert.equal(checked.allowedSubjects.length,2);assert.ok(Object.isFrozen(checked.allowedSubjects));
  for(const change of [{mode:'school'},{port:1234},{origin:'https://foreign.invalid'},{source:'/tmp/game'},{allowedSubjects:[]},{allowedSubjects:['wvh:student:7']},{allowedSubjects:['wvh:staff:7','wvh:student:8']},{allowedSubjects:['wvh:student:7','wvh:student:7']},{extra:true}])assert.throws(()=>configuration({...fixture(),...change}));

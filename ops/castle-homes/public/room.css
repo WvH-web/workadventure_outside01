@@ -1,2 +1,20 @@
-.top h1{font-size:23px;letter-spacing:0}.notice p:empty{display:none}.proximity-toggle,.proximity-panel,.proximity-mini{display:none!important}.studio{max-width:1680px}.selection h2,.shop-head h2{font-size:20px;letter-spacing:0}.eyebrow{letter-spacing:0}.item h3{overflow-wrap:anywhere;font-size:14px;line-height:1.25}.top-actions{flex-wrap:wrap}.room-toolbar{flex-wrap:wrap}.mode-switch,.view-tools{min-width:0}.mode-switch button,.view-tools button{white-space:normal}body{letter-spacing:0}@media(max-width:520px){.top h1{font-size:20px}.top{gap:10px}.top-actions{gap:6px}.top-actions a,.top-actions button{font-size:12px}.selection h2,.shop-head h2{font-size:18px}}
+.top h1{font-size:23px;letter-spacing:0}.notice p:empty{display:none}html:not([data-room-calls=enabled]) :is(.proximity-toggle,.proximity-panel,.proximity-mini){display:none!important}.studio{max-width:1680px}.selection h2,.shop-head h2{font-size:20px;letter-spacing:0}.eyebrow{letter-spacing:0}.item h3{overflow-wrap:anywhere;font-size:14px;line-height:1.25}.top-actions{flex-wrap:wrap}.room-toolbar{flex-wrap:wrap}.mode-switch,.view-tools{min-width:0}.mode-switch button,.view-tools button{white-space:normal}body{letter-spacing:0}@media(max-width:520px){.top h1{font-size:20px}.top{gap:10px}.top-actions{gap:6px}.top-actions a,.top-actions button{font-size:12px}.selection h2,.shop-head h2{font-size:18px}}
 #loading{align-content:center;gap:12px;padding:12px;text-align:center}#loading button{min-height:36px;font-size:12px}
+[data-room-calls=enabled] :is(.proximity-toggle,.proximity-panel,.proximity-mini,.proximity-report,.proximity-tile){border-radius:6px;letter-spacing:0}
+[data-room-calls=enabled] .proximity-panel{background:#142b2b;backdrop-filter:none;top:78px;right:12px;max-height:calc(100dvh - 96px);width:min(330px,calc(100vw - 24px));font-size:13px;padding:14px}
+[data-room-calls=enabled] .proximity-panel h2{font:600 18px Georgia,serif}
+[data-room-calls=enabled] .proximity-panel .proximity-status{min-height:36px;font-size:12px}
+[data-room-calls=enabled] .proximity-panel button{border-radius:4px;display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:34px}
+[data-room-calls=enabled] .proximity-panel [hidden]{display:none!important}
+[data-room-calls=enabled] svg.lucide{width:18px;height:18px;flex:0 0 18px;display:block}
+[data-room-calls=enabled] .proximity-toggle{display:inline-flex;align-items:center;gap:8px;position:static;width:auto;min-width:36px;height:36px;padding:7px 10px!important;font-size:12px}
+[data-room-calls=enabled] .proximity-toggle span{display:inline}
+[data-room-calls=enabled] .proximity-panel .proximity-main{background:#ecd095;color:#202c28;font-size:12px;padding:8px}
+[data-room-calls=enabled] .proximity-controls button{height:36px;flex:1;background:#243f3c;padding:6px}
+[data-room-calls=enabled] .proximity-tile{background:#0d2020;min-height:105px}
+[data-room-calls=enabled] .proximity-panel .proximity-mute{width:30px;min-height:28px;padding:4px;background:#314f47}
+[data-room-calls=enabled] .proximity-policy{color:#bdc8ba;font-size:10px}
+[data-room-calls=enabled] .proximity-report{background:#25332d;box-sizing:border-box;width:min(420px,calc(100vw - 24px));padding:16px}
+[data-room-calls=enabled] .proximity-report h2{font-size:20px}
+[data-room-calls=enabled] .proximity-report :is(select,textarea){box-sizing:border-box;max-width:100%;font-size:13px}
+[data-room-calls=enabled] .proximity-mini{background:#142b2b;right:12px;top:78px;max-width:calc(100vw - 24px);box-sizing:border-box}

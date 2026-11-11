@@ -286,8 +286,26 @@ Die letzte lokale Gesamtsuite: 456 Faelle, 454 bestanden, keine Fehler oder
 Abbrueche, zwei begruendete Auslassungen. Die Linux-Dateirechte sind separat
 auf dem Server geprueft. Das ist keine 400-Personen-Freigabe.
 
-Offen bleiben insbesondere abgesicherte freiwillige Zimmergespraeche per
-Mikrofon, breitere Schulfreigabe, vollstaendige Wiederherstellungs- und
+Freiwillige Zimmergespraeche sind nun im weiterhin eng begrenzten Pilot aktiv.
+Mikrofon und Kamera starten aus und werden einzeln eingeschaltet. Die feste
+Zimmergruppe folgt dem echten Besuch und dessen Gueltigkeit, nicht einer vom
+Browser behaupteten Zimmerkennung. In zwei getrennten Browsern kommen ueber
+die echte oeffentliche Adresse Ton in beide Richtungen und ein ausdruecklich
+eingeschaltetes Testkamerabild an. Verschiedene Zimmer bleiben getrennt;
+Zimmerwechsel und Besuchsende stoppen die Aufnahme. Es wurden ausschliesslich
+kuenstliche Medien der genehmigten Testkonten benutzt, keine echten Kinderbilder
+oder Mikrofone. Meldungen und die darauf beschraenkte Moderation sind integriert.
+Die getrennte Moderations-Browserprobe bestaetigt auch Gespraechspausen.
+
+Die letzte Gesamtsuite umfasst 462 Faelle: 460 bestanden, keine Fehler oder
+Abbrueche, zwei dokumentierte Auslassungen; 37 Linux-Faelle bestehen separat.
+Die oeffentliche Tonprobe ersetzt noch keine native Schloss-/Tischtonprobe,
+keine echte Administratoranmeldung und keinen Lastnachweis fuer 400 Personen.
+Nur der Zimmerpilot wurde erneut kurz gestartet; die bestehende
+WorkAdventure-Instanz und die alten Karten bleiben unveraendert.
+
+Offen bleiben insbesondere die native Einbindung der Zimmergespraeche,
+Sprach-Wiederbeitritt/Geraetewechsel, breitere Schulfreigabe, vollstaendige Wiederherstellungs- und
 Lastnachweise und die abschliessende native Kartenfreigabe. Der Gesamtausbau
 ist damit nicht abgeschlossen. Das bisherige Schloss, andere Karten und das
 Kollegiumsprojekt bleiben unveraendert. Einzelheiten und Nachweise:

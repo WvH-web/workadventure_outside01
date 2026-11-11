@@ -2,7 +2,7 @@
 const fs=require('node:fs/promises'),path=require('node:path'),assert=require('node:assert/strict'),crypto=require('node:crypto');
 const {setTimeout:delay}=require('node:timers/promises');
 const {client,socket}=require('./castle-home-test-client.cjs');
-const BASE='https://together.deine-schule.com/castle-homes/';let stage='configuration';
+const BASE='https://together.deine-schule.com/castle-homes/',calls=process.argv.includes('--calls');let stage='configuration';
 async function main(){
  assert.ok(process.env.CREDENTIALS_DIRECTORY);const config=JSON.parse(await fs.readFile(path.join(process.env.CREDENTIALS_DIRECTORY,'accounts.json'),'utf8'));
  assert.equal(config.version,1);assert.deepEqual(config.accounts.map(row=>row.key),['A','B']);
@@ -12,7 +12,7 @@ async function main(){
  try{
   stage='anonymous-boundary';const shell=await a.request('');assert.equal(shell.status,200);
   assert.ok(shell.headers.getSetCookie().every(raw=>raw.includes('; Secure')));assert.ok(shell.headers.get('content-security-policy').includes("frame-ancestors 'self'"));
-  assert.equal(shell.headers.get('permissions-policy'),'camera=(), microphone=(), display-capture=()');
+  assert.equal(shell.headers.get('permissions-policy'),calls?'camera=(self), microphone=(self), display-capture=()':'camera=(), microphone=(), display-capture=()');
   assert.equal((await a.request('view/'+crypto.randomUUID()+'/api/bedroom')).status,401);
   assert.equal((await a.request('session',{clientId:a.clientId,requestId:crypto.randomUUID()},{Authorization:'Bearer forged'})).status,401);
   assert.equal((await a.request('authority/check',{})).status,403);passed('publicTlsAndAnonymousBoundaries');
@@ -21,6 +21,8 @@ async function main(){
   for(const result of [ga,gb]){assert.equal(result.account.role,'student');assert.equal(result.account.canModerate,false);
    for(const forbidden of ['wvh:student:','"age":','"grade":','accessToken',...config.accounts.map(row=>row.identifier)])assert.equal(JSON.stringify(result).includes(forbidden),false);}
   const ra=(await a.api('bedroom')).value,rb=(await b.api('bedroom')).value;
+  if(calls){for(const c of [a,b]){const modes=await c.api('proximity');assert.equal(modes.value.available,true);assert.deepEqual(modes.value.modes,['group']);assert.equal((await c.api('moderation/proximity')).status,403);
+   assert.equal((await c.api('proximity',{action:'join',surface:'village',mode:'group',requestId:crypto.randomUUID()})).status,400);}}
   assert.notEqual(ra.me.id,rb.me.id);assert.notEqual(ra.code,rb.code);passed('ordinaryMicrosoftSessionsAndSignedPublicSchoolContext');
   stage='device-ownership';a2=client(BASE,config.accounts[0].token);await a2.open();const same=(await a2.api('bedroom')).value;
   assert.equal(same.me.id,ra.me.id);assert.equal(same.code,ra.code);assert.deepEqual(same.room,ra.room);assert.deepEqual(same.wallet,ra.wallet);await a2.leave();
@@ -38,7 +40,7 @@ async function main(){
   stage='real-lease-deadline';await b.renew();assert.equal((await b.api('visits',{action:'enter'})).status,200);bs=await socket(b,BASE,WS);await bs.wait(row=>row.type==='room-state');
   assert.equal(bs.ws.readyState,WS.OPEN);await delay(46500);assert.equal((await b.api('bedroom')).status,401);assert.equal(bs.ws.readyState,WS.CLOSED);passed('realFortyFiveSecondDeadlineEndsHttpAndOpenSocket');
   console.log(JSON.stringify({passed:true,checks,ordinaryMicrosoftSessionsVerified:true,realPublicTls:true,realPublicContextEndpoint:true,realPublicWebSockets:true,
-   pilotSyntheticAccounts:2,realLeaseClock:true,networkInterception:false,nativeWorkAdventureTested:false,voiceEnabled:false,
+   pilotSyntheticAccounts:2,realLeaseClock:true,networkInterception:false,nativeWorkAdventureTested:false,voiceEnabled:calls,actualVoiceMediaTested:false,
    moderationGranted:false,broadSchoolRoomAccess:false,loadApprovalFor400:false}));
  }finally{as?.ws.terminate();bs?.ws.terminate();await Promise.allSettled([a.leave(),b.leave(),a2?.leave()]);}
 }

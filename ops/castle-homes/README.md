@@ -1,17 +1,18 @@
 # Personal Rooms: School Authority
 
-Status on 2026-11-10: authority, protected gateway and browser integration now
+Status on 2026-11-11 UTC: authority, protected gateway and browser integration now
 include a **published two-test-account pilot**, not general school-room access.
 The signed context endpoint and separate persistent pilot database are installed.
-No published map action, portal login/logout hook or private-room media is
-activated. One explicitly approved administrator now has report moderation,
+No published map action or portal login/logout hook is activated. Optional room
+media is now active only inside this restricted pilot, as documented below.
+One explicitly approved administrator now has report moderation,
 without changing the general school account role. The colleague preview remains
 fictional and unchanged.
 The full school-castle goal remains open.
 
-An isolated VPS runtime preflight also passes with ordinary Microsoft sessions
+The initial isolated VPS runtime preflight also passed with ordinary Microsoft sessions
 from the two explicitly authorized synthetic pupil accounts and fresh real
-read-only school context. This is loopback-only, not public or native room entry.
+read-only school context. That earlier proof was loopback-only, not public or native room entry.
 
 ## Reuse Existing Rooms
 
@@ -556,6 +557,101 @@ export was removed; the root-only server archive remains. No school database or
 key was exported. This one verified software copy is not a recurring backup
 policy for pupil data or a complete VPS disaster-recovery rehearsal.
 
-Private-room voice remains disabled. Broader pupil admission, genuine native
+Private-room voice was still disabled at that milestone; the next section
+records its later restricted activation. Broader pupil admission, genuine native
 castle entry, ordinary administrator-login moderation and full operational/load
 acceptance remain open. The existing castle is not replaced.
+
+## Optional Room Conversations
+
+Pilot release `dde4ccfa91500283` enables voluntary audio/video using the exact
+owned game's existing proximity, visit, safety-report and LiveKit modules. Only
+the already admitted two synthetic pupil accounts and sole approved administrator
+can enter. No additional pupil, family, staff or global role was admitted.
+The actual private-room map entrance remains off.
+
+Every join is forced to the fixed bedroom group: the browser cannot claim a
+village, nearby mode, owner, group id or room scope. The original authoritative
+walker/socket and owner/visit epoch determine eligibility. A maximum of eight
+visitors share a group regardless of furniture distance. Calls require their
+own consent; joining does not capture either device. Microphone and camera have
+separate icon buttons and both start off. Camera, screen, recording, data and
+administration are not interchangeable rights: the existing SFU grants permit
+only microphone/camera tracks, not screen/data publishing, room recording,
+participant metadata changes or room administration.
+
+The owned panel subclasses the original pinned panel without changing its
+session/transport engine or original source files. It fixes the group mode,
+uses labelled icons and compact 320px-safe controls, and retains mute, playback
+permission, report and explicit leave actions. Missing/foreign views remain
+closed. Browser policy permits same-origin microphone/camera only in this pilot
+and continues to deny screen capture. This is an explicit media-permission
+change, not a claim that every HTTP header remained unchanged. School access,
+moderation capability, all existing keys/subjects, PHP, Nginx and maps remain
+unchanged.
+
+The SFU's administrative API is intentionally not publicly routed. A separate
+loopback-only control service on port 13252 resolves only the fixed existing
+SFU container and forwards only JSON ListRooms/DeleteRoom operations. Listing
+filters out every foreign namespace; deletion accepts only exact generated
+castle-room names. The SFU still checks the SDK-issued administrative JWT.
+The relay has no signing key, arbitrary target, shell, recording/token endpoint
+or public listener. Its root identity is needed only for the fixed container
+address lookup; the room service retains its own unprivileged identity and gets
+no Docker access. The unit is read-only/hardened, with empty capabilities,
+128MB memory, 25% CPU, four active operations and 32 connections. The internal
+control path stays on loopback/private container networking. Browser media
+continues through the existing public TLS/WSS SFU endpoint.
+
+The first real-media probe ran against a disposable loopback service through
+pinned SSH forwarding in both directions, using fresh ordinary Microsoft test
+states and the actual signed public school context. Its SQLite data and
+temporary credentials were removed after acceptance. No real staff identity or
+human microphone/camera was impersonated or captured. The subsequent public
+probe used the real public HTTPS gateway directly, with no SSH or request
+interception. Both real remote microphones decoded non-silent samples in Chrome
+157, and an explicitly enabled fake camera decoded 320x180 video in the other
+browser. Separate owner rooms did not hear one another. Changing rooms stopped
+the old capture; owner closure stopped both capture and remote media. Real
+received-contact reporting, pupil moderation denial and 1100/390/320 layouts pass.
+
+The pinned SDK first probes `/rtc/v1/validate`; the current SFU returns 404 for
+that protocol path. The SDK's explicit supported legacy-transport fallback then
+connects successfully. Both browser proofs record the two compatibility 404s
+separately, not as an assertion that every network response was 200. Actual
+decoded media, no JavaScript errors and no unexpected resource failures are
+required. No authentication rejection or embedding protection is bypassed.
+
+Safety reports contain the pupil's description of an actually released recent
+contact, not a conversation recording. Only the fresh sole-moderator capability
+opens the report API or the new conversation-report tab. A synthetic moderator
+browser fixture additionally verifies text-only hostile notes, 320px layout,
+resolution, confirmation cancellation, conversation timeout without removing
+room access, and clearing after capability withdrawal. It does not claim the
+real administrator's ordinary login has been tested. Existing chat moderation
+also passes its separate regression.
+
+Thirty-seven Linux cases pass before activation. The seven genuine public
+TLS/context/WebSocket/45-second-lease cases pass with fixed-group and pupil
+moderation checks. Publication stays provisional until the real public browser
+media proof arrives; otherwise the exact former unit/configuration is restored.
+Only the existing room pilot restarted; its new scoped control service was
+started separately. The historical audit checks both explicit transitions and
+unchanged prior receipts. Private receipt: `calls-deployment.json`.
+The complete local regression passes 462 cases: 460 passed, no failures or
+cancellations, the same two documented skips. The control-relay and school-
+withdrawal/epoch/failure cases use isolated simulated control responses, not
+pretended real SFU load. The two real media probes are recorded separately.
+
+Still open: native castle entry with isolation from native table audio; active
+call account/device transfer, offline/reconnect and restart episodes; broader
+age/class admission; the approved administrator's actual login; genuine points
+integration; complete data/key disaster recovery and fleet/load acceptance.
+Two-participant media evidence is not an eight-person or 400-person load approval.
+The post-test read-only observation found about 205MiB current / 230MiB peak for
+the room process under its existing 256MiB limit, and 13MiB / 25MiB for the
+control relay, with no automatic restarts. Room-process headroom must be sized
+and retested before broad admission; these figures are not a capacity guarantee.
+The one explicitly synthetic report submitted by this publication's approved
+test pair was removed after a private consistent backup. Other reports and
+school roles were not changed.

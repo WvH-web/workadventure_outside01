@@ -31,7 +31,7 @@ class HomePage{
    const remaining=started+value.leaseMs-Date.now();if(remaining<=0)throw Error('Expired room response');
    const destination=BASE+'view/'+value.view+(this.moderation?'/moderation/':'/zimmer/'+(this.invitation?'?besuch='+this.invitation:''));
    if(this.moderation&&this.view!==value.view){const check=await fetch(destination,{credentials:'same-origin',cache:'no-store',signal:controller.signal});await check.body?.cancel();if(!check.ok){void this.release(value.view,requestId);throw Object.assign(Error(),{code:'not_allowed'});}}
-   if(this.view!==value.view){this.frame?.remove();this.frame=document.createElement('iframe');this.frame.title=this.moderation?'Gemeldete Zimmergespraeche':'Dein Schlosszimmer';this.frame.allow='clipboard-write';
+   if(this.view!==value.view){this.frame?.remove();this.frame=document.createElement('iframe');this.frame.title=this.moderation?'Gemeldete Zimmergespraeche':'Dein Schlosszimmer';this.frame.allow=document.documentElement.dataset.roomCalls==='enabled'&&!this.moderation?'clipboard-write; microphone; camera':'clipboard-write';
     this.frame.setAttribute('sandbox','allow-scripts allow-same-origin allow-forms');this.frame.referrerPolicy='no-referrer';
     this.frame.src=destination;$('content').append(this.frame);this.view=value.view;}
    $('message').hidden=true;$('connection').textContent='Mit deinem Schulzugang verbunden';this.failures=0;

@@ -1,0 +1,31 @@
+[Unit]
+Description=Scoped loopback media control for castle rooms
+After=docker.service network-online.target
+Wants=docker.service network-online.target
+
+[Service]
+Type=simple
+User=root
+ExecStart=/opt/plesk/node/24/bin/node @RELEASE@/ops/castle-homes/control-proxy.cjs
+Restart=on-failure
+RestartSec=3
+PrivateTmp=yes
+PrivateDevices=yes
+ProtectSystem=strict
+ProtectHome=yes
+NoNewPrivileges=yes
+ProtectKernelTunables=yes
+ProtectKernelModules=yes
+ProtectControlGroups=yes
+RestrictSUIDSGID=yes
+RestrictNamespaces=yes
+LockPersonality=yes
+CapabilityBoundingSet=
+RestrictAddressFamilies=AF_UNIX AF_INET AF_INET6
+MemoryMax=128M
+CPUQuota=25%
+UMask=0077
+TimeoutStopSec=15
+
+[Install]
+WantedBy=multi-user.target

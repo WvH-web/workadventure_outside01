@@ -20,6 +20,14 @@ async function gameFactory(root,{dbPath,maxPlayers=100}={}){
  ]);
  const assetPaths=new Set([...bedroomAssets(base).keys(),'/proximity.js','/proximity.css','/proximity-session.js','/vendor/livekit-client-2.23.0.js']);
  assetPaths.add('/zimmer/castle-room-media.js');
- return options=>({game:createVillage({...options,dbPath,maxPlayers}),assetPaths,roomSocial,assetOverrides});
+ const callPanel=await fs.readFile(path.join(__dirname,'public/room-call.js'),'utf8');
+ const callSource=await fs.readFile(path.join(base,'public/proximity.js'),'utf8');
+ const callManifest=await fs.readFile(path.join(__dirname,'game.manifest.json'));
+ if(crypto.createHash('sha256').update(callManifest).digest('hex')!==require('./runtime.cjs').OWNED_SHA||crypto.createHash('sha256').update(callSource).digest('hex')!==JSON.parse(callManifest).sourceFiles['dorfplatz/public/proximity.js'])throw Error('Review the changed proximity panel before adapting it');
+ return options=>{
+  const assets=new Set(assetPaths),overrides=new Map(assetOverrides);
+  if(options.media){assets.add('/castle-room-proximity-original.js');overrides.set('/castle-room-proximity-original.js',callSource);overrides.set('/proximity.js',callPanel);}
+  return {game:createVillage({...options,dbPath,maxPlayers}),assetPaths:assets,roomSocial,assetOverrides:overrides};
+ };
 }
 module.exports={gameFactory,roomSocialAdapter,SOCIAL_SHA};
