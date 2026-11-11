@@ -110,8 +110,11 @@ Village und geschuetzte Lehrerzimmer werden nicht ersetzt.
   sowie die Verbindung zum originalen Konto-/Zimmercode bestehen. Der geschuetzte
   Einstieg ist lokal mit zwei getrennten Browserzugaengen, wirklichen privaten
   Besuchen, Nachrichten und Kontowechsel geprueft. Desktop und 390/320-Pixel-
-  Ansichten passen. Produktiver Schuleinstieg, native Besuchs-/Sprachabnahme
-  und Betriebsabnahme fehlen noch; kein Schul-Zimmerzugang wurde freigeschaltet.
+  Ansichten passen. Ein getrennter HTTPS-Testpilot ist inzwischen ausschliesslich
+  fuer die zwei freigegebenen Microsoft-Testkonten bereitgestellt und samt echter
+  privater Besuche, Kontowechsel, Grafik und 45-Sekunden-Zugangsablauf geprueft.
+  Die veroeffentlichten Karten bleiben unveraendert. Allgemeiner Schuleinstieg,
+  native Besuchs-/Sprachabnahme und Betriebsabnahme fehlen noch.
   Einzelheiten: `ops/castle-homes/README.md`.
 - Betriebs-, Wiederanlauf- und realistische Leistungstests vor breiter Nutzung.
   Kleine synthetische Mehrteilnehmerproben ersetzen keine Lastabnahme.

@@ -19,5 +19,6 @@ function bundle(entryName,outputName){
   return manifest;
 }
 function buildCastleScript(){return [bundle('npcs','expansion'),bundle('outdoors','outdoors')];}
-module.exports={buildCastleScript};
-if(require.main===module)console.log(JSON.stringify(buildCastleScript().map(result=>({output:result.output,bytes:result.bytes,sourceModules:result.sources.length,runtimeModuleRequests:1}))));
+function buildCastleHomeScript(){return [bundle('gallery','upper-gallery')];}
+module.exports={buildCastleScript,buildCastleHomeScript};
+if(require.main===module)console.log(JSON.stringify((process.argv.includes('--homes')?buildCastleHomeScript():buildCastleScript()).map(result=>({output:result.output,bytes:result.bytes,sourceModules:result.sources.length,runtimeModuleRequests:1}))));

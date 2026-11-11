@@ -1,10 +1,11 @@
 # Personal Rooms: School Authority
 
-Status on 2026-11-10: implemented and checked authority, protected gateway and
-local browser integration, **not a published school room service**. No map action,
-public context endpoint, school room database,
-portal login/logout hook or live game was activated or changed. The separate
-colleague preview remains fictional. The full school-castle goal remains open.
+Status on 2026-11-10: authority, protected gateway and browser integration now
+include a **published two-test-account pilot**, not general school-room access.
+The signed context endpoint and separate persistent pilot database are installed.
+No published map action, portal login/logout hook, private-room media or moderation
+permission is activated. The colleague preview remains fictional and unchanged.
+The full school-castle goal remains open.
 
 An isolated VPS runtime preflight also passes with ordinary Microsoft sessions
 from the two explicitly authorized synthetic pupil accounts and fresh real
@@ -58,8 +59,9 @@ must not forward its canonical ids, age or grade as a public map response.
 
 ## Context Protocol
 
-The future fixed endpoint is
-`https://www.deine-schule.com/workadventure-castle-homes.php`; **it is not installed**.
+The fixed endpoint is
+`https://www.deine-schule.com/workadventure-castle-homes.php`; it is installed for
+the signed pilot service, not a browser school-profile API.
 The Node client permits no alternate origin, endpoint, redirect or browser cookie.
 Each fresh call signs timestamp, random nonce and exact JSON bytes with its own
 private key. Responses are separately bound to that nonce and their exact bytes.
@@ -74,10 +76,10 @@ signature mismatch, replay or dependency failure never reuse an old permission.
 At most sixteen identity lookups run concurrently. The school query transaction
 is explicitly read-only; request nonces use a different private SQLite store.
 
-Deployment must create a new private context key, FPM-owned nonce store and
-configuration outside the webroot. Do not reuse or rotate the current platform
-login key or School API lookup key. The wrapper may only call
-`castleHomesContextEndpoint()` with that fixed private configuration.
+The pilot has a new private context key, FPM-owned nonce store and configuration
+outside the webroot. Its game bridge uses a second, different new key. The current
+platform login key and School API lookup key were not reused or rotated. The
+wrapper only calls `castleHomesContextEndpoint()` with its fixed private config.
 
 ## WorkAdventure Grant Authority
 
@@ -179,10 +181,10 @@ outside this repository in `output/castle-homes/local-server.json`.
   This does not test real parent/staff accounts or a new normal Microsoft login.
 - Private VPS proof: `/opt/wvh-castle-homes/private/authority-preflight.json`.
   Local original-game proof: `output/castle-homes/game-contract.json` outside
-  this repository. Public endpoints, routes, existing services and maps remain
-  unchanged. No live game capacity claim follows from these checks.
+  this repository. That earlier preflight changed no public endpoints, routes,
+  existing services or maps. No live capacity claim follows from these checks.
 
-Final local regression run: 425 Node cases, 424 passed, zero failed, one existing
+Previous local regression run: 425 Node cases, 424 passed, zero failed, one existing
 optional widget-browser skip. The context endpoint also passes PHP syntax
 checking. The latest pinned private MySQL/context archive is
 `48741f8abebc9e98ce799453f3d209b2a82fed4110326a941a26a162ba715592`.
@@ -227,12 +229,99 @@ Private proof: `/opt/wvh-castle-homes/private/runtime-preflight.json`.
 All existing Docker processes, the colleague service, protected configurations,
 preview maps and all 107 reviewed original inputs remained unchanged. Temporary
 credentials/input are removed even on failure; systemd removes its runtime tree.
-No public room route, school database for rooms, map action, media or moderation
-permission was activated. Native WorkAdventure, public TLS/cookies, family/staff
-accounts, voluntary isolated voice and sustained production capacity remain open.
+That isolated preflight activated no public route, school database for rooms,
+map action, media or moderation permission. It did not test native WorkAdventure,
+public TLS/cookies, family/staff accounts, voluntary voice or production capacity.
+
+## Published Two-Account Pilot
+
+Release `54b79c1e4440db78` is a separate unprivileged systemd service listening
+only on `127.0.0.1:3251`; Nginx publishes only `/castle-homes/`. Its exact private
+allowlist contains the two already authorized synthetic pupils. It resolves the
+fresh real school context before applying that allowlist. No fictional platform
+issuer, role claim, email-derived replacement owner or colleague inventory is used.
+Every other account, including staff, remains outside this pilot.
+
+`service.cjs` validates the fixed origin/port/release, distinct context/bridge
+keys, exact two canonical subjects and all 107 pinned original runtime files
+before startup. The original game dependencies/code are reused at their fixed
+read-only release, not copied from a local development database. This dependency
+on the colleague release still needs a separate production-runtime lifecycle.
+Private service credentials use systemd LoadCredential. The pilot database is in
+a separate 0700 StateDirectory; restart restores no unattended gateway grants.
+
+The new PHP wrapper and immutable PHP sources are outside the existing profile
+endpoint. PHP code/config use the actual FPM pool group, not the different webroot
+group. Only the nonce directory is FPM-writable. No school record or existing
+site configuration is changed. Five Linux bootstrap cases pass. Installer failures
+restore only the new namespace; no existing WorkAdventure service is restarted.
+
+Seven genuine HTTPS acceptance cases pass without request interception: secure
+scoped browser cookies, normal Microsoft sessions plus the signed public context,
+same owner on separate devices, denied stolen views, real two-user WebSockets and
+received fixed phrases, non-disconnecting renewal, host departure and an actual
+46.5-second wait proving the 45-second HTTP/socket deadline. No injected clock is
+used for that public deadline. Private receipt:
+`/opt/wvh-castle-homes/private/pilot-deployment.json`.
+
+Chrome 157 also passes the actual public interface with two separate ordinary
+Microsoft states at 1000/390 pixels and a 320-pixel catalog. Real bitmap pixels,
+private invitations, received phrases, account switching, stable ownership and
+remaining-device isolation pass with no network interception. Only clipboard
+writing is stubbed to preserve the user's clipboard. The initial empty-canvas
+failure was a test readiness race: absence of the loading element counted as
+hidden and the initial phrase "wird geladen" matched the old broad ready regex.
+The test now waits for attachment, actual completed loading and rendered pixels.
+This browser probe reuses normal login states; it is not a new Microsoft login UI
+run and is not native WorkAdventure acceptance. Private evidence is in
+`qa/homes-public-browser` beneath the authorized-test-account private folder.
+
+The historical piano acceptance chain separately validates this addition: every
+old service and map stays identical; the exact new Nginx block is appended to the
+preserved original bytes. New release/context/unit/credential hashes are checked
+without rewriting old manifests or calling old audio evidence a fresh test.
+
+## Native Entry Candidate
+
+`homes-entry.js` and the dedicated `upper-gallery.bundle.js` prepare automatic
+entry from one disjoint native silent area in the upper gallery. The fixed owned
+room URL gets no map-API or media permission. Departure/disposal closes only its
+owned panel; late openings are closed, rapid reentry is serialized, manual closure
+is respected and late initial positions cannot override newer movement.
+
+Seven local cases cover these boundaries and prove the new dedicated bundle
+retains every original controller source. Existing shared expansion/outdoor
+bundles and all published maps remain unchanged. `--homes` builds only the new
+gallery bundle. The native browser probe substitutes candidate map/controller
+bytes only inside its two test browsers. This is not published map activation.
+The actual two-user candidate now passes with the bundled Chromium 151:
+automatic real first-party panels, nonblank desktop/mobile rooms, invitations
+and received phrases, no native conversation in the quiet entry, unchanged
+microphone preference, owned-panel closure and decoded native table speech both
+before and after the visit. No school permission is overridden. Only candidate
+map/controller responses are substituted; the room service, school context,
+WebSockets and native audio are real public endpoints.
+
+Candidate routing of the hidden opaque-origin script frame did not take effect
+with system Chrome 157 in this harness; that failed injection is not counted as
+native acceptance. Public standalone room UI does pass on Chrome 157. A final
+unmodified Chrome 157 map entry remains required after publication. Candidate
+proof: `qa/homes-native-candidate/result.json` in the authorized private folder.
+No private-room voice is enabled and no candidate is yet connected to public maps.
+
+The measured unoptimized room load transfers about 34 MB of approved static
+artwork per fresh view. Native mobile first load exceeded the 30-second test
+deadline once before a later candidate passed. This remains a release/performance
+concern, not a 400-user approval; optimize delivery without changing visible
+pixels and rerun cold desktop/mobile entry before broader activation.
+
+Latest local regression: 437 Node cases, 436 passed, zero failed, one existing
+optional widget-browser skip. A single named moderator request is being resolved
+privately against fresh staff roles. No moderation permission was silently added.
 
 Still required before school activation: publish the reviewed gateway with its
-real identity endpoint, immutable game release and durable school database;
+broader approved admission policy, independent immutable game release and durable
+school-room operational lifecycle;
 verify native school visits and invitation withdrawal/recovery;
 provide correctly isolated, voluntary room voice without leaking into unrelated
 WorkAdventure table chats; approve explicit moderation; test normal Microsoft

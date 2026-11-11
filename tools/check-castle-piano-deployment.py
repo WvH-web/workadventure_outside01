@@ -7,6 +7,7 @@ import time
 import hashlib
 import urllib.error
 import urllib.request
+import re
 
 def request(path,body=None):
     req=urllib.request.Request('https://together.deine-schule.com'+path,headers={'Content-Type':'application/json'},data=None if body is None else json.dumps(body).encode())
@@ -51,6 +52,48 @@ def verify_school_admission(ops,expected):
     assert not ops['run']('ss','-ltnH','sport = :13212').strip()
     return after,True
 
+def verify_homes_pilot(ops,expected):
+    path=Path('/opt/wvh-castle-homes/private/pilot-deployment.json')
+    if not path.exists():return expected,False
+    assert path.resolve()==path and path.stat().st_mode&0o777==0o600
+    value=json.loads(path.read_text());assert value['passed'] and value['mode']=='pilot' and value['pilotSyntheticAccounts']==2 and value['before']==expected
+    before,after=value['before'],value['after'];nginx='/var/www/vhosts/system/together.deine-schule.com/conf/vhost_nginx.conf';sha=ops['sha']
+    assert before['services']==after['services']
+    assert {p:h for p,h in before['files'].items() if p!=nginx}=={p:h for p,h in after['files'].items() if p!=nginx}
+    archive=value['archiveSha256'];assert re.fullmatch('[a-f0-9]{64}',archive)
+    release=Path(value['release']);assert release==Path('/opt/wvh-castle-homes/releases')/archive[:16] and release.resolve()==release
+    assert not any(item.is_symlink() for item in release.rglob('*'))
+    assert {item.relative_to(release).as_posix() for item in release.rglob('*') if item.is_file()}==set(value['files']) and len(value['files'])==25
+    assert all(sha((release/name).read_bytes())==digest for name,digest in value['files'].items())
+    backup=path.with_name('nginx-before-pilot.conf');assert backup.resolve()==backup and backup.stat().st_mode&0o777==0o600
+    old=backup.read_bytes();assert sha(old)==value['nginxBeforeSha256']==before['files'][nginx]
+    route=('# BEGIN WVH CASTLE HOMES PILOT '+archive[:16]+'\nlocation ^~ /castle-homes/ {\n'
+      '    proxy_pass http://127.0.0.1:3251;\n    proxy_http_version 1.1;\n    proxy_set_header Host $host;\n'
+      '    proxy_set_header X-Real-IP $remote_addr;\n    proxy_set_header Upgrade $http_upgrade;\n'
+      '    proxy_set_header Connection "upgrade";\n    proxy_buffering off;\n    proxy_read_timeout 65s;\n'
+      '    client_max_body_size 16k;\n}\n# END WVH CASTLE HOMES PILOT '+archive[:16]+'\n')
+    assert value['route']==route and Path(nginx).read_bytes()==old+b'\n'+route.encode()
+    assert sha(Path(nginx).read_bytes())==value['nginxAfterSha256']==after['files'][nginx]
+    assert sha(Path('/etc/systemd/system/wvh-castle-homes.service').read_bytes())==value['serviceUnitSha256']
+    credential=path.with_name('service.json');assert credential.resolve()==credential and credential.stat().st_mode&0o777==0o600 and sha(credential.read_bytes())==value['privateCredentialSha256']
+    config=json.loads(credential.read_text());assert config['version']==1 and config['mode']=='pilot' and config['origin']=='https://together.deine-schule.com' and config['port']==3251
+    assert len(config['allowedSubjects'])==2 and len(set(config['allowedSubjects']))==2 and all(re.fullmatch('wvh:student:[1-9][0-9]{0,15}',item) for item in config['allowedSubjects'])
+    context=Path('/var/www/vhosts/deine-schule.com/private/castle-homes');wrapper=Path('/var/www/vhosts/deine-schule.com/httpdocs/workadventure-castle-homes.php')
+    context_release=context/archive[:16]
+    assert set(value['contextFiles'])=={str(wrapper),str(context/'config.json'),*(str(context_release/name) for name in ['SchoolIdentity.php','ContextProtocol.php','context.php'])}
+    assert all(Path(name).resolve()==Path(name) and sha(Path(name).read_bytes())==digest for name,digest in value['contextFiles'].items())
+    context_config=json.loads((context/'config.json').read_text());assert context_config['moderators']==[] and context_config['key']==config['contextKey'] and config['contextKey']!=config['bridgeKey']
+    manifest_raw=(release/'castle-homes-runtime.manifest.json').read_bytes();assert sha(manifest_raw)==value['runtimeSourceManifestSha256']=='8718d84cb8b6ef283a08075598f1d3115574e38964247378e61f08ad53ce8aa6'
+    runtime=json.loads(manifest_raw);source=Path(runtime['sourceRelease']);assert str(source)==config['source']=='/opt/wvh-sterne-kollegium/releases/20261109T191624Z'
+    assert len(runtime['files'])==107 and all((source/name).resolve()==source/name and sha((source/name).read_bytes())==digest for name,digest in runtime['files'].items())
+    acceptance=value['acceptance'];assert acceptance['passed'] and len(acceptance['checks'])==7 and acceptance['realPublicTls'] and acceptance['realPublicContextEndpoint'] and acceptance['realPublicWebSockets'] and acceptance['realLeaseClock']
+    assert not acceptance['networkInterception'] and not acceptance['voiceEnabled'] and not value['broadSchoolRoomAccess'] and not value['moderationGranted']
+    assert ops['run']('systemctl','is-active','wvh-castle-homes.service').strip()=='active'
+    assert request('/castle-homes/health')[:2]==(200,b'{"ready":true}')
+    assert not Path('/home/wilhelm/.cache/wvh-school-qa/homes-accounts.private.json').exists()
+    return after,True
+
+
 def main():
     os.umask(0o077);ops=runpy.run_path('/tmp/wvh-castle-piano-ops.py');wam=runpy.run_path('/tmp/wvh-deploy-castle-piano-wam.py');sha=ops['sha'];private=ops['PRIVATE']
     deployment=json.loads((private/'deployment.json').read_text());wrapped=json.loads((private/'music-wrapper-deployment.json').read_text())
@@ -85,6 +128,7 @@ def main():
         assert ops['inspect'](repair['rollbackContainer'])['Id']==repair['gatewayBeforeId'] and not ops['inspect'](repair['rollbackContainer'])['State']['Running']
         expected=after;health_repair=True
     expected,school_admission=verify_school_admission(ops,expected)
+    expected,homes_pilot=verify_homes_pilot(ops,expected)
     assert ops['baseline']()==expected,'An unrelated protected file or existing service changed'
     assert ui['nginx_before_sha256']==deployment['nginx_after_sha256']
     for route,name in [('presence','presence.html'),('rounds','rounds.html'),('unowned-ui.js','unowned-ui.js')]:
@@ -106,7 +150,7 @@ def main():
       'nativeLiveProofSha256':sha(native_raw),'normalMicrosoftPupils':2,'mouseAndMobileTouch':True,'parallelTableSpeechDecodedBoth':True,
       'onlyMusicPreviewWrapperChanged':True,'existingContainersAndOtherMapsUnchanged':not health_repair and not school_admission,
       'allOtherServicesPreservedExceptVerifiedHallHealthRepair':not school_admission,
-      'allOtherServicesPreservedExceptVerifiedMaintenance':True,'schoolAdmissionVerified':school_admission,
+      'allOtherServicesPreservedExceptVerifiedMaintenance':True,'schoolAdmissionVerified':school_admission,'homesPilotVerified':homes_pilot,
       'hallHealthRepairVerified':health_repair,'historicalManifestsPreserved':True,
       'permissionsAndAuthenticationUnchanged':True,'stageStopped':True,'healthy':True,'loadApprovalFor400':False,
       'checkedAt':time.strftime('%Y-%m-%dT%H:%M:%SZ',time.gmtime())}
