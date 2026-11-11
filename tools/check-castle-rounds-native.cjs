@@ -142,6 +142,8 @@ async function main(){
     const heartbeat=b.page.waitForResponse(response=>response.url()===origin+'/castle-school/round-heartbeat'&&response.status()===200,{timeout:30000});
     await (await heartbeat).finished();
     if(recovery){
+      assert.ok(Number.isFinite(renewed.confirmedUntil));
+      await b.page.waitForFunction(before=>JSON.parse(sessionStorage.getItem('castleRoundMembershipV1')).confirmedUntil>before,renewed.confirmedUntil);
       stage='bounded-recovery';let injected=0;const checkpoint=roundRequests.length;
       await b.page.context().route(origin+'/castle-school/round-heartbeat',route=>{injected++;return route.fulfill({status:503,contentType:'application/json',headers:{'Retry-After':'1'},body:'{"error":"unavailable"}'});},{times:1});
       const before=await b.page.evaluate(()=>JSON.parse(sessionStorage.getItem('castleRoundMembershipV1')));

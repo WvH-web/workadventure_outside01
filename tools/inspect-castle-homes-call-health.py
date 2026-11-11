@@ -9,7 +9,7 @@ import urllib.request
 ops=runpy.run_path('/tmp/wvh-castle-piano-ops.py')
 helper=Path('/tmp/wvh-castle-round-recovery-ops.py')
 if Path('/opt/wvh-castle-school/private/round-recovery-deployment.json').exists():
-    assert helper.resolve()==helper and hashlib.sha256(helper.read_bytes()).hexdigest()=='e18032485cfb84d658c3514e5cea1e2a7d4429fb402f1745c3d77f44f35c7eba'
+    assert helper.resolve()==helper and hashlib.sha256(helper.read_bytes()).hexdigest()=='31c1a4757c64cf407c67453a772aafb13af864751796ecc67436e0206ec4baea'
     ops,_=runpy.run_path(str(helper))['historical'](ops)
 before=ops['baseline']()
 private=Path('/opt/wvh-castle-homes/private')

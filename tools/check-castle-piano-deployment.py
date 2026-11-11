@@ -463,7 +463,7 @@ def verify_homes_native_entry(ops,expected):
 def main():
     os.umask(0o077);ops=runpy.run_path('/tmp/wvh-castle-piano-ops.py');wam=runpy.run_path('/tmp/wvh-deploy-castle-piano-wam.py');sha=ops['sha'];private=ops['PRIVATE']
     actual_ops=ops;recovery_helper=Path('/tmp/wvh-castle-round-recovery-ops.py');assert recovery_helper.resolve()==recovery_helper
-    assert sha(recovery_helper.read_bytes())=='e18032485cfb84d658c3514e5cea1e2a7d4429fb402f1745c3d77f44f35c7eba'
+    assert sha(recovery_helper.read_bytes())=='31c1a4757c64cf407c67453a772aafb13af864751796ecc67436e0206ec4baea'
     recovery_functions=runpy.run_path(str(recovery_helper));ops,recovery=recovery_functions['historical'](ops)
     deployment=json.loads((private/'deployment.json').read_text());wrapped=json.loads((private/'music-wrapper-deployment.json').read_text())
     ui=json.loads(Path('/opt/wvh-castle-school/private/round-ui-events-deployment.json').read_text())

@@ -5,7 +5,7 @@ from pathlib import Path
 import runpy
 
 helper=Path('/tmp/wvh-castle-round-recovery-ops.py')
-assert helper.resolve()==helper and hashlib.sha256(helper.read_bytes()).hexdigest() in ['413e9bbb3fd644c031b44f06fd20de01cd2ba7a0cba6a929c22c70c071d71902','e18032485cfb84d658c3514e5cea1e2a7d4429fb402f1745c3d77f44f35c7eba']
+assert helper.resolve()==helper and hashlib.sha256(helper.read_bytes()).hexdigest() in ['413e9bbb3fd644c031b44f06fd20de01cd2ba7a0cba6a929c22c70c071d71902','e18032485cfb84d658c3514e5cea1e2a7d4429fb402f1745c3d77f44f35c7eba','31c1a4757c64cf407c67453a772aafb13af864751796ecc67436e0206ec4baea']
 functions=runpy.run_path(str(helper));private=functions['PRIVATE']
 failure={name:json.loads((private/name).read_text()) for name in ['round-recovery-failure.json','round-recovery-failure-2.json','round-recovery-failure-3.json'] if (private/name).exists()}
 staged=json.loads(functions['STAGE'].read_text()) if functions['STAGE'].exists() else None

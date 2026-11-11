@@ -7,8 +7,8 @@ import runpy
 
 os.umask(0o077)
 audit=Path('/tmp/wvh-check-castle-piano-deployment.py');helper=Path('/tmp/wvh-castle-round-recovery-ops.py')
-assert audit.resolve()==audit and hashlib.sha256(audit.read_bytes()).hexdigest()=='efd68b37512a9cd9636e812204ccfa1f13a59f14cb1a37fe28d4808860746c46'
-assert helper.resolve()==helper and hashlib.sha256(helper.read_bytes()).hexdigest()=='e18032485cfb84d658c3514e5cea1e2a7d4429fb402f1745c3d77f44f35c7eba'
+assert audit.resolve()==audit and hashlib.sha256(audit.read_bytes()).hexdigest()=='d2b45e869f164764ace2399fa4a102520b210698e37cc074dc2f514cd31da084'
+assert helper.resolve()==helper and hashlib.sha256(helper.read_bytes()).hexdigest()=='31c1a4757c64cf407c67453a772aafb13af864751796ecc67436e0206ec4baea'
 functions=runpy.run_path(str(helper));source=Path('/home/wilhelm/.cache/wvh-school-qa/round-recovery-published.private.json')
 assert source.resolve()==source and source.parent.stat().st_mode&0o777==0o700
 raw=source.read_bytes();functions['proof'](json.loads(raw),False)

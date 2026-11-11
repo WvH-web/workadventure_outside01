@@ -13,6 +13,9 @@ import zipfile
 PRIVATE=Path('/opt/wvh-castle-school/private')
 RECORD=PRIVATE/'round-recovery-deployment.json'
 STAGE=PRIVATE/'round-recovery-stage.json'
+HISTORY=PRIVATE/'round-recovery-history-1.json'
+HISTORY_DIR=PRIVATE/'round-recovery-before-rearm'
+CANDIDATE=PRIVATE/'round-recovery-candidate-v2.private.json'
 NGINX=Path('/var/www/vhosts/system/together.deine-schule.com/conf/vhost_nginx.conf')
 BASE=Path('/opt/wvh-castle-round-recovery')
 ARCHIVE=Path('/tmp/wvh-castle-round-recovery.zip')
@@ -66,6 +69,7 @@ def proof(value,candidate):
     assert all(rows['bounded-recovery'][key] is True for key in ['oneExplicitPreAdmission503','sameLeaseRetained','noCachedDeadlineExtension','freshRealServerRenewal','noCreateOrJoinReplay'])
     assert rows['bounded-recovery']['noModuleInterception'] is (not candidate)
     recovery=value['recovery'];assert recovery['candidate'] is candidate and recovery['moduleInterception'] is candidate
+    assert recovery['naturalHeartbeatFault'] is True
     assert recovery['mapInterception'] is False and recovery['schoolDecisionInterception'] is False
     assert recovery['explicitFaultInjection']=={'route':'round-heartbeat','status':503,'count':1} and recovery['moduleSha256']==FILES
     assert recovery['observed']=={str(number)+':'+name:digest for number in [1,2] for name,digest in FILES.items()}
@@ -80,6 +84,28 @@ def read(path):
 def processes(ops):
     return {name:ops['run']('systemctl','show',name,'--property=MainPID,ExecMainStartTimestampMonotonic,ActiveState').strip()
             for name in ['wvh-castle-homes.service','wvh-castle-homes-control.service','wvh-sterne-kollegium.service']}
+
+
+def prior_rollback(ops,before):
+    if not HISTORY.exists():return None
+    raw,value=read(HISTORY);assert value['version']==1 and value['passed'] is True
+    assert HISTORY_DIR.resolve()==HISTORY_DIR and HISTORY_DIR.stat().st_uid==0 and HISTORY_DIR.stat().st_mode&0o777==0o700
+    staged_raw,staged=read(HISTORY_DIR/'stage.json');rollback_raw,rollback=read(HISTORY_DIR/'rollback.json')
+    candidate_raw,candidate=read(HISTORY_DIR/'candidate.private.json')
+    assert sha(staged_raw)==value['stageSha256'] and sha(rollback_raw)==value['rollbackSha256'] and sha(candidate_raw)==value['candidateSha256']==staged['candidateProofSha256']
+    helper=HISTORY_DIR/'ops.py';audit=HISTORY_DIR/'audit.py'
+    for path in [helper,audit]:assert path.resolve()==path and path.stat().st_uid==0 and path.stat().st_mode&0o777==0o600
+    assert sha(helper.read_bytes())==value['helperSha256']=='e18032485cfb84d658c3514e5cea1e2a7d4429fb402f1745c3d77f44f35c7eba'
+    assert sha(audit.read_bytes())==value['auditSha256']=='efd68b37512a9cd9636e812204ccfa1f13a59f14cb1a37fe28d4808860746c46'
+    failed_raw,failed=read(HISTORY_DIR/'previous-published-failure.json')
+    assert sha(failed_raw)==value['failedPublishedFactSha256'] and failed['version']==1 and failed['passed'] is False
+    assert failed['stage']=='bounded-recovery' and failed['errorType']=='TimeoutError' and failed['waitLimitMilliseconds']==15000
+    previous=runpy.run_path(str(helper));previous['proof'](candidate,True);previous['transition'](staged['before'],staged['after'])
+    assert staged['passed'] is True and staged['provisional'] is True and staged['files']==FILES
+    assert all(staged[key] is True for key in ['noServiceRestart','noMapOrPolicyChange','membershipsPreserved'])
+    assert rollback['passed'] is True and rollback['restored'] is True and rollback['before']==staged['after'] and rollback['after']==staged['before']==before
+    assert processes(ops)==value['processes']==staged['processes']
+    return sha(raw)
 
 
 def request(name,method='GET'):
@@ -128,7 +154,8 @@ def state(ops,value,fetch_public=True):
     assert target.stat().st_uid==0 and target.stat().st_mode&0o777==0o755
     assert {path.name for path in target.iterdir()}==set(FILES) and all(path.is_file() and not path.is_symlink() and path.stat().st_uid==0 and path.stat().st_mode&0o777==0o644 and sha(path.read_bytes())==FILES[path.name] for path in target.iterdir())
     new=old+route(target);assert NGINX.read_bytes()==new and sha(new)==value['nginxAfterSha256']==value['after']['files'][str(NGINX)]
-    candidate_raw,candidate=read(PRIVATE/'round-recovery-candidate.private.json');assert sha(candidate_raw)==value['candidateProofSha256'];proof(candidate,True)
+    candidate_raw,candidate=read(CANDIDATE);assert sha(candidate_raw)==value['candidateProofSha256'];proof(candidate,True)
+    assert value['priorRollbackReceiptSha256']==prior_rollback(ops,value['before'])
     for name,digest in value['previousAttempts'].items():
         assert name in FAILURES;raw,previous=read(PRIVATE/name);assert sha(raw)==digest and previous['restored'] is True
     if fetch_public:public_files()
@@ -165,7 +192,8 @@ def reload(ops):
 
 def deploy(ops):
     assert not RECORD.exists() and not STAGE.exists()
-    before=ops['baseline']();pids=processes(ops);candidate_raw,candidate=read(PRIVATE/'round-recovery-candidate.private.json');proof(candidate,True)
+    before=ops['baseline']();pids=processes(ops);candidate_raw,candidate=read(CANDIDATE);proof(candidate,True)
+    prior=prior_rollback(ops,before)
     descriptor=json.loads(DESCRIPTOR.read_text());archive=ARCHIVE
     assert descriptor['version']==1 and descriptor['files']==FILES and descriptor['archiveSha256']==sha(archive.read_bytes())
     assert isinstance(descriptor['sourceCommit'],str) and len(descriptor['sourceCommit'])==40 and all(c in '0123456789abcdef' for c in descriptor['sourceCommit'])
@@ -195,7 +223,7 @@ def deploy(ops):
         readiness=wait_public();after=ops['baseline']();transition(before,after);assert processes(ops)==pids
         value={'passed':True,'provisional':True,'before':before,'after':after,'processes':pids,'files':FILES,'directory':str(target),'backup':str(backup),
                'nginxBeforeSha256':sha(old),'nginxAfterSha256':sha(new),'candidateProofSha256':sha(candidate_raw),'archiveSha256':sha(archive.read_bytes()),
-               'sourceCommit':descriptor['sourceCommit'],'previousAttempts':attempts,'routeReadiness':readiness,
+               'sourceCommit':descriptor['sourceCommit'],'previousAttempts':attempts,'routeReadiness':readiness,'priorRollbackReceiptSha256':prior,
                'noServiceRestart':True,'noMapOrPolicyChange':True,'membershipsPreserved':True,'loadApprovalFor400':False,'checkedAt':time.strftime('%Y-%m-%dT%H:%M:%SZ',time.gmtime())}
         ops['atomic'](STAGE,value);print(json.dumps({'passed':True,'provisional':True,'noServiceRestart':True,'membershipsPreserved':True}))
     except Exception as error:

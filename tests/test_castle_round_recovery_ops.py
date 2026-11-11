@@ -22,7 +22,7 @@ def fixture():
     return dict(passed=True,errors=[],realNativeWorkAdventure=True,publishedPreview=True,stageOnly=False,mapsModifiedOnlyInsideTestBrowsers=False,
                 realClassOverrideOnlyInStage=False,productionSchoolAndWebConfigChanged=False,loadApprovalFor400=False,
                 results=[library,travel,recover],audio=copy.deepcopy(conversation),
-                recovery=dict(candidate=True,moduleInterception=True,mapInterception=False,schoolDecisionInterception=False,
+                recovery=dict(candidate=True,moduleInterception=True,mapInterception=False,schoolDecisionInterception=False,naturalHeartbeatFault=True,
                               explicitFaultInjection={'route':'round-heartbeat','status':503,'count':1},moduleSha256=module.FILES.copy(),
                               observed={str(n)+':'+name:digest for n in [1,2] for name,digest in module.FILES.items()},audio=conversation))
 
@@ -56,6 +56,7 @@ class RoundRecoveryTests(unittest.TestCase):
         published=copy.deepcopy(original);published['recovery']['candidate']=published['recovery']['moduleInterception']=False
         published['results'][2]['noModuleInterception']=True;module.proof(published,False)
         for path,value in [(('recovery','schoolDecisionInterception'),True),(('recovery','mapInterception'),True),
+                           (('recovery','naturalHeartbeatFault'),False),
                            (('recovery','explicitFaultInjection','count'),2),(('results',2,'freshRealServerRenewal'),False),
                            (('recovery','observed','2:presence.js'),'wrong'),(('audio','after',1,'energy'),0),
                            (('recovery','audio','after',0,'energy'),float('nan')),(('loadApprovalFor400',),True)]:
