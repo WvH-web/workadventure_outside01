@@ -140,7 +140,8 @@ async function main(){
     const paused=await stage.state();await a.page.waitForTimeout(3000);assert.equal((await stage.state()).offset_sec,paused.offset_sec);
     stage.command('resume');await aligned('shared-resume',35000);results.push({case:'shared-pause',pauseStopsBothActualPlayers:true,pausedClockDoesNotAdvance:true,resumeReturnsBothToServerClock:true});
     phase='closure-travel-and-reentry';
-    await a.script.evaluate(()=>castleCinema.website.close());await a.script.waitForFunction(()=>castleCinema.dismissed&&!castleCinema.website);
+    await a.script.evaluate(()=>castleCinema.website.close());
+    await a.script.waitForFunction(()=>castleCinema.dismissed&&!castleCinema.website,undefined,{polling:200,timeout:10000});
     const requests=a.filmRequests;await a.page.waitForTimeout(2300);assert.equal(a.filmRequests,requests);assert.ok(!a.page.frames().some(frame=>frame.url().startsWith(filmUrl)));
     await a.page.getByRole('button',{name:'Kino',exact:true}).click();await aligned('manual-reopen');
     await a.script.evaluate(()=>castleRoom.returnToHall()).catch(error=>{if(!/Execution context was destroyed|Frame was detached/.test(error.message))throw error;});

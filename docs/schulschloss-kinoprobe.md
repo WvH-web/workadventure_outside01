@@ -66,7 +66,7 @@ nicht auf den produktiven Webserver.
 ## Stand vom 11. November
 
 Die getrennte echte PHP-/MySQL-Grundprobe besteht: Leerlauf, Start, Pause,
-Fortsetzung, Ende und gesperrte FSK-12-Quelle. Die gezielten 18 Node-Faelle
+Fortsetzung, Ende und gesperrte FSK-12-Quelle. Die gezielten 19 Node-Faelle
 fuer die Probe, die Rahmensuche und die unveraenderte Kinosteuerung bestehen.
 
 Vorige native Fehlversuche bleiben getrennt auf D: erhalten. Der erste Lauf
@@ -80,9 +80,55 @@ Zeitabweichungstoleranzen im Player.
 
 Der folgende Lauf erreichte alle sechs Fachszenarien, wurde jedoch korrekt
 nicht abgenommen: Der letzte Vollstaendigkeitsabgleich beanstandete das in der
-Kopie noch fehlende Hintergrundbild. Die Quelle ist inzwischen gezielt
-ergaenzt; die komplette native Wiederholung ist noch nicht abschliessend
-ausgewertet. Kein Fehlversuch ist eine Live-Filmabnahme.
+Kopie noch fehlende Hintergrundbild. Dieses wird nun gezielt mit Herkunftsbeleg
+eingelesen. Ein weiterer Lauf schloss das Fenster sichtbar korrekt, wartete
+aber mit der ungeeigneten Standard-Animationsabfrage auf den unsichtbaren
+Steuerrahmen. Die Probe verwendet dort jetzt ausdruecklich 200-ms-Abfragen;
+die unveraenderte Kinosteuerung wird nicht wegen eines Testfehlers umgeschrieben.
+Kein Fehlversuch wird nachtraeglich als Abnahme ausgegeben.
+
+## Bestandene native Kopienprobe
+
+Der vollstaendige Lauf `2026-11-11T19-50-34-972Z` besteht mit zwei normal
+angemeldeten Schultestkonten, darunter mobile Touchbedienung. Sechs Szenarien:
+
+1. Die echte oeffentliche Warteseite oeffnet sich ohne Klick im nativen Kino.
+2. Beide Browser dekodieren wirkliche Videobilder. Der zweite startet sieben
+   Sekunden spaeter und findet trotzdem die laufende Filmposition. Sitzwechsel
+   erhalten dasselbe Videoelement und Dokument. Eine absichtlich auf null
+   verstellte Position wird vom unveraenderten Spieler wieder korrigiert.
+3. Vorne empfangen beide keinen Tischton. Hinten dekodieren beide Sprache in
+   derselben Gruppe; benachbarte Gespraechstische bleiben getrennt. Der Film
+   laeuft in allen diesen Bereichen weiter.
+4. Gemeinsames Pausieren entfernt beide Spieler und haelt die Filmzeit fest.
+   Fortsetzen bringt beide wieder auf die Serverzeit.
+5. Manuelles Schliessen wird respektiert. Ausdrueckliches Wiedereroeffnen,
+   Gang zur grossen Halle und erneuter Kinoeintritt verwenden die aktuelle Zeit.
+6. Ende entfernt beide Spieler. Ohne separate Altersanmeldung bleibt die
+   kuenstliche FSK-12-Vorstellung gesperrt und gibt keine Videoquelle aus.
+
+Alle neun Zeitabgleiche bestehen mit unveraenderter 3,5-Sekunden-Testgrenze.
+Groesste gemessene Abweichung zur serverbezogenen Zielzeit: 1,483 Sekunden;
+groesster Abstand der beiden Zuschauer: 1,234 Sekunden. Das sind einzelne
+Messungen einer kontrollierten Probe, keine Garantie framegenauer Gleichheit
+oder ein Nachweis fuer alle Fremdanbieter und Endgeraete.
+
+Desktop-/Mobilbilder und Pixelpruefungen zeigen echte gefuellte Videoflaechen,
+ohne horizontalen Inhaltsueberlauf. Alle 16 erhaltenen Quelldateien stimmen mit
+ihren Pruefsummen ueberein. Es gibt keine unerwarteten Routenfehler oder
+JavaScript-Seitenfehler. `stopped.json` bestaetigt den gestoppten eigenen
+PHP-/MySQL-/Medienaufbau und unveraenderte Originalquellen; auch der Browserlauf
+ist tatsaechlich beendet. Nachweise liegen privat auf D:, nicht im Webroot.
+
+Die volle Node-Suite besteht danach mit 549 bestandenen Faellen, zwei
+bisherigen optionalen Auslassungen und keinem Fehler. Alle 113 Python-
+Betriebsfaelle bestehen. Die unveraenderte kuenstliche 400-Anfragen-Messung
+erreicht 400 Erfolge in 4937 ms mit vorverbundenem Windows-Transport, maximal
+16 gleichzeitigen Identitaets-/Profilpruefungen und ohne echte Microsoft-,
+Datenbank- oder Anbieteranfragen. Sie ist weiterhin keine 400-Personen-Freigabe.
+Die anschliessend herangezogene Live-Bestandspruefung bestaetigt denselben
+akzeptierten Dienst-/Kartenstand; es gab fuer die Kinoprobe keinen Neustart
+oder produktiven Datei-/Programmwechsel.
 
 Fuer eine endgueltige Produktionsfilm-Abnahme fehlen weiterhin eine frisch
 bestaetigte Hosting-Quellfassung und eine ausdruecklich vorgesehene reale

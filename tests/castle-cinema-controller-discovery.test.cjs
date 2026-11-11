@@ -1,5 +1,5 @@
 'use strict';
-const test=require('node:test'),assert=require('node:assert/strict');
+const test=require('node:test'),assert=require('node:assert/strict'),fs=require('node:fs'),path=require('node:path');
 const {roomController}=require('../tools/check-cinema-live.cjs');
 
 test('unready unrelated frames cannot stall discovery of the actual room controller',async()=>{
@@ -14,4 +14,9 @@ test('unready unrelated frames cannot stall discovery of the actual room control
 test('wrong rooms and navigation failures do not manufacture a room controller',async()=>{
   const wrong={url:()=> 'about:blank',evaluate:async()=>false},closed={url:()=> 'about:blank',evaluate:async()=>{throw Error('Detached frame');}};
   assert.equal(await roomController([wrong,closed],'kino',{milliseconds:5}),null);
+});
+
+test('the hidden cinema control frame uses explicit interval polling rather than animation-frame polling',()=>{
+  const source=fs.readFileSync(path.resolve(__dirname,'../tools/check-castle-cinema-sync-native.cjs'),'utf8');
+  assert.match(source,/waitForFunction\(\(\)=>castleCinema\.dismissed&&!castleCinema\.website,undefined,\{polling:200,timeout:10000\}\)/);
 });

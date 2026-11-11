@@ -4,7 +4,26 @@ Das Gesamtziel bleibt aktiv. Dies ist keine Freigabe als fertiggestelltes
 Schloss oder fuer eine Veranstaltung mit 400 Personen. Das bisherige Schloss,
 Village und geschuetzte Lehrerzimmer werden nicht ersetzt.
 
-Aktueller Nachtrag vom 11. November, 18:57 UTC: Die Gastgeber-Verwaltung mit
+Aktueller Nachtrag vom 11. November: Die getrennte Filmprobe im wirklichen
+Schlosskino besteht mit zwei normal angemeldeten Microsoft-Schultestkonten,
+eines mobil. Der echte oeffentliche Wartebereich ist eingebettet geprueft;
+die eigentliche Vorstellung verwendet eine Kopie des zuletzt verifiziert
+veroeffentlichten PHP-Players, eine rein kuenstliche lokale Datenbank und
+einen eigenen Testfilm. Es werden wirkliche Videobilder dekodiert. Verspaeteter
+Start, neun Zeitabgleiche, Sitzwechsel ohne Filmneustart, ruhiger vorderer
+Bereich, getrennte hintere Gespraeche, gemeinsame Pause/Fortsetzung und
+Wiedereintritt bestehen. Ohne Kino-Altersanmeldung bleibt die kuenstliche
+FSK-12-Vorstellung gesperrt. Das ist keine produktive Filmvorstellung und kein
+vollstaendiger Nachweis echter Zuschauer-/Anbieterfreigaben.
+
+Die volle aktuelle Node-Suite besteht mit 549 bestandenen Faellen, zwei
+bisherigen optionalen Auslassungen und keinem Fehler; alle 113 Python-
+Betriebsfaelle bestehen. Die bestehende Live-Pruefung bleibt gruen. Das alte
+Schloss und das oeffentliche Kinoprogramm wurden nicht veraendert. Testserver
+und Browser sind beendet, grosse neue Ausgaben liegen auf D:. Einzelheiten
+und offene Produktionsfilm-Abnahme: `../docs/schulschloss-kinoprobe.md`.
+
+Voriger Nachtrag vom 11. November, 18:57 UTC: Die Gastgeber-Verwaltung mit
 gebuendeltem Rundenstatus ist in der getrennten Vorschau veroeffentlicht und
 mit zwei normal angemeldeten Microsoft-Schultestkonten live abgenommen, eines
 mobil. Beide Wege zwischen Runden- und Spieleseite bleiben im selben
