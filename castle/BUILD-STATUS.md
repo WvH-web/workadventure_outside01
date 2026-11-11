@@ -254,7 +254,8 @@ graceful Reload; WorkAdventure und der Ansagedienst bleiben unangetastet.
 ## Persoenliche Zimmer: Geschuetzter Pilot
 
 Die Sternenhueter-Zimmer sind als eigenstaendiger, schulisch geschuetzter Pilot
-bereitgestellt, noch nicht allgemein ueber die Schlosskarte freigeschaltet.
+bereitgestellt. Nur die obere Galerie der neuen Vorschau hat jetzt einen
+nativ geprueften Eingang, noch keine allgemeine Schulfreigabe.
 Zwei ausdruecklich vorgesehene Microsoft-Testkonten und das gezielt genehmigte
 Administratorkonto haben Zugang. Die allgemeine Kontorolle wurde nicht geaendert;
 nur das genehmigte Konto darf gemeldete Zimmergespraeche pruefen.
@@ -297,19 +298,49 @@ kuenstliche Medien der genehmigten Testkonten benutzt, keine echten Kinderbilder
 oder Mikrofone. Meldungen und die darauf beschraenkte Moderation sind integriert.
 Die getrennte Moderations-Browserprobe bestaetigt auch Gespraechspausen.
 
-Die letzte Gesamtsuite umfasst 462 Faelle: 460 bestanden, keine Fehler oder
-Abbrueche, zwei dokumentierte Auslassungen; 37 Linux-Faelle bestehen separat.
-Die oeffentliche Tonprobe ersetzt noch keine native Schloss-/Tischtonprobe,
-keine echte Administratoranmeldung und keinen Lastnachweis fuer 400 Personen.
-Nur der Zimmerpilot wurde erneut kurz gestartet; die bestehende
-WorkAdventure-Instanz und die alten Karten bleiben unveraendert.
+Die native Zweipersonenprobe ist inzwischen bestanden: wirklicher Tischton
+vor und nach dem Zimmerbesuch, privater Ton in beide Richtungen, ruhiger
+Eingangsbereich und tatsaechlich beendete Medien beim Verlassen. Die Mobil-
+und Desktopansichten bestehen ohne ersetzte Antworten oder Kartenschnittstelle.
 
-Offen bleiben insbesondere die native Einbindung der Zimmergespraeche,
-Sprach-Wiederbeitritt/Geraetewechsel, breitere Schulfreigabe, vollstaendige Wiederherstellungs- und
-Lastnachweise und die abschliessende native Kartenfreigabe. Der Gesamtausbau
-ist damit nicht abgeschlossen. Das bisherige Schloss, andere Karten und das
-Kollegiumsprojekt bleiben unveraendert. Einzelheiten und Nachweise:
+Die Zimmerfassung `1b28495f0e9dfb1e` behebt eine nachgewiesene Blockade der
+Zugangsverlaengerung durch ausstehende Kameraveroeffentlichung. Die echte
+Dreibrowserprobe mit den zwei genehmigten Microsoft-Testkonten prueft Offline,
+Wiederbeitritt, zweites Geraet ohne automatische Uebernahme, ausdruecklichen
+Geraetewechsel, Kontowechsel und Abmelden. Zehn Tonmessungen und zehn dekodierte
+Kameraproben bestehen. Alte Aufnahmen enden; neue Aufnahme bleibt freiwillig.
+Die anschliessende native Schloss-/Tischtonprobe besteht ebenfalls. Nur der
+Zimmerpilot wurde kurz gestartet, nicht WorkAdventure oder das alte Schloss.
+
+Die aktuelle lokale Gesamtsuite umfasst 479 Node-Faelle: 477 bestanden, keine
+Fehler oder Abbrueche, zwei dokumentierte Auslassungen. Der vorangehende
+Zimmer-Meilenstein besteht zudem mit 62 Python- und 41 Linux-Faellen.
+Das sind weder eine echte Administrator-Anmeldeprobe noch eine Freigabe fuer
+acht gemeinsame Zimmerkameras oder 400 gleichzeitige Teilnehmer.
+
+Offen bleiben insbesondere eine Dienstneustart-Probe bei laufendem Gespraech,
+die breitere Schulfreigabe, echte gemeinsame Sterne-/Inventaranbindung,
+vollstaendige Daten-/Schluesselwiederherstellung, Lastnachweise und die
+abschliessende native Kartenfreigabe. Der Gesamtausbau ist nicht abgeschlossen.
+Das bisherige Schloss, andere Karten und das Kollegiumsprojekt bleiben
+unveraendert. Einzelheiten und Nachweise:
 `ops/castle-homes/README.md`.
+
+## Geplante Portal-Aushaenge
+
+Die zeitlich freizugebenden Portal-Aushaenge sind in einem getrennten
+Arbeitsstand vorbereitet und mit 47 kuenstlichen PHP-/MySQL-Faellen sowie
+neun Desktop-/Mobilansichten geprueft, aber noch nicht veroeffentlicht.
+Entwuerfe, zukuenftige, abgelaufene und nicht ausdruecklich freigegebene
+Fassungen bleiben unsichtbar. Das ist kein automatischer Schuelerversand.
+
+Die sichere Transfer-Vorpruefung verwendet jetzt GoDaddys gepruefte offizielle
+R1-zu-G2-Zertifikatskette, ohne Windows-Vertrauensspeicher oder Zugangsdaten
+zu veraendern. Der echte Nur-Lese-Handshake bestaetigt die Kette, lehnt den
+bisherigen unpassenden Servernamen aber weiter korrekt ab. Fuer die
+Veroeffentlichung fehlt noch der bestaetigte FTPS-Hostname aus dem Hosting.
+Es wurden keine Aushangdateien oder Datenbankaenderungen live eingespielt.
+Einzelheiten: `ops/portal-transfer/README.md`.
 
 ## Quellen und Wiederaufbau
 

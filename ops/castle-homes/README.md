@@ -3,8 +3,9 @@
 Status on 2026-11-11 UTC: authority, protected gateway and browser integration now
 include a **published two-test-account pilot**, not general school-room access.
 The signed context endpoint and separate persistent pilot database are installed.
-No published map action or portal login/logout hook is activated. Optional room
-media is now active only inside this restricted pilot, as documented below.
+The new-preview upper gallery now has a verified native entrance; no general
+portal login/logout hook is activated. Optional room media is active only inside
+this restricted pilot, as documented below.
 One explicitly approved administrator now has report moderation,
 without changing the general school account role. The colleague preview remains
 fictional and unchanged.
