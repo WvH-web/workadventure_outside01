@@ -100,6 +100,11 @@ class RoundBoard{
       rounds:[...this.rounds.values()].filter(round=>allowed.has(round.targetId)).map(round=>this.visible(round,id,profile,offers)),
       me:this.members.has(id)?{roundId:this.members.get(id).roundId}:null,checkedAt:this.clock()};
   }
+  own(auth,profile,offers){
+    const id=this.principal(auth);this.sweep();if(!this.members.has(id))return null;
+    this.caller(auth,profile);const member=this.members.get(id);
+    return member?this.visible(this.rounds.get(member.roundId),id,profile,offers):null;
+  }
   attach(auth,profile,id,round){
     const previous=this.members.get(id);
     if(previous&&previous.roundId!==round.id)throw new GatewayError(409,'already_joined');
@@ -178,7 +183,7 @@ class RoundBoard{
     if(!summary||summary.state!=='confirmed')throw new GatewayError(409,'game_not_ready');
     const offer=offers.find(offer=>offer.id===summary.resourceId),metadata=offerMetadata(profile,offer,this.clock());
     return {id:offer.id,title:offer.title,targetUrl:offerUrl(offer.targetUrl).href,presentation:offer.presentation,
-      revision:offer.revision,mode:metadata.mode,roundId,checkedAt:this.clock()};
+      revision:offer.revision,mode:metadata.mode,roundId,round:this.visible(round,id,profile,offers),checkedAt:this.clock()};
   }
   leave(auth,profile,body){const member=this.current(auth,profile,body,false);this.remove(this.principal(auth));return {left:true,roundId:member.round.id};}
   close(auth,profile,{roundId}){

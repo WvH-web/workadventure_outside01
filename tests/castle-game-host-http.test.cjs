@@ -5,12 +5,12 @@ const {createSchoolVerifier}=require('../ops/castle-school/identity.cjs');
 const {checkedCatalog}=require('./fixtures/castle-offers.cjs');
 const {SignJWT}=require('node:module').createRequire(require.resolve('../ops/hall-audio/auth.cjs'))('jose');
 async function fixture(run){
-  let now=Date.UTC(2026,10,11,12),catalogPatch={},catalogError=false,profileError=false,reads=0,hold;
+  let now=Date.UTC(2026,10,11,12),catalogPatch={},catalogError=false,profileError=false,reads=0,lookups=0,hold;
   const origin='https://together.deine-schule.com',secret='isolated-hosted-game-http-fixture',profiles=new Map();
   const getOffers=async()=>{reads++;if(catalogError)throw Error('private upstream details');const snapshot=checkedCatalog(now,catalogPatch);
     if(hold){const waiting=hold;hold=null;waiting.entered();await waiting.gate;}return snapshot;};
   const server=createSchoolServer({config:{origin,secret,trustedProxyIps:[]},clock:()=>now,verify:createSchoolVerifier(secret,{clock:()=>now}),
-    lookup:async id=>{if(profileError)throw Error('private profile failure');return {version:1,eligible:true,kind:'student',age:16,gradeLevel:10,classId:17,checkedAt:now,...profiles.get(id)};},getOffers,
+    lookup:async id=>{lookups++;if(profileError)throw Error('private profile failure');return {version:1,eligible:true,kind:'student',age:16,gradeLevel:10,classId:17,checkedAt:now,...profiles.get(id)};},getOffers,
     updateRoomLink:async body=>{catalogPatch={gamesarea01:{targetUrl:body.targetUrl}};return {updated:true};}});
   await new Promise(resolve=>server.listen(0,'127.0.0.1',resolve));const base='http://127.0.0.1:'+server.address().port+'/castle-school/';
   async function api(route,body,who='a'){
@@ -20,7 +20,7 @@ async function fixture(run){
       ...(body===undefined?{}:{body:JSON.stringify(body)})});
     return {status:response.status,value:await response.json()};
   }
-  try{await run({api,profiles,reads:()=>reads,patch:value=>{catalogPatch=value;},failCatalog:value=>{catalogError=value;},failProfile:value=>{profileError=value;},advance:ms=>{now+=ms;},
+  try{await run({api,profiles,reads:()=>reads,lookups:()=>lookups,patch:value=>{catalogPatch=value;},failCatalog:value=>{catalogError=value;},failProfile:value=>{profileError=value;},advance:ms=>{now+=ms;},
     holdCatalog:()=>{let entered,release;const observed=new Promise(resolve=>{entered=resolve;}),gate=new Promise(resolve=>{release=resolve;});hold={entered,gate};return {observed,release};}});}
   finally{await new Promise(resolve=>{server.close(resolve);server.closeAllConnections();});}
 }
@@ -76,4 +76,31 @@ test('a pending older heartbeat cannot invalidate a newer explicitly confirmed c
   }finally{held.release();}
   assert.equal((await heartbeat).status,200);assert.equal((await f.api('round-context')).value.rounds[0].game.state,'confirmed');
   assert.equal((await f.api('round-game-launch',{roundId:a.value.round.id})).value.targetUrl,'https://games.example.test/room/?code=two');
+}));
+test('existing game context and link replies include only the caller round with one fresh profile/catalog lookup',async()=>fixture(async f=>{
+  const a=await f.api('round-create',create),roundId=a.value.round.id;await f.api('round-join',{roundId},'b');
+  await f.api('round-game-confirm',confirmation(a.value.leaseId));
+  for(const [route,body]of [['context',undefined],['launch',{resourceId:'gamesarea01'}]]){
+    const before={profiles:f.lookups(),catalogs:f.reads()},reply=await f.api(route,body,'b');assert.equal(reply.status,200);
+    assert.equal(reply.value.round.id,roundId);assert.equal(reply.value.round.mine,true);assert.equal(reply.value.round.game.state,'confirmed');
+    assert.equal(f.lookups(),before.profiles+1);assert.equal(f.reads(),before.catalogs+1);
+    for(const privateField of ['leaseId','identifier','classId','gradeLevel','"age"','@invalid.local'])assert.ok(!JSON.stringify(reply.value.round).includes(privateField));
+  }
+  assert.equal((await f.api('context',undefined,'visitor')).value.round,null);
+}));
+test('bundled game status expires normally; repeated link reads do not act as membership heartbeats',async()=>fixture(async f=>{
+  const a=await f.api('round-create',create);await f.api('round-game-confirm',confirmation(a.value.leaseId));
+  f.advance(45000);assert.equal((await f.api('launch',{resourceId:'gamesarea01'})).value.round.game.state,'confirmed');
+  f.advance(45001);assert.equal((await f.api('launch',{resourceId:'gamesarea01'})).value.round,null);
+}));
+test('bundled metadata respects fresh game and cohort revocation and gives parents no round identity',async()=>fixture(async f=>{
+  const a=await f.api('round-create',create);await f.api('round-game-confirm',confirmation(a.value.leaseId));
+  f.patch({gamesarea01:{rule:{published:false}}});assert.deepEqual((await f.api('context')).value.round.game,{state:'restricted'});
+  assert.equal((await f.api('launch',{resourceId:'gamesarea01'})).status,403);
+  f.profiles.set('a@invalid.local',{kind:'parent',age:null,gradeLevel:null,classId:null});
+  assert.equal((await f.api('context')).value.round,null);
+  f.profiles.set('a@invalid.local',{age:9,gradeLevel:3,classId:99});
+  const gs=await f.api('round-create',{...create,targetId:'grundschule-lesekamin'});assert.equal(gs.status,200);
+  f.profiles.set('a@invalid.local',{age:13,gradeLevel:7,classId:17});
+  assert.equal((await f.api('context')).value.round,null,'A later profile cannot retain the previous cohort announcement');
 }));

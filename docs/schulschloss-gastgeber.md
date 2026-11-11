@@ -3,7 +3,7 @@
 ## Stand
 
 Die Erweiterung ist implementiert und lokal geprueft, aber noch nicht live.
-532 von 534 Node-Faellen bestehen; zwei bisherige optionale Faelle sind
+540 von 542 Node-Faellen bestehen; zwei bisherige optionale Faelle sind
 ausgelassen. Die getrennte Zweibrowserprobe prueft 980, 390 und 320 Pixel.
 Die bisherigen Spielseiten/PIN-Eingaben bestehen ebenfalls. Ihre Anbieter-
 Antworten sind dabei synthetisch ersetzt, nicht als echte Partien getestet.
@@ -122,3 +122,34 @@ und bestaetigtes Aufraeumen. Die bestehenden Live-Funktionen bleiben gesund.
 Ein frischer Tempbereich des abgebrochenen Browserlaufs bleibt bis zur sicheren
 Bereinigung in der geschuetzten D:-Ablage; benoetigte Nachweise werden nicht
 als temporaere Dateien geloescht.
+
+## Gebuendelter Rundenstatus
+
+Die folgende Verbesserung ist ein neuer, noch nicht nativ abgenommener Kandidat:
+Das Spielefenster erhaelt seine eigene Runde mit der vorhandenen Link-/Kontext-
+Antwort, ohne zusaetzliche regelmaessige Rundenabfrage. Je Antwort genuegt eine
+frische Schul- und Katalogpruefung. Es werden weder Rechte zwischengespeichert
+noch Anmeldungen beim Lesen verlaengert. Fremde Runden oder Mitgliedschafts-
+schluessel werden nicht mitgeliefert. Klassen-/Rollenverlust entfernt die eigene
+unpassende Anmeldung auch in diesem Pfad.
+
+Vier neue Zustands-/HTTP-Faelle und vier Frontend-Faelle pruefen die Zusammen-
+fassung, alte Antworten, Ablauf und den Rueckfall auf eine aeltere Dienstausgabe.
+Eine alte Antwort ohne Rundenfeld laesst keine gespeicherte Gastgeberbehauptung
+sichtbar. Die Zweibrowserprobe bestaetigt null zusaetzliche periodische
+`round-context`-Abrufe und weiterhin zeitnahe gemeinsame Statusaenderungen.
+Die bisherige Spiele-Browserpruefung besteht ebenfalls.
+
+Der erste Windows-Gesamtlauf dieser Verbesserung hatte einen Lastfehler:
+259 statt 400 erfolgreiche kuenstliche Anfragen. Die getrennte Wiederholung
+erreichte 400, ebenso zwei spaetere Gesamtlaeufe. Der letzte vollstaendige
+Stand umfasst 542 Faelle, 540 bestanden, zwei bisherige Auslassungen, keine
+Fehler. Die Fehlmessung bleibt erhalten. Der betroffene `round-context`-
+Lastpfad wurde durch diese Verbesserung nicht geaendert; die schwankenden
+Windows-Laufzeiten sind dennoch kein belastbarer 400-Personen-Nachweis.
+Alle 97 Python-Betriebsfaelle bestehen.
+
+Die native Abnahme oben bleibt ausschliesslich der Nachweis fuer Kandidat
+`3119b0c32934a5f1`, nicht fuer diese neuere Fassung. Vor dem erlaubten kurzen
+Live-Neustart braucht sie eigene Linux-/Native-Nachweise und die kontrollierte
+Veroeffentlichung einschliesslich der bestehenden separaten HTML-Route.

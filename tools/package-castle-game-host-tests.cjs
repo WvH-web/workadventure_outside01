@@ -3,7 +3,7 @@ const fs=require('node:fs'),path=require('node:path'),crypto=require('node:crypt
 const storage=require('./castle-local-storage.cjs'),root=path.resolve(__dirname,'..');
 const staging=path.join(storage.configure().directory,'host-tests');fs.mkdirSync(staging);
 const folder=storage.outputPath('castle-game-host-tests/'+new Date().toISOString().replace(/[:.]/g,'-'));
-const names=['castle-game-host.test.cjs','castle-game-host-http.test.cjs','castle-rounds.test.cjs','fixtures/castle-offers.cjs'];
+const names=['castle-game-host.test.cjs','castle-game-host-http.test.cjs','castle-game-status.test.mjs','castle-rounds.test.cjs','fixtures/castle-offers.cjs'];
 cp.execFileSync('git',['diff','--exit-code','HEAD','--',...names.map(name=>'tests/'+name)],{cwd:root,stdio:'pipe'});
 if(cp.execFileSync('git',['ls-files','--others','--exclude-standard','--',...names.map(name=>'tests/'+name)],{cwd:root,encoding:'utf8'}).trim())throw Error('Commit test sources before packaging');
 const sha=raw=>crypto.createHash('sha256').update(raw).digest('hex'),files={};

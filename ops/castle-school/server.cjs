@@ -61,6 +61,10 @@ function createSchoolServer({config, lookup, getOffers, updateRoomLink, roundTar
   const limits = new Map();
   const admission=new AdmissionGate(admissionOptions),preflight=typeof verify.preflight==='function'?verify.preflight:verify;
   const rounds=new RoundBoard({targets:roundTargets||JSON.parse(fs.readFileSync(path.join(__dirname,'round-targets.json'),'utf8')),clock});
+  const ownRound=(auth,profile,offers)=>{
+    if(!profile.eligible||!['student','staff'].includes(profile.kind)){rounds.revoke(auth);return null;}
+    return rounds.own(auth,profile,offers);
+  };
   for(const mapId of new Set(rounds.targets.map(target=>target.mapId)))pages.set('round-rooms/'+mapId+'.webp',{
     type:'image/webp',content:fs.readFileSync(path.join(__dirname,'public/round-rooms',mapId+'.webp'))});
   const rateSalt = crypto.randomBytes(32);
@@ -154,11 +158,11 @@ function createSchoolServer({config, lookup, getOffers, updateRoomLink, roundTar
           send(200,{updated:true,checkedAt:clock()});return;
         }
         send(200,{id:selected.id,title:selected.title,targetUrl:target(selected.targetUrl).href,presentation:selected.presentation,
-          revision:selected.revision,mode:access.mode,checkedAt:clock()});return;
+          revision:selected.revision,mode:access.mode,round:ownRound(auth,profile,offers),checkedAt:clock()});return;
       }
       const decisions=Object.fromEntries((selected?[selected]:offers).map(offer=>[offer.id,offerDecision(profile,offer,clock())]));
       const metadata=offers.map(offer=>offerMetadata(profile,offer,clock()));
-      send(200,{account,decisions,offers:metadata,checkedAt:clock()});
+      send(200,{account,decisions,offers:metadata,round:ownRound(auth,profile,offers),checkedAt:clock()});
     } catch (error) {
       const safe = error instanceof GatewayError ? error : new GatewayError(503, 'unavailable');
       if (safe.status === 429 || safe.status === 503) res.setHeader('Retry-After', String(safe.retryAfter||(safe.status === 429 ? 60 : 3)));

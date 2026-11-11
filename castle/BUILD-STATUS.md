@@ -104,6 +104,11 @@ weiter offen. Einzelheiten: `../ops/castle-school/README.md`.
   Testdienst sind kuenstlich. Fensterwechsel, neue Links und Gastgebernachfolge
   bestehen; Testdienst und temporaere Kontofreigabe sind entfernt. Noch keine
   Veroeffentlichung, Anbieterfreigabe oder 400-Personen-Abnahme.
+  Der neuere gebuendelte Status spart die zusaetzliche regelmaessige
+  Rundenabfrage; Browser und 540 von 542 lokalen Node-Faellen bestehen
+  (zwei bisherige Auslassungen), ebenso 97 Python-Faelle. Ein frueherer
+  Windows-Lastfehler ist mit seinen spaeteren erfolgreichen Wiederholungen
+  erhalten. Fuer diese Fassung fehlen noch eigene Linux-/Native-Nachweise.
   Freigabe, native Vorpruefung und Betrieb bleiben offen; Einzelheiten:
   `../docs/schulschloss-gastgeber.md`.
   Die eigene gemeinsame Rundenliste fuer 49 echte Gespraechsbereiche ist

@@ -10,11 +10,11 @@ const errors={unauthorized:'Bitte erneut in WorkAdventure anmelden.',not_allowed
   game_not_ready:'F\u00fcr diesen Raumlink gibt es keine aktuelle Gastgeber-Best\u00e4tigung.',round_missing:'Die Treffpunktrunde ist nicht mehr verf\u00fcgbar.'};
 const icon=name=>{const element=document.createElement('i');element.dataset.lucide=name;element.setAttribute('aria-hidden','true');return element;};
 const icons=()=>window.lucide?.createIcons();
-class GamesPage {
+export class GamesPage {
   constructor(){
     this.ui=Object.fromEntries(['account','message','games-list','offer-select','detail-title','mode','availability','lobby','current-url','copy','join','external','host','room-form','room-url','pin','save','refresh','viewer','viewer-title','frame-slot','close-viewer',
       'round-place','round-game-state','confirm-game','end-game','join-game'].map(id=>[id,document.getElementById(id)]));
-    this.roundClient=new RoundClient();this.roundGeneration=0;this.nextRound=0;
+    this.roundClient=new RoundClient();this.roundGeneration=0;this.roundCheckedAt=0;
     const hash=location.hash.slice(1),fromRounds=hash==='rounds'||hash.startsWith('rounds/');
     const selection=fromRounds?hash.slice(7):hash;this.initialSelection=ids.includes(selection)?selection:null;
     document.getElementById('back-rounds').hidden=!fromRounds;
@@ -34,7 +34,7 @@ class GamesPage {
   token(){try{return localStorage.getItem('authToken');}catch{return null;}}
   syncAuth(){
     this.roundClient.sync(false);const token=this.token(),scope=this.roundClient.scope;if(token===this.auth&&scope===this.roundScope)return token;
-    this.roundScope=scope;this.round=null;this.roundPending=null;this.nextRound=0;this.roundGeneration++;
+    this.roundScope=scope;this.round=null;this.roundCheckedAt=0;this.roundGeneration++;
     this.auth=token;this.epoch++;this.generation++;
     for(const abort of this.requests)abort.abort();this.requests.clear();
     this.offers=[];this.selected=null;this.current=null;this.dirty=false;this.contextPending=null;this.resolvePending=null;this.nextContext=0;
@@ -98,18 +98,12 @@ class GamesPage {
     this.ui['end-game'].hidden=!game?.mineHost;this.ui['end-game'].disabled=!lease||lease.roundId!==round?.id||this.hosting;
     this.ui['join-game'].hidden=!hosted||game.resourceId!==this.selected;this.ui['join-game'].disabled=!ready||this.joining;
   }
-  async roundState(force=false){
-    const generation=this.roundGeneration;if(!force&&Date.now()<this.nextRound)return;
-    if(this.roundPending?.generation===generation)return this.roundPending.job;
-    const job=(async()=>{
-      try{
-        const value=await this.api('round-context');if(generation!==this.roundGeneration)return;
-        if(!Array.isArray(value.rounds))throw Error('response');
-        this.round=value.rounds.find(round=>round.mine&&round.id===value.me?.roundId)||null;this.nextRound=Date.now()+5000;
-      }catch(error){if(generation===this.roundGeneration&&error.code!=='cancelled'){this.round=null;this.nextRound=Date.now()+5000;}}
-      finally{this.renderDetail();}
-    })().finally(()=>{if(this.roundPending?.job===job)this.roundPending=null;});
-    this.roundPending={generation,job};return job;
+  updateRound(value,generation){
+    if(generation!==this.roundGeneration)return;
+    if(!Object.hasOwn(value,'round')){this.round=null;return;}
+    if(value.checkedAt<this.roundCheckedAt)return;
+    if(!Number.isFinite(value.checkedAt)||value.round!==null&&(!value.round||value.round.mine!==true||typeof value.round.id!=='string'))throw Error('response');
+    this.round=value.round;this.roundCheckedAt=value.checkedAt;
   }
   async hostRound(end){
     this.syncAuth();if(this.hosting)return;const lease=this.roundClient.lease(),round=this.round,current=this.current;
@@ -121,15 +115,17 @@ class GamesPage {
       if(epoch!==this.epoch)return;
       this.roundGeneration++;if(generation===this.generation)this.message(end?'Gastgeber-Best\u00e4tigung beendet.':'Gastgeber f\u00fcr diesen Raumlink best\u00e4tigt.','success');
     }catch(error){if(epoch===this.epoch&&generation===this.generation)this.failure(error);}
-    finally{this.hosting=false;if(epoch===this.epoch){this.roundGeneration++;await this.roundState(true);}this.renderDetail();}
+    finally{this.hosting=false;if(epoch===this.epoch){this.roundGeneration++;this.generation++;await this.refresh();}this.renderDetail();}
   }
   async context(){
     if(this.contextPending)return this.contextPending;
+    const roundGeneration=this.roundGeneration;
     const job=(async()=>{
       try{
         const value=await this.api('context');
         if(!Array.isArray(value.offers)||value.offers.length!==7||!value.offers.every(offer=>ids.includes(offer.id)))throw Error('response');
         const changed=JSON.stringify(value.offers)!==JSON.stringify(this.offers);this.offers=value.offers;this.nextContext=Date.now()+15000;
+        this.updateRound(value,roundGeneration);
         if(!this.selected&&this.initialSelection){this.selected=this.initialSelection;this.initialSelection=null;}
         this.ui.account.textContent=value.account.schoolAccount?(value.account.kind==='staff'?'Lehrkraftzugang':'Schulzugang'):'Keine Schulfreigabe f\u00fcr dieses Konto';
         if(this.selected&&!this.selectedOffer()?.allowed){this.generation++;this.current=null;this.closeViewer();this.ui.pin.value='';}
@@ -144,28 +140,28 @@ class GamesPage {
     if(this.selectedOffer()?.allowed)await this.resolve();
   }
   async resolve(){
-    const id=this.selected,epoch=this.epoch,generation=this.generation;if(!this.selectedOffer()?.allowed)return;
+    const id=this.selected,epoch=this.epoch,generation=this.generation,roundGeneration=this.roundGeneration;if(!this.selectedOffer()?.allowed)return;
     if(this.resolvePending?.id===id&&this.resolvePending.generation===generation)return this.resolvePending.job;
     const job=(async()=>{
       try{
         const value=await this.api('launch',{resourceId:id});if(epoch!==this.epoch||generation!==this.generation||id!==this.selected)return;
-        this.apply(value);return value;
+        this.apply(value,roundGeneration);return value;
       }catch(error){if(epoch===this.epoch&&generation===this.generation){this.current=null;this.closeViewer();this.renderDetail();this.failure(error);}}
     })().finally(()=>{if(this.resolvePending?.job===job)this.resolvePending=null;});
     this.resolvePending={id,generation,job};return job;
   }
-  apply(value){
+  apply(value,roundGeneration=this.roundGeneration){
     const url=new URL(value.targetUrl);if(value.id!==this.selected||url.protocol!=='https:'||url.origin===location.origin)throw Error('response');
-    this.current=value;if(!this.dirty)this.ui['room-url'].value=value.targetUrl;this.renderDetail();
+    this.updateRound(value,roundGeneration);this.current=value;if(!this.dirty)this.ui['room-url'].value=value.targetUrl;this.renderDetail();
     Object.assign(this.selectedOffer(),{presentation:value.presentation,title:value.title,revision:value.revision,mode:value.mode});this.renderDetail();
   }
   async refresh(){
     this.syncAuth();if(this.closed)return;
-    if(await this.context()){await this.resolve();await this.roundState(true);}
+    if(await this.context())await this.resolve();
   }
   async tick(){
     if(this.closed)return;
-    try{this.syncAuth();if(!document.hidden){if(Date.now()>=this.nextContext)await this.context();await this.resolve();await this.roundState();}}
+    try{this.syncAuth();if(!document.hidden){if(Date.now()>=this.nextContext)await this.context();await this.resolve();}}
     finally{if(!this.closed)this.timer=setTimeout(()=>void this.tick(),5000+Math.random()*1000);}
   }
   async join(external,hosted=false){
@@ -204,11 +200,11 @@ class GamesPage {
     this.saving=true;this.message();this.renderDetail();
     try{
       await this.api('room-link',{resourceId:id,targetUrl,pin});if(epoch!==this.epoch||generation!==this.generation)return;
-      this.dirty=false;this.generation++;this.roundGeneration++;const current=await this.resolve();await this.roundState(true);if(current)this.message('Raumlink gespeichert.','success');
+      this.dirty=false;this.generation++;this.roundGeneration++;const current=await this.resolve();if(current)this.message('Raumlink gespeichert.','success');
     }catch(error){this.failure(error);}
     finally{this.ui.pin.value='';this.saving=false;this.renderDetail();}
   }
   closeViewer(){this.ui['frame-slot'].replaceChildren();this.ui.viewer.hidden=true;this.ui['viewer-title'].textContent='';}
   dispose(){this.closed=true;clearTimeout(this.timer);this.epoch++;for(const abort of this.requests)abort.abort();this.requests.clear();this.roundClient.dispose();this.ui.pin.value='';this.closeViewer();}
 }
-new GamesPage();
+if(typeof document!=='undefined')new GamesPage();

@@ -10,7 +10,7 @@ const output=storage.outputPath('castle-game-host-qa/'+new Date().toISOString().
 const origin='https://together.deine-schule.com',secret='isolated-host-browser-fixture-only';
 async function main(){
   let offset=0,url='https://games.example.test/room/?code=one',holdContext,releaseContext;
-  const now=()=>Date.now()+offset,errors=[],results=[],launches=[];
+  const now=()=>Date.now()+offset,errors=[],results=[],launches=[],uiRequests=[];
   const pupil={kind:'student',eligible:true,age:16,gradeLevel:10,classId:17};
   const profiles=new Map(['a','b'].map(id=>[id+'@invalid.local',pupil]));
   const server=createSchoolServer({config:{origin,secret,trustedProxyIps:[]},clock:now,
@@ -35,9 +35,11 @@ async function main(){
         }
         assert.equal(target.origin,origin,'No outside provider or school network in this fixture');
         if(target.pathname.startsWith('/castle-school/')){
+          uiRequests.push({id,path:target.pathname});
           const response=await route.fetch({url:local+target.pathname,maxRedirects:0});
-          if(target.pathname==='/castle-school/round-context'&&holdContext?.id===id){const entered=holdContext.entered;holdContext=null;entered();await new Promise(resolve=>{releaseContext=resolve;});}
-          return route.fulfill({response});
+          let held;
+          if(target.pathname===(holdContext?.path||'/castle-school/context')&&holdContext?.id===id){held=holdContext;holdContext=null;held.entered();await new Promise(resolve=>{releaseContext=resolve;});}
+          await route.fulfill({response});held?.finished?.();return;
         }
         if(target.pathname==='/castle-content/vendor/lucide.min.js')return route.fulfill({contentType:'text/javascript',path:path.join(__dirname,'../castle/vendor/lucide.min.js')});
         if(target.pathname==='/iframe_api.js')return route.fulfill({contentType:'text/javascript',body:''});
@@ -67,17 +69,28 @@ async function main(){
       await page.waitForURL('https://games.example.test/room/?code='+code);assert.equal(await page.evaluate(()=>opener),null);await page.close();}
     const a=await participant('a',980),b=await participant('b',390);
     assert.equal(await a.page.locator('#back-rounds').isVisible(),false,'Direct game panels do not pretend to have the map API for a return trip');
+    const beforePeriodic=uiRequests.length;await a.page.waitForTimeout(6800);
+    const periodic=uiRequests.slice(beforePeriodic);
+    assert.ok(periodic.some(request=>request.path==='/castle-school/launch'),'The real periodic link refresh ran');
+    assert.ok(!periodic.some(request=>request.path==='/castle-school/round-context'),'Games UI has no second periodic round poll');
     const made=await api(a,'round-create',{targetId:'spielesaal-lesekamin',kind:'talk',capacity:4});assert.equal(made.status,200);
     const roundId=made.value.round.id,joined=await api(b,'round-join',{roundId});assert.equal(joined.status,200);
     await remember(a,made.value);await remember(b,joined.value);await ready(a);await ready(b);
+    let launchEntered,launchFinished;
+    const oldLaunchEntered=new Promise(resolve=>{launchEntered=resolve;}),oldLaunchFinished=new Promise(resolve=>{launchFinished=resolve;});
+    holdContext={id:'a',path:'/castle-school/launch',entered:launchEntered,finished:launchFinished};
+    await a.page.locator('#refresh').click();await oldLaunchEntered;
     await a.page.locator('#confirm-game').click();await confirmed(a);await confirmed(b);
+    releaseContext();releaseContext=null;await oldLaunchFinished;
+    await a.page.evaluate(()=>new Promise(resolve=>requestAnimationFrame(()=>requestAnimationFrame(resolve))));await confirmed(a);
     assert.equal(await b.page.locator('#confirm-game').isDisabled(),true,'No implicit takeover');
     assert.equal(await b.page.locator('#join').isVisible(),false,'The stored-link shortcut is not offered for an attached group game');
     await play(b,'one');await layout(a,'host-desktop');await layout(b,'peer-390');
     await a.page.locator('#end-game').click();await waiting(b);assert.equal(await b.page.locator('#join-game').isVisible(),false);
     assert.equal(await b.page.locator('#copy').isDisabled(),true,'An ended group game cannot copy the stale link through the shortcut');
     assert.equal((await api(b,'round-context')).value.rounds[0].registered,2,'Ending host confirmation leaves both conversation members');
-    results.push({case:'two-browsers',explicitHost:true,peerFreshLaunch:true,popupNoOpener:true,automaticEndUpdate:true,conversationPreserved:true});
+    results.push({case:'two-browsers',explicitHost:true,peerFreshLaunch:true,popupNoOpener:true,automaticEndUpdate:true,conversationPreserved:true,
+      lateOlderBundledSnapshotCannotEraseNewConfirmation:true});
     await a.page.locator('#confirm-game').click();await confirmed(b);
     await b.page.locator('#host').evaluate(details=>{details.open=true;});
     await b.page.locator('#room-url').fill('https://games.example.test/room/?code=two');await b.page.locator('#pin').fill('998877');await b.page.locator('#save').click();
@@ -109,6 +122,7 @@ async function main(){
     offset+=90001;const after=await api(a,'round-context');assert.equal(after.value.rounds.length,0,'Abandoned host lease expires without invented activity');
     results.push({case:'account-and-expiry',latePriorContextIgnored:true,accountChangeClearsHostUIAndBrowserLease:true,abandonedHostExpires:true});
     assert.deepEqual(errors,[]);assert.deepEqual(launches,['one','two','two']);
+    results.push({case:'request-budget',periodicRoundContextRequests:0,roundStatusBundledWithExistingLinkRefresh:true,observedPeriodicRequests:periodic});
     const evidence={passed:true,results,errors,syntheticSchoolProfilesOnly:true,providerResponsesReplaced:true,nativeAudioNotTested:true,
       liveSchoolOrPortalChanged:false,published:false};
     fs.writeFileSync(path.join(output,'result.json'),JSON.stringify(evidence,null,2)+'\n');console.log(JSON.stringify({...evidence,output}));

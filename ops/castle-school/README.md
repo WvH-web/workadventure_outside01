@@ -843,3 +843,38 @@ its own round status should travel with existing fresh link/context responses,
 not require an additional recurring school/profile lookup. The resulting
 candidate needs fresh regression and native evidence before replacing the
 accepted candidate as the publication input. Earlier evidence stays historical.
+
+### Bundled Status Candidate
+
+The games page no longer polls `round-context` alongside its existing periodic
+link resolution. `context`, `launch` and the guarded group launch include only
+the caller's own round snapshot using the same fresh profile and catalog.
+`RoundBoard.own` never creates or renews a membership; active membership still
+requires its real token expiry and cohort permission. Nonmembers get null,
+including legacy isolated verifier fixtures without a round-capable expiry.
+Parent/unverified profiles cannot borrow another role's membership.
+
+The UI rejects older timestamps and prior local mutation generations; an old
+in-flight response cannot erase a newer host confirmation. A response from a
+legacy backend without the field clears the display claim instead of retaining
+cached host permission. Malformed snapshots are not adopted. Eight added
+HTTP/state/frontend cases cover these boundaries and the one-lookup budget.
+The actual isolated two-browser fixture observes regular link refreshes but
+zero additional periodic round-directory requests, including after host/link
+changes. The existing game UI suite also passes across desktop/390/320 widths.
+
+Retain all three new local load outcomes: the first serial complete suite
+failed its unchanged 400-request round-directory case (259 successful), the
+isolated repeat passed all 400 in 5380 ms, and the next complete repeat passed
+all 400 in 12509 ms. After the four final display cases were added, the final
+complete suite passed 540 of 542 cases, with two existing optional skips and
+zero failures; its load case passed all 400 in 6707 ms. Windows transport was
+preconnected in these measurements; no real Microsoft/provider/database load
+was generated. This variability remains a capacity qualification, not a reason
+to loosen admission limits or claim a 400-person school/media approval.
+All 97 Python operator checks also pass.
+
+This candidate is not published or covered by the earlier native receipt for
+`3119b0c32934a5f1`. Package its committed source and the expanded five-file test
+bundle on D:, run its own Linux/native preflight, and preserve the earlier
+candidate/receipts when preparing the narrowly scoped service/HTML transition.

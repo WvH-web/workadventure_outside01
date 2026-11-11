@@ -102,3 +102,10 @@ test('game hosting is explicit rather than inherited from the first conversation
   f.board.leave(f.auth('a'),f.profile(),{leaseId:f.a.leaseId});assert.equal(f.view('b').game.state,'confirmed');
   f.board.endGame(f.auth('b'),f.profile(),{leaseId:f.b.leaseId});assert.equal(f.view('b').game.state,'waiting');
 });
+test('an empty bundled summary grants no membership, while an existing round still requires token expiry',()=>{
+  const f=fixture(),withoutExpiry={identifier:'visitor@invalid.local'};
+  assert.equal(f.board.own(withoutExpiry,f.profile(),f.offers()),null);
+  assert.throws(()=>f.board.own({identifier:'a@invalid.local'},f.profile(),f.offers()),error=>error.code==='not_allowed');
+  assert.equal(f.board.members.has(f.board.principal(f.auth('a'))),false);
+  assert.equal(f.board.own(f.auth('b'),f.profile(),f.offers()).registered,1);
+});
