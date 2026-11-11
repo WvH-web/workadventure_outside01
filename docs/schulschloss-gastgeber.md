@@ -3,14 +3,14 @@
 ## Stand
 
 Die Erweiterung ist implementiert und lokal geprueft, aber noch nicht live.
-529 von 531 Node-Faellen bestehen; zwei bisherige optionale Faelle sind
+532 von 534 Node-Faellen bestehen; zwei bisherige optionale Faelle sind
 ausgelassen. Die getrennte Zweibrowserprobe prueft 980, 390 und 320 Pixel.
 Die bisherigen Spielseiten/PIN-Eingaben bestehen ebenfalls. Ihre Anbieter-
 Antworten sind dabei synthetisch ersetzt, nicht als echte Partien getestet.
 Die isolierte Linux-Vorpruefung besteht inzwischen mit 33 Faellen auf Node
-24.22.2, ohne Netz, Schulschluessel oder echte Schuldaten. Alle 91 lokalen
-Python-Betriebsfaelle bestehen ebenfalls. Native Tischtonprobe und kontrollierte
-Veroeffentlichung stehen noch aus. Der Benutzer hat den kurzen Neustart nur
+24.22.2, ohne Netz, Schulschluessel oder echte Schuldaten. Die native
+Zweikonten-Vorpruefung ist fuer Kandidat `3119b0c32934a5f1` ebenfalls bestanden;
+die kontrollierte Veroeffentlichung steht noch aus. Der Benutzer hat den kurzen Neustart nur
 des Runden-/Schuldienstes am 11. November ausdruecklich genehmigt.
 
 ## Ablauf
@@ -89,3 +89,36 @@ Quellen: `ops/castle-school/rounds.cjs`, `server.cjs`, `public/games.js`,
 Linux-/Paketpruefung: `tools/check-castle-game-host-linux.py`,
 `tests/test_castle_game_host_linux.py` und `tools/package-castle-game-host-tests.cjs`.
 Dies ist keine neue Lastabnahme und keine Fertigmeldung des gesamten Schlosses.
+
+## Native Vorpruefung
+
+Zwei regulaer ueber Microsoft angemeldete, genehmigte Testkonten pruefen die
+Gastgeberrunde in der echten Bibliothek, eines per mobiler Touchbedienung.
+Die reale Schulpruefung bleibt aktiv und der getrennte Testdienst laesst nur
+diese beiden Konten zu. Nur sein Spielkatalog und Anbieterinhalt sind kuenstlich;
+die produktiven sieben Anbieterentwuerfe und Raumlinks bleiben unveraendert.
+Es werden keine Karten oder Schulprofile in den Browsern ersetzt.
+
+Bestanden sind gemeinsamer Einstieg, vier beidseitig dekodierte Tischtonproben,
+Spiel im Seitenfenster, Linkwechsel mit neuer Bestaetigung, beide Wege zwischen
+Runden- und Spielefenster mit unveraenderter Mitgliedschaftskennung, physischer
+Gastgeberausstieg ohne automatische Nachfolge, ausdruecklicher Nachfolger,
+letztes Verlassen und freie Tastaturbewegung nach Fensterschluss. Desktop und
+Mobil zeigen gefuellte Spielgrafik. Der Anbieterrahmen bekommt weder
+Authorization-Header noch Kartenschnittstelle. Das ist keine echte Partie
+bei Haxball, Stumble Guys oder einem anderen Anbieter.
+
+Die vorherigen Fehlversuche bleiben getrennt erhalten: eine zu frueh gestartete
+Wartebedingung, ein nicht abgefangener abgebrochener Testabruf und ein voriger
+Testlink im wiederverwendeten kuenstlichen Katalog. Die Probe wartet jetzt auf
+die wirkliche Anmeldung, behandelt erwartete Navigationabbrueche ohne Ausgabe
+von Anmeldedaten und setzt ausschliesslich die isolierten Testdaten zurueck.
+Unerwartete Abruffehler und abweichende Quelldateien bleiben Abnahmefehler.
+
+Der Testdienst, seine temporaere Kontoumgebung und der SSH-Tunnel sind entfernt.
+Die volle Serverpruefung besteht danach um 17:37:32 UTC, ohne geaenderte reale
+Dienste oder Karten. Der private Abnahmebeleg bindet Kandidat, Browserverifikation
+und bestaetigtes Aufraeumen. Die bestehenden Live-Funktionen bleiben gesund.
+Ein frischer Tempbereich des abgebrochenen Browserlaufs bleibt bis zur sicheren
+Bereinigung in der geschuetzten D:-Ablage; benoetigte Nachweise werden nicht
+als temporaere Dateien geloescht.

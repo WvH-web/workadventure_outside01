@@ -1,0 +1,10 @@
+'use strict';
+const fs=require('node:fs'),path=require('node:path'),assert=require('node:assert/strict');
+const base=path.join(process.env.USERPROFILE,'.codex/private/workadventure-school-test-accounts');
+const handoff=JSON.parse(fs.readFileSync(path.join(base,'handoff.json'),'utf8'));
+assert.equal(handoff.contains_real_pupil_data,false);assert.equal(handoff.accounts.length,2);
+const identifiers=handoff.accounts.map(account=>{assert.ok(['A','B'].includes(account.key));assert.equal(account.microsoftAccountEnabled,true);
+  assert.ok(typeof account.loginUpn==='string'&&account.loginUpn.length<255&&/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(account.loginUpn));return account.loginUpn.toLowerCase();});
+assert.equal(new Set(identifiers).size,2);
+fs.writeFileSync(path.join(base,'qa/game-host-identifiers.private.json'),JSON.stringify({identifiers})+'\n',{mode:0o600});
+console.log(JSON.stringify({prepared:true,approvedSyntheticAccounts:2,credentialsPrinted:false,realPupilData:false}));

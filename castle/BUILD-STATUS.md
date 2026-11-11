@@ -98,6 +98,12 @@ weiter offen. Einzelheiten: `../ops/castle-school/README.md`.
   besteht mit 33 Faellen ohne Netz oder Schuldaten; alle 91 lokalen Python-
   Betriebsfaelle bestehen. Alte/neue Karten und bestehende Dienste sind
   anschliessend vollstaendig unveraendert nachgeprueft.
+  Fuer genau diesen Kandidaten besteht inzwischen auch die native Vorpruefung
+  mit zwei normalen Microsoft-Schultestkonten, mobiler Touchbedienung und vier
+  echten beidseitigen Tischtonmessungen. Nur Katalog/Anbieterinhalt im getrennten
+  Testdienst sind kuenstlich. Fensterwechsel, neue Links und Gastgebernachfolge
+  bestehen; Testdienst und temporaere Kontofreigabe sind entfernt. Noch keine
+  Veroeffentlichung, Anbieterfreigabe oder 400-Personen-Abnahme.
   Freigabe, native Vorpruefung und Betrieb bleiben offen; Einzelheiten:
   `../docs/schulschloss-gastgeber.md`.
   Die eigene gemeinsame Rundenliste fuer 49 echte Gespraechsbereiche ist

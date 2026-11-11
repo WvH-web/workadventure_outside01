@@ -808,3 +808,38 @@ service has been changed by this preflight. A WorkAdventure host confirmation
 is a voluntary declaration, not proof that a cross-origin provider room exists;
 a host remaining in WorkAdventure must explicitly end it after closing only
 the external game. Details: `docs/schulschloss-gastgeber.md`.
+
+### Restricted Native Host Preflight Accepted
+
+Candidate `3119b0c32934a5f1` passed the actual native two-account preflight.
+Both approved accounts signed in normally through Microsoft again. The
+loopback-only stage additionally restricts real school lookup to exactly those
+two accounts; it does not replace their actual profiles or authentication.
+Its synthetic provider catalog/updater is explicitly marked on every response,
+not exposed publicly or copied to production. No maps were substituted.
+
+The actual WorkAdventure sidebar tests creation/join, mobile touch, both panel
+navigation directions without nonce rotation, two genuinely loaded synthetic
+targets, automatic link-change invalidation, normal physical departure,
+explicit successor and last-departure cleanup. Four samples show increasing
+inbound bytes and decoded audio energy in both actual native participants.
+Movement and nonblank desktop/mobile canvases also pass. The synthetic provider
+iframe receives no Authorization header or map API. This does not certify a
+real external game, provider age approval or 400-person capacity.
+
+Failures are retained in separate D: timestamped runs. The probe now waits for
+membership before checking closure, resets only the isolated fixture and
+handles expected route cancellation without logging request headers. Source
+assertions and unexpected routing errors cannot be excused as navigation.
+The running tunnel and stage were actually closed, the temporary identifier
+environment removed, and the full unchanged-platform audit passed again at
+17:37:32 UTC. Root-private receipt
+`game-host-native-acceptance-3119b0c32934a5f1.json` binds the exact original stage,
+teardown, browser evidence and pinned probe source. It remains `published: false`.
+The brief restart permission has still not been used.
+
+Before publication, also avoid doubling the games page's periodic requests:
+its own round status should travel with existing fresh link/context responses,
+not require an additional recurring school/profile lookup. The resulting
+candidate needs fresh regression and native evidence before replacing the
+accepted candidate as the publication input. Earlier evidence stays historical.
