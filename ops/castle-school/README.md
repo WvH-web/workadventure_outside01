@@ -578,3 +578,19 @@ executable; the 104,142,336-byte executable was later removed after verifying
 that no CLI process was active. `tools/castle-capacity/install-cli.cjs` reinstalls
 it from the pinned official release. No school data, source artwork, map,
 credential, acceptance proof or server file was deleted for this local cleanup.
+
+The following read-only capacity recheck still found only about 14 MiB free.
+Eleven old temporary Playwright profiles total 113,215,853 logical bytes; no
+Chrome process referenced any of their exact paths at inspection time. The
+installed Playwright browser/tool cache totals 735,299,135 logical bytes and
+may be needed by other projects. None was deleted. Together they are still less
+than the requested 2 GiB, and logical sizes are not guaranteed reclaimable disk
+allocation. Existing artwork, release archives and acceptance proofs remain
+protected from opportunistic cleanup. A user decision/free-space change is
+still needed before further browser work.
+
+The native recovery probe's disk gate now runs before loading Playwright, Sharp
+or the cinema helper; an unused room-builder import was removed. One additional
+VM test exercises zero space, 1 KiB and just below the 1 GiB limit and proves
+that no browser dependency is loaded and no result/audio write is attempted.
+This focused test passes; it is not a rerun of the blocked live acceptance.

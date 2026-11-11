@@ -1,8 +1,5 @@
 'use strict';
 const fs=require('node:fs'),path=require('node:path'),assert=require('node:assert/strict');
-const {chromium}=require('./castle-deps.cjs')('playwright'),sharp=require('./castle-deps.cjs')('sharp');
-const {join,stats,writeAudio,audioFixture}=require('./check-cinema-live.cjs');
-const {revision}=require('./build-castle-expansion.cjs');
 const candidate=process.argv.includes('--recovery-candidate'),recovery=process.argv.includes('--recovery-published')||candidate;
 const brothers=process.argv.includes('--brother-probe'),live=process.argv.includes('--live')||brothers||recovery;
 const attemptArg=process.argv.find(arg=>arg.startsWith('--attempt='));assert.ok(!attemptArg||recovery&&/^--attempt=[1-9]$/.test(attemptArg));
@@ -14,6 +11,8 @@ const crypto=require('node:crypto'),sha=raw=>crypto.createHash('sha256').update(
 const modules=Object.fromEntries(['presence.js','round-client.js'].map(name=>[name,fs.readFileSync(path.join(root,'ops/castle-school/public',name))]));
 async function main(){
   if(recovery){const disk=fs.statfsSync(root);if(disk.bavail*disk.bsize<1024**3)throw Object.assign(Error('Insufficient local space for two browser profiles'),{code:'INSUFFICIENT_DISK_SPACE'});}
+  const {chromium}=require('./castle-deps.cjs')('playwright'),sharp=require('./castle-deps.cjs')('sharp');
+  const {join,stats,writeAudio,audioFixture}=require('./check-cinema-live.cjs');
   fs.mkdirSync(output,{recursive:true});fs.rmSync(path.join(output,'result.json'),{force:true});writeAudio();let stage='entry',recoveryAudio;const users=[],results=[],served=[],roundRequests=[];
   const browser=await chromium.launch({channel:'chrome',headless:true,args:['--use-fake-ui-for-media-stream','--use-fake-device-for-media-stream',
     '--use-file-for-fake-audio-capture='+audioFixture,'--use-gl=angle','--use-angle=swiftshader','--enable-unsafe-swiftshader']});
