@@ -3,6 +3,14 @@ import hashlib
 from pathlib import Path
 import runpy
 
+billiards=Path('/opt/wvh-castle-billiards-pilot-r3/private')
+if (billiards/'deployment.json').exists() and not (billiards/'rollback.json').exists():
+    path=billiards/'deployment-ops.py'
+    assert path.resolve()==path and path.stat().st_uid==0 and path.stat().st_mode&0o777==0o600
+    raw=path.read_bytes();assert hashlib.sha256(raw).hexdigest()=='2084f0ccf75dd91e4034fc742e8598db828d822489a758c4a9467103f489652d'
+    scope={'__name__':'castle_billiards_audit','__file__':str(path)};exec(compile(raw,str(path),'exec'),scope)
+    scope['verify']();raise SystemExit(0)
+
 seat=Path('/opt/wvh-castle-seat-ui-retry/private')
 if (seat/'deployment.json').exists() and not (seat/'rollback.json').exists():
     path=seat/'deployment-ops.py'

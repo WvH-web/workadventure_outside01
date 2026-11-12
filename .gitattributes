@@ -6,5 +6,10 @@ ops/castle-art/upstream/** -text
 ops/castle-piano/vendor/** -text
 ops/castle-piano/public/vendor/** -text
 ops/castle-piano/public/samples/** -text
+ops/castle-billiards/** text eol=lf
+ops/castle-billiards/vendor/** -text
+ops/castle-billiards/public/vendor/** -text
+tools/castle-billiards-deployment.py text eol=lf
+tools/castle-billiards-acceptance.py text eol=lf
 ops/castle-homes/game.manifest.json -text
 ops/castle-homes/control.service text eol=lf

@@ -4,6 +4,18 @@ Das Gesamtziel bleibt aktiv. Dies ist keine Freigabe als fertiggestelltes
 Schloss oder fuer eine Veranstaltung mit 400 Personen. Das bisherige Schloss,
 Village und geschuetzte Lehrerzimmer werden nicht ersetzt.
 
+Neuer Ausbau vom 11. November: Ein eigenes gemeinsames Billard laeuft als
+getrennter Pilot ausschliesslich fuer die beiden freigegebenen kuenstlichen
+Schultestkonten. Echte zentrale Physik, Regeln, gemeinsame Kugelstaende,
+Wiederbeitritt und neue Partie sind umgesetzt. Alle alten Karten und Dienste
+bleiben unveraendert. Noch kein normaler Billardtisch und keine allgemeine
+Schulfreigabe: Die erste native Probe findet eine Ueberdeckung durch die
+WorkAdventure-Zoomleiste. Die korrigierte CSS besteht als eindeutig markierter
+Browserkandidat mit zwei normalen Microsoft-Konten, Touch und beidseitiger
+nativer Tischsprache; sie muss noch normal veroeffentlicht und erneut abgenommen
+werden. 600 Node-Faelle, zwei unveraenderte optionale Auslassungen und alle
+154 Python-Faelle bestehen. Einzelheiten: `../docs/schulschloss-billard.md`.
+
 Aktueller Nachtrag vom 11. November: Die kompakte native Sitzanzeige ist in der
 neuen Vorschau live. Hinsetzen/Aufstehen bleiben auf Desktop und Touch-Handy
 144 x 44 Pixel gross; die normale Leertaste und einmalige fokussierte

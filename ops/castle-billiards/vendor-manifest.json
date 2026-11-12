@@ -1,0 +1,359 @@
+{
+  "version": 1,
+  "source": "https://github.com/tailuge/billiards",
+  "commit": "fda4e90e251ce59ad878dbb996af372f4028a325",
+  "upstreamLicense": "GPL-3.0",
+  "compiler": {
+    "name": "esbuild",
+    "version": "0.17.17",
+    "lowerStaticBlocks": true
+  },
+  "upstreamFiles": [
+    "src/events/eventtype.ts",
+    "src/utils/utils.ts",
+    "src/utils/three-utils.ts",
+    "src/model/physics/constants.ts",
+    "src/model/physics/mathavan.ts",
+    "src/model/physics/physics.ts",
+    "src/view/trace.ts",
+    "src/view/balltexturefactory.ts",
+    "src/view/ballcubetexturefactory.ts",
+    "src/utils/threecushionconfig.ts",
+    "src/network/client/session.ts",
+    "src/view/ballmaterialfactory.ts",
+    "src/view/ballmesh.ts",
+    "src/model/ball.ts",
+    "src/view/tablegeometry.ts",
+    "src/model/physics/knuckle.ts",
+    "src/model/physics/pocket.ts",
+    "src/view/pocketgeometry.ts",
+    "src/model/physics/cushion.ts",
+    "src/model/physics/collisionthrow.ts",
+    "src/model/physics/collision.ts",
+    "src/events/gameevent.ts",
+    "src/events/aimevent.ts",
+    "src/view/cuemesh.ts",
+    "src/utils/cueintersect.ts",
+    "src/utils/dom.ts",
+    "src/view/cue.ts",
+    "src/utils/cueparams.ts",
+    "src/model/outcome.ts",
+    "src/view/proximityindicator.ts",
+    "src/utils/proximity.ts",
+    "src/utils/shotstart.ts",
+    "src/model/table.ts",
+    "src/view/tableconfig.ts",
+    "src/utils/snookerconfig.ts",
+    "src/utils/rack.ts",
+    "src/events/placeballevent.ts",
+    "src/events/watchevent.ts",
+    "src/events/startaimevent.ts",
+    "src/events/scoreevent.ts",
+    "src/utils/respot.ts",
+    "src/events/rerackevent.ts",
+    "src/utils/table-scaler.ts",
+    "src/controller/rules/eightball.ts"
+  ],
+  "renderer": {
+    "name": "three",
+    "version": "0.187.0",
+    "license": "MIT",
+    "integrity": "sha512-Qiu7R+Cmh8CstZsY1uJOSWnVlfo7ZtNLV7mF8Jltk3LB3AtDu9cRZlcnRKkAk8Y4z6KKw35z7Y7Urd7jWY8etA==",
+    "archiveSha256": "ff540832ded0cfe919764d24a3d88f3e2a05f23303f876423e4f893841e90728",
+    "files": [
+      {
+        "path": "LICENSE",
+        "bytes": 1081,
+        "sha256": "8b378ebe60e2fe500158cb0ac71cb5e8b7d92953c2abcc63a0eb90499653b5bc"
+      },
+      {
+        "path": "package.json",
+        "bytes": 3818,
+        "sha256": "87f2c99a8718e5fdd6f5e51427fde52c6075f2f698ddf8f7b4e162882df93940"
+      },
+      {
+        "path": "build/three.cjs",
+        "bytes": 631,
+        "sha256": "b326d5a8b9639e18e3d8debae1c331eaaf426ec703bf218c5ab72b9d6bfa1e94"
+      },
+      {
+        "path": "build/three.module.js",
+        "bytes": 658900,
+        "sha256": "104f56145899722094556490d787aae0617cc2fc3382f31df02d724ea1aee341"
+      },
+      {
+        "path": "build/three.core.js",
+        "bytes": 1474799,
+        "sha256": "613e370f76638fdef83926642bf256dc9615684922de1ce1f63a8583e5d78578"
+      }
+    ]
+  },
+  "renderingBoundariesOnly": [
+    "../aim",
+    "../watchaim",
+    "../placeball",
+    "../../network/client/matchresult"
+  ],
+  "physicsAndRuleSourceUnmodified": true,
+  "coreSha256": "79a1d4df67d90390bdb76c324d78937800a8eb2188b3e0e79c06fb189c07bf7b",
+  "coreBytes": 522948,
+  "externalRuntimeImports": 0,
+  "liveServicesChanged": false,
+  "files": [
+    {
+      "path": "vendor/tailuge/src/events/eventtype.ts",
+      "bytes": 353,
+      "sha256": "8643b8ed653647895a2ff0b92907ea8deff15882c858810e4c84e13e608b20a1"
+    },
+    {
+      "path": "vendor/tailuge/src/utils/utils.ts",
+      "bytes": 3254,
+      "sha256": "b2496b122f2262ed86b246e02675be6f19736251f5eec8f8f26b4096e4d6c724"
+    },
+    {
+      "path": "vendor/tailuge/src/utils/three-utils.ts",
+      "bytes": 1021,
+      "sha256": "7f46a3f6c443b85e9addc5b08a4797fadde854b9fbe58ab2f7876a6e577ce049"
+    },
+    {
+      "path": "vendor/tailuge/src/model/physics/constants.ts",
+      "bytes": 1948,
+      "sha256": "564ca036bed8c81fae556e151bd64d0dfcb0acca38a66df7b8579600f00ed940"
+    },
+    {
+      "path": "vendor/tailuge/src/model/physics/mathavan.ts",
+      "bytes": 4644,
+      "sha256": "dc6a0ee7898955cbb99877434c2d8cf7432144eb5e32848021d3e4541f2a18cf"
+    },
+    {
+      "path": "vendor/tailuge/src/model/physics/physics.ts",
+      "bytes": 7801,
+      "sha256": "dc64364881c272190cf3dfa70530098936ffe945a732a5791e9c307d4142c811"
+    },
+    {
+      "path": "vendor/tailuge/src/view/trace.ts",
+      "bytes": 2377,
+      "sha256": "853d7d8cfc129311f64b95f0064742455d16e9ea0a57d03d2e659206c16f949c"
+    },
+    {
+      "path": "vendor/tailuge/src/view/balltexturefactory.ts",
+      "bytes": 2253,
+      "sha256": "9e48c5f37ab220692b7f372b7b9a6593130863f133101e7f95399a5c99111bb1"
+    },
+    {
+      "path": "vendor/tailuge/src/view/ballcubetexturefactory.ts",
+      "bytes": 1285,
+      "sha256": "b59eb3bfd9458cf36b76757c688f482782f269fd3e6b517a4fb454c8464d4a2d"
+    },
+    {
+      "path": "vendor/tailuge/src/utils/threecushionconfig.ts",
+      "bytes": 48,
+      "sha256": "1488176c79b396b27d05b5818bd20e73b953a578d772e2271c80bb89a3b0fb83"
+    },
+    {
+      "path": "vendor/tailuge/src/network/client/session.ts",
+      "bytes": 8444,
+      "sha256": "cc4cc34d6274f998a02f18d67c642562e8a2d1608466592b2b4636cce25b241e"
+    },
+    {
+      "path": "vendor/tailuge/src/view/ballmaterialfactory.ts",
+      "bytes": 5965,
+      "sha256": "88f3d660b09086aa925b077ccadca6aec50d261c3623bdd468513b9d4164ec65"
+    },
+    {
+      "path": "vendor/tailuge/src/view/ballmesh.ts",
+      "bytes": 5945,
+      "sha256": "de8ec257a6388478b680b55c10339c240323ce36472d1e6064b28ab94a0ee88a"
+    },
+    {
+      "path": "vendor/tailuge/src/model/ball.ts",
+      "bytes": 5141,
+      "sha256": "330455bb006a9f399f5522801695dcae84363ecf87e02f52a179fbdd19aac569"
+    },
+    {
+      "path": "vendor/tailuge/src/view/tablegeometry.ts",
+      "bytes": 1185,
+      "sha256": "ed519a919c5c7a7862bded47427d01fda1656aec6687d297380904b3c9a03afb"
+    },
+    {
+      "path": "vendor/tailuge/src/model/physics/knuckle.ts",
+      "bytes": 885,
+      "sha256": "9de3f6df594591c5af4397149cfa76533ad19c2d8ff82a94609320359211dfb5"
+    },
+    {
+      "path": "vendor/tailuge/src/model/physics/pocket.ts",
+      "bytes": 1856,
+      "sha256": "9245cc9ae514a2a8f285ae3678b55c0fb938f6496244cdb2c70c963b351ee84e"
+    },
+    {
+      "path": "vendor/tailuge/src/view/pocketgeometry.ts",
+      "bytes": 6386,
+      "sha256": "f51d965a33474a7691110acf78f9c0b4e83fc24b453956af43385ed3eb4c476b"
+    },
+    {
+      "path": "vendor/tailuge/src/model/physics/cushion.ts",
+      "bytes": 4238,
+      "sha256": "560de98fc266c71011a566cf3c95c4b767f0d9a315204d26477acc90101a5791"
+    },
+    {
+      "path": "vendor/tailuge/src/model/physics/collisionthrow.ts",
+      "bytes": 3210,
+      "sha256": "20f8db187c350fb77f669cc47a63b7749ba8bfd71a4cc1d33e7b04256fa7ce4c"
+    },
+    {
+      "path": "vendor/tailuge/src/model/physics/collision.ts",
+      "bytes": 1630,
+      "sha256": "c28a1ccd5b78cde46d7f235b45c164453162e1be96a6a794ec74c6ee39be4563"
+    },
+    {
+      "path": "vendor/tailuge/src/events/gameevent.ts",
+      "bytes": 276,
+      "sha256": "0d4187dec85b11b6ddf71ba17d99b49ae0346293f14043bc7eb6ae97fa44014a"
+    },
+    {
+      "path": "vendor/tailuge/src/events/aimevent.ts",
+      "bytes": 1378,
+      "sha256": "dbcb0bd45d95ede37a7c12f0644c652b4ca5637543de08c4b7103459dff85814"
+    },
+    {
+      "path": "vendor/tailuge/src/view/cuemesh.ts",
+      "bytes": 15719,
+      "sha256": "55482c075e65c310cf9da487c88f079f5472718d91fe680aae616625997a0e5d"
+    },
+    {
+      "path": "vendor/tailuge/src/utils/cueintersect.ts",
+      "bytes": 951,
+      "sha256": "d9c662173cff7287b2b085bed567f52801918f5f2b135ed02cefb194a80468ef"
+    },
+    {
+      "path": "vendor/tailuge/src/utils/dom.ts",
+      "bytes": 549,
+      "sha256": "7246e6a009a412995b2cbf3f2c38f11a791727edeced5c9454b9a97b948a2810"
+    },
+    {
+      "path": "vendor/tailuge/src/view/cue.ts",
+      "bytes": 15974,
+      "sha256": "c8da838913ef3b51ee4ede95b60087417cb79336c229c0a48e7f8ba51b27c3f7"
+    },
+    {
+      "path": "vendor/tailuge/src/utils/cueparams.ts",
+      "bytes": 1155,
+      "sha256": "e31c335adc28ea6be770cf81c30f11e8af65a33d3c294ae4c149f4d3aed1eaee"
+    },
+    {
+      "path": "vendor/tailuge/src/model/outcome.ts",
+      "bytes": 5431,
+      "sha256": "f64ceb318bdc9b59bf33a753516edfc48186bd15f48361b2b59a35376e298416"
+    },
+    {
+      "path": "vendor/tailuge/src/view/proximityindicator.ts",
+      "bytes": 5375,
+      "sha256": "e571dcd3583cb685d80fc41d48bf833279ba7e4025070837cfc2e3ad66da9b1f"
+    },
+    {
+      "path": "vendor/tailuge/src/utils/proximity.ts",
+      "bytes": 3775,
+      "sha256": "d0934a4175ffc57b93500954526bd47c3a6c1ec4b1c68543c7838cb2a18f90ba"
+    },
+    {
+      "path": "vendor/tailuge/src/utils/shotstart.ts",
+      "bytes": 5203,
+      "sha256": "f4baac67d1866d2ace40489209aa47cfc5479bdd864b3694db5c46dcfd4e0532"
+    },
+    {
+      "path": "vendor/tailuge/src/model/table.ts",
+      "bytes": 7376,
+      "sha256": "943f879a558da8ec5dedf8b9d2f2d4ea608be4bfe2b9eccb95d12ef7a3a8a1d3"
+    },
+    {
+      "path": "vendor/tailuge/src/view/tableconfig.ts",
+      "bytes": 1086,
+      "sha256": "0a6cfb1ac0945204971653ded1d204e8edfe9a43b8c6b794ac19292a140ea81f"
+    },
+    {
+      "path": "vendor/tailuge/src/utils/snookerconfig.ts",
+      "bytes": 42,
+      "sha256": "c0be2254370db5f96df52b899f105df7997b42631076f38f48d89301a3966207"
+    },
+    {
+      "path": "vendor/tailuge/src/utils/rack.ts",
+      "bytes": 9581,
+      "sha256": "b388bc98de3af9c6a6334ac04812f4bc7d0bcf4e71b0cccc04f653914fbe04e6"
+    },
+    {
+      "path": "vendor/tailuge/src/events/placeballevent.ts",
+      "bytes": 882,
+      "sha256": "92f5eefb3286e3e080c346e1f2798ddebbb1a79b94f9a2cd8567d42be2d513b2"
+    },
+    {
+      "path": "vendor/tailuge/src/events/watchevent.ts",
+      "bytes": 473,
+      "sha256": "03f6fd414bcb3138315b596a11bc03199eed63b2c7ad90aeaf11087415f6e5a1"
+    },
+    {
+      "path": "vendor/tailuge/src/events/startaimevent.ts",
+      "bytes": 405,
+      "sha256": "7e217f6d71c37b991777761a06be3dc07267dc446bb1e80bfcd290d842ea3bda"
+    },
+    {
+      "path": "vendor/tailuge/src/events/scoreevent.ts",
+      "bytes": 659,
+      "sha256": "419d003cd02482b49550c173cff9b35f5ed59d85cb1985eba38dc7d8da8ae711"
+    },
+    {
+      "path": "vendor/tailuge/src/utils/respot.ts",
+      "bytes": 2488,
+      "sha256": "2e6301095fdd8231e03ca63386070bf41849bf6e9e1e4616ba39ec4793cf9718"
+    },
+    {
+      "path": "vendor/tailuge/src/events/rerackevent.ts",
+      "bytes": 926,
+      "sha256": "4126849187fc76d1592ff5e9b9a854491d95d0133786583b21a75ea9e59e8302"
+    },
+    {
+      "path": "vendor/tailuge/src/utils/table-scaler.ts",
+      "bytes": 1554,
+      "sha256": "f2c240fa7743e2d50dace8fbc2394eb9d6a4a19611a75912c52fb187a30d3902"
+    },
+    {
+      "path": "vendor/tailuge/src/controller/rules/eightball.ts",
+      "bytes": 10947,
+      "sha256": "8b495aab74b904c3fc919c310dd10f5f5d5d21eb76f19161ab8225dc6b916cfd"
+    },
+    {
+      "path": "vendor/tailuge/LICENSE",
+      "bytes": 35149,
+      "sha256": "3972dc9744f6499f0f9b2dbf76696f2ae7ad8af9b23dde66d6af86c9dfb36986"
+    },
+    {
+      "path": "vendor/tailuge/README.md",
+      "bytes": 23175,
+      "sha256": "778ad1490fbb7d33c1cb969cd0b271ae3bd4a2c8de3c04560a18602d3eb632ba"
+    },
+    {
+      "path": "vendor/tailuge/package.json",
+      "bytes": 3369,
+      "sha256": "e90a11f2d48256e5fa6867982be4ca0353840683f8eaa677c22accd24b24f527"
+    },
+    {
+      "path": "public/vendor/three/LICENSE",
+      "bytes": 1081,
+      "sha256": "8b378ebe60e2fe500158cb0ac71cb5e8b7d92953c2abcc63a0eb90499653b5bc"
+    },
+    {
+      "path": "public/vendor/three/build/three.module.js",
+      "bytes": 658900,
+      "sha256": "104f56145899722094556490d787aae0617cc2fc3382f31df02d724ea1aee341"
+    },
+    {
+      "path": "public/vendor/three/build/three.core.js",
+      "bytes": 1474799,
+      "sha256": "613e370f76638fdef83926642bf256dc9615684922de1ce1f63a8583e5d78578"
+    },
+    {
+      "path": "vendor/core.cjs",
+      "bytes": 522948,
+      "sha256": "79a1d4df67d90390bdb76c324d78937800a8eb2188b3e0e79c06fb189c07bf7b"
+    }
+  ]
+}

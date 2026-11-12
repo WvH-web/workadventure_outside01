@@ -4,6 +4,15 @@ Recherche und technischer Vorabcheck: 7. November 2026.
 Inhaltliche Vertiefung, Anbieterbedingungen und Browserprobe: 8. November 2026.
 Ergaenzung zum [Raumkonzept](schulschloss-konzept.md).
 
+Eigener Ausbau vom 11. November: [Schloss-Billard](schulschloss-billard.md) ist
+als getrennt schulisch geschuetzter Zwei-Testkonten-Pilot aufgebaut, mit
+unveraenderter bewaehrter Physik statt eines neuen Physik-Eigenbaus. Die echte
+native Probe deckt einen Bedienelement-Konflikt auf; die Korrektur besteht als
+klar markierter CSS-Browserkandidat mit zwei normalen Microsoft-Konten und
+beidseitiger nativer Sprache. Noch keine normale Karten-Aktivierung oder
+allgemeine Schulfreigabe. Die nachfolgenden historischen Kandidatenbewertungen
+werden dadurch nicht zu pauschalen Freigaben fremder Angebote.
+
 Eigener Ausbau vom 11. November: Die [kooperative Sternenmaschine](schulschloss-sternenmaschine.md)
 ist als gemeinsame schulinterne Aktivitaet am normalen Forschertisch der neuen
 geschuetzten Schloss-Sternwarte freigeschaltet. Nach der getrennten Probe ist
