@@ -1,0 +1,69 @@
+{
+  "version": "2.1.0",
+  "mapUrl": "https://wvh-web.github.io/workadventure_outside01/castle/spielesaal.tmj?v=20261112-billard1-20261109-rounds1",
+  "entities": {},
+  "areas": [
+    {
+      "id": "f962c291-ac45-43dc-afa9-66b07bbcb431",
+      "name": "Spielelounge",
+      "x": 64,
+      "y": 272,
+      "width": 288,
+      "height": 256,
+      "visible": true,
+      "properties": [
+        {
+          "id": "e40914d5-ba94-458d-80fe-09aa4dcf6cba",
+          "type": "livekitRoomProperty",
+          "roomName": "school-castle-v2-spielesaal-area-lesekamin"
+        }
+      ]
+    },
+    {
+      "id": "acbf1af0-d069-4c8e-8268-cea15e1fe3a1",
+      "name": "Billard und Zuschauer",
+      "x": 544,
+      "y": 176,
+      "width": 288,
+      "height": 256,
+      "visible": true,
+      "properties": [
+        {
+          "id": "cdc632c4-4cf2-422a-ac4b-3896d318d78e",
+          "type": "livekitRoomProperty",
+          "roomName": "school-castle-v2-spielesaal-area-fensterleser"
+        }
+      ]
+    },
+    {
+      "id": "cfeac438-15f9-4369-b72c-01504936622a",
+      "name": "Spielrunde",
+      "x": 544,
+      "y": 432,
+      "width": 288,
+      "height": 208,
+      "visible": true,
+      "properties": [
+        {
+          "id": "80a00f8f-ad8f-4451-a304-f4226aa21626",
+          "type": "livekitRoomProperty",
+          "roomName": "school-castle-v2-spielesaal-area-buchclub"
+        }
+      ]
+    }
+  ],
+  "entityCollections": [],
+  "settings": {
+    "megaphone": {
+      "enabled": false,
+      "title": "",
+      "scope": "ROOM"
+    }
+  },
+  "metadata": {
+    "name": "Spielesaal",
+    "description": "Spielesaal mit drei getrennten Gespraechsrunden und passenden Aktivitaeten.",
+    "copyright": "Original room artwork generated for deine Schule; approved 32px-avatar seating and book-club furniture; village fire animation.",
+    "thumbnail": "https://wvh-web.github.io/workadventure_outside01/castle/art/spielesaal-billard-20261112/floor.png"
+  }
+}
