@@ -31,6 +31,15 @@ Dateien duerfen ergaenzend veroeffentlicht werden. Der vorgesehene naechste
 Proberaum heisst `billardprobe2.wam` mit getrenntem Sprachpraefix
 `school-castle-billiards-qa2-`; er ist noch nicht eingerichtet.
 
+Die beiden neuen zweiten Kandidaten-Dateien sind inzwischen zusaetzlich online
+und bytegenau geprueft. Veroeffentlichung `68a8d00c244a42a411e6fad9868ef9fb0f9d1648`,
+Pages-Lauf `43133574766`, Quellstand `4e2058fb7539c97c2f62183c3df7cb55b6f0b9be`.
+Die sieben ersten Kandidaten-Dateien aus `9a621db91cb9ae86730816af566f1cb6e0b0b00e`
+bleiben ebenso unveraendert wie die normalen Karten. Ein voruebergehender
+Netzwerkfehler betraf nur die Beobachtung des bereits abgeschickten Pages-Laufs;
+die Veroeffentlichung wurde nicht nochmals gestartet. Der erneute reine
+Abgleich bestaetigt denselben erfolgreichen Lauf und beide Dateihashes.
+
 Die vollstaendige aktuelle Node-Suite besteht mit 608 bestandenen Faellen und
 zwei unveraenderten optionalen Auslassungen (610 insgesamt). Alle 164 Python-
 Betriebsfaelle bestehen. Der grosse native Aufstehen-Kasten auf den privaten

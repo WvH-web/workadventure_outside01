@@ -3,7 +3,17 @@ const fs=require('node:fs'),path=require('node:path'),crypto=require('node:crypt
 require('./castle-local-storage.cjs').configure();
 const record=JSON.parse(fs.readFileSync(process.argv[2]||'')),sha=raw=>crypto.createHash('sha256').update(raw).digest('hex'),pause=ms=>new Promise(resolve=>setTimeout(resolve,ms));
 const api='https://api.github.com/repos/WvH-web/workadventure_outside01/actions/runs';
-async function json(url){const response=await fetch(url,{signal:AbortSignal.timeout(20000)});if(!response.ok)throw Error('Publication observation HTTP '+response.status);return response.json();}
+async function json(url){
+ let last;
+ for(let attempt=0;attempt<4;attempt++){
+  try{
+   const response=await fetch(url,{signal:AbortSignal.timeout(20000)});
+   if(response.status===429||response.status>=500){await response.body?.cancel();throw Object.assign(Error('Temporary observation HTTP '+response.status),{retryable:true});}
+   if(!response.ok)throw Error('Publication observation HTTP '+response.status);return await response.json();
+  }catch(error){if(!error.retryable&&!['TypeError','TimeoutError','AbortError'].includes(error.name))throw error;last=error;}
+  if(attempt<3)await pause(1000*2**attempt);
+ }throw last;
+}
 async function main(){
  assert.equal(record.onlyAdditionalPublicFiles,true);assert.match(record.publicationCommit,/^[a-f0-9]{40}$/);
  const count=Object.keys(record.files).length;assert.ok([2,7].includes(count));
@@ -17,8 +27,11 @@ async function main(){
  for(const [name,digest]of Object.entries(record.files)){
   assert.ok(/^castle\/(?:spielesaal-billard2?-preview\.tmj|billiards-preview\.bundle\.(?:js|manifest\.json)|art\/spielesaal-billard-20261112\/(?:floor|fronts(?:-r2)?|marker|fire)\.png)$/.test(name));
   let matched=false;for(let n=0;n<10;n++){
-   const response=await fetch('https://wvh-web.github.io/workadventure_outside01/'+name+'?v='+record.publicationCommit.slice(0,12),{signal:AbortSignal.timeout(20000)});
-   if(response.ok&&sha(Buffer.from(await response.arrayBuffer()))===digest){matched=true;break;}await pause(3000);
+   try{
+    const response=await fetch('https://wvh-web.github.io/workadventure_outside01/'+name+'?v='+record.publicationCommit.slice(0,12),{signal:AbortSignal.timeout(20000)});
+    if(response.ok&&sha(Buffer.from(await response.arrayBuffer()))===digest){matched=true;break;}
+   }catch(error){if(!['TypeError','TimeoutError','AbortError'].includes(error.name))throw error;}
+   await pause(3000);
   }assert.ok(matched,'Published candidate bytes differ: '+name);
  }
  const result={passed:true,publicationCommit:record.publicationCommit,run:run.id,additionalFilesVerified:count,existingMapsActivated:false};
