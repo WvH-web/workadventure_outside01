@@ -8,6 +8,7 @@ const gamesUrl='https://together.deine-schule.com/castle-school/games';
 const chessUrl='https://together.deine-schule.com/castle-chess/';
 const artUrl='https://together.deine-schule.com/castle-art/';
 const pianoUrl='https://together.deine-schule.com/castle-piano/';
+const billiardsUrl='https://together.deine-schule.com/castle-billiards/';
 const museumTourUrl='https://together.deine-schule.com/castle-content/collection.html?kind=museum&shared=table';
 const allowedExternal=new Set([
   'https://musiclab.chromeexperiments.com/Song-Maker/',
@@ -19,6 +20,7 @@ const allowedExternal=new Set([
 export function activitySettings(object){
   const p=props(object),url=new URL(p.castleActivityUrl,ownBase);
   const chessTable=url.origin===new URL(chessUrl).origin&&url.pathname===new URL(chessUrl).pathname&&/^#table=tisch-[123]$/.test(url.hash)&&!url.search;
+  const billiardsTable=url.origin===new URL(billiardsUrl).origin&&url.pathname===new URL(billiardsUrl).pathname&&/^#table=tisch-[123]$/.test(url.hash)&&!url.search;
   const tableStory=url.href===new URL('story.html#table',ownBase).href;
   const puzzle=url.href===new URL('puzzle.html',ownBase).href;
   const story=['story.html','story.html?v=20261108-outdoors1'].some(page=>url.href===new URL(page,ownBase).href);
@@ -26,9 +28,9 @@ export function activitySettings(object){
   const collection=['collection.html?kind=museum','collection.html?kind=music','expeditions.html'].some(page=>url.href===new URL(page,ownBase).href);
   const museumTour=url.href===museumTourUrl;
   const character=characters.some(c=>url.href===new URL('characters.html?npc='+c.id,ownBase).href);
-  if(!story&&!tableStory&&!puzzle&&!games&&!chessTable&&url.href!==chessUrl&&url.href!==artUrl&&url.href!==pianoUrl&&!collection&&!museumTour&&!character&&!allowedExternal.has(url.href))throw Error('Unknown castle activity destination');
+  if(!story&&!tableStory&&!puzzle&&!games&&!chessTable&&!billiardsTable&&url.href!==chessUrl&&url.href!==artUrl&&url.href!==pianoUrl&&!collection&&!museumTour&&!character&&!allowedExternal.has(url.href))throw Error('Unknown castle activity destination');
   return {id:p.castleActivityId,label:p.castleActivityLabel,url:games?gamesUrl:url.href,api:(story||tableStory||puzzle||museumTour)&&p.castleActivityApi===true,
-    autoOnSit:p.castleActivityOnSit===true&&(story||tableStory||puzzle||chessTable||museumTour||url.href===chessUrl||url.href===artUrl||url.href===pianoUrl),
+    autoOnSit:p.castleActivityOnSit===true&&(story||tableStory||puzzle||chessTable||billiardsTable||museumTour||url.href===chessUrl||url.href===artUrl||url.href===pianoUrl),
     group:p.castleActivityGroup||null};
 }
 export class CastleActivities{

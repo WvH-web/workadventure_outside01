@@ -4,6 +4,12 @@ Recherche und technischer Vorabcheck: 7. November 2026.
 Inhaltliche Vertiefung, Anbieterbedingungen und Browserprobe: 8. November 2026.
 Ergaenzung zum [Raumkonzept](schulschloss-konzept.md).
 
+Aktualisierte Billard-Ergaenzung: Die normale native Seitenfenster-Probe besteht
+jetzt mit zwei Microsoft-Schultestkonten ohne ersetzte Browserantworten, auch
+mit Touch und echter nativer Sprache. Die Darstellungskorrektur ist online.
+Die passend eingerichtete Billardecke im Spielesaal ist noch ein Kartenkandidat;
+die Aktivierung dieses Tisches und eine allgemeine Schulfreigabe bleiben offen.
+
 Eigener Ausbau vom 11. November: [Schloss-Billard](schulschloss-billard.md) ist
 als getrennt schulisch geschuetzter Zwei-Testkonten-Pilot aufgebaut, mit
 unveraenderter bewaehrter Physik statt eines neuen Physik-Eigenbaus. Die echte

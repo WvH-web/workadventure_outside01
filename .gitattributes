@@ -11,5 +11,6 @@ ops/castle-billiards/vendor/** -text
 ops/castle-billiards/public/vendor/** -text
 tools/castle-billiards-deployment.py text eol=lf
 tools/castle-billiards-acceptance.py text eol=lf
+tools/castle-billiards-ui-publication.py text eol=lf
 ops/castle-homes/game.manifest.json -text
 ops/castle-homes/control.service text eol=lf

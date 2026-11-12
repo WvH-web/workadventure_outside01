@@ -22,5 +22,6 @@ function buildCastleScript(){return [bundle('npcs','expansion'),bundle('outdoors
 function buildCastleHomeScript(){return [bundle('gallery','upper-gallery')];}
 function buildCastleMuseumScript(){return [bundle('museum','museum-tour')];}
 function buildCastlePuzzleScript(){return [bundle('npcs','puzzle-preview')];}
-module.exports={buildCastleScript,buildCastleHomeScript,buildCastleMuseumScript,buildCastlePuzzleScript};
+function buildCastleBilliardsScript(){return [bundle('npcs','billiards-preview')];}
+module.exports={buildCastleScript,buildCastleHomeScript,buildCastleMuseumScript,buildCastlePuzzleScript,buildCastleBilliardsScript};
 if(require.main===module)console.log(JSON.stringify((process.argv.includes('--homes')?buildCastleHomeScript():process.argv.includes('--museum')?buildCastleMuseumScript():process.argv.includes('--puzzle')?buildCastlePuzzleScript():buildCastleScript()).map(result=>({output:result.output,bytes:result.bytes,sourceModules:result.sources.length,runtimeModuleRequests:1}))));

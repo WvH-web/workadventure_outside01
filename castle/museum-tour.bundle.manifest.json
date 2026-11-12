@@ -6,13 +6,13 @@
   },
   "entry": "castle/museum.js",
   "output": "castle/museum-tour.bundle.js",
-  "bytes": 43013,
-  "sha256": "72a63693713e48559d0781d642f6716db71577f4bbbedb210e42e09ef4146dc1",
+  "bytes": 43191,
+  "sha256": "5f1cb75e3b74c9820567136b8dd41039bd10ed71ba7dccf319af7c086f4bd67e",
   "runtimeModuleRequests": 1,
   "sources": [
     {
       "path": "castle/activities.js?v=20261109-atelier1",
-      "sha256": "1505df1cc632ec797ee37a234acb6e183f5aeca2b6a7299ca0cf32a0a4b9b96b"
+      "sha256": "c0c654949e1d5eba47479b15685023085af873c2c9ec83df5bbb1c9baed76536"
     },
     {
       "path": "castle/catalog.js?v=20261108-expansion1",

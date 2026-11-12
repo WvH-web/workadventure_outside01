@@ -17,9 +17,10 @@ function applyRuntime(map){
   const script=new URL(settings.script,'https://wvh-web.github.io/workadventure_outside01/castle/');
   const prefix='https://wvh-web.github.io/workadventure_outside01/castle/';
   const entry=script.pathname.split('/').at(-1);
-  if(script.origin+script.pathname!==prefix+entry||!['room.js','hall.js','cinema.js','activities.js','expansion.bundle.js','outdoors.bundle.js','museum-tour.bundle.js','puzzle-preview.bundle.js'].includes(entry)||
+  if(script.origin+script.pathname!==prefix+entry||!['room.js','hall.js','cinema.js','activities.js','expansion.bundle.js','outdoors.bundle.js','museum-tour.bundle.js','puzzle-preview.bundle.js','billiards-preview.bundle.js'].includes(entry)||
     entry==='museum-tour.bundle.js'&&settings.castleMapId!=='museum'||
     entry==='puzzle-preview.bundle.js'&&settings.castleMapId!=='sternwarte'||
+    entry==='billiards-preview.bundle.js'&&settings.castleMapId!=='spielesaal'||
     script.hash||[...script.searchParams.keys()].some(key=>!['v','room'].includes(key)||script.searchParams.getAll(key).length!==1)||
     script.searchParams.has('room')&&script.searchParams.get('room')!==settings.castleMapId)throw Error('Unknown castle entry script');
   const revision=mapVersion({properties:[{name:'castleRevision',value:settings.castleRevision},{name:'castleRuntimeRevision',value:config.revision}]});

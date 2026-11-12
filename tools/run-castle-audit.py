@@ -3,6 +3,20 @@ import hashlib
 from pathlib import Path
 import runpy
 
+style=Path('/opt/wvh-castle-billiards-ui/private')
+if (style/'deployment.json').exists() and not (style/'rollback.json').exists():
+    path=style/'publication-ops.py'
+    assert path.resolve()==path and path.stat().st_uid==0 and path.stat().st_mode&0o777==0o600
+    raw=path.read_bytes();assert hashlib.sha256(raw).hexdigest()=='04cb4fe7cc43d44979ddd3d30d8d2e6977250674fc85355acaefed1e98d3653e'
+    scope={'__name__':'castle_billiards_ui_audit','__file__':str(path)};exec(compile(raw,str(path),'exec'),scope)
+    acceptance=Path('/opt/wvh-castle-billiards-pilot-r3/private/acceptance.json')
+    if acceptance.exists():
+        path=acceptance.with_name('acceptance-ops.py')
+        assert path.resolve()==path and path.stat().st_uid==0 and path.stat().st_mode&0o777==0o600
+        raw=path.read_bytes();assert hashlib.sha256(raw).hexdigest()=='8c3c6533417165ce7a9e520736c5dd9c8a18e5243a4fbcbfcc4eb64cfee5c6e2'
+        proof={'__name__':'castle_billiards_acceptance_audit','__file__':str(path)};exec(compile(raw,str(path),'exec'),proof);proof['verify']()
+    scope['verify']();raise SystemExit(0)
+
 billiards=Path('/opt/wvh-castle-billiards-pilot-r3/private')
 if (billiards/'deployment.json').exists() and not (billiards/'rollback.json').exists():
     path=billiards/'deployment-ops.py'

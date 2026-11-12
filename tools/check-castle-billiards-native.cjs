@@ -8,6 +8,7 @@ const candidateStyle=process.argv.includes('--candidate-style');
 const output=storage.outputPath('billiards-native/'+(candidateStyle?'candidate-':'')+new Date().toISOString().replace(/[:.]/g,'-'));
 const origin='https://together.deine-schule.com',url=origin+'/castle-billiards/#table=tisch-1';
 const archiveSha256='4a81fa9246b809bff1cf1ca119e0a081c58fc29bcb12cde7cc6eb25e52792e44';
+const cssSha256='9b4d3527a66599f6686f5d9d86b6188699b7737d89c0c2d09447f55c9619858d';
 async function main(){
  assert.equal(JSON.parse(fs.readFileSync(path.join(privateRoot,'handoff.json'))).contains_real_pupil_data,false);
  const users=[],errors=[],cases=[];let browser,phase='entry';
@@ -17,7 +18,11 @@ async function main(){
   await user.script.evaluate(async url=>{window.__billiardsPilotPanel=await WA.nav.openCoWebSite(url,false,'',65,undefined,true,false);},url);
   for(let n=0;n<100;n++){
    const frame=user.page.frames().find(frame=>frame.url()===url);
-   if(frame){await wait(frame,()=>window.castleBilliards?.connected);return frame;}
+   if(frame){
+    await wait(frame,()=>window.castleBilliards?.connected);
+    const stylesheet=await frame.evaluate(async()=>{const response=await fetch('/castle-billiards/billiards.css',{cache:'no-store'});if(!response.ok)throw Error('Stylesheet unavailable');return response.text();});
+    assert.equal(crypto.createHash('sha256').update(stylesheet).digest('hex'),cssSha256);return frame;
+   }
    await user.page.waitForTimeout(200);
   }throw Error('Native pilot panel missing');
  }
@@ -92,7 +97,7 @@ async function main(){
    await user.page.keyboard.down('ArrowRight');await user.page.waitForTimeout(180);await user.page.keyboard.up('ArrowRight');assert.ok((await user.script.evaluate(()=>WA.player.getPosition())).x>before.x+2);
   }
   cases.push('only the QA-opened panels are closed; occupied places are released and native movement resumes');errors.push(...users.flatMap(user=>user.errors));assert.deepEqual(errors,[]);
-  const proof={passed:true,archiveSha256,normalMicrosoftPupils:2,syntheticApprovedAccountsOnly:true,realPublishedHttpsService:true,realNativeSidePanels:true,
+  const proof={passed:true,archiveSha256,cssSha256,normalMicrosoftPupils:2,syntheticApprovedAccountsOnly:true,realPublishedHttpsService:true,realNativeSidePanels:true,
    normalMapActivityActivated:false,panelsOpenedByQaThroughNativeApi:true,normalCastleTableNotYetPublished:true,networkResponsesSubstituted:candidateStyle,schoolLookupOverridden:false,
    candidateCssOnly:candidateStyle,normalPublishedCssUsed:!candidateStyle,
    candidateCssSha256:candidateStyle?crypto.createHash('sha256').update(fs.readFileSync(path.join(__dirname,'../ops/castle-billiards/public/billiards.css'))).digest('hex'):null,

@@ -1,5 +1,41 @@
 # Gemeinsames Schloss-Billard
 
+## Aktuelle Ergaenzung
+
+Die Darstellungskorrektur ist jetzt regulaer als eine exakt begrenzte
+oeffentliche CSS-Datei veroeffentlicht, ohne Anwendungsneustart und ohne neue
+Spiel- oder Schulregeln. Der normale native Seitenfenster-Test besteht mit
+zwei freigegebenen Microsoft-Schultestkonten, einem Touch-Handy und **ohne
+ersetzte Browserantworten**. Beide fuehren echte Stoesse aus; beiderseitige neue
+Partie, Platzwechsel, Fenster-Wiederbeitritt, bestaetigte Platzfreigabe,
+anschliessendes Laufen und beidseitig dekodierte native Tischsprache bestehen.
+Die wirklich ausgelieferte CSS wird zusaetzlich in beiden Browsern gegen ihre
+geprueften Bytes abgeglichen. Nachweis: `2026-11-12T00-18-44-769Z`.
+
+Der Billardtisch ist daneben als **noch nicht aktivierter Kartenentwurf** im
+Spielesaal eingerichtet: zwei passende Hocker, bestehende Fensternische als
+Zuschauerplatz, vierzehn statt zwoelf Sitze und weiterhin drei nicht
+ueberlappende Gespraechsgruppen. Alle alten Sitzkoordinaten, Tueren, der zentrale
+Laufweg und der Schachtisch bleiben erhalten. Billard und das bisherige
+Bausteinraetsel sind eine gemeinsame Tischwahl; spaetere Teilnehmer sollen
+dieselbe Auswahl erhalten. Eine normale Karten- oder allgemeine Schulfreigabe
+ist noch offen. Die Dienstfreigabe bleibt auf die beiden Testkonten beschraenkt.
+
+Die Quellen und ihre abgeleiteten Skriptpakete sind gemeinsam neu erstellt.
+Bestehende oeffentliche Skripte oder Karten werden dadurch nicht mitveroeffentlicht.
+Nur zusaetzliche Kandidaten-Dateien duerfen separat auf die Kartenauslieferung
+gelangen, bevor ein geschuetzter Mehrteilnehmer-Kartentest erfolgt.
+607 Node-Faelle und alle 160 Python-Faelle bestehen; die zwei bisherigen
+optionalen Node-Auslassungen bleiben unveraendert.
+
+Die Bildquelle, verkleinerte transparente Einrichtung und der Erzeugungstext
+stehen in `castle/art/billard-20261112/`. Der neue Raum verwendet eine eigene
+Atlasmappe `castle/art/spielesaal-billard-20261112/`, die alten Atlasdateien
+bleiben unveraendert. Keine groesseren neuen Zwischendateien werden auf C:
+abgelegt; die zur Karte gehoerenden Bildquellen bleiben natuerlich im Projekt.
+
+## Vorheriger Stand
+
 Stand: 11. November 2026, Ortszeit des Projekts. Das gesamte Schlossziel bleibt
 offen. Das alte Schloss, Village, Lehrerzimmer und alle bestehenden Karten wurden
 nicht ersetzt oder veraendert.

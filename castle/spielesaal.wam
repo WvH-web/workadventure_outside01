@@ -1,6 +1,6 @@
 {
   "version": "2.1.0",
-  "mapUrl": "https://wvh-web.github.io/workadventure_outside01/castle/spielesaal.tmj?v=20261109-actions2-20261109-rounds1",
+  "mapUrl": "https://wvh-web.github.io/workadventure_outside01/castle/spielesaal.tmj?v=20261112-billard1-20261109-rounds1",
   "entities": {},
   "areas": [
     {
@@ -21,11 +21,11 @@
     },
     {
       "id": "acbf1af0-d069-4c8e-8268-cea15e1fe3a1",
-      "name": "Zuschauernische",
-      "x": 656,
+      "name": "Billard und Zuschauer",
+      "x": 544,
       "y": 176,
-      "width": 176,
-      "height": 176,
+      "width": 288,
+      "height": 256,
       "visible": true,
       "properties": [
         {
@@ -39,9 +39,9 @@
       "id": "cfeac438-15f9-4369-b72c-01504936622a",
       "name": "Spielrunde",
       "x": 544,
-      "y": 400,
+      "y": 432,
       "width": 288,
-      "height": 240,
+      "height": 208,
       "visible": true,
       "properties": [
         {
@@ -64,6 +64,6 @@
     "name": "Spielesaal",
     "description": "Spielesaal mit drei getrennten Gespraechsrunden und passenden Aktivitaeten.",
     "copyright": "Original room artwork generated for deine Schule; approved 32px-avatar seating and book-club furniture; village fire animation.",
-    "thumbnail": "https://wvh-web.github.io/workadventure_outside01/castle/art/spielesaal-20261108-full/floor.png"
+    "thumbnail": "https://wvh-web.github.io/workadventure_outside01/castle/art/spielesaal-billard-20261112/floor.png"
   }
 }

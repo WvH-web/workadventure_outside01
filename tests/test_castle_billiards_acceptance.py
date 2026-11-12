@@ -10,7 +10,7 @@ class BilliardsAcceptance(unittest.TestCase):
         value={key:True for key in ['passed','syntheticApprovedAccountsOnly','realPublishedHttpsService','realNativeSidePanels','panelsOpenedByQaThroughNativeApi',
           'normalCastleTableNotYetPublished','bothPlayersExecutedActualStrokes','mutualRematchAndSeatSwap','explicitNativePanelRejoin','desktopAndTouch','nativeAudioDecodedBothWays','normalPublishedCssUsed','placesReleasedAfterConfirmation']}
         value.update({key:False for key in ['normalMapActivityActivated','networkResponsesSubstituted','schoolLookupOverridden','oldCastleReplaced','fullCastleApprovalFor400','candidateCssOnly']})
-        value.update(archiveSha256='candidate',normalMicrosoftPupils=2,errors=[],cases=['case']*6,
+        value.update(archiveSha256='candidate',cssSha256=ops['CSS_SHA'],normalMicrosoftPupils=2,errors=[],cases=['case']*6,
           audio={'before':[{'inbound':10,'energy':1},{'inbound':11,'energy':2}],
             'after':[{'inbound':20,'energy':3,'rooms':['qa-area-buchclub']},{'inbound':21,'energy':4,'rooms':['qa-area-buchclub']}]},
           first={'frames':12,'version':1,'positionsSha256':'a'*64},second={'frames':15,'version':4,'positionsSha256':'b'*64})
@@ -20,6 +20,10 @@ class BilliardsAcceptance(unittest.TestCase):
 
     def test_other_candidate_is_not_accepted(self):
         with self.assertRaises(AssertionError):ops['validate'](self.proof(),'other')
+
+    def test_old_stylesheet_is_not_accepted(self):
+        proof=self.proof();proof['cssSha256']='old'
+        with self.assertRaises(AssertionError):ops['validate'](proof,'candidate')
 
     def test_overrides_or_full_school_claims_are_not_accepted(self):
         for key in ['normalMapActivityActivated','networkResponsesSubstituted','schoolLookupOverridden','oldCastleReplaced','fullCastleApprovalFor400','candidateCssOnly']:

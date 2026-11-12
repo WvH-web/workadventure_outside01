@@ -6,13 +6,13 @@
   },
   "entry": "castle/outdoors.js",
   "output": "castle/outdoors.bundle.js",
-  "bytes": 47295,
-  "sha256": "4707a96eecef79071957b5f484a492de7e431d4080023b9c1af4dd921fc872cd",
+  "bytes": 47473,
+  "sha256": "a05a307b3a06bff207109097a7e3999c6b2bf922c13c8b8f42456a1fc35b60a9",
   "runtimeModuleRequests": 1,
   "sources": [
     {
       "path": "castle/activities.js?v=20261109-atelier1",
-      "sha256": "1505df1cc632ec797ee37a234acb6e183f5aeca2b6a7299ca0cf32a0a4b9b96b"
+      "sha256": "c0c654949e1d5eba47479b15685023085af873c2c9ec83df5bbb1c9baed76536"
     },
     {
       "path": "castle/catalog.js?v=20261108-expansion1",

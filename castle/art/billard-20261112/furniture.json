@@ -1,0 +1,11 @@
+{
+  "version": 1,
+  "generator": "built-in image generation",
+  "sourceSha256": "cf9f119a3011c738893ff724a11d92cba9ef8b775038bd6162ef2fad0d52a85a",
+  "spriteSha256": "e1182386c2aa34a003c3e4c4ad1afdd38ce7dd3edd213b282de210e0496c57f7",
+  "width": 256,
+  "height": 97,
+  "approvedAvatarPixels": 32,
+  "originalPreserved": true,
+  "transparent": true
+}

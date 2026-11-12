@@ -4,6 +4,18 @@ Das Gesamtziel bleibt aktiv. Dies ist keine Freigabe als fertiggestelltes
 Schloss oder fuer eine Veranstaltung mit 400 Personen. Das bisherige Schloss,
 Village und geschuetzte Lehrerzimmer werden nicht ersetzt.
 
+Aktuelle Ergaenzung: Die Billard-Darstellungskorrektur ist normal online und
+ohne Browserersatz mit zwei Microsoft-Schultestkonten abgenommen, einschliesslich
+Touch, beiderseitigem Spielen, Wiederbeitritt und nativer Tischsprache. Kein
+Dienstneustart und keine bestehende Karte wurden dafuer geaendert. Der Spielesaal
+hat im lokalen Kandidaten nun eine passende kleine Billardecke, zwei neue
+Hocker und die Fensternische als Zuschauerplatz. Schach und alle bisherigen
+Sitzkoordinaten bleiben erhalten. Vierzehn Sitze, drei getrennte Gespraechsgruppen
+und freie Tueren sind geprueft. Die echte Karten-Aktivierung und allgemeine
+Schulfreigabe stehen noch aus. Alle 607 Node- und 160 Python-Faelle bestehen;
+zwei unveraenderte optionale Node-Auslassungen. Einzelheiten und Historie:
+`../docs/schulschloss-billard.md`.
+
 Neuer Ausbau vom 11. November: Ein eigenes gemeinsames Billard laeuft als
 getrennter Pilot ausschliesslich fuer die beiden freigegebenen kuenstlichen
 Schultestkonten. Echte zentrale Physik, Regeln, gemeinsame Kugelstaende,

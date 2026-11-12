@@ -31,6 +31,7 @@ test('old castle, teacher room, foreign scripts, extra arguments and duplicate f
     map=>{map.properties.find(p=>p.name==='script').value='https://evil.invalid/room.js';},
     map=>{map.properties.find(p=>p.name==='script').value='sub/room.js';},
     map=>{map.properties.find(p=>p.name==='script').value='puzzle-preview.bundle.js';},
+    map=>{map.properties.find(p=>p.name==='script').value='billiards-preview.bundle.js';},
     map=>{map.properties.find(p=>p.name==='script').value='room.js?token=unexpected';},
     map=>{map.properties.find(p=>p.name==='script').value='room.js?room=other';},
     map=>{map.properties.find(p=>p.name==='castleRevision').value='bad revision';},

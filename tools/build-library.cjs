@@ -63,19 +63,23 @@ async function buildFurnishedRoom(options={}){
   for(const [side,y,standY,facing]of [['n',b.northY,b.northStandY,'down'],['s',b.southY,b.southStandY,'up']])
     for(const [i,x]of b.columns.entries())seats.push({id:'buchclub-'+side+i,label:(b.label||'Buchclub')+' '+side+(i+1),x:b.x+x,y:b.y+y,standX:b.x+x,standY:b.y+standY,facing,audioGroup:'buchclub'});
   for(const [i,x]of scene.window.columns.entries())seats.push({id:'fenster-'+i,label:(scene.window.label||'Fensterbank')+' '+(i+1),x,y:scene.window.y,standX:x,standY:scene.window.standY,facing:'down',audioGroup:'fensterleser'});
+  seats.push(...(scene.additionalSeats||[]).map(seat=>({...seat})));
   const circleIds=['lounge-lamps','lounge-sofa','tea-table','lounge-chair-west','lounge-chair-east','lounge-chair-south'];
   const rects=[...scene.collisions,...ref.collisionRects.filter(r=>circleIds.includes(r.id)).map(r=>({...r,x:r.x+dx,y:r.y+dy})),
     ...(scene.npcs||[]).map(n=>({id:'npc-'+n.id,...n.body,preserve:true}))];
   const {blocked,reachable}=geometry(scene,seats,rects);
-  await sharp(path.join(art,'room-source.png')).resize(W*T,H*T,{fit:'fill',kernel:'lanczos3'}).png({compressionLevel:9}).toFile(path.join(art,'room.png'));
+  const roomSource=path.resolve(art,scene.roomSource||'room-source.png');
+  const roomRaster=await sharp(roomSource).resize(W*T,H*T,{fit:'fill',kernel:'lanczos3'}).png({compressionLevel:9}).toBuffer();
+  if(scene.keepRoomRaster!==false)fs.writeFileSync(path.join(art,'room.png'),roomRaster);
   await sharp(path.resolve(art,b.source||'bookclub-source.png')).trim().resize(b.width,b.height,{fit:'fill',kernel:'lanczos3'}).png({compressionLevel:9}).toFile(path.join(art,'bookclub.png'));
   const circle=path.resolve(art,c.source),circleMeta=await sharp(circle).metadata();
   if(circleMeta.width!==c.width||circleMeta.height!==c.height)throw Error('Approved reading furniture size changed');
-  await sharp(path.join(art,'room.png')).composite([{input:circle,left:c.x,top:c.y},{input:path.join(art,'bookclub.png'),left:b.x,top:b.y},...(options.overlays||[])])
+  await sharp(roomRaster).composite([{input:circle,left:c.x,top:c.y},{input:path.join(art,'bookclub.png'),left:b.x,top:b.y},...(options.overlays||[])])
     .png({compressionLevel:9}).toFile(path.join(art,'floor.png'));
   const polygons=ref.frontPolygons.filter(p=>p.every(([x,y])=>x>=c.sourceX&&x<=c.sourceX+c.width&&y>=c.sourceY&&y<=c.sourceY+c.height))
     .map(p=>p.map(([x,y])=>[x+dx,y+dy]));
   polygons.push(...scene.bookclubFronts.map(p=>p.map(([x,y])=>[x+b.x,y+b.y])),scene.windowFront);
+  polygons.push(...(scene.additionalFrontPolygons||[]));
   const {data,info}=await sharp(path.join(art,'floor.png')).ensureAlpha().raw().toBuffer({resolveWithObject:true}),frontCells=new Set();let foregroundPixels=0;
   for(let y=0;y<info.height;y++)for(let x=0;x<info.width;x++){
     const h=scene.headClearance,protectedAvatar=seats.some(s=>x>=s.x-h.x&&x<s.x+h.x&&y>=s.y-h.top&&y<s.y+(s.facing==='down'?h.facingDownBottom:h.bottom));
@@ -115,7 +119,7 @@ async function buildFurnishedRoom(options={}){
   if(scene.activities)layers.push(objects('activities',scene.activities.map(a=>area('activity-'+a.id,a.area||scene.groups.find(g=>g.id===a.group),[
     P('castleActivityId',a.id),P('castleActivityLabel',a.label),P('castleActivityUrl',a.url),P('castleActivityApi',a.api),
     ...(a.group?[P('castleActivityGroup',a.group)]:[]),
-    ...(a.group&&(/^(?:story\.html(?:#table)?|puzzle\.html|https:\/\/together\.deine-schule\.com\/castle-chess\/(?:#table=tisch-[123])?|https:\/\/together\.deine-schule\.com\/castle-piano\/|https:\/\/together\.deine-schule\.com\/castle-content\/collection\.html\?kind=museum&shared=table)$/.test(a.url))?[P('castleActivityOnSit',true)]:[]),
+    ...(a.group&&(/^(?:story\.html(?:#table)?|puzzle\.html|https:\/\/together\.deine-schule\.com\/castle-chess\/(?:#table=tisch-[123])?|https:\/\/together\.deine-schule\.com\/castle-billiards\/#table=tisch-[123]|https:\/\/together\.deine-schule\.com\/castle-piano\/|https:\/\/together\.deine-schule\.com\/castle-content\/collection\.html\?kind=museum&shared=table)$/.test(a.url))?[P('castleActivityOnSit',true)]:[]),
     ...(a.choices?[P('castleActivityChoices',JSON.stringify(a.choices))]:[])]))));
   if(scene.storyVariable)layers.push(objects('variables',[{id:oid++,name:scene.storyVariable,type:'variable',x:0,y:0,width:0,height:0,rotation:0,visible:false,properties:[P('persist',false),P('default',false)]}]));
   if(scene.activities?.some(a=>a.choices?.some(option=>option.url==='story.html#table')))layers.push(objects('table-variables',[{id:oid++,name:'castleStoryTable',type:'variable',x:0,y:0,width:0,height:0,rotation:0,visible:false,properties:[P('persist',false),P('default',false)]}]));
@@ -124,7 +128,7 @@ async function buildFurnishedRoom(options={}){
   layers.push(objects('floorLayer',[]),tile('furniture-fronts',Array.from({length:count},(_,i)=>frontCells.has(i)?frontGid+i:0)));
   const imageSet=(firstgid,name,image,columns,tilecount,imagewidth,imageheight,extra={})=>({firstgid,name,image:artPath+image,columns,tilecount,imagewidth,imageheight,tilewidth:T,tileheight:T,margin:0,spacing:0,...extra});
   const mapdata={pixelWidth:W*T,pixelHeight:H*T,avatarSize:32,seats:seats.length,groups:scene.groups.length,sofaWidthPixels:100,bookclubChairWidthPixels:40,
-    blockedTiles:blocked.size,reachableFloorTiles:reachable.size,foregroundPixels,sourceSha256:crypto.createHash('sha256').update(fs.readFileSync(path.join(art,'room-source.png'))).digest('hex')};
+    blockedTiles:blocked.size,reachableFloorTiles:reachable.size,foregroundPixels,sourceSha256:crypto.createHash('sha256').update(fs.readFileSync(roomSource)).digest('hex')};
   const fireTiles=Array.from({length:6},(_,i)=>{const id=Math.floor(i/3)*animation.length*3+i%3;return {id,animation:animation.map((f,j)=>({tileid:id+j*3,duration:f.duration}))}});
   const map={compressionlevel:-1,width:W,height:H,tilewidth:T,tileheight:T,infinite:false,orientation:'orthogonal',renderorder:'right-down',tiledversion:'1.11.2',type:'map',version:'1.10',nextlayerid:lid,nextobjectid:oid,layers,
     properties:[P('mapName',name),P('mapDescription',description),P('mapImage',artPath+'floor.png'),P('script',(options.script||'room.js')+'?v='+scene.revision+(scene.scriptRoomId?'&room='+id:'')),

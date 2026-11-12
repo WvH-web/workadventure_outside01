@@ -19,7 +19,7 @@ for(const id of [...rooms.map(r=>r.id),'erdgeschoss','obergeschoss']){
   test(id+': current illustrated layout, native scale and real destinations',()=>{
     const map=read(id+'.tmj'),layout=readLayout(map),world=manifest.worlds.find(w=>w.id===id),hub=id==='erdgeschoss'||id==='obergeschoss';
     assert.deepEqual([map.width,map.height,map.tilewidth],[hub?40:28,22,32]);assert.equal(props(map).castleRevision,rooms.find(room=>room.id===id)?.revision||revision);
-    assert.equal(world.illustrated,true);assert.deepEqual(world.seats,layout.seats);assert.equal(layout.seats.length,hub?10:12);
+    assert.equal(world.illustrated,true);assert.deepEqual(world.seats,layout.seats);assert.equal(layout.seats.length,hub?10:id==='spielesaal'?14:12);
     assert.equal(layout.returnLabel,hub?'Grosse Halle':['oberstufe','sternwarte'].includes(id)?'Obere Galerie':'Wandelgang');
     const entry=new URL(props(map).script,'https://map.invalid/');assert.equal(entry.searchParams.get('room'),id);assert.equal(entry.pathname,'/'+(rooms.find(room=>room.id===id)?.bundle||'expansion.bundle.js'));
     assert.equal(createWam(map).areas.length,hub?2:3);
@@ -54,7 +54,7 @@ for(const id of [...rooms.map(r=>r.id),'erdgeschoss','obergeschoss']){
     assert.ok(queue.some(([x,y])=>inside(talk,x,y)),'NPC conversation is reachable without walking through the character');
   });
   test(id+': foreground uses only matching furniture pixels and does not cover avatar heads',async()=>{
-    const map=read(id+'.tmj'),layout=readLayout(map),art=new URL('art/'+id+'-20261108-full/',base);
+    const map=read(id+'.tmj'),layout=readLayout(map),art=new URL('art/'+(rooms.find(room=>room.id===id)?.folder||id+'-20261108-full')+'/',base);
     const floor=await sharp(fs.readFileSync(new URL('floor.png',art))).ensureAlpha().raw().toBuffer();
     const fronts=await sharp(fs.readFileSync(new URL('fronts.png',art))).ensureAlpha().raw().toBuffer();let opaque=0;
     for(let i=0;i<fronts.length;i+=4)if(fronts[i+3]){opaque++;assert.deepEqual(fronts.subarray(i,i+4),floor.subarray(i,i+4));}
@@ -79,10 +79,10 @@ test('expansion entry is one pinned module with each controller included exactly
   assert.doesNotMatch(bundle.toString('utf8'),/\b(?:import|export)\s[^;]*\bfrom\s*["']/);
 });
 
-test('the game room table opens first-party school chess without map API access or geometry changes',()=>{
+test('the game room retains first-party school chess beside the new billiards nook without map API access',()=>{
   const map=read('spielesaal.tmj'),table=map.layers.flatMap(layer=>layer.objects||[]).find(object=>props(object).castleActivityId==='games-shelf');
   const config=activitySettings(table);assert.equal(config.url,'https://together.deine-schule.com/castle-chess/#table=tisch-2');assert.equal(config.label,'Schach spielen');assert.equal(config.api,false);assert.equal(config.group,'buchclub');assert.equal(config.autoOnSit,true);
-  assert.equal(readLayout(map).seats.length,12);assert.equal(createWam(map).areas.length,3);
+  assert.equal(readLayout(map).seats.length,14);assert.equal(createWam(map).areas.length,3);
 });
 test('the atelier table opens only the protected first-party drawing page without map API access',()=>{
   const map=read('atelier.tmj'),table=map.layers.flatMap(layer=>layer.objects||[]).find(object=>props(object).castleActivityId==='atelier-draw');

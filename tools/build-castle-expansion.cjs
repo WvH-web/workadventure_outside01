@@ -19,8 +19,11 @@ const rooms=[
     activities:[activity('os-story','lesekamin','Erzaehlrunde',own+'story.html',true),{...activity('os-games','buchclub','Tischrunde','https://together.deine-schule.com/castle-chess/#table=tisch-3'),choices:[
       {id:'chess',label:'Schach',url:'https://together.deine-schule.com/castle-chess/#table=tisch-3'},
       {id:'story',label:'Erzaehlkarten',url:'story.html#table',api:true}]},activity('os-explore','fensterleser','Expeditionen',own+'expeditions.html')]},
-  {id:'spielesaal',name:'Spielesaal',parent:'erdgeschoss',key:'Games',labels:['Spielelounge','Zuschauernische','Spielrunde'],
-    activities:[activity('games-story','lesekamin','Erzaehlkarten',own+'story.html',true),activity('games-shelf','buchclub','Schach spielen','https://together.deine-schule.com/castle-chess/#table=tisch-2'),activity('games-puzzles','fensterleser','Bausteinraetsel','https://phet.colorado.edu/sims/html/area-builder/latest/area-builder_all.html?locale=de')]},
+  {id:'spielesaal',name:'Spielesaal',parent:'erdgeschoss',key:'Games',revision:'20261112-billard1',bundle:'billiards-preview.bundle.js',folder:'spielesaal-billard-20261112',expectedSeats:14,labels:['Spielelounge','Billard und Zuschauer','Spielrunde'],
+    activities:[activity('games-story','lesekamin','Erzaehlkarten',own+'story.html',true),activity('games-shelf','buchclub','Schach spielen','https://together.deine-schule.com/castle-chess/#table=tisch-2'),
+      {...activity('games-puzzles','fensterleser','Billard und Bausteinraetsel','https://together.deine-schule.com/castle-billiards/#table=tisch-1'),choices:[
+        {id:'billiards',label:'Billard',url:'https://together.deine-schule.com/castle-billiards/#table=tisch-1'},
+        {id:'blocks',label:'Bausteinraetsel',url:'https://phet.colorado.edu/sims/html/area-builder/latest/area-builder_all.html?locale=de'}]}]},
   {id:'museum',name:'Schlossmuseum',parent:'erdgeschoss',key:'Museum',revision:'20261111-tour1',bundle:'museum-tour.bundle.js',labels:['Geschichten der Fundstuecke','Entdeckernische','Ausstellungsrunde'],script:'displays.js',
     displays:[{board:'show1',x:80,y:59,width:72,height:45},{board:'show2',x:37,y:135,width:38,height:43},
       {board:'show3',x:112,y:139,width:44,height:30},{board:'show4',x:741,y:58,width:34,height:50},{board:'show5',x:736,y:140,width:37,height:18}],
@@ -38,7 +41,7 @@ const rooms=[
 ];
 function roomScene(config){
   const scene=JSON.parse(fs.readFileSync(path.join(root,'castle/art/bibliothek-20261108/scene.json')));
-  scene.revision=config.revision||revision;scene.expectedSeats=12;scene.storyVariable='castleStory'+config.key;
+  scene.revision=config.revision||revision;scene.expectedSeats=config.expectedSeats||12;scene.storyVariable='castleStory'+config.key;
   scene.scriptRoomId=true;
   scene.window={columns:['museum','atelier','sternwarte'].includes(config.id)?[776,816]:[752,800],y:config.id==='sternwarte'?184:config.id==='museum'?200:204,standY:272,label:config.labels[1]};
   if(config.id==='sternwarte'){
@@ -51,6 +54,17 @@ function roomScene(config){
   scene.exit={...scene.exit,target:config.parent+'.tmj',entry:config.id};
   scene.returnLabel=config.parent==='obergeschoss'?'Obere Galerie':'Wandelgang';
   scene.entries={start:[13,19],flur:[13,19]};scene.activities=[...config.activities];scene.displays=config.displays||[];
+  if(config.id==='spielesaal'){
+    scene.roomSource='../spielesaal-20261108-full/room-source.png';
+    scene.keepRoomRaster=false;
+    Object.assign(scene.groups.find(group=>group.id==='fensterleser'),{x:544,y:176,width:288,height:256});
+    Object.assign(scene.groups.find(group=>group.id==='buchclub'),{y:432,height:208});
+    scene.collisions.push({id:'billiards-table',x:608,y:288,width:160,height:96,preserve:true});
+    scene.additionalSeats=[
+      {id:'billard-west',label:'Billardhocker links',x:576,y:350,standX:560,standY:400,facing:'right',audioGroup:'fensterleser'},
+      {id:'billard-east',label:'Billardhocker rechts',x:800,y:350,standX:816,standY:400,facing:'left',audioGroup:'fensterleser'}];
+    scene.additionalFrontPolygons=[[[560,350],[594,350],[594,382],[560,382]],[[780,350],[816,350],[816,382],[780,382]]];
+  }
   addInhabitant(scene,config.id);
   return scene;
 }
@@ -102,7 +116,8 @@ async function buildCastleExpansion({only}={}){
   const results=[];
   for(const room of rooms.filter(room=>!only||room.id===only)){
     const scene=roomScene(room);
-    results.push(await buildFurnishedRoom({id:room.id,folder:room.id+'-20261108-full',name:room.name,scene,script:room.bundle||'expansion.bundle.js',
+    results.push(await buildFurnishedRoom({id:room.id,folder:room.folder||room.id+'-20261108-full',name:room.name,scene,script:room.bundle||'expansion.bundle.js',
+      overlays:room.id==='spielesaal'?[{input:path.join(root,'castle/art/billard-20261112/furniture.png'),left:560,top:288}]:[],
       description:room.name+' mit drei getrennten Gespraechsrunden und passenden Aktivitaeten.',copyright:'Original room artwork generated for deine Schule; approved 32px-avatar seating and book-club furniture; village fire animation.'}));
   }
   for(const id of ['erdgeschoss','obergeschoss'].filter(id=>!only||id===only)){
@@ -112,6 +127,8 @@ async function buildCastleExpansion({only}={}){
   }
   require('./build-castle-ui.cjs').buildCastleUi();require('./build-castle-script.cjs').buildCastleScript();
   require('./build-castle-script.cjs').buildCastleMuseumScript();
+  if(!only||only==='spielesaal')require('./build-castle-script.cjs').buildCastleBilliardsScript();
+  if(!only||only==='spielesaal')fs.copyFileSync(path.join(root,'castle/spielesaal.tmj'),path.join(root,'castle/spielesaal-billard-preview.tmj'));
   if(!only||only==='museum')fs.copyFileSync(path.join(root,'castle/museum.tmj'),path.join(root,'castle/museum-tour-preview.tmj'));
   return results;
 }
