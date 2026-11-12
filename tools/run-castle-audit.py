@@ -9,7 +9,12 @@ if (hall/'deployment.json').exists() and not (hall/'rollback.json').exists():
     assert path.resolve()==path and path.stat().st_uid==0 and path.stat().st_mode&0o777==0o600
     raw=path.read_bytes();assert hashlib.sha256(raw).hexdigest()=='7af7b7dbe79fd73c3e714fcdef705c43c7d0f2733c12d8b331ccad02a8e23172'
     scope={'__name__':'castle_billiards_hall_audit','__file__':str(path)};exec(compile(raw,str(path),'exec'),scope)
-    scope['verify']();raise SystemExit(0)
+    scope['verify']()
+    if (hall/'native-acceptance.json').exists():
+        path=hall/'acceptance-ops.py';assert path.resolve()==path and path.stat().st_uid==0 and path.stat().st_mode&0o777==0o600
+        raw=path.read_bytes();assert hashlib.sha256(raw).hexdigest()=='76781b1bc212b9caf2852f953c0f9c5eb18c897f7184d4e9a48df7a98e46667a'
+        acceptance={'__name__':'castle_billiards_hall_acceptance_audit','__file__':str(path)};exec(compile(raw,str(path),'exec'),acceptance);acceptance['verify_receipt'](scope)
+    raise SystemExit(0)
 
 second_table=Path('/opt/wvh-castle-billiards-table-r2/private')
 if (second_table/'stage.json').exists() and not (second_table/'cleanup.json').exists():

@@ -16,6 +16,7 @@ tools/castle-billiards-table-stage.py text eol=lf
 tools/castle-billiards-table-r2-stage.py text eol=lf
 tools/castle-billiards-table-acceptance.py text eol=lf
 tools/castle-billiards-hall-publication.py text eol=lf
+tools/castle-billiards-hall-acceptance.py text eol=lf
 tests/fixtures/castle-billiards-table-v1.wam.json -text
 ops/castle-homes/game.manifest.json -text
 ops/castle-homes/control.service text eol=lf
