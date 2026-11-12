@@ -8,13 +8,13 @@ const privateRoot=path.join(process.env.USERPROFILE,'.codex/private/workadventur
 const output=storage.outputPath('billiards-table/'+new Date().toISOString().replace(/[:.]/g,'-'));
 const url=origin+'/castle-billiards/#table=tisch-1',sha=raw=>crypto.createHash('sha256').update(raw).digest('hex');
 async function main(){
- assert.ok(process.argv.includes('--stage'),'Use only the additional protected billardprobe.wam for this probe');
- const map=JSON.parse(fs.readFileSync(path.join(root,'castle/spielesaal-billard-preview.tmj'))),revision=map.properties.find(p=>p.name==='castleRevision').value;
- const wamResponse=await fetch(origin+'/map-storage/castle-preview/billardprobe.wam',{signal:AbortSignal.timeout(15000)});assert.equal(wamResponse.status,200);
- const wamBytes=Buffer.from(await wamResponse.arrayBuffer()),wam=JSON.parse(wamBytes);assert.equal(new URL(wam.mapUrl).origin+new URL(wam.mapUrl).pathname,web+'spielesaal-billard-preview.tmj');
- assert.ok(wam.areas.every(area=>area.properties.every(p=>p.type==='livekitRoomProperty'&&p.roomName.startsWith('school-castle-billiards-qa-'))));
- const files=['spielesaal-billard-preview.tmj','billiards-preview.bundle.js','billiards-preview.bundle.manifest.json',
-  ...['floor','fronts','marker','fire'].map(name=>'art/spielesaal-billard-20261112/'+name+'.png')],fileHashes={};
+ assert.ok(process.argv.includes('--stage'),'Use only the additional protected billardprobe2.wam for this probe');
+ const map=JSON.parse(fs.readFileSync(path.join(root,'castle/spielesaal-billard2-preview.tmj'))),revision=map.properties.find(p=>p.name==='castleRevision').value;
+ const wamResponse=await fetch(origin+'/map-storage/castle-preview/billardprobe2.wam',{signal:AbortSignal.timeout(15000)});assert.equal(wamResponse.status,200);
+ const wamBytes=Buffer.from(await wamResponse.arrayBuffer()),wam=JSON.parse(wamBytes);assert.equal(new URL(wam.mapUrl).origin+new URL(wam.mapUrl).pathname,web+'spielesaal-billard2-preview.tmj');
+ assert.ok(wam.areas.every(area=>area.properties.every(p=>p.type==='livekitRoomProperty'&&p.roomName.startsWith('school-castle-billiards-qa2-'))));
+ const files=['spielesaal-billard2-preview.tmj','billiards-preview.bundle.js','billiards-preview.bundle.manifest.json',
+  ...['floor','fronts-r2','marker','fire'].map(name=>'art/spielesaal-billard-20261112/'+name+'.png')],fileHashes={};
  for(const name of files){const response=await fetch(web+name+'?v=20261112-table-check',{signal:AbortSignal.timeout(20000)});assert.equal(response.status,200);const raw=Buffer.from(await response.arrayBuffer());assert.equal(sha(raw),sha(fs.readFileSync(path.join(root,'castle',name))));fileHashes[name]=sha(raw);}
  assert.equal(JSON.parse(fs.readFileSync(path.join(privateRoot,'handoff.json'))).contains_real_pupil_data,false);
  const users=[],cases=[],errors=[],voices=[];let browser,phase='entry';
@@ -67,7 +67,7 @@ async function main(){
   writeAudio();browser=await chromium.launch({channel:'chrome',headless:true,args:['--use-fake-ui-for-media-stream','--use-fake-device-for-media-stream',
    '--use-file-for-fake-audio-capture='+audioFixture,'--use-gl=angle','--use-angle=swiftshader','--enable-unsafe-swiftshader']});
   for(let n=1;n<=2;n++){
-   mark('school-entry-'+n);const user=await join(browser,n,{roomId:'spielesaal',roomUrl:origin+'/~/castle-preview/billardprobe.wam#start',outputDir:output,
+   mark('school-entry-'+n);const user=await join(browser,n,{roomId:'spielesaal',roomUrl:origin+'/~/castle-preview/billardprobe2.wam#start',outputDir:output,
     label:'Billardtischprobe',seats:14,groups:3,revision,mobile:n===2,stubCinema:false,
     schoolStorageState:path.join(privateRoot,'qa/sso-'+(n===1?'A':'B')+'.private.json'),characterTextureId:'wvh-event-mira-v1',parking:[[112,272],[432,608]],
     onPhase:step=>mark('entry-'+n+'-'+step)});user.mobile=n===2;users.push(user);

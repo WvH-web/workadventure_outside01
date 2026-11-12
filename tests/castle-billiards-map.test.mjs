@@ -16,7 +16,7 @@ test('the two inward-facing stools preserve every original seat position, door a
   for(const key of ['x','y','standX','standY','facing','audioGroup'])assert.equal(current[key],seat[key],seat.id+' '+key);
  }
  assert.deepEqual(layout.seats.filter(seat=>seat.id.startsWith('billard-')).map(seat=>[seat.id,seat.x,seat.y,seat.facing]),[
-  ['billard-west',576,350,'right'],['billard-east',800,350,'left']]);
+  ['billard-west',576,338,'right'],['billard-east',800,338,'left']]);
  assert.equal(props(map).castleArtScale,1);assert.equal(JSON.parse(props(map).castleMapdata).sofaWidthPixels,100);
  assert.deepEqual(read('layout.json').worlds.find(world=>world.id==='spielesaal').entries,before.scene.entries);
 });
@@ -69,6 +69,14 @@ test('the new map uses one source-pinned dedicated entry, without silently chang
  const manifest=read('billiards-preview.bundle.manifest.json');assert.equal(manifest.sha256,sha(fs.readFileSync(new URL('billiards-preview.bundle.js',root))));
  assert.equal(manifest.runtimeModuleRequests,1);assert.ok(manifest.bytes<60000);
  for(const source of manifest.sources)assert.equal(source.sha256,sha(fs.readFileSync(new URL('../'+source.path.split('?')[0],root))));
- assert.match(props(map).script,/^billiards-preview\.bundle\.js\?v=20261112-billard1-/);
- assert.deepEqual(read('spielesaal-billard-preview.tmj'),map);
+ assert.match(props(map).script,/^billiards-preview\.bundle\.js\?v=20261112-billard2-/);
+ assert.deepEqual(read('spielesaal-billard2-preview.tmj'),map);
+ const first=read('spielesaal-billard-preview.tmj');assert.equal(props(first).castleRevision,'20261112-billard1');
+ assert.equal(readLayout(first).seats.find(seat=>seat.id==='billard-west').y,350,'Preserve the real first-probe source');
+});
+
+test('the revised stools leave at least the whole head and upper body visible, rather than just the hair',async()=>{
+ const fronts=await sharp(fs.readFileSync(new URL('art/spielesaal-billard-20261112/fronts-r2.png',root))).ensureAlpha().raw().toBuffer();
+ for(const seat of layout.seats.filter(seat=>seat.id.startsWith('billard-')))for(let y=seat.y-16;y<seat.y+12;y++)for(let x=seat.x-9;x<seat.x+9;x++)
+  assert.equal(fronts[(y*map.width*32+x)*4+3],0,seat.id+' head and upper body');
 });

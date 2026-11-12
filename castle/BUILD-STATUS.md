@@ -4,6 +4,21 @@ Das Gesamtziel bleibt aktiv. Dies ist keine Freigabe als fertiggestelltes
 Schloss oder fuer eine Veranstaltung mit 400 Personen. Das bisherige Schloss,
 Village und geschuetzte Lehrerzimmer werden nicht ersetzt.
 
+Neuester Raumtest: Zwei normale Microsoft-Schultestkonten bestaetigen in einem
+zusaetzlichen echten Proberaum die gemeinsame Spielwahl beim Hinsetzen,
+automatischen Beitritt, denselben Billardstoss und echte native Sprache von
+beiden Hockern. Der Durchlauf ist trotzdem nicht abgenommen: Beim Aufstehen
+stoppt eine mehrdeutige Pruefsteuerung, die Figuren sitzen zudem zu tief. Der
+Proberaum ist wieder entfernt und die sechzehn bestehenden Karten bleiben
+unveraendert. Sitzhoehe und Bedienpruefung sind im zweiten lokalen Kandidaten
+korrigiert; dieser braucht noch den neuen echten Raumtest. Die normale
+Billard-Seitenfenster-Abnahme bleibt gueltig, nicht aber eine Freigabe des
+neuen physischen Spielesaal-Tisches. Die beiden Kandidaten bleiben getrennt.
+Die aktuelle gesamte Node-Suite besteht mit 608 bestandenen Faellen, zwei
+unveraenderten optionalen Auslassungen und keinem Fehler. Alle 164 Python-
+Betriebsfaelle bestehen. Der grosse Aufstehen-Kasten der getrennt benannten
+Probekarte ersetzt nicht die kleine Anzeige auf den normalen Karten.
+
 Aktuelle Ergaenzung: Die Billard-Darstellungskorrektur ist normal online und
 ohne Browserersatz mit zwei Microsoft-Schultestkonten abgenommen, einschliesslich
 Touch, beiderseitigem Spielen, Wiederbeitritt und nativer Tischsprache. Kein

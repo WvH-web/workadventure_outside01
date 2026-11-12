@@ -4,7 +4,7 @@
     "height": 22,
     "tileSize": 32,
     "avatarPixels": 32,
-    "revision": "20261112-billard1",
+    "revision": "20261112-billard2",
     "entries": {
       "start": [
         13,
@@ -374,12 +374,13 @@
     "displays": [],
     "roomSource": "../spielesaal-20261108-full/room-source.png",
     "keepRoomRaster": false,
+    "frontFile": "fronts-r2.png",
     "additionalSeats": [
       {
         "id": "billard-west",
         "label": "Billardhocker links",
         "x": 576,
-        "y": 350,
+        "y": 338,
         "standX": 560,
         "standY": 400,
         "facing": "right",
@@ -389,7 +390,7 @@
         "id": "billard-east",
         "label": "Billardhocker rechts",
         "x": 800,
-        "y": 350,
+        "y": 338,
         "standX": 816,
         "standY": 400,
         "facing": "left",
@@ -575,7 +576,7 @@
       "id": "billard-west",
       "label": "Billardhocker links",
       "x": 576,
-      "y": 350,
+      "y": 338,
       "standX": 560,
       "standY": 400,
       "facing": "right",
@@ -585,7 +586,7 @@
       "id": "billard-east",
       "label": "Billardhocker rechts",
       "x": 800,
-      "y": 350,
+      "y": 338,
       "standX": 816,
       "standY": 400,
       "facing": "left",
@@ -1142,7 +1143,7 @@
     "bookclubChairWidthPixels": 40,
     "blockedTiles": 347,
     "reachableFloorTiles": 264,
-    "foregroundPixels": 22559,
+    "foregroundPixels": 22679,
     "sourceSha256": "f95b3cb2eb38b6a3f6231635d5c6666506e8b0b581a28c2f743c5f9bcec08305"
   }
 }

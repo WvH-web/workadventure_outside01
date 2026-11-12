@@ -2,6 +2,43 @@
 
 ## Aktuelle Ergaenzung
 
+Der erste vollstaendig getrennte Raumtest ist als **nicht abgenommen**
+festgehalten. Zwei normale Microsoft-Schultestkonten betreten den echten
+zusaetzlichen Proberaum ohne Browserersatz. Hinsetzen, sichtbare gemeinsame
+Spielwahl, automatischer Beitritt des zweiten Sitzenden, derselbe echte Stoss
+und beidseitige native Sprache an den gegenueberliegenden Hockern funktionieren.
+Beim anschliessenden Aufstehen stoppt die Pruefung wegen zweier gleich
+beschrifteter nativer Bedienflaechen. Die Screenshots zeigen ausserdem, dass
+die Figuren noch zu tief auf den Hockern sitzen. Zuschauerbank, Trennung zum
+Schach und vollstaendige Raumfreigabe werden deshalb noch nicht als bestanden
+ausgegeben. Nachweis: `2026-11-12T00-58-27-847Z`.
+
+Der temporaere Proberaum ist wieder entfernt, alle urspruenglichen sechzehn
+Karten und Dienste sind nachgeprueft unveraendert. Der fehlgeschlagene Nachweis
+und sein wirklich verwendeter Kartenstand bleiben erhalten. Neun redundante
+Server-Uploads sind nach Bytevergleich mit ihren behaltenen Kopien entfernt.
+Eine ebenfalls redundante lokale Hintergrundgrafik von 1.453.288 Bytes wird
+nicht weiter im Projekt dupliziert.
+
+Die Sitzhoehe ist im naechsten Kandidaten um zwoelf Pixel korrigiert; eine
+gezielte Pixelpruefung schuetzt nun nicht nur die Haare, sondern auch den
+ganzen oberen Koerperbereich. Die Bedienpruefung unterscheidet die sichtbare
+native Sitzmeldung vom gleichlautenden Eintrag der Aktionsleiste. Dieser
+zweite Kandidat braucht noch den erneuten echten Raumtest. Er verwendet
+`spielesaal-billard2-preview.tmj` und `fronts-r2.png`; die wirklich getesteten
+ersten Kandidaten-Dateien werden nicht ueberschrieben. Nur diese beiden neuen
+Dateien duerfen ergaenzend veroeffentlicht werden. Der vorgesehene naechste
+Proberaum heisst `billardprobe2.wam` mit getrenntem Sprachpraefix
+`school-castle-billiards-qa2-`; er ist noch nicht eingerichtet.
+
+Die vollstaendige aktuelle Node-Suite besteht mit 608 bestandenen Faellen und
+zwei unveraenderten optionalen Auslassungen (610 insgesamt). Alle 164 Python-
+Betriebsfaelle bestehen. Der grosse native Aufstehen-Kasten auf den privaten
+ersten Probenbildern ist nur die bisherige Anzeige der anders benannten
+Kandidaten-TMJ, kein Rueckbau der freigegebenen kompakten Sitzanzeige. Bei der
+abschliessenden normalen Spielesaal-Aktivierung ist die bekannte kleine
+Sitzanzeige erneut zu pruefen.
+
 Die Darstellungskorrektur ist jetzt regulaer als eine exakt begrenzte
 oeffentliche CSS-Datei veroeffentlicht, ohne Anwendungsneustart und ohne neue
 Spiel- oder Schulregeln. Der normale native Seitenfenster-Test besteht mit

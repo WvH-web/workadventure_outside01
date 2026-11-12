@@ -19,7 +19,7 @@ const rooms=[
     activities:[activity('os-story','lesekamin','Erzaehlrunde',own+'story.html',true),{...activity('os-games','buchclub','Tischrunde','https://together.deine-schule.com/castle-chess/#table=tisch-3'),choices:[
       {id:'chess',label:'Schach',url:'https://together.deine-schule.com/castle-chess/#table=tisch-3'},
       {id:'story',label:'Erzaehlkarten',url:'story.html#table',api:true}]},activity('os-explore','fensterleser','Expeditionen',own+'expeditions.html')]},
-  {id:'spielesaal',name:'Spielesaal',parent:'erdgeschoss',key:'Games',revision:'20261112-billard1',bundle:'billiards-preview.bundle.js',folder:'spielesaal-billard-20261112',expectedSeats:14,labels:['Spielelounge','Billard und Zuschauer','Spielrunde'],
+  {id:'spielesaal',name:'Spielesaal',parent:'erdgeschoss',key:'Games',revision:'20261112-billard2',preview:'spielesaal-billard2-preview.tmj',bundle:'billiards-preview.bundle.js',folder:'spielesaal-billard-20261112',expectedSeats:14,labels:['Spielelounge','Billard und Zuschauer','Spielrunde'],
     activities:[activity('games-story','lesekamin','Erzaehlkarten',own+'story.html',true),activity('games-shelf','buchclub','Schach spielen','https://together.deine-schule.com/castle-chess/#table=tisch-2'),
       {...activity('games-puzzles','fensterleser','Billard und Bausteinraetsel','https://together.deine-schule.com/castle-billiards/#table=tisch-1'),choices:[
         {id:'billiards',label:'Billard',url:'https://together.deine-schule.com/castle-billiards/#table=tisch-1'},
@@ -57,12 +57,13 @@ function roomScene(config){
   if(config.id==='spielesaal'){
     scene.roomSource='../spielesaal-20261108-full/room-source.png';
     scene.keepRoomRaster=false;
+    scene.frontFile='fronts-r2.png';
     Object.assign(scene.groups.find(group=>group.id==='fensterleser'),{x:544,y:176,width:288,height:256});
     Object.assign(scene.groups.find(group=>group.id==='buchclub'),{y:432,height:208});
     scene.collisions.push({id:'billiards-table',x:608,y:288,width:160,height:96,preserve:true});
     scene.additionalSeats=[
-      {id:'billard-west',label:'Billardhocker links',x:576,y:350,standX:560,standY:400,facing:'right',audioGroup:'fensterleser'},
-      {id:'billard-east',label:'Billardhocker rechts',x:800,y:350,standX:816,standY:400,facing:'left',audioGroup:'fensterleser'}];
+      {id:'billard-west',label:'Billardhocker links',x:576,y:338,standX:560,standY:400,facing:'right',audioGroup:'fensterleser'},
+      {id:'billard-east',label:'Billardhocker rechts',x:800,y:338,standX:816,standY:400,facing:'left',audioGroup:'fensterleser'}];
     scene.additionalFrontPolygons=[[[560,350],[594,350],[594,382],[560,382]],[[780,350],[816,350],[816,382],[780,382]]];
   }
   addInhabitant(scene,config.id);
@@ -128,7 +129,7 @@ async function buildCastleExpansion({only}={}){
   require('./build-castle-ui.cjs').buildCastleUi();require('./build-castle-script.cjs').buildCastleScript();
   require('./build-castle-script.cjs').buildCastleMuseumScript();
   if(!only||only==='spielesaal')require('./build-castle-script.cjs').buildCastleBilliardsScript();
-  if(!only||only==='spielesaal')fs.copyFileSync(path.join(root,'castle/spielesaal.tmj'),path.join(root,'castle/spielesaal-billard-preview.tmj'));
+  if(!only||only==='spielesaal')fs.copyFileSync(path.join(root,'castle/spielesaal.tmj'),path.join(root,'castle',rooms.find(room=>room.id==='spielesaal').preview));
   if(!only||only==='museum')fs.copyFileSync(path.join(root,'castle/museum.tmj'),path.join(root,'castle/museum-tour-preview.tmj'));
   return results;
 }

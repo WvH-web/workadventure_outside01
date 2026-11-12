@@ -2,7 +2,9 @@
 const fs=require('node:fs'),path=require('node:path'),crypto=require('node:crypto'),assert=require('node:assert/strict'),{execFileSync}=require('node:child_process');
 const storage=require('./castle-local-storage.cjs');storage.configure();
 const root=path.resolve(__dirname,'..'),sha=raw=>crypto.createHash('sha256').update(raw).digest('hex');
-const files=['castle/spielesaal-billard-preview.tmj','castle/billiards-preview.bundle.js','castle/billiards-preview.bundle.manifest.json',
+const stoolRevision=process.argv.includes('--stool-revision');
+const files=stoolRevision?['castle/spielesaal-billard2-preview.tmj','castle/art/spielesaal-billard-20261112/fronts-r2.png']:
+ ['castle/spielesaal-billard-preview.tmj','castle/billiards-preview.bundle.js','castle/billiards-preview.bundle.manifest.json',
  ...['floor.png','fronts.png','marker.png','fire.png'].map(file=>'castle/art/spielesaal-billard-20261112/'+file)];
 const output=storage.outputPath('billiards-map-publication/'+new Date().toISOString().replace(/[:.]/g,'-')),index=path.join(output,'publication.index');
 const git=(args,options={})=>execFileSync('git',args,{cwd:root,windowsHide:true,maxBuffer:5000000,...options});
@@ -12,8 +14,11 @@ function main(){
  const values=new Map(files.map(file=>[file,git(['show',source+':'+file])]));
  for(const file of files)assert.equal(git(['ls-tree',base,'--',file]).length,0,'Only additional candidate files may be published: '+file);
  const map=JSON.parse(values.get(files[0]));assert.equal(map.properties.find(p=>p.name==='castleMapId').value,'spielesaal');
- assert.equal(map.properties.find(p=>p.name==='castleRevision').value,'20261112-billard1');
- const bundle=JSON.parse(values.get(files[2]));assert.equal(bundle.sha256,sha(values.get(files[1])));
+ assert.equal(map.properties.find(p=>p.name==='castleRevision').value,stoolRevision?'20261112-billard2':'20261112-billard1');
+ if(stoolRevision){
+  for(const name of ['castle/billiards-preview.bundle.js','castle/billiards-preview.bundle.manifest.json',...['floor','marker','fire'].map(file=>'castle/art/spielesaal-billard-20261112/'+file+'.png')])
+   assert.equal(sha(git(['show',base+':'+name])),sha(git(['show',source+':'+name])),'Referenced original candidate asset changed: '+name);
+ }else{const bundle=JSON.parse(values.get(files[2]));assert.equal(bundle.sha256,sha(values.get(files[1])));}
  const env={...process.env,GIT_INDEX_FILE:index};let publication;
  try{
   git(['read-tree',base],{env});
