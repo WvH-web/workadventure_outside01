@@ -4,20 +4,21 @@ Das Gesamtziel bleibt aktiv. Dies ist keine Freigabe als fertiggestelltes
 Schloss oder fuer eine Veranstaltung mit 400 Personen. Das bisherige Schloss,
 Village und geschuetzte Lehrerzimmer werden nicht ersetzt.
 
-Neuester Raumtest: Zwei normale Microsoft-Schultestkonten bestaetigen in einem
-zusaetzlichen echten Proberaum die gemeinsame Spielwahl beim Hinsetzen,
-automatischen Beitritt, denselben Billardstoss und echte native Sprache von
-beiden Hockern. Der Durchlauf ist trotzdem nicht abgenommen: Beim Aufstehen
-stoppt eine mehrdeutige Pruefsteuerung, die Figuren sitzen zudem zu tief. Der
-Proberaum ist wieder entfernt und die sechzehn bestehenden Karten bleiben
-unveraendert. Sitzhoehe und Bedienpruefung sind im zweiten lokalen Kandidaten
-korrigiert; dieser braucht noch den neuen echten Raumtest. Die normale
-Billard-Seitenfenster-Abnahme bleibt gueltig, nicht aber eine Freigabe des
-neuen physischen Spielesaal-Tisches. Die beiden Kandidaten bleiben getrennt.
-Die aktuelle gesamte Node-Suite besteht mit 608 bestandenen Faellen, zwei
-unveraenderten optionalen Auslassungen und keinem Fehler. Alle 164 Python-
-Betriebsfaelle bestehen. Der grosse Aufstehen-Kasten der getrennt benannten
-Probekarte ersetzt nicht die kleine Anzeige auf den normalen Karten.
+Neuester Raumtest: Der zweite echte Billardtisch-Kandidat besteht mit zwei
+normalen Microsoft-Schultestkonten ohne Netzwerkersatz. Gemeinsame Spielwahl
+beim Hinsetzen, automatischer Beitritt, derselbe echte Stoss, Zuschauerbank,
+Wiederbeitritt, Aufstehen und letzte leere Runde funktionieren. Drei echte
+Sprachmessungen bestehen: beide Hocker, Hocker mit Zuschauerbank und beide
+urspruenglichen Schachplaetze. Getrennte Gruppen uebertragen keinen Ton.
+Ein solo besetzter Bereich muss keine offene SFU-Verbindung halten; die
+Pruefung bestaetigt deshalb echte gemeinsame Sprache und anschliessende
+Abtrennung statt einen nicht erforderlichen Solo-Socket zu verlangen.
+Der erfolgreiche Nachweis ist unveraendert gesichert, der zweite Proberaum
+entfernt, alle sechzehn normalen Karten und Dienste bleiben unveraendert.
+Die neue normale Spielesaal-Freischaltung ist separat vorbereitet, aber hier
+noch nicht als live abgenommen ausgegeben. Alle 177 Python-Betriebsfaelle
+bestehen. Der grosse Sitzkasten der getrennten Kandidatenkarte ersetzt nicht
+die bereits kleine Anzeige auf den normalen sechzehn Karten.
 
 Aktuelle Ergaenzung: Die Billard-Darstellungskorrektur ist normal online und
 ohne Browserersatz mit zwei Microsoft-Schultestkonten abgenommen, einschliesslich

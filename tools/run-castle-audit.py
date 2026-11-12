@@ -3,6 +3,22 @@ import hashlib
 from pathlib import Path
 import runpy
 
+hall=Path('/opt/wvh-castle-billiards-hall/private')
+if (hall/'deployment.json').exists() and not (hall/'rollback.json').exists():
+    path=hall/'publication-ops.py'
+    assert path.resolve()==path and path.stat().st_uid==0 and path.stat().st_mode&0o777==0o600
+    raw=path.read_bytes();assert hashlib.sha256(raw).hexdigest()=='7af7b7dbe79fd73c3e714fcdef705c43c7d0f2733c12d8b331ccad02a8e23172'
+    scope={'__name__':'castle_billiards_hall_audit','__file__':str(path)};exec(compile(raw,str(path),'exec'),scope)
+    scope['verify']();raise SystemExit(0)
+
+second_table=Path('/opt/wvh-castle-billiards-table-r2/private')
+if (second_table/'stage.json').exists() and not (second_table/'cleanup.json').exists():
+    path=second_table/'stage-ops.py'
+    assert path.resolve()==path and path.stat().st_uid==0 and path.stat().st_mode&0o777==0o600
+    raw=path.read_bytes();assert hashlib.sha256(raw).hexdigest()=='47d4dd1ce3bcc74d2cb21aab1d94410db18c711e526daab2d832ef800a7bb46a'
+    scope={'__name__':'castle_billiards_second_table_audit','__file__':str(path)};exec(compile(raw,str(path),'exec'),scope)
+    scope['verify']();raise SystemExit(0)
+
 table=Path('/opt/wvh-castle-billiards-table/private')
 if (table/'stage.json').exists() and not (table/'cleanup.json').exists():
     path=table/'stage-ops.py'

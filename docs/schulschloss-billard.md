@@ -2,6 +2,36 @@
 
 ## Aktuelle Ergaenzung
 
+Der zweite physische Raumtest ist inzwischen bestanden und auf dem Server
+mit seinem unveraenderten Rohbeleg angenommen. Nachweis:
+`2026-11-12T01-38-23-297Z`, SHA-256
+`41c771e30e3946187cf7cc57050102dbbc1e892b7d9dd3c3584cadd5b1ee5af9`.
+Zwei normale Microsoft-Schultestkonten, Desktop und Touch, keine ersetzten
+Netzwerkantworten oder Schulprofile. Gemeinsame Wahl und automatisches
+Nachfolgen, echter gleicher Stoss, Wiederbeitritt, Zuschauerbank, Schach und
+letztes Aufstehen funktionieren. Echte beidseitige Sprache besteht an beiden
+Hockern, mit der Zuschauerbank und am unveraenderten Schachtisch.
+
+Ein vorheriger zweiter Durchlauf endet an der zu strengen Annahme, ein allein
+besetzter Schachbereich muesse bereits eine offene SFU-Verbindung haben. Er
+bleibt als fehlgeschlagene Pruefung erhalten (`2026-11-12T01-34-56-709Z`).
+Der Folgeversuch misst statt dieser Annahme echte Sprache mit beiden Personen
+am Schach, danach wieder getrennte Gruppen ohne gemeinsam offene Verbindung
+und ohne ankommende Audioenergie. Beide zusaetzlichen Proberaeume sind nun
+entfernt, ihre Originalbelege bleiben erhalten. Kein vorhandener Dienst und
+keine der normalen sechzehn Karten wurden veraendert.
+
+Die Freischaltung fuer den normalen neuen Spielesaal ist eng vorbereitet:
+nur dessen WAM und Manifestzeile, der bytegleiche bereits getestete oeffentliche
+TMJ-Stand und die privat gespeicherte zusaetzliche Billard-Pilotfreigabe. Die
+eigentliche frische Schulpruefung bleibt fuer jeden Zugriff bestehen; Eltern,
+anonyme Nutzer und inaktive Profile erhalten dadurch keine Spielberechtigung.
+Die normale Freischaltung und native kompakte Sitzanzeige werden erst nach
+einem eigenen veroeffentlichten Durchlauf als abgenommen ausgegeben.
+Alle 177 Python-Betriebsfaelle bestehen.
+
+## Historie
+
 Der erste vollstaendig getrennte Raumtest ist als **nicht abgenommen**
 festgehalten. Zwei normale Microsoft-Schultestkonten betreten den echten
 zusaetzlichen Proberaum ohne Browserersatz. Hinsetzen, sichtbare gemeinsame
