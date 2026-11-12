@@ -2,6 +2,46 @@
 
 ## Aktuelle Ergaenzung
 
+Der normale Spielesaal der geschuetzten neuen Schlossvorschau ist jetzt
+freigeschaltet und nativ abgenommen:
+`https://together.deine-schule.com/~/castle-preview/spielesaal.wam#start`.
+Zwei normale Microsoft-Schultestkonten, sieben Szenarien, kein Netzwerkersatz,
+Desktop und Touch. Die kompakte Sitzanzeige misst in beiden Fenstern 144 x 44.
+Gemeinsame Spielwahl, spaeteres automatisches Folgen, derselbe echte Stoss,
+Wiederbeitritt, Zuschauerbank, beide Schachplaetze, Gruppenabgrenzung, letzte
+leere Runde und normales Laufen bestehen. Drei echte beidseitige native
+Sprachmessungen, keine uebertragene Audioenergie zwischen getrennten Gruppen.
+Nachweis `2026-11-12T01-57-59-247Z`, SHA-256
+`fb661134c7b57dbde7af6cbc8d463081ad1ddaac68cc733422a0eb22c6dc1a48`.
+
+Nur die kanonische neue Spielesaal-TMJ wurde auf den bytegleichen abgenommenen
+Kandidaten umgestellt (Pages `e596d1c40347844ecf77d1d01d083375c110f4aa`,
+Lauf `43137691258`), dazu nur dessen geschuetzte WAM und Manifestzeile sowie
+die zusaetzliche private Billardfreigabe von Pilot auf Schule. Der reale
+Schulzugang wird unveraendert bei jedem Aufruf frisch geprueft. Es gab keinen
+Dienstneustart; das bisherige Schloss, Village und alle anderen Karten bleiben
+unveraendert. Keine Gesamtfreigabe des Schlossausbaus oder fuer 400 Personen.
+
+Zwei Git-Uebertragungen endeten mit leerer Serverantwort; der unveraenderte
+Remote-Stand wurde vor dem Wiederholen geprueft. Derselbe letzte vorbereitete
+Commit wurde dann uebertragen, danach nur sein wirklicher Pages-Lauf beobachtet.
+Ein erster normaler Raumtest (`2026-11-12T01-56-10-156Z`) blieb an der zu
+strengen Textsuche des sichtbar vorhandenen kompakten Sitzknopfs stehen. Die
+Pruefung verwendet nun den eindeutigen Testbezeichner mit normalisierter
+Beschriftung; sie faellt im normalen Raum nicht auf den alten grossen Knopf
+zurueck. Diese fehlgeschlagenen Versuche bleiben dokumentiert.
+
+Alle 180 Python- und 608 Node-Faelle bestehen, zwei unveraenderte optionale
+Node-Auslassungen. Ein ungezielter Node-Aufruf nahm zusaetzlich zwei unveraenderte
+Vitest-Dateien des separat gebauten Clients auf, die nicht mit dem Node-Runner
+ausfuehrbar sind. Der korrekte vollstaendige Lauf aller 610 Node-Faelle besteht.
+Neun redundante temporaere Server-Uploads mit insgesamt 52.567 Bytes sind nach
+vollstaendigem Vorabvergleich mit ihren behaltenen Root-Kopien entfernt. Die
+Nachweise und Ruecksetzstaende bleiben erhalten; die anschliessende Live-
+Integritaetspruefung besteht weiterhin.
+
+## Vorheriger Raumtest
+
 Der zweite physische Raumtest ist inzwischen bestanden und auf dem Server
 mit seinem unveraenderten Rohbeleg angenommen. Nachweis:
 `2026-11-12T01-38-23-297Z`, SHA-256

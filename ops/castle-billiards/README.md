@@ -1,8 +1,8 @@
 # School Castle Billiards
 
 An isolated GPL-3.0 billiards integration, not a modification of the existing
-school portal, WorkAdventure client, old castle or chess service. Currently a
-protected pilot candidate; no castle map has been activated for billiards.
+school portal, WorkAdventure client, old castle or chess service. The accepted
+physical table is now active only in the protected new-castle game hall.
 
 ## Source and Runtime
 
@@ -72,7 +72,14 @@ out when run alongside four software-rendered WebGL contexts. The unchanged full
 suite subsequently passed serially. Its 15-second limit was not raised, and no
 test was skipped to hide the failed concurrent run.
 
-Normal Microsoft pilot acceptance, the physical castle table and its shared
-activity/seat integration, native conversation, larger load and restore drills
-must be checked separately before broader release. The previous castle remains
-unchanged.
+The normal published table passed two real Microsoft school test accounts with
+no substituted network responses: shared sit choice, automatic late-sitter panel,
+the same authoritative shot, spectator bench, rejoin, separate chess conversation,
+last-standing reset, native movement, desktop/touch and 144 x 44 seat controls.
+Three actual bidirectional native voice measurements passed. Only this new-castle
+wrapper and its manifest entry changed, plus the private additional admission
+policy from pilot to school; every request still requires a fresh active pupil
+or staff profile. No service restarted. See `docs/schulschloss-billard.md` for
+immutable evidence and the retained failed attempts. Larger load and restore
+drills remain open; this is not whole-castle or 400-person acceptance. The previous
+castle remains unchanged.

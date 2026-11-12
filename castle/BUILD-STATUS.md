@@ -4,7 +4,22 @@ Das Gesamtziel bleibt aktiv. Dies ist keine Freigabe als fertiggestelltes
 Schloss oder fuer eine Veranstaltung mit 400 Personen. Das bisherige Schloss,
 Village und geschuetzte Lehrerzimmer werden nicht ersetzt.
 
-Neuester Raumtest: Der zweite echte Billardtisch-Kandidat besteht mit zwei
+Neueste Freischaltung: Der Billardtisch ist im normalen Spielesaal der
+geschuetzten neuen Schlossvorschau live und mit zwei normalen Microsoft-
+Schultestkonten abgenommen, ohne Netzwerkersatz. Sieben Szenarien bestehen:
+gemeinsame Wahl beim Hinsetzen, automatischer Beitritt, echter gemeinsamer
+Stoss, Wiederbeitritt, Zuschauerbank, getrenntes Schach, letzte leere Runde
+und normales Laufen. Drei echte beidseitige Sprachmessungen bestehen.
+Die native Sitzanzeige bleibt auf Desktop und Touch jeweils 144 x 44 Pixel.
+Nur der neue Spielesaal, seine Manifestzeile und die zusaetzliche private
+Billardfreigabe wurden umgestellt. Die frische Schulpruefung bleibt erhalten;
+alte Karten und alle laufenden Dienste bleiben unveraendert. Kein Neustart.
+Alle 180 Python- und 608 Node-Pruefungen bestehen; zwei optionale Node-Faelle
+bleiben ausgelassen. Neun redundante Uploads (52.567 Bytes) wurden erst nach
+Bytevergleich mit ihren behaltenen Kopien entfernt. Das gesamte Schlossziel
+ist damit nicht abgeschlossen und es gibt keine Freigabe fuer 400 Personen.
+
+Vorheriger Raumtest: Der zweite echte Billardtisch-Kandidat besteht mit zwei
 normalen Microsoft-Schultestkonten ohne Netzwerkersatz. Gemeinsame Spielwahl
 beim Hinsetzen, automatischer Beitritt, derselbe echte Stoss, Zuschauerbank,
 Wiederbeitritt, Aufstehen und letzte leere Runde funktionieren. Drei echte

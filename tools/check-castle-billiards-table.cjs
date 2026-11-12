@@ -22,8 +22,8 @@ async function main(){
  const mark=value=>{phase=value;console.log('Billiards table probe: '+value);};
  const wait=(frame,fn,arg)=>frame.waitForFunction(fn,arg,{polling:100,timeout:30000});
  async function seatButton(user,label){
-  const compact=user.page.getByTestId('castle-seat-action').filter({hasText:new RegExp('^'+label+'$')});
-  if(published){await compact.waitFor();return compact;}
+  const compact=user.page.getByTestId('castle-seat-action').filter({hasText:label});
+  if(published){await compact.waitFor();assert.equal((await compact.innerText()).trim(),label);return compact;}
   if(await compact.isVisible())return compact;
   const legacy=user.page.locator('.responsive-message').filter({hasText:new RegExp('^'+label+'$')});await legacy.waitFor();return legacy;
  }
